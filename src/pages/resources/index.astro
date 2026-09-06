@@ -50,6 +50,9 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
     const chips = [...document.querySelectorAll('[data-filter]')];
     const empty = document.querySelector('#no-results');
     const count = document.querySelector('#results-count');
+    const params = new URLSearchParams(window.location.search);
+    const initialQuery = params.get('q') || '';
+    if (search && initialQuery) search.value = initialQuery;
     let activeFilter = 'all';
 
     const update = () => {
