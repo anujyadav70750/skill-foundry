@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = resources.filter((item) => item.data.featured);
+---
+<BaseLayout title="Skill Foundry — Practical AI Skills, Prompts & Tutorials">
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="eyebrow">PRACTICAL AI • PROMPTS • TUTORIALS</p>
+      <h1>Build skills that stay useful in the <span>AI era.</span></h1>
+      <p class="hero-copy">Discover practical prompts, AI workflows and easy-to-follow tutorials designed to help you learn by building.</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/resources/">Explore Resources</a>
+        <a class="button button-secondary" href="#latest">Latest resources</a>
+      </div>
+    </div>
+  </section>
+
+  {featured.length > 0 && <section class="section">
+    <div class="container">
+      <div class="section-heading"><div><p class="eyebrow">EDITOR'S PICKS</p><h2>Featured resources</h2></div></div>
+      <div class="resource-grid">
+        {featured.slice(0, 3).map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
+          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+          <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">View resource →</span></div>
+        </a>)}
+      </div>
+    </div>
+  </section>}
+
+  <section class="section section-muted" id="latest">
+    <div class="container">
+      <div class="section-heading"><div><p class="eyebrow">LATEST</p><h2>Newest resources</h2></div><a href="/resources/">View all →</a></div>
+      <div class="resource-grid">
+        {resources.slice(0, 6).map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
+          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+          <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">Get prompt →</span></div>
+        </a>)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="AI Resources & Prompts | Skill Foundry" description="Browse practical AI prompts, tutorials and workflows from Skill Foundry.">
+  <section class="page-heading"><div class="container"><p class="eyebrow">RESOURCE LIBRARY</p><h1>AI prompts & tutorials</h1><p>Practical resources you can open, understand, copy and use.</p></div></section>
+  <section class="section"><div class="container"><div class="resource-grid">
+    {resources.map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
+      <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+      <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><span class="card-link">View resource →</span></div>
+    </a>)}
+  </div></div></section>
+</BaseLayout>
