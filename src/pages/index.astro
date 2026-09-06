@@ -4,23 +4,29 @@ import { getCollection } from 'astro:content';
 
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = resources.filter((item) => item.data.featured);
+const categories = [...new Set(resources.map((item) => item.data.category))];
 ---
 <BaseLayout title="Skill Foundry — Practical AI Skills, Prompts & Tutorials">
   <section class="hero">
     <div class="container hero-inner">
       <p class="eyebrow">PRACTICAL AI • PROMPTS • TUTORIALS</p>
       <h1>Build skills that stay useful in the <span>AI era.</span></h1>
-      <p class="hero-copy">Discover practical prompts, AI workflows and easy-to-follow tutorials designed to help you learn by building.</p>
+      <p class="hero-copy">Discover practical prompts, AI workflows and easy-to-follow tutorials designed to help you learn by building — not just watching.</p>
       <div class="hero-actions">
         <a class="button button-primary" href="/resources/">Explore Resources</a>
-        <a class="button button-secondary" href="#latest">Latest resources</a>
+        <a class="button button-secondary" href="#how-it-works">How it works</a>
+      </div>
+      <div class="hero-proof" aria-label="Skill Foundry highlights">
+        <div><strong>{resources.length}</strong><span>resource{resources.length === 1 ? '' : 's'} published</span></div>
+        <div><strong>{categories.length}</strong><span>category{categories.length === 1 ? '' : 'ies'} covered</span></div>
+        <div><strong>Free</strong><span>to explore & use</span></div>
       </div>
     </div>
   </section>
 
   {featured.length > 0 && <section class="section">
     <div class="container">
-      <div class="section-heading"><div><p class="eyebrow">EDITOR'S PICKS</p><h2>Featured resources</h2></div></div>
+      <div class="section-heading"><div><p class="eyebrow">EDITOR'S PICKS</p><h2>Featured resources</h2></div><a href="/resources/">View all →</a></div>
       <div class="resource-grid">
         {featured.slice(0, 3).map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
           <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
@@ -39,6 +45,25 @@ const featured = resources.filter((item) => item.data.featured);
           <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">Get prompt →</span></div>
         </a>)}
       </div>
+      {resources.length === 0 && <div class="empty-state">New resources are being prepared. Check back soon.</div>}
+    </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="section-heading"><div><p class="eyebrow">THE SKILL FOUNDRY METHOD</p><h2>Learn by doing.</h2></div></div>
+      <div class="steps-grid">
+        <article class="step-card"><span>01</span><h3>Discover</h3><p>Find a practical AI prompt, workflow or tutorial built around a real use case.</p></article>
+        <article class="step-card"><span>02</span><h3>Understand</h3><p>See what the resource does, how it works and where it fits into your workflow.</p></article>
+        <article class="step-card"><span>03</span><h3>Build</h3><p>Copy the prompt, try it yourself and adapt it to create something useful.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container cta-card">
+      <div><p class="eyebrow">KEEP BUILDING</p><h2>Useful skills beat endless scrolling.</h2><p>Explore the resource library and turn AI ideas into things you can actually use.</p></div>
+      <a class="button button-primary" href="/resources/">Browse the library →</a>
     </div>
   </section>
 </BaseLayout>
