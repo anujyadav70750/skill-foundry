@@ -3,13 +3,75 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const categories = [...new Set(resources.map((resource) => resource.data.category))].sort();
 ---
 <BaseLayout title="AI Resources & Prompts | Skill Foundry" description="Browse practical AI prompts, tutorials and workflows from Skill Foundry.">
-  <section class="page-heading"><div class="container"><p class="eyebrow">RESOURCE LIBRARY</p><h1>AI prompts & tutorials</h1><p>Practical resources you can open, understand, copy and use.</p></div></section>
-  <section class="section"><div class="container"><div class="resource-grid">
-    {resources.map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
-      <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
-      <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><span class="card-link">View resource →</span></div>
-    </a>)}
-  </div></div></section>
+  <section class="page-heading">
+    <div class="container">
+      <p class="eyebrow">RESOURCE LIBRARY</p>
+      <h1>AI prompts & tutorials</h1>
+      <p>Practical resources you can discover, understand, copy and use. Search the library or browse by category.</p>
+    </div>
+  </section>
+
+  <section class="section library-section">
+    <div class="container">
+      <div class="library-toolbar">
+        <label class="search-box">
+          <span class="sr-only">Search resources</span>
+          <span aria-hidden="true">⌕</span>
+          <input id="resource-search" type="search" placeholder="Search prompts, tools or topics…" autocomplete="off" />
+        </label>
+        <div class="filter-row" role="group" aria-label="Filter by category">
+          <button class="filter-chip is-active" type="button" data-filter="all">All</button>
+          {categories.map((category) => <button class="filter-chip" type="button" data-filter={category}>{category}</button>)}
+        </div>
+      </div>
+
+      <div class="library-meta"><span><strong>{resources.length}</strong> resource{resources.length === 1 ? '' : 's'}</span><span id="results-count" aria-live="polite"></span></div>
+
+      <div class="resource-grid" id="resource-grid">
+        {resources.map((resource) => <a class="resource-card resource-item" data-category={resource.data.category} data-search={`${resource.data.title} ${resource.data.description} ${resource.data.category} ${resource.data.tool} ${resource.data.tags.join(' ')}`.toLowerCase()} href={`/resources/${resource.id}/`}>
+          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+          <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><div class="card-meta"><span>{resource.data.tool}</span><span>Open →</span></div></div>
+        </a>)}
+      </div>
+
+      <div class="empty-state" id="no-results" hidden>
+        <strong>No matching resources</strong>
+        <span>Try another keyword or choose a different category.</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const search = document.querySelector('#resource-search');
+    const items = [...document.querySelectorAll('.resource-item')];
+    const chips = [...document.querySelectorAll('[data-filter]')];
+    const empty = document.querySelector('#no-results');
+    const count = document.querySelector('#results-count');
+    let activeFilter = 'all';
+
+    const update = () => {
+      const query = (search?.value || '').trim().toLowerCase();
+      let visible = 0;
+      items.forEach((item) => {
+        const matchesFilter = activeFilter === 'all' || item.dataset.category === activeFilter;
+        const matchesSearch = !query || (item.dataset.search || '').includes(query);
+        const show = matchesFilter && matchesSearch;
+        item.hidden = !show;
+        if (show) visible += 1;
+      });
+      if (empty) empty.hidden = visible !== 0;
+      if (count) count.textContent = `${visible} shown`;
+    };
+
+    search?.addEventListener('input', update);
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      activeFilter = chip.dataset.filter || 'all';
+      chips.forEach((item) => item.classList.toggle('is-active', item === chip));
+      update();
+    }));
+    update();
+  </script>
 </BaseLayout>
