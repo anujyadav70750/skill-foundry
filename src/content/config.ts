@@ -11,8 +11,8 @@ const resources = defineCollection({
     thumbnail: z.string().default('/images/placeholder.svg'),
     heroImage: z.string().default('/images/placeholder.svg'),
     prompt: z.string(),
-    videoEmbedUrl: z.string().optional(),
-    originalVideoUrl: z.string().optional(),
+    videoEmbedUrl: z.string().nullable().optional(),
+    originalVideoUrl: z.string().nullable().optional(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false)
   })
