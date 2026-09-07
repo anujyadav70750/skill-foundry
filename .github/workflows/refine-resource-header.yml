@@ -1,0 +1,38 @@
+name: Refine resource header layout
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update desktop resource layout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('src/styles/global.css')
+          s = p.read_text()
+          old = '''@media (min-width: 769px) {\n  .resource-intro .quick-actions .button-primary {\n    min-width: 440px;\n    min-height: 56px;\n    padding-inline: 28px;\n  }\n}'''
+          new = '''@media (min-width: 769px) {\n  .resource-intro { width: min(1080px, calc(100% - 48px)); }\n  .resource-intro h1 { max-width: 1000px; }\n  .resource-page .resource-intro .lead { max-width: 980px; }\n  .resource-intro .quick-actions { width: 100%; }\n  .resource-intro .quick-actions .button-primary {\n    width: 100%;\n    min-height: 56px;\n    padding-inline: 28px;\n  }\n}'''
+          if old not in s:
+              raise SystemExit('Expected CTA block not found')
+          p.write_text(s.replace(old, new, 1))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/styles/global.css
+          git commit -m 'Improve desktop resource header layout'
+          git push
+      - name: Remove one-time workflow
+        if: success()
+        run: |
+          git rm .github/workflows/refine-resource-header.yml
+          git commit -m 'Remove one-time header refinement workflow'
+          git push
