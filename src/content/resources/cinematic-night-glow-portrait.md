@@ -5,9 +5,10 @@ description: Create a polished cinematic portrait with controlled night lighting
 category: Image Generation
 tool: AI Image Generator
 date: 2026-09-06
-thumbnail: /images/placeholder.svg
-heroImage: /images/placeholder.svg
-resultImages: []
+thumbnail: /images/cinematic-night-glow-hero.jpg
+heroImage: /images/cinematic-night-glow-hero.jpg
+resultImages:
+  - /images/cinematic-night-glow-hero.jpg
 prompt: |
   Create a cinematic portrait with a realistic subject, subtle night ambience, soft directional rim light, controlled teal-blue glow, natural skin texture, detailed eyes, realistic fabric, shallow depth of field, premium editorial composition, balanced contrast, clean background separation, photographic detail, and a refined modern color grade. Keep the lighting believable and avoid excessive bloom, plastic skin, distorted facial features, extra fingers, text, logos, or watermarks.
 videoEmbedUrl:
