@@ -7,6 +7,7 @@ export interface Props {
   image?: string;
   imageAlt?: string;
   type?: string;
+  robots?: string;
 }
 
 const {
@@ -15,7 +16,8 @@ const {
   canonical,
   image,
   imageAlt,
-  type = 'website'
+  type = 'website',
+  robots = 'index, follow, max-image-preview:large'
 } = Astro.props;
 
 const siteName = 'Skill Foundry';
@@ -31,7 +33,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#07111f" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={robots} />
     <meta name="google-site-verification" content="C_J2tHd4KyewCilkXDUref97yEkMTr0yWQtLCKBsCEI" />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap.xml" />
