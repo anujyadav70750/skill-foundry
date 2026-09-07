@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { resourceSlug, resourceThumbnail } from '../lib/resource';
 
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = resources.filter((item) => item.data.featured);
@@ -28,8 +29,8 @@ const categories = [...new Set(resources.map((item) => item.data.category))];
     <div class="container">
       <div class="section-heading"><div><p class="eyebrow">EDITOR'S PICKS</p><h2>Featured resources</h2></div><a href="/resources/">View all →</a></div>
       <div class="resource-grid">
-        {featured.slice(0, 3).map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
-          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+        {featured.slice(0, 3).map((resource) => <a class="resource-card" href={`/resources/${resourceSlug(resource)}/`}>
+          <img src={resourceThumbnail(resource)} alt={resource.data.title} loading="lazy" />
           <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">View resource →</span></div>
         </a>)}
       </div>
@@ -40,8 +41,8 @@ const categories = [...new Set(resources.map((item) => item.data.category))];
     <div class="container">
       <div class="section-heading"><div><p class="eyebrow">LATEST</p><h2>Newest resources</h2></div><a href="/resources/">View all →</a></div>
       <div class="resource-grid">
-        {resources.slice(0, 6).map((resource) => <a class="resource-card" href={`/resources/${resource.id}/`}>
-          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
+        {resources.slice(0, 6).map((resource) => <a class="resource-card" href={`/resources/${resourceSlug(resource)}/`}>
+          <img src={resourceThumbnail(resource)} alt={resource.data.title} loading="lazy" />
           <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">Get prompt →</span></div>
         </a>)}
       </div>
