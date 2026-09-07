@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { resourceSlug, resourceThumbnail } from '../../lib/resource';
 
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const categories = [...new Set(resources.map((resource) => resource.data.category))].sort();
+const categories = [...new Set(resources.map((resource) => resource.data.category))].sort((a, b) => a.localeCompare(b));
 ---
 <BaseLayout title="AI Resources & Prompts | Skill Foundry" description="Browse practical AI prompts, tutorials and workflows from Skill Foundry.">
   <section class="page-heading">
@@ -30,11 +31,16 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
 
       <div class="library-meta"><span><strong>{resources.length}</strong> resource{resources.length === 1 ? '' : 's'}</span><span id="results-count" aria-live="polite"></span></div>
 
-      <div class="resource-grid" id="resource-grid">
-        {resources.map((resource) => <a class="resource-card resource-item" data-category={resource.data.category} data-search={`${resource.data.title} ${resource.data.description} ${resource.data.category} ${resource.data.tool} ${resource.data.tags.join(' ')}`.toLowerCase()} href={`/resources/${resource.id}/`}>
-          <img src={resource.data.thumbnail} alt={resource.data.title} loading="lazy" />
-          <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><div class="card-meta"><span>{resource.data.tool}</span><span>Open →</span></div></div>
-        </a>)}
+      <div class="resource-grid library-grid" id="resource-grid">
+        {resources.map((resource) => {
+          const slug = resourceSlug(resource);
+          const thumbnail = resourceThumbnail(resource);
+          const searchText = [resource.data.title, resource.data.description, resource.data.category, resource.data.tool, ...resource.data.tags].join(' ').toLowerCase();
+          return <a class="resource-card resource-item" data-category={resource.data.category} data-search={searchText} href={`/resources/${slug}/`}>
+            <img src={thumbnail} alt={resource.data.title} loading="lazy" />
+            <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><div class="card-meta"><span>{resource.data.tool}</span><span>Open →</span></div></div>
+          </a>;
+        })}
       </div>
 
       <div class="empty-state" id="no-results" hidden>
@@ -65,7 +71,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
         item.hidden = !show;
         if (show) visible += 1;
       });
-      if (empty) empty.hidden = visible !== 0;
+      if (empty) empty.hidden = visible > 0;
       if (count) count.textContent = `${visible} shown`;
     };
 
