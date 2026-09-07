@@ -87,10 +87,13 @@ const schema = {
       </section>}
 
       <section class="resource-section prompt-section" id="prompt">
-        <div class="section-heading prompt-heading"><div><p class="eyebrow">PROMPT SOURCE</p><h2>Copy the full prompt</h2><p class="section-subcopy">Scroll inside the box to review it. Copy or expand when you're ready to use it.</p></div><button class="button button-secondary" type="button" data-expand>Expand prompt</button></div>
+        <div class="section-heading prompt-heading"><div><p class="eyebrow">PROMPT SOURCE</p><h2>Copy the full prompt</h2><p class="section-subcopy">Review the prompt in the scrollable box. Copy it or expand it when you're ready to use it.</p></div><button class="button button-secondary" type="button" data-expand>Expand prompt</button></div>
         <div class="prompt-shell">
+          <div class="prompt-toolbar">
+            <span>Full prompt</span>
+            <button class="copy-button" type="button" data-copy>Copy prompt</button>
+          </div>
           <pre id="prompt-text">{data.prompt}</pre>
-          <button class="copy-button" type="button" data-copy>Copy prompt</button>
         </div>
         <p class="copy-status" data-status aria-live="polite"></p>
       </section>
@@ -125,6 +128,61 @@ const schema = {
     </div>
   </dialog>
 
+  <style>
+    .results-gallery.single-result {
+      display: block;
+    }
+
+    .results-gallery.single-result img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .prompt-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 54px;
+      padding: 7px 10px 7px 18px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(16,34,56,.55);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .prompt-toolbar .copy-button {
+      position: static;
+      flex: 0 0 auto;
+      min-height: 38px;
+      padding: 0 14px;
+    }
+
+    .prompt-shell pre {
+      max-height: 306px;
+      padding: 20px 22px;
+    }
+
+    @media (max-width: 600px) {
+      .prompt-toolbar {
+        min-height: 52px;
+        padding-left: 14px;
+      }
+
+      .prompt-toolbar .copy-button {
+        min-height: 36px;
+        padding: 0 12px;
+      }
+
+      .prompt-shell pre {
+        max-height: 300px;
+        padding: 18px;
+      }
+    }
+  </style>
+
   <script>
     const promptText = document.querySelector('#prompt-text')?.textContent || '';
     const status = document.querySelector('[data-status]');
@@ -138,16 +196,4 @@ const schema = {
     document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
     dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
   </script>
-
-  <style>
-    .results-gallery.single-result {
-      display: block;
-    }
-
-    .results-gallery.single-result img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-    }
-  </style>
 </BaseLayout>
