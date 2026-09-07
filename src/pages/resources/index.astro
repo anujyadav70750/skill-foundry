@@ -20,7 +20,6 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       <div class="library-toolbar">
         <form class="search-box" id="resource-search-form" role="search">
           <label class="sr-only" for="resource-search">Search resources</label>
-          <span class="search-icon" aria-hidden="true">⌕</span>
           <input id="resource-search" name="q" type="search" placeholder="Search prompts, tools or topics…" autocomplete="off" spellcheck="false" enterkeyhint="search" />
           <button class="resource-search-action" id="resource-search-action" type="button" aria-label="Search resources">
             <span class="resource-search-icon" aria-hidden="true">⌕</span>
@@ -65,13 +64,6 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       min-height: 58px;
       padding: 0 8px 0 18px;
       gap: 12px;
-    }
-
-    .search-icon {
-      flex: 0 0 auto;
-      font-size: 21px;
-      line-height: 1;
-      transform: translateY(-1px);
     }
 
     .search-box input { min-width: 0; }
@@ -227,7 +219,6 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
         search.focus();
       } else {
         search.focus();
-        update();
       }
     });
 
