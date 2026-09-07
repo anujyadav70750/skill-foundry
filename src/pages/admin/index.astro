@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Resource Builder | Skill Foundry"
+  description="Private publishing workspace for preparing Skill Foundry resources."
+  robots="noindex, nofollow, noarchive"
+>
+  <section class="builder-page">
+    <div class="builder-shell">
+      <div class="builder-heading">
+        <p class="eyebrow">RESOURCE BUILDER</p>
+        <h1>Create a resource without writing code.</h1>
+        <p>Fill in the fields, save a draft in this browser, preview the content, and download a ready-to-publish resource file.</p>
+      </div>
+
+      <div class="notice">
+        <strong>Manual fallback</strong>
+        <span>This builder does not store or publish content to the public site by itself. It prepares the same structured resource format used by Skill Foundry, so you still have a publishing path if an external connection is unavailable.</span>
+      </div>
+
+      <form id="resource-form" class="builder-grid">
+        <section class="panel">
+          <div class="panel-heading"><span>01</span><h2>Core details</h2></div>
+          <div class="field-grid">
+            <label>Title<input name="title" required placeholder="Premium AI Product Photography Prompt" /></label>
+            <label>Slug<input name="slug" placeholder="premium-ai-product-photography-prompt" /></label>
+            <label>Category<input name="category" required placeholder="Image Generation" /></label>
+            <label>Tool / Model<input name="tool" required placeholder="AI Image Generator" /></label>
+            <label class="full">Short description<textarea name="description" required rows="3" placeholder="A concise description used on resource cards and metadata."></textarea></label>
+            <label>Date<input name="date" type="date" required /></label>
+            <label>Image alt text<input name="imageAlt" placeholder="Describe the main result image" /></label>
+            <label class="full">Tags<input name="tags" placeholder="ai, prompt, image generation" /></label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><span>02</span><h2>Images</h2></div>
+          <div class="field-grid">
+            <label>Thumbnail path<input name="thumbnail" placeholder="/images/my-resource.jpg" /></label>
+            <label>Hero image path<input name="heroImage" placeholder="/images/my-resource.jpg" /></label>
+            <label>Input image path<input name="inputImage" placeholder="/images/input.jpg" /></label>
+            <label class="full">Result image paths<textarea name="resultImages" rows="3" placeholder="/images/result-1.jpg, /images/result-2.jpg, /images/result-3.jpg"></textarea></label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><span>03</span><h2>Resource content</h2></div>
+          <div class="field-grid">
+            <label class="full">Introduction<textarea name="intro" rows="5" placeholder="Explain what the resource is and when to use it."></textarea></label>
+            <label class="full">What this resource does<textarea name="whatItDoes" rows="5" placeholder="Explain the practical result and important details."></textarea></label>
+            <label class="full">Prompt<textarea name="prompt" required rows="10" placeholder="Paste the complete prompt here."></textarea></label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><span>04</span><h2>Tutorial & steps</h2></div>
+          <div class="field-grid">
+            <label>Tutorial embed URL<input name="videoEmbedUrl" placeholder="https://www.youtube.com/embed/..." /></label>
+            <label>Original tutorial URL<input name="originalVideoUrl" placeholder="https://www.youtube.com/watch?v=..." /></label>
+            <label class="full">Steps<textarea name="steps" rows="7" placeholder="One step per line. Use: Step title | Step description"></textarea></label>
+            <label class="full">Tips<textarea name="tips" rows="5" placeholder="One tip per line."></textarea></label>
+            <label class="full">Related resource slugs<textarea name="relatedResources" rows="3" placeholder="ai-video-cinematic-prompt, another-resource-slug"></textarea></label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading"><span>05</span><h2>SEO & publishing</h2></div>
+          <div class="field-grid">
+            <label class="full">SEO title<input name="seoTitle" placeholder="Unique search title for this resource" /></label>
+            <label class="full">SEO description<textarea name="seoDescription" rows="3" placeholder="Unique search description for this resource."></textarea></label>
+            <label class="check"><input name="featured" type="checkbox" /> Feature this resource</label>
+          </div>
+          <div class="actions">
+            <button class="button button-secondary" id="save-draft" type="button">Save draft</button>
+            <button class="button button-secondary" id="clear-draft" type="button">Clear draft</button>
+            <button class="button button-primary" type="submit">Download resource file</button>
+          </div>
+          <p class="status" id="status" role="status" aria-live="polite"></p>
+        </section>
+      </form>
+
+      <section class="preview panel" aria-live="polite">
+        <div class="panel-heading"><span>06</span><h2>Preview</h2></div>
+        <div id="preview-content" class="preview-content"><p>Start filling the form to preview your resource.</p></div>
+      </section>
+    </div>
+  </section>
+
+  <style>
+    .builder-page { padding: 58px 0 90px; }
+    .builder-shell { width: min(1080px, calc(100% - 48px)); margin: 0 auto; }
+    .builder-heading { max-width: 780px; margin-bottom: 28px; }
+    .builder-heading h1 { margin-top: 0; font-size: clamp(36px, 6vw, 62px); }
+    .builder-heading p:not(.eyebrow) { max-width: 720px; color: var(--muted); font-size: 17px; }
+    .notice { display: grid; gap: 5px; margin-bottom: 20px; padding: 15px 17px; border: 1px solid rgba(61,214,208,.2); border-radius: 14px; background: rgba(61,214,208,.055); color: var(--muted); }
+    .notice strong { color: var(--text); }
+    .builder-grid { display: grid; gap: 18px; }
+    .panel { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.025); }
+    .panel-heading { display: flex; align-items: center; gap: 11px; margin-bottom: 20px; }
+    .panel-heading span { display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid rgba(61,214,208,.3); border-radius: 9px; color: var(--accent); font-size: 12px; font-weight: 800; }
+    .panel-heading h2 { margin: 0; font-size: 20px; }
+    .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    label { display: grid; gap: 7px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    label.full { grid-column: 1 / -1; }
+    input, textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--line); border-radius: 11px; background: rgba(7,17,31,.75); color: var(--text); font: inherit; font-size: 14px; line-height: 1.5; outline: none; }
+    input { min-height: 46px; padding: 10px 12px; }
+    textarea { padding: 11px 12px; resize: vertical; }
+    input:focus, textarea:focus { border-color: rgba(61,214,208,.55); box-shadow: 0 0 0 3px rgba(61,214,208,.07); }
+    .check { display: flex; align-items: center; grid-column: 1 / -1; gap: 9px; }
+    .check input { width: 17px; height: 17px; min-height: 0; accent-color: var(--accent); }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .status { min-height: 20px; margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+    .preview { margin-top: 18px; }
+    .preview-content h3 { margin: 0 0 8px; font-size: 28px; }
+    .preview-content .meta { color: var(--muted); font-size: 13px; }
+    .preview-content .copy { white-space: pre-wrap; color: var(--muted); line-height: 1.7; }
+    @media (max-width: 700px) {
+      .builder-shell { width: min(calc(100% - 28px), 1080px); }
+      .builder-page { padding-top: 38px; }
+      .field-grid { grid-template-columns: 1fr; }
+      label.full { grid-column: auto; }
+      .panel { padding: 17px; border-radius: 15px; }
+      .actions .button { width: 100%; }
+    }
+  </style>
+
+  <script>
+    const form = document.querySelector('#resource-form');
+    const preview = document.querySelector('#preview-content');
+    const status = document.querySelector('#status');
+    const storageKey = 'skill-foundry-resource-draft-v1';
+    const fields = [...form.querySelectorAll('input, textarea')];
+    const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+    const yamlQuote = (value) => `"${String(value ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, '\\n')}"`;
+    const yamlList = (items) => items.length ? `[${items.map(yamlQuote).join(', ')}]` : '[]';
+    const readForm = () => Object.fromEntries(fields.map((field) => [field.name, field.type === 'checkbox' ? field.checked : field.value]));
+    const writeForm = (data) => fields.forEach((field) => { if (!(field.name in data)) return; if (field.type === 'checkbox') field.checked = Boolean(data[field.name]); else field.value = data[field.name] ?? ''; });
+    const makeSlug = () => { const title = form.elements.title?.value || ''; if (form.elements.slug && !form.elements.slug.value) form.elements.slug.value = slugify(title); };
+    const renderPreview = () => {
+      const d = readForm();
+      const safe = (value) => String(value || '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      preview.innerHTML = `<h3>${safe(d.title || 'Untitled resource')}</h3><p class="meta">${safe(d.category || 'Category')} · ${safe(d.tool || 'Tool')}${d.date ? ` · ${safe(d.date)}` : ''}</p><p>${safe(d.description || 'Add a description to see it here.')}</p>${d.intro ? `<h4>Introduction</h4><p>${safe(d.intro)}</p>` : ''}${d.whatItDoes ? `<h4>What this resource does</h4><p>${safe(d.whatItDoes)}</p>` : ''}${d.prompt ? `<h4>Prompt</h4><p class="copy">${safe(d.prompt)}</p>` : ''}`;
+    };
+    const save = () => { localStorage.setItem(storageKey, JSON.stringify(readForm())); status.textContent = 'Draft saved in this browser.'; };
+    const restore = () => { try { const saved = JSON.parse(localStorage.getItem(storageKey) || 'null'); if (saved) { writeForm(saved); status.textContent = 'Saved draft restored.'; } } catch {} renderPreview(); };
+    const makeMarkdown = (d) => {
+      const results = d.resultImages.split(',').map((x) => x.trim()).filter(Boolean);
+      const tags = d.tags.split(',').map((x) => x.trim()).filter(Boolean);
+      const related = d.relatedResources.split(',').map((x) => x.trim()).filter(Boolean);
+      const steps = d.steps.split(/\n+/).map((x) => x.trim()).filter(Boolean).map((x) => { const [title, ...rest] = x.split('|'); return { title: title.trim(), description: rest.join('|').trim() }; });
+      const tips = d.tips.split(/\n+/).map((x) => x.trim()).filter(Boolean);
+      const lines = ['---', `title: ${yamlQuote(d.title)}`, `slug: ${yamlQuote(d.slug || slugify(d.title))}`, `description: ${yamlQuote(d.description)}`, `category: ${yamlQuote(d.category)}`, `tool: ${yamlQuote(d.tool)}`, `date: ${yamlQuote(d.date)}`, `thumbnail: ${d.thumbnail ? yamlQuote(d.thumbnail) : 'null'}`, `heroImage: ${d.heroImage ? yamlQuote(d.heroImage) : 'null'}`, `inputImage: ${d.inputImage ? yamlQuote(d.inputImage) : 'null'}`, `resultImages: ${yamlList(results)}`, `imageAlt: ${d.imageAlt ? yamlQuote(d.imageAlt) : 'null'}`, `intro: ${d.intro ? yamlQuote(d.intro) : '""'}`, `whatItDoes: ${d.whatItDoes ? yamlQuote(d.whatItDoes) : '""'}`, 'toolsUsed: []', `prompt: ${yamlQuote(d.prompt)}`, `videoEmbedUrl: ${d.videoEmbedUrl ? yamlQuote(d.videoEmbedUrl) : 'null'}`, `originalVideoUrl: ${d.originalVideoUrl ? yamlQuote(d.originalVideoUrl) : 'null'}`, 'steps:'];
+      if (steps.length) steps.forEach((s) => lines.push(`  - title: ${yamlQuote(s.title)}`, `    description: ${yamlQuote(s.description)}`)); else lines.push('  []');
+      lines.push('tips:');
+      if (tips.length) tips.forEach((tip) => lines.push(`  - ${yamlQuote(tip)}`)); else lines.push('  []');
+      lines.push(`relatedResources: ${yamlList(related)}`, `tags: ${yamlList(tags)}`, `seoTitle: ${d.seoTitle ? yamlQuote(d.seoTitle) : 'null'}`, `seoDescription: ${d.seoDescription ? yamlQuote(d.seoDescription) : 'null'}`, `featured: ${d.featured ? 'true' : 'false'}`, '---', '', d.intro || '', '', d.whatItDoes || '', '', d.prompt ? `## Prompt\n\n${d.prompt}` : '', ''];
+      return lines.join('\n');
+    };
+    form.elements.title?.addEventListener('input', () => { makeSlug(); renderPreview(); });
+    fields.forEach((field) => field.addEventListener('input', renderPreview));
+    document.querySelector('#save-draft')?.addEventListener('click', save);
+    document.querySelector('#clear-draft')?.addEventListener('click', () => { localStorage.removeItem(storageKey); form.reset(); status.textContent = 'Draft cleared.'; renderPreview(); });
+    form.addEventListener('submit', (event) => { event.preventDefault(); makeSlug(); const d = readForm(); const blob = new Blob([makeMarkdown(d)], { type: 'text/markdown;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${d.slug || slugify(d.title) || 'resource'}.md`; a.click(); URL.revokeObjectURL(url); status.textContent = 'Resource file downloaded. Add it to src/content/resources/ when publishing.'; save(); });
+    const today = new Date().toISOString().slice(0, 10); if (form.elements.date && !form.elements.date.value) form.elements.date.value = today; restore();
+  </script>
+</BaseLayout>
