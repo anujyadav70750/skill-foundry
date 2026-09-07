@@ -4,6 +4,7 @@ const resources = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
     description: z.string(),
     category: z.string(),
     tool: z.string(),
