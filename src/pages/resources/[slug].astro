@@ -81,7 +81,7 @@ const schema = {
 
       {data.resultImages.length > 0 && <section class="resource-section results-section">
         <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>See the result</h2></div></div>
-        <div class="results-gallery">
+        <div class:list={['results-gallery', data.resultImages.length === 1 ? 'single-result' : '']}>
           {data.resultImages.slice(0, 3).map((image, index) => <img src={image} alt={`${data.title} result ${index + 1}`} loading="lazy" />)}
         </div>
       </section>}
@@ -138,4 +138,16 @@ const schema = {
     document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
     dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
   </script>
+
+  <style>
+    .results-gallery.single-result {
+      display: block;
+    }
+
+    .results-gallery.single-result img {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+  </style>
 </BaseLayout>
