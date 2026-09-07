@@ -119,9 +119,9 @@ const schema = {
             <button class="prompt-control prompt-expand" type="button" data-expand>Expand</button>
           </div>
           <pre id="prompt-text">{data.prompt}</pre>
-        </div>
-        <div class="prompt-download-row">
-          <button class="button button-secondary prompt-download" type="button" data-download>Download PDF</button>
+          <div class="prompt-download-row">
+            <button class="prompt-download" type="button" data-download>Download PDF</button>
+          </div>
         </div>
         <p class="copy-status" data-status aria-live="polite"></p>
       </section>
@@ -197,9 +197,10 @@ const schema = {
     .prompt-copy { border-right: 1px solid var(--line); }
     .prompt-expand { border-left: 1px solid var(--line); }
     .prompt-label { color: var(--muted); background: transparent; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .prompt-shell pre { max-height: 306px; margin: 0; border: 0; border-radius: 0 0 13px 13px; padding: 20px 22px; background: #07111f; }
-    .prompt-download-row { display: flex; justify-content: flex-end; margin-top: 12px; }
-    .prompt-download { min-height: 42px; }
+    .prompt-shell pre { max-height: 306px; margin: 0; border: 0; border-radius: 0; padding: 20px 22px; background: #07111f; }
+    .prompt-download-row { display: flex; align-items: center; justify-content: center; min-height: 50px; padding: 6px 10px; border-top: 1px solid var(--line); background: rgba(16,34,56,.42); }
+    .prompt-download { min-height: 38px; padding: 0 18px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; transition: border-color .18s ease, background .18s ease, color .18s ease; }
+    .prompt-download:hover, .prompt-download:focus-visible { border-color: rgba(61,214,208,.5); background: rgba(61,214,208,.10); color: var(--accent); outline: none; }
     .tips-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
     .tips-list li { position: relative; padding: 16px 18px 16px 42px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: #d5dfeb; }
     .tips-list li::before { content: '✓'; position: absolute; left: 17px; top: 15px; color: var(--accent); font-weight: 900; }
@@ -211,8 +212,8 @@ const schema = {
       .prompt-control { padding: 0 14px; font-size: 11px; }
       .prompt-label { font-size: 10px; letter-spacing: .12em; }
       .prompt-shell pre { max-height: 300px; padding: 18px; }
-      .prompt-download-row { justify-content: stretch; }
-      .prompt-download { width: 100%; }
+      .prompt-download-row { min-height: 48px; padding: 5px 8px; }
+      .prompt-download { width: auto; min-height: 36px; padding-inline: 16px; }
       .cta-card { align-items: flex-start; flex-direction: column; }
     }
   </style>
