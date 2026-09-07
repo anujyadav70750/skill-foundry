@@ -145,6 +145,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
     const searchAction = document.querySelector('#resource-search-action');
     const items = [...document.querySelectorAll('.resource-item')];
     const chips = [...document.querySelectorAll('[data-filter]')];
+    const categoryValues = chips.map((chip) => chip.dataset.filter || 'all');
     const empty = document.querySelector('#no-results');
     const count = document.querySelector('#results-count');
     const searchable = [...document.querySelectorAll('.searchable-text')];
@@ -152,7 +153,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
     const initialQuery = params.get('q') || '';
     const initialCategory = params.get('category') || '';
     if (search && initialQuery) search.value = initialQuery;
-    let activeFilter = categories.includes(initialCategory) ? initialCategory : 'all';
+    let activeFilter = categoryValues.includes(initialCategory) ? initialCategory : 'all';
     chips.forEach((chip) => chip.classList.toggle('is-active', (chip.dataset.filter || 'all') === activeFilter));
 
     const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -197,10 +198,12 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
     const update = ({ syncUrl = true } = {}) => {
       const rawQuery = (search?.value || '').trim();
       const query = rawQuery.toLowerCase();
+      const terms = [...new Set(query.split(/\s+/).filter(Boolean))];
       let visible = 0;
       items.forEach((item) => {
         const matchesFilter = activeFilter === 'all' || item.dataset.category === activeFilter;
-        const matchesSearch = !query || (item.dataset.search || '').includes(query);
+        const searchText = item.dataset.search || '';
+        const matchesSearch = !terms.length || terms.every((term) => searchText.includes(term));
         const show = matchesFilter && matchesSearch;
         item.hidden = !show;
         if (show) visible += 1;
