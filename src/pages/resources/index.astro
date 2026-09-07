@@ -22,7 +22,6 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
           <span class="search-icon" aria-hidden="true">⌕</span>
           <label class="sr-only" for="resource-search">Search resources</label>
           <input id="resource-search" type="search" placeholder="Search prompts, tools or topics…" autocomplete="off" spellcheck="false" enterkeyhint="search" />
-          <button class="search-clear" id="search-clear" type="button" aria-label="Clear search" hidden>×</button>
         </div>
         <div class="filter-row" role="group" aria-label="Filter by category">
           <button class="filter-chip is-active" type="button" data-filter="all">All</button>
@@ -39,7 +38,12 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
           const searchText = [resource.data.title, resource.data.description, resource.data.category, resource.data.tool, ...resource.data.tags].join(' ').toLowerCase();
           return <a class="resource-card resource-item" data-category={resource.data.category} data-search={searchText} href={`/resources/${slug}/`}>
             <img src={thumbnail} alt={resource.data.title} loading="lazy" />
-            <div class="card-body"><span class="tag">{resource.data.category}</span><h2>{resource.data.title}</h2><p>{resource.data.description}</p><div class="card-meta"><span>{resource.data.tool}</span><span>Open →</span></div></div>
+            <div class="card-body">
+              <span class="tag searchable-text">{resource.data.category}</span>
+              <h2 class="searchable-text">{resource.data.title}</h2>
+              <p class="searchable-text">{resource.data.description}</p>
+              <div class="card-meta"><span class="searchable-text">{resource.data.tool}</span><span>Open →</span></div>
+            </div>
           </a>;
         })}
       </div>
@@ -70,56 +74,62 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       min-width: 0;
     }
 
-    .search-clear {
-      flex: 0 0 auto;
-      display: grid;
-      place-items: center;
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size: 20px;
-      line-height: 1;
-      cursor: pointer;
-    }
-
-    .search-clear:hover,
-    .search-clear:focus-visible {
-      border-color: rgba(61,214,208,.45);
+    .search-highlight {
+      padding: 0 .08em;
+      border-radius: .18em;
+      background: rgba(61,214,208,.18);
       color: var(--accent);
-      outline: none;
-    }
-
-    @media (max-width: 600px) {
-      .search-box {
-        min-height: 54px;
-        padding-inline: 14px;
-      }
-
-      .search-clear {
-        width: 28px;
-        height: 28px;
-      }
+      box-shadow: 0 0 12px rgba(61,214,208,.22);
     }
   </style>
 
   <script>
     const search = document.querySelector('#resource-search');
-    const clear = document.querySelector('#search-clear');
     const items = [...document.querySelectorAll('.resource-item')];
     const chips = [...document.querySelectorAll('[data-filter]')];
     const empty = document.querySelector('#no-results');
     const count = document.querySelector('#results-count');
+    const searchable = [...document.querySelectorAll('.searchable-text')];
     const params = new URLSearchParams(window.location.search);
     const initialQuery = params.get('q') || '';
     if (search && initialQuery) search.value = initialQuery;
     let activeFilter = 'all';
 
+    const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    const restoreText = () => {
+      searchable.forEach((element) => {
+        if (element.dataset.originalText !== undefined) element.textContent = element.dataset.originalText;
+        else element.dataset.originalText = element.textContent || '';
+      });
+    };
+
+    const highlightMatches = (query) => {
+      restoreText();
+      const terms = [...new Set(query.split(/\s+/).filter(Boolean))].sort((a, b) => b.length - a.length);
+      if (!terms.length) return;
+      const pattern = new RegExp(`(${terms.map(escapeRegExp).join('|')})`, 'gi');
+      searchable.forEach((element) => {
+        const text = element.dataset.originalText || '';
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        text.replace(pattern, (match, _group, offset) => {
+          fragment.append(document.createTextNode(text.slice(lastIndex, offset)));
+          const mark = document.createElement('mark');
+          mark.className = 'search-highlight';
+          mark.textContent = match;
+          fragment.append(mark);
+          lastIndex = offset + match.length;
+          return match;
+        });
+        fragment.append(document.createTextNode(text.slice(lastIndex)));
+        element.replaceChildren(fragment);
+      });
+    };
+
     const update = ({ syncUrl = true } = {}) => {
-      const query = (search?.value || '').trim().toLowerCase();
+      const rawQuery = (search?.value || '').trim();
+      const query = rawQuery.toLowerCase();
       let visible = 0;
       items.forEach((item) => {
         const matchesFilter = activeFilter === 'all' || item.dataset.category === activeFilter;
@@ -129,13 +139,13 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
         if (show) visible += 1;
       });
 
+      highlightMatches(rawQuery);
       if (empty) empty.hidden = visible > 0;
       if (count) count.textContent = `${visible} shown`;
-      if (clear) clear.hidden = !query;
 
       if (syncUrl) {
         const next = new URL(window.location.href);
-        if (query) next.searchParams.set('q', search?.value.trim() || '');
+        if (rawQuery) next.searchParams.set('q', rawQuery);
         else next.searchParams.delete('q');
         window.history.replaceState({}, '', `${next.pathname}${next.search}${next.hash}`);
       }
@@ -147,13 +157,6 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
         search.value = '';
         update();
       }
-    });
-
-    clear?.addEventListener('click', () => {
-      if (!search) return;
-      search.value = '';
-      search.focus();
-      update();
     });
 
     chips.forEach((chip) => chip.addEventListener('click', () => {
