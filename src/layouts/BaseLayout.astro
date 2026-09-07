@@ -101,14 +101,14 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
       <div class="container footer-bottom"><span>© {new Date().getFullYear()} Skill Foundry. All rights reserved.</span></div>
     </footer>
     <style>
-      .header-search-form { display: flex; align-items: center; width: clamp(180px, 24vw, 300px); min-height: 40px; padding: 0 4px 0 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: var(--muted); transition: border-color .2s ease, box-shadow .2s ease; }
+      .header-search-form { display: flex; align-items: center; width: clamp(180px, 24vw, 300px); min-height: 40px; padding: 0 9px 0 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.025); color: var(--muted); transition: border-color .2s ease, box-shadow .2s ease; }
       .header-search-form:focus-within { border-color: rgba(61,214,208,.5); box-shadow: 0 0 0 3px rgba(61,214,208,.07); }
       .header-search-form input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 13px; }
       .header-search-form input::placeholder { color: #71849a; }
       .header-search-form input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
-      .header-search-submit { display: grid; place-items: center; flex: 0 0 auto; width: 38px; height: 36px; padding: 0; border: 1px solid rgba(255,255,255,.12); border-radius: 10px; background: #16243a; color: var(--muted); cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease; }
+      .header-search-submit { display: grid; place-items: center; flex: 0 0 auto; width: 34px; height: 34px; padding: 0; border: 1px solid rgba(255,255,255,.12); border-radius: 9px; background: #16243a; color: var(--muted); cursor: pointer; transition: border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease; }
       .header-search-submit:hover, .header-search-submit:focus-visible { border-color: rgba(61,214,208,.55); background: rgba(61,214,208,.10); color: var(--accent); box-shadow: 0 0 0 3px rgba(61,214,208,.07); outline: none; }
-      .search-svg { display: block; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+      .search-svg { display: block; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
       .menu-wrap { position: relative; }
       .menu-toggle { display: grid; place-content: center; gap: 4px; width: 40px; height: 40px; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.025); cursor: pointer; }
       .menu-toggle span { display: block; width: 16px; height: 1.5px; border-radius: 2px; background: var(--muted); transition: transform .2s ease, opacity .2s ease, background .2s ease; }
@@ -134,10 +134,10 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         .brand { font-size: 11px; gap: 8px; }
         .brand-mark { width: 32px; height: 32px; }
         .nav-actions { gap: 8px; }
-        .header-search-form { width: clamp(145px, 46vw, 190px); min-height: 40px; }
+        .header-search-form { width: clamp(145px, 46vw, 190px); padding-right: 8px; }
         .header-search-form input { font-size: 12px; }
-        .header-search-submit { width: 36px; height: 34px; }
-        .search-svg { width: 18px; height: 18px; }
+        .header-search-submit { width: 32px; height: 32px; }
+        .search-svg { width: 16px; height: 16px; }
         .site-footer { padding-top: 30px; }
         .footer-grid { grid-template-columns: minmax(0, 1fr) 112px; gap: 20px; }
         .footer-brand-block p { max-width: 240px; }
