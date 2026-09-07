@@ -1,5 +1,6 @@
 ---
 title: Cinematic Night Glow Portrait Prompt
+slug: cinematic-night-glow-portrait
 description: Create a polished cinematic portrait with controlled night lighting, atmospheric glow and realistic detail.
 category: Image Generation
 tool: AI Image Generator
