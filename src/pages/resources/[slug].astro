@@ -30,6 +30,7 @@ const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
 const heroImage = resourceHeroImage(resource);
+const imageAlt = data.imageAlt ?? data.title;
 const absoluteImage = new URL(heroImage, site).href;
 const schema = {
   '@context': 'https://schema.org',
@@ -74,7 +75,7 @@ const schema = {
     </div>
 
     <div class="container content-wide">
-      <img class="hero-image" src={heroImage} alt={data.title} />
+      <img class="hero-image" src={heroImage} alt={imageAlt} />
     </div>
 
     <div class="container narrow article-layout">
@@ -91,8 +92,8 @@ const schema = {
       {(data.inputImage || data.resultImages.length > 0) && <section class="resource-section results-section">
         <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{data.inputImage ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{data.inputImage ? 'Compare the starting image with the result created using this resource.' : 'See the visual output created with this resource.'}</p></div></div>
         <div class:list={['results-gallery', data.inputImage ? 'has-input' : '', data.resultImages.length + (data.inputImage ? 1 : 0) === 1 ? 'single-result' : '']}>
-          {data.inputImage && <figure class="result-card input-result"><img src={data.inputImage} alt={`${data.title} input image`} loading="lazy" /><figcaption><span>INPUT</span><strong>Starting image</strong></figcaption></figure>}
-          {data.resultImages.slice(0, 3).map((image, index) => <figure class="result-card"><img src={image} alt={`${data.title} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{data.resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{data.resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
+          {data.inputImage && <figure class="result-card input-result"><img src={data.inputImage} alt={`${imageAlt} input image`} loading="lazy" /><figcaption><span>INPUT</span><strong>Starting image</strong></figcaption></figure>}
+          {data.resultImages.slice(0, 3).map((image, index) => <figure class="result-card"><img src={image} alt={`${imageAlt} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{data.resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{data.resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
         </div>
       </section>}
 
