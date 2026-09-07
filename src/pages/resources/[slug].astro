@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { resourceHeroImage, resourceSlug, resourceThumbnail } from '../../lib/resource';
 
 export async function getStaticPaths() {
@@ -9,23 +9,27 @@ export async function getStaticPaths() {
 }
 
 const { resource } = Astro.props;
-const { Content } = await render(resource);
 const data = resource.data;
 const slug = resourceSlug(resource);
-const heroImage = resourceHeroImage(resource);
 const allResources = await getCollection('resources');
-const related = allResources
-  .filter((item) => item.id !== resource.id)
-  .map((item) => ({ item, score: (item.data.category === data.category ? 3 : 0) + item.data.tags.filter((tag) => data.tags.includes(tag)).length }))
-  .filter(({ score }) => score > 0)
-  .sort((a, b) => b.score - a.score)
-  .slice(0, 3)
-  .map(({ item }) => item);
+const related = (data.relatedResources.length > 0
+  ? data.relatedResources
+      .map((relatedSlug) => allResources.find((item) => resourceSlug(item) === relatedSlug))
+      .filter((item): item is (typeof allResources)[number] => Boolean(item))
+      .filter((item) => item.id !== resource.id)
+  : allResources
+      .filter((item) => item.id !== resource.id)
+      .map((item) => ({ item, score: (item.data.category === data.category ? 3 : 0) + item.data.tags.filter((tag) => data.tags.includes(tag)).length }))
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map(({ item }) => item)
+).slice(0, 3);
 
 const site = Astro.site ?? Astro.url;
 const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
+const heroImage = resourceHeroImage(resource);
 const absoluteImage = new URL(heroImage, site).href;
 const schema = {
   '@context': 'https://schema.org',
@@ -74,10 +78,15 @@ const schema = {
     </div>
 
     <div class="container narrow article-layout">
-      <section class="resource-section intro-section">
+      {data.intro && <section class="resource-section intro-section">
+        <div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Start here</h2></div></div>
+        <p class="section-lead">{data.intro}</p>
+      </section>}
+
+      {data.whatItDoes && <section class="resource-section">
         <div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div>
-        <p class="section-lead">{data.description}</p>
-      </section>
+        <p class="section-lead">{data.whatItDoes}</p>
+      </section>}
 
       {data.resultImages.length > 0 && <section class="resource-section results-section">
         <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>See the result</h2></div></div>
@@ -112,10 +121,19 @@ const schema = {
         {data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}
       </section>}
 
-      <section class="resource-section explanation-section">
-        <div class="section-heading"><div><p class="eyebrow">LEARN & ADAPT</p><h2>How to use this resource</h2></div></div>
-        <div class="article-content"><Content /></div>
-      </section>
+      {data.steps.length > 0 && <section class="resource-section steps-section">
+        <div class="section-heading"><div><p class="eyebrow">STEP BY STEP</p><h2>How to use it</h2></div></div>
+        <div class="steps-grid resource-steps">
+          {data.steps.map((step, index) => <article class="step-card"><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></article>)}
+        </div>
+      </section>}
+
+      {data.tips.length > 0 && <section class="resource-section tips-section">
+        <div class="section-heading"><div><p class="eyebrow">CUSTOMIZE</p><h2>Tips for better results</h2></div></div>
+        <ul class="tips-list">
+          {data.tips.map((tip) => <li>{tip}</li>)}
+        </ul>
+      </section>}
 
       <div class="tags" aria-label="Resource tags">{data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
     </div>
@@ -128,6 +146,19 @@ const schema = {
     </div>
   </section>}
 
+  <section class="section section-cta resource-cta">
+    <div class="container">
+      <div class="cta-card">
+        <div>
+          <p class="eyebrow">SKILL FOUNDRY</p>
+          <h2>Build the skill, then make it your own.</h2>
+          <p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p>
+        </div>
+        <a class="button button-primary" href="/resources/">Explore resources →</a>
+      </div>
+    </div>
+  </section>
+
   <dialog class="prompt-dialog" data-dialog aria-labelledby="prompt-dialog-title">
     <div class="dialog-card">
       <div class="section-heading"><div><p class="eyebrow">FULL PROMPT</p><h2 id="prompt-dialog-title">{data.title}</h2></div><button type="button" class="dialog-close" data-close aria-label="Close prompt">×</button></div>
@@ -137,111 +168,28 @@ const schema = {
   </dialog>
 
   <style>
-    .results-gallery.single-result {
-      display: block;
-    }
-
-    .results-gallery.single-result img {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-    }
-
-    .prompt-toolbar {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      align-items: stretch;
-      min-height: 56px;
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 14px 14px 0 0;
-      background: rgba(16,34,56,.55);
-    }
-
-    .prompt-control,
-    .prompt-label {
-      min-width: 0;
-      min-height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 0;
-      border-radius: 0;
-      font: inherit;
-    }
-
-    .prompt-control {
-      padding: 0 20px;
-      color: var(--text);
-      background: rgba(16,34,56,.68);
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .01em;
-      transition: background .18s ease, color .18s ease;
-    }
-
-    .prompt-control:hover,
-    .prompt-control:focus-visible {
-      background: rgba(54,216,218,.12);
-      color: var(--accent);
-      outline: none;
-    }
-
-    .prompt-copy {
-      border-right: 1px solid var(--line);
-    }
-
-    .prompt-expand {
-      border-left: 1px solid var(--line);
-    }
-
-    .prompt-label {
-      color: var(--muted);
-      background: transparent;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-    }
-
-    .prompt-shell {
-      overflow: hidden;
-      border-radius: 0 0 14px 14px;
-      border-top: 0;
-    }
-
-    .prompt-shell pre {
-      max-height: 306px;
-      padding: 20px 22px;
-      border-top: 0;
-    }
-
+    .results-gallery.single-result { display: block; }
+    .results-gallery.single-result img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    .prompt-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; min-height: 56px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px 14px 0 0; background: rgba(16,34,56,.55); }
+    .prompt-control, .prompt-label { min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; font: inherit; }
+    .prompt-control { padding: 0 20px; color: var(--text); background: rgba(16,34,56,.68); cursor: pointer; font-size: 12px; font-weight: 800; letter-spacing: .01em; transition: background .18s ease, color .18s ease; }
+    .prompt-control:hover, .prompt-control:focus-visible { background: rgba(54,216,218,.12); color: var(--accent); outline: none; }
+    .prompt-copy { border-right: 1px solid var(--line); }
+    .prompt-expand { border-left: 1px solid var(--line); }
+    .prompt-label { color: var(--muted); background: transparent; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .prompt-shell { overflow: hidden; border-radius: 0 0 14px 14px; border-top: 0; }
+    .prompt-shell pre { max-height: 306px; padding: 20px 22px; border-top: 0; }
+    .tips-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .tips-list li { position: relative; padding: 16px 18px 16px 42px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: #d5dfeb; }
+    .tips-list li::before { content: '✓'; position: absolute; left: 17px; top: 15px; color: var(--accent); font-weight: 900; }
+    .resource-cta { padding-top: 18px; }
     @media (max-width: 600px) {
-      .prompt-toolbar {
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        min-height: 52px;
-      }
-
-      .prompt-control,
-      .prompt-label {
-        min-height: 52px;
-      }
-
-      .prompt-control {
-        padding: 0 14px;
-        font-size: 11px;
-      }
-
-      .prompt-label {
-        font-size: 10px;
-        letter-spacing: .12em;
-      }
-
-      .prompt-shell pre {
-        max-height: 300px;
-        padding: 18px;
-      }
+      .prompt-toolbar { min-height: 52px; }
+      .prompt-control, .prompt-label { min-height: 52px; }
+      .prompt-control { padding: 0 14px; font-size: 11px; }
+      .prompt-label { font-size: 10px; letter-spacing: .12em; }
+      .prompt-shell pre { max-height: 300px; padding: 18px; }
+      .cta-card { align-items: flex-start; flex-direction: column; }
     }
   </style>
 
