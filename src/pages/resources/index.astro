@@ -22,7 +22,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
           <label class="sr-only" for="resource-search">Search resources</label>
           <input id="resource-search" name="q" type="search" placeholder="Search prompts, tools or topics…" autocomplete="off" spellcheck="false" enterkeyhint="search" />
           <button class="resource-search-action" id="resource-search-action" type="button" aria-label="Search resources">
-            <span class="resource-search-icon" aria-hidden="true">⌕</span>
+            <span class="resource-search-icon" aria-hidden="true"></span>
             <span class="resource-search-x" aria-hidden="true">×</span>
           </button>
         </form>
@@ -61,9 +61,11 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
   <style>
     .search-box {
       position: relative;
-      min-height: 58px;
-      padding: 0 8px 0 18px;
-      gap: 12px;
+      min-height: 62px;
+      padding: 0 8px 0 20px;
+      gap: 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(16,34,56,.94), rgba(12,24,41,.94));
     }
 
     .search-box input { min-width: 0; }
@@ -74,39 +76,65 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       display: grid;
       place-items: center;
       flex: 0 0 auto;
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       padding: 0;
-      border: 1px solid var(--line);
-      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 11px;
       background: #16243a;
-      color: #9eafc3;
+      color: var(--muted);
       cursor: pointer;
-      transition: border-color .2s ease, color .2s ease, background .2s ease;
+      transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
     }
 
     .resource-search-action:hover,
     .resource-search-action:focus-visible {
-      border-color: rgba(61,214,208,.45);
+      border-color: rgba(61,214,208,.55);
+      background: rgba(61,214,208,.10);
       color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(61,214,208,.07);
       outline: none;
     }
 
-    .resource-search-icon { font-size: 21px; line-height: 1; }
-    .resource-search-x { display: none; font-size: 24px; line-height: 1; transform: translateY(-1px); }
+    .resource-search-icon {
+      position: relative;
+      display: block;
+      width: 17px;
+      height: 17px;
+      border: 2px solid currentColor;
+      border-radius: 50%;
+    }
+
+    .resource-search-icon::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      bottom: -4px;
+      width: 7px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transform: rotate(45deg);
+      transform-origin: left center;
+    }
+
+    .resource-search-x { display: none; font-size: 26px; line-height: 1; transform: translateY(-1px); }
     .resource-search-action.has-query .resource-search-icon { display: none; }
     .resource-search-action.has-query .resource-search-x { display: block; }
 
-    .search-highlight {
-      padding: 0 .08em !important;
-      border-radius: .18em !important;
-      background: rgba(61,214,208,.20) !important;
-      color: #9be8ff !important;
-      box-shadow: 0 0 12px rgba(61,214,208,.30) !important;
+    :global(.search-highlight) {
+      display: inline;
+      padding: 0 .12em !important;
+      border-radius: .2em !important;
+      background: rgba(61,214,208,.30) !important;
+      color: #b8f4ff !important;
+      box-shadow: 0 0 14px rgba(61,214,208,.38) !important;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
     }
 
     @media (max-width: 640px) {
-      .search-box { min-height: 58px; padding-left: 16px; }
+      .search-box { min-height: 58px; padding-left: 16px; gap: 10px; }
       .resource-search-action { width: 40px; height: 40px; }
     }
   </style>
@@ -219,6 +247,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
         search.focus();
       } else {
         search.focus();
+        update();
       }
     });
 
