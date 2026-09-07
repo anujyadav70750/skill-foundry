@@ -13,10 +13,10 @@ const data = resource.data;
 const slug = resourceSlug(resource);
 const allResources = await getCollection('resources');
 const related = (data.relatedResources.length > 0
-  ? data.relatedResources
-      .map((relatedSlug) => allResources.find((item) => resourceSlug(item) === relatedSlug))
-      .filter((item): item is (typeof allResources)[number] => Boolean(item))
-      .filter((item) => item.id !== resource.id)
+  ? data.relatedResources.flatMap((relatedSlug) => {
+      const item = allResources.find((candidate) => resourceSlug(candidate) === relatedSlug);
+      return item && item.id !== resource.id ? [item] : [];
+    })
   : allResources
       .filter((item) => item.id !== resource.id)
       .map((item) => ({ item, score: (item.data.category === data.category ? 3 : 0) + item.data.tags.filter((tag) => data.tags.includes(tag)).length }))
