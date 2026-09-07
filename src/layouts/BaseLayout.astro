@@ -93,6 +93,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
       </div>
       <div class="container footer-bottom">
         <span>© {new Date().getFullYear()} Skill Foundry. All rights reserved.</span>
+        <span class="footer-separator" aria-hidden="true">•</span>
         <span>Useful skills for the AI era.</span>
       </div>
     </footer>
@@ -212,13 +213,18 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
       .footer-links a:hover { color: var(--accent); }
       .footer-bottom {
         display: flex;
-        justify-content: space-between;
-        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
         margin-top: 24px;
         padding-top: 14px;
         border-top: 1px solid var(--line);
+        color: var(--muted);
         font-size: 12px;
+        text-align: center;
       }
+      .footer-separator { color: var(--accent); }
 
       @media (max-width: 640px) {
         .nav-wrap { min-height: 64px; gap: 10px; }
@@ -233,7 +239,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         .footer-brand-block p { max-width: 240px; }
         .footer-links strong { font-size: 13px; }
         .footer-links a { font-size: 12px; }
-        .footer-bottom { display: grid; gap: 4px; margin-top: 20px; }
+        .footer-bottom { gap: 7px; margin-top: 20px; padding-top: 13px; line-height: 1.4; }
       }
     </style>
 
