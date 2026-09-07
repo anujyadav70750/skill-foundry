@@ -22,7 +22,7 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
           <label class="sr-only" for="resource-search">Search resources</label>
           <input id="resource-search" name="q" type="search" placeholder="Search prompts, tools or topics…" autocomplete="off" spellcheck="false" enterkeyhint="search" />
           <button class="resource-search-action" id="resource-search-action" type="button" aria-label="Search resources">
-            <span class="resource-search-icon" aria-hidden="true"></span>
+            <svg class="resource-search-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="6.5"></circle><path d="M15 15 21 21"></path></svg>
             <span class="resource-search-x" aria-hidden="true">×</span>
           </button>
         </form>
@@ -96,30 +96,19 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       outline: none;
     }
 
-    .resource-search-icon {
-      position: relative;
+    .resource-search-svg {
       display: block;
-      width: 17px;
-      height: 17px;
-      border: 2px solid currentColor;
-      border-radius: 50%;
-    }
-
-    .resource-search-icon::after {
-      content: '';
-      position: absolute;
-      right: -5px;
-      bottom: -4px;
-      width: 7px;
-      height: 2px;
-      border-radius: 2px;
-      background: currentColor;
-      transform: rotate(45deg);
-      transform-origin: left center;
+      width: 21px;
+      height: 21px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .resource-search-x { display: none; font-size: 26px; line-height: 1; transform: translateY(-1px); }
-    .resource-search-action.has-query .resource-search-icon { display: none; }
+    .resource-search-action.has-query .resource-search-svg { display: none; }
     .resource-search-action.has-query .resource-search-x { display: block; }
 
     :global(.search-highlight) {
@@ -134,8 +123,9 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
     }
 
     @media (max-width: 640px) {
-      .search-box { min-height: 58px; padding-left: 16px; gap: 10px; }
+      .search-box { min-height: 58px; padding-left: 16px; padding-right: 6px; gap: 10px; }
       .resource-search-action { width: 40px; height: 40px; }
+      .resource-search-svg { width: 19px; height: 19px; }
     }
   </style>
 
