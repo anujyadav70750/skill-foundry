@@ -45,6 +45,8 @@ const schema = {
       description: data.description,
       datePublished: data.date.toISOString(),
       dateModified: data.date.toISOString(),
+      articleSection: data.category,
+      url: canonicalUrl,
       mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
       image: [absoluteImage],
       author: { '@type': 'Organization', name: 'Skill Foundry' },
@@ -62,7 +64,7 @@ const schema = {
   ]
 };
 ---
-<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} type="article">
+<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
   <article class="resource-page">
@@ -148,7 +150,7 @@ const schema = {
   {related.length > 0 && <section class="section section-muted related-section">
     <div class="container">
       <div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div>
-      <div class="resource-grid">{related.map((item) => { const relatedSlug = resourceSlug(item); return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={item.data.title} /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>; })}</div>
+      <div class="resource-grid">{related.map((item) => { const relatedSlug = resourceSlug(item); return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)} /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>; })}</div>
     </div>
   </section>}
 
