@@ -108,7 +108,7 @@ const schema = {
           <div>
             <p class="eyebrow">PROMPT SOURCE</p>
             <h2>Copy the full prompt</h2>
-            <p class="section-subcopy">Review the prompt in the scrollable box. Copy it or expand it when you're ready to use it.</p>
+            <p class="section-subcopy">Review the prompt in the scrollable box. Copy it, expand it, or download it as a PDF when you're ready to use it.</p>
           </div>
         </div>
 
@@ -119,6 +119,9 @@ const schema = {
             <button class="prompt-control prompt-expand" type="button" data-expand>Expand</button>
           </div>
           <pre id="prompt-text">{data.prompt}</pre>
+        </div>
+        <div class="prompt-download-row">
+          <button class="button button-secondary prompt-download" type="button" data-download>Download PDF</button>
         </div>
         <p class="copy-status" data-status aria-live="polite"></p>
       </section>
@@ -186,15 +189,17 @@ const schema = {
     .results-gallery.has-input .result-card.input-result { border-color: rgba(124,140,255,.28); }
     .results-gallery.single-result { display: block; }
     .results-gallery.single-result .result-card img { aspect-ratio: 16 / 9; }
-    .prompt-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; min-height: 56px; overflow: hidden; border: 1px solid var(--line); border-radius: 14px 14px 0 0; background: rgba(16,34,56,.55); }
+    .prompt-shell { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+    .prompt-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; min-height: 56px; overflow: hidden; border: 0; border-radius: 13px 13px 0 0; background: rgba(16,34,56,.55); }
     .prompt-control, .prompt-label { min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; font: inherit; }
     .prompt-control { padding: 0 20px; color: var(--text); background: rgba(16,34,56,.68); cursor: pointer; font-size: 12px; font-weight: 800; letter-spacing: .01em; transition: background .18s ease, color .18s ease; }
     .prompt-control:hover, .prompt-control:focus-visible { background: rgba(54,216,218,.12); color: var(--accent); outline: none; }
     .prompt-copy { border-right: 1px solid var(--line); }
     .prompt-expand { border-left: 1px solid var(--line); }
     .prompt-label { color: var(--muted); background: transparent; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .prompt-shell { overflow: hidden; border-radius: 0 0 14px 14px; border-top: 0; }
-    .prompt-shell pre { max-height: 306px; padding: 20px 22px; border-top: 0; }
+    .prompt-shell pre { max-height: 306px; margin: 0; border: 0; border-radius: 0 0 13px 13px; padding: 20px 22px; background: #07111f; }
+    .prompt-download-row { display: flex; justify-content: flex-end; margin-top: 12px; }
+    .prompt-download { min-height: 42px; }
     .tips-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
     .tips-list li { position: relative; padding: 16px 18px 16px 42px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: #d5dfeb; }
     .tips-list li::before { content: '✓'; position: absolute; left: 17px; top: 15px; color: var(--accent); font-weight: 900; }
@@ -206,6 +211,8 @@ const schema = {
       .prompt-control { padding: 0 14px; font-size: 11px; }
       .prompt-label { font-size: 10px; letter-spacing: .12em; }
       .prompt-shell pre { max-height: 300px; padding: 18px; }
+      .prompt-download-row { justify-content: stretch; }
+      .prompt-download { width: 100%; }
       .cta-card { align-items: flex-start; flex-direction: column; }
     }
   </style>
@@ -219,6 +226,78 @@ const schema = {
       try { await navigator.clipboard.writeText(promptText); setStatus('Prompt copied successfully.'); }
       catch { setStatus('Copy failed — select the prompt and copy it manually.'); }
     }));
+
+    const makePdf = (title, text) => {
+      const escapePdf = (value) => value.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)').replace(/[^\x20-\x7E\n\r]/g, '?');
+      const lines = [];
+      const maxChars = 92;
+      let line = '';
+      text.replace(/\r/g, '').split('\n').forEach((paragraph) => {
+        if (!paragraph.trim()) { if (line) { lines.push(line); line = ''; } lines.push(''); return; }
+        paragraph.split(/\s+/).filter(Boolean).forEach((word) => {
+          if ((line ? line.length + 1 : 0) + word.length > maxChars) { if (line) lines.push(line); line = word; }
+          else line = line ? `${line} ${word}` : word;
+        });
+        if (line) { lines.push(line); line = ''; }
+      });
+      if (line) lines.push(line);
+
+      const pageHeight = 792;
+      const top = 750;
+      const bottom = 52;
+      const lineHeight = 14;
+      const linesPerPage = Math.floor((top - bottom) / lineHeight);
+      const pages = [];
+      for (let i = 0; i < lines.length; i += linesPerPage) pages.push(lines.slice(i, i + linesPerPage));
+      if (!pages.length) pages.push(['']);
+
+      const objects = [];
+      const add = (body) => { objects.push(body); return objects.length; };
+      const catalog = add('<< /Type /Catalog /Pages 2 0 R >>');
+      const pagesObj = add('');
+      const font = add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
+      const pageIds = [];
+      pages.forEach((pageLines) => {
+        const commands = ['BT', '/F1 16 Tf', '50 750 Td', `(${escapePdf(title)}) Tj`, '/F1 10 Tf', '0 -26 Td'];
+        pageLines.forEach((pageLine, index) => {
+          if (index > 0) commands.push(`0 -${lineHeight} Td`);
+          commands.push(`(${escapePdf(pageLine)}) Tj`);
+        });
+        commands.push('ET');
+        const stream = commands.join('\n');
+        const contentId = add(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+        const pageId = add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 ${pageHeight}] /Resources << /Font << /F1 ${font} 0 R >> >> /Contents ${contentId} 0 R >>`);
+        pageIds.push(pageId);
+      });
+      objects[pagesObj - 1] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
+
+      let pdf = '%PDF-1.4\n';
+      const offsets = [0];
+      objects.forEach((object, index) => {
+        offsets[index + 1] = pdf.length;
+        pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+      });
+      const xref = pdf.length;
+      pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+      offsets.slice(1).forEach((offset) => { pdf += `${String(offset).padStart(10, '0')} 00000 n \n`; });
+      pdf += `trailer\n<< /Size ${objects.length + 1} /Root ${catalog} 0 R >>\nstartxref\n${xref}\n%%EOF`;
+      return new Blob([pdf], { type: 'application/pdf' });
+    };
+
+    document.querySelector('[data-download]')?.addEventListener('click', () => {
+      const resourceTitle = document.querySelector('.resource-intro h1')?.textContent?.trim() || 'Skill Foundry Prompt';
+      const blob = makePdf(`${resourceTitle} — Full Prompt`, promptText);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${resourceTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'skill-foundry-prompt'}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setStatus('Prompt PDF downloaded.');
+    });
+
     document.querySelector('[data-expand]')?.addEventListener('click', () => dialog?.showModal());
     document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
     dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
