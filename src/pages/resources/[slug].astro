@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceHeroImage, resourceSlug, resourceThumbnail } from '../../lib/resource';
+import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceThumbnail } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const resources = await getCollection('resources');
@@ -11,10 +11,14 @@ export async function getStaticPaths() {
 const { resource } = Astro.props;
 const data = resource.data;
 const slug = resourceSlug(resource);
+const resultImages = resourceResultImages(resource);
+const hasInputImage = Boolean(data.inputImage?.trim());
+const hasResults = hasInputImage || resultImages.length > 0;
 const allResources = await getCollection('resources');
 const related = (data.relatedResources.length > 0
   ? data.relatedResources.flatMap((relatedSlug) => {
-      const item = allResources.find((candidate) => resourceSlug(candidate) === relatedSlug);
+      const normalizedSlug = relatedSlug.trim().toLowerCase();
+      const item = allResources.find((candidate) => resourceSlug(candidate).trim().toLowerCase() === normalizedSlug);
       return item && item.id !== resource.id ? [item] : [];
     })
   : allResources
@@ -30,7 +34,7 @@ const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
 const heroImage = resourceHeroImage(resource);
-const imageAlt = data.imageAlt ?? data.title;
+const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
 const schema = {
   '@context': 'https://schema.org',
@@ -89,11 +93,11 @@ const schema = {
         <p class="section-lead">{data.whatItDoes}</p>
       </section>}
 
-      {(data.inputImage || data.resultImages.length > 0) && <section class="resource-section results-section">
-        <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{data.inputImage ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{data.inputImage ? 'Compare the starting image with the result created using this resource.' : 'See the visual output created with this resource.'}</p></div></div>
-        <div class:list={['results-gallery', data.inputImage ? 'has-input' : '', data.resultImages.length + (data.inputImage ? 1 : 0) === 1 ? 'single-result' : '']}>
-          {data.inputImage && <figure class="result-card input-result"><img src={data.inputImage} alt={`${imageAlt} input image`} loading="lazy" /><figcaption><span>INPUT</span><strong>Starting image</strong></figcaption></figure>}
-          {data.resultImages.slice(0, 3).map((image, index) => <figure class="result-card"><img src={image} alt={`${imageAlt} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{data.resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{data.resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
+      {hasResults && <section class="resource-section results-section">
+        <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{hasInputImage ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{hasInputImage ? 'Compare the starting image with the result created using this resource.' : 'See the visual output created with this resource.'}</p></div></div>
+        <div class:list={['results-gallery', hasInputImage ? 'has-input' : '', resultImages.length + (hasInputImage ? 1 : 0) === 1 ? 'single-result' : '']}>
+          {hasInputImage && <figure class="result-card input-result"><img src={data.inputImage!} alt={`${imageAlt} input image`} loading="lazy" /><figcaption><span>INPUT</span><strong>Starting image</strong></figcaption></figure>}
+          {resultImages.map((image, index) => <figure class="result-card"><img src={image} alt={`${imageAlt} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
         </div>
       </section>}
 
@@ -137,7 +141,7 @@ const schema = {
         </ul>
       </section>}
 
-      <div class="tags" aria-label="Resource tags">{data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>
+      {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}
     </div>
   </article>
 
