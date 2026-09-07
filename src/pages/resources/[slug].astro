@@ -1,15 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { resourceHeroImage, resourceSlug, resourceThumbnail } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const resources = await getCollection('resources');
-  return resources.map((resource) => ({ params: { slug: resource.id }, props: { resource } }));
+  return resources.map((resource) => ({ params: { slug: resourceSlug(resource) }, props: { resource } }));
 }
 
 const { resource } = Astro.props;
 const { Content } = await render(resource);
 const data = resource.data;
+const slug = resourceSlug(resource);
+const heroImage = resourceHeroImage(resource);
 const allResources = await getCollection('resources');
 const related = allResources
   .filter((item) => item.id !== resource.id)
@@ -20,10 +23,10 @@ const related = allResources
   .map(({ item }) => item);
 
 const site = Astro.site ?? Astro.url;
-const canonicalUrl = new URL(`/resources/${resource.id}/`, site).href;
+const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
-const absoluteImage = new URL(data.heroImage, site).href;
+const absoluteImage = new URL(heroImage, site).href;
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -50,7 +53,7 @@ const schema = {
   ]
 };
 ---
-<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={data.heroImage} type="article">
+<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
   <article class="resource-page">
@@ -67,7 +70,7 @@ const schema = {
     </div>
 
     <div class="container content-wide">
-      <img class="hero-image" src={data.heroImage} alt={data.title} />
+      <img class="hero-image" src={heroImage} alt={data.title} />
     </div>
 
     <div class="container narrow article-layout">
@@ -79,7 +82,7 @@ const schema = {
       {data.resultImages.length > 0 && <section class="resource-section results-section">
         <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>See the result</h2></div></div>
         <div class="results-gallery">
-          {data.resultImages.map((image, index) => <img src={image} alt={`${data.title} result ${index + 1}`} loading="lazy" />)}
+          {data.resultImages.slice(0, 3).map((image, index) => <img src={image} alt={`${data.title} result ${index + 1}`} loading="lazy" />)}
         </div>
       </section>}
 
@@ -110,7 +113,7 @@ const schema = {
   {related.length > 0 && <section class="section section-muted related-section">
     <div class="container">
       <div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div>
-      <div class="resource-grid">{related.map((item) => <a class="resource-card" href={`/resources/${item.id}/`}><img src={item.data.thumbnail} alt={item.data.title} loading="lazy" /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>)}</div>
+      <div class="resource-grid">{related.map((item) => { const relatedSlug = resourceSlug(item); return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={item.data.title} /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>; })}</div>
     </div>
   </section>}
 
