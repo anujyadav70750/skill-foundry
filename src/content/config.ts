@@ -10,10 +10,13 @@ const resources = defineCollection({
     date: z.coerce.date(),
     thumbnail: z.string().default('/images/placeholder.svg'),
     heroImage: z.string().default('/images/placeholder.svg'),
+    resultImages: z.array(z.string()).default([]),
     prompt: z.string(),
-    videoEmbedUrl: z.string().nullable().optional(),
-    originalVideoUrl: z.string().nullable().optional(),
+    videoEmbedUrl: z.string().nullish(),
+    originalVideoUrl: z.string().nullish(),
     tags: z.array(z.string()).default([]),
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     featured: z.boolean().default(false)
   })
 });
