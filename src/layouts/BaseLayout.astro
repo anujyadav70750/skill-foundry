@@ -58,9 +58,11 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         <div class="nav-actions">
           <form class="header-search-form" action="/resources/" method="get" role="search">
             <label class="sr-only" for="header-resource-search">Search resources</label>
-            <span aria-hidden="true">⌕</span>
+            <span class="header-search-icon" aria-hidden="true">⌕</span>
             <input id="header-resource-search" name="q" type="search" placeholder="Search" autocomplete="off" spellcheck="false" />
+            <button class="header-search-clear" type="button" aria-label="Clear search" hidden>×</button>
           </form>
+
           <div class="menu-wrap">
             <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open navigation menu">
               <span></span><span></span><span></span>
@@ -102,7 +104,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         gap: 8px;
         width: clamp(150px, 18vw, 210px);
         min-height: 40px;
-        padding: 0 11px;
+        padding: 0 8px 0 11px;
         border: 1px solid var(--line);
         border-radius: 10px;
         background: rgba(255,255,255,.025);
@@ -115,7 +117,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         box-shadow: 0 0 0 3px rgba(61,214,208,.07);
       }
 
-      .header-search-form > span { font-size: 19px; line-height: 1; }
+      .header-search-icon { font-size: 19px; line-height: 1; }
       .header-search-form input {
         width: 100%;
         min-width: 0;
@@ -126,6 +128,25 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         font-size: 13px;
       }
       .header-search-form input::placeholder { color: #71849a; }
+      .header-search-form input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+
+      .header-search-clear {
+        display: grid;
+        place-items: center;
+        flex: 0 0 auto;
+        width: 26px;
+        height: 26px;
+        padding: 0;
+        border: 1px solid rgba(255,255,255,.09);
+        border-radius: 7px;
+        background: #16243a;
+        color: #9eafc3;
+        font-size: 18px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .header-search-clear:hover { border-color: rgba(61,214,208,.4); color: var(--accent); }
+      .header-search-clear[hidden] { display: none; }
 
       .menu-wrap { position: relative; }
       .menu-toggle {
@@ -168,6 +189,7 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         background: rgba(12,24,41,.98);
         box-shadow: 0 18px 45px rgba(0,0,0,.35);
       }
+      .site-menu[hidden] { display: none; }
       .site-menu a {
         padding: 10px 12px;
         border-radius: 8px;
@@ -192,7 +214,8 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         .nav-actions { gap: 8px; }
         .header-search-form { width: 42px; height: 40px; padding: 0; justify-content: center; }
         .header-search-form input { display: none; }
-        .header-search-form > span { font-size: 20px; }
+        .header-search-icon { font-size: 20px; }
+        .header-search-clear { display: none; }
         .footer-grid { grid-template-columns: 1fr; gap: 28px; }
         .footer-bottom { display: grid; gap: 5px; margin-top: 24px; }
       }
@@ -201,6 +224,8 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
     <script>
       const menuToggle = document.querySelector('#menu-toggle');
       const siteMenu = document.querySelector('#site-menu');
+      const headerSearch = document.querySelector('#header-resource-search');
+      const headerSearchClear = document.querySelector('.header-search-clear');
 
       const closeMenu = () => {
         if (!menuToggle || !siteMenu) return;
@@ -226,6 +251,19 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') closeMenu();
       });
+
+      const syncHeaderSearchClear = () => {
+        if (headerSearchClear && headerSearch) headerSearchClear.hidden = !headerSearch.value;
+      };
+
+      headerSearch?.addEventListener('input', syncHeaderSearchClear);
+      headerSearchClear?.addEventListener('click', () => {
+        if (!headerSearch) return;
+        headerSearch.value = '';
+        syncHeaderSearchClear();
+        headerSearch.focus();
+      });
+      syncHeaderSearchClear();
     </script>
   </body>
 </html>
