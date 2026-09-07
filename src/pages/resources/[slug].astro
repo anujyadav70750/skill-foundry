@@ -212,6 +212,13 @@ const schema = {
   </style>
 
   <script>
+    document.querySelectorAll('a[href="#prompt"]').forEach((link) => link.addEventListener('click', (event) => {
+      const target = document.getElementById('prompt');
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }));
     const promptText = document.querySelector('#prompt-text');
     const status = document.querySelector('[data-status]');
     const dialog = document.querySelector('[data-dialog]');
