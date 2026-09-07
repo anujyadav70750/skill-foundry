@@ -95,6 +95,17 @@ const schema = {
         <p class="section-lead">{data.whatItDoes}</p>
       </section>}
 
+      {data.toolsUsed.length > 0 && <section class="resource-section tools-section">
+        <div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">These are the tools used or recommended for this resource. Links open the tool's external website.</p></div></div>
+        <div class="tools-list">
+          {data.toolsUsed.map((tool) => <article class="tool-card">
+            <div class="tool-card-main"><div><h3>{tool.name}</h3><p>{tool.purpose}</p></div>{tool.affiliate && <span class="affiliate-badge">Affiliate link</span>}</div>
+            {tool.url && <a class="tool-link" href={tool.url} target="_blank" rel="noopener noreferrer sponsored">Open {tool.name} →</a>}
+          </article>)}
+        </div>
+        {data.toolsUsed.some((tool) => tool.affiliate) && <p class="affiliate-disclosure"><strong>Affiliate disclosure:</strong> Some tool links on Skill Foundry may be affiliate links. If you use one, we may earn a commission at no additional cost to you.</p>}
+      </section>}
+
       {hasResults && <section class="resource-section results-section">
         <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{hasInputImage ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{hasInputImage ? 'Compare the starting image with the result created using this resource.' : 'See the visual output created with this resource.'}</p></div></div>
         <div class:list={['results-gallery', hasInputImage ? 'has-input' : '', resultImages.length + (hasInputImage ? 1 : 0) === 1 ? 'single-result' : '']}>
@@ -104,14 +115,7 @@ const schema = {
       </section>}
 
       <section class="resource-section prompt-section" id="prompt">
-        <div class="section-heading prompt-heading">
-          <div>
-            <p class="eyebrow">PROMPT SOURCE</p>
-            <h2>Copy the full prompt</h2>
-            <p class="section-subcopy">Review the prompt in the scrollable box. Copy it, expand it, or download it as a PDF when you're ready to use it.</p>
-          </div>
-        </div>
-
+        <div class="section-heading prompt-heading"><div><p class="eyebrow">PROMPT SOURCE</p><h2>Copy the full prompt</h2><p class="section-subcopy">Review the prompt in the scrollable box. Copy it, expand it, or download it as a PDF when you're ready to use it.</p></div></div>
         <div class="prompt-shell">
           <div class="prompt-toolbar" role="toolbar" aria-label="Prompt actions">
             <button class="prompt-control prompt-copy" type="button" data-copy>Copy</button>
@@ -139,9 +143,7 @@ const schema = {
 
       {data.tips.length > 0 && <section class="resource-section tips-section">
         <div class="section-heading"><div><p class="eyebrow">CUSTOMIZE</p><h2>Tips for better results</h2></div></div>
-        <ul class="tips-list">
-          {data.tips.map((tip) => <li>{tip}</li>)}
-        </ul>
+        <ul class="tips-list">{data.tips.map((tip) => <li>{tip}</li>)}</ul>
       </section>}
 
       {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}
@@ -155,26 +157,9 @@ const schema = {
     </div>
   </section>}
 
-  <section class="section section-cta resource-cta">
-    <div class="container">
-      <div class="cta-card">
-        <div>
-          <p class="eyebrow">SKILL FOUNDRY</p>
-          <h2>Build the skill, then make it your own.</h2>
-          <p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p>
-        </div>
-        <a class="button button-primary" href="/resources/">Explore resources →</a>
-      </div>
-    </div>
-  </section>
+  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><p class="eyebrow">SKILL FOUNDRY</p><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
 
-  <dialog class="prompt-dialog" data-dialog aria-labelledby="prompt-dialog-title">
-    <div class="dialog-card">
-      <div class="section-heading"><div><p class="eyebrow">FULL PROMPT</p><h2 id="prompt-dialog-title">{data.title}</h2></div><button type="button" class="dialog-close" data-close aria-label="Close prompt">×</button></div>
-      <pre>{data.prompt}</pre>
-      <button class="button button-primary" type="button" data-copy>Copy full prompt</button>
-    </div>
-  </dialog>
+  <dialog class="prompt-dialog" data-dialog aria-labelledby="prompt-dialog-title"><div class="dialog-card"><div class="section-heading"><div><p class="eyebrow">FULL PROMPT</p><h2 id="prompt-dialog-title">{data.title}</h2></div><button type="button" class="dialog-close" data-close aria-label="Close prompt">×</button></div><pre>{data.prompt}</pre><button class="button button-primary" type="button" data-copy>Copy full prompt</button></div></dialog>
 
   <style>
     .results-gallery { align-items: start; }
@@ -187,6 +172,16 @@ const schema = {
     .results-gallery.has-input .result-card.input-result { border-color: rgba(124,140,255,.28); }
     .results-gallery.single-result { display: block; }
     .results-gallery.single-result .result-card img { aspect-ratio: 16 / 9; }
+    .tools-list { display: grid; gap: 12px; }
+    .tool-card { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .tool-card-main { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .tool-card h3 { margin: 0 0 5px; color: var(--text); font-size: 17px; }
+    .tool-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    .affiliate-badge { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(61,214,208,.28); border-radius: 999px; color: var(--accent); background: rgba(61,214,208,.08); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+    .tool-link { display: inline-flex; width: fit-content; align-items: center; min-height: 42px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; color: var(--text); background: rgba(16,34,56,.55); font-size: 12px; font-weight: 800; transition: border-color .18s ease, color .18s ease, background .18s ease; }
+    .tool-link:hover, .tool-link:focus-visible { border-color: rgba(61,214,208,.38); color: var(--accent); background: rgba(61,214,208,.08); outline: none; }
+    .affiliate-disclosure { margin: 14px 0 0; padding: 12px 14px; border-left: 2px solid var(--accent); color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .affiliate-disclosure strong { color: var(--text); }
     .prompt-shell { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
     .prompt-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; min-height: 56px; overflow: hidden; border: 0; border-radius: 13px 13px 0 0; background: rgba(16,34,56,.55); }
     .prompt-control, .prompt-label { min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; font: inherit; }
@@ -204,6 +199,9 @@ const schema = {
     .resource-cta { padding-top: 18px; }
     @media (max-width: 600px) {
       .results-gallery.has-input { grid-template-columns: 1fr; }
+      .tool-card-main { display: grid; gap: 10px; }
+      .affiliate-badge { width: fit-content; }
+      .tool-link { width: 100%; justify-content: center; }
       .prompt-toolbar { min-height: 52px; }
       .prompt-control, .prompt-label { min-height: 52px; }
       .prompt-control { padding: 0 14px; font-size: 11px; }
@@ -223,10 +221,7 @@ const schema = {
       const lines = [];
       const maxChars = 78;
       source.split(/\r?\n/).forEach((line) => {
-        if (!line) {
-          lines.push('');
-          return;
-        }
+        if (!line) { lines.push(''); return; }
         let remaining = line;
         while (remaining.length > maxChars) {
           let cut = remaining.lastIndexOf(' ', maxChars);
@@ -236,7 +231,6 @@ const schema = {
         }
         lines.push(remaining);
       });
-
       const encoder = new TextEncoder();
       const chunks = [];
       const offsets = [0];
@@ -267,17 +261,11 @@ const schema = {
       anchor.click();
       URL.revokeObjectURL(url);
     };
-
     document.querySelectorAll('[data-copy]').forEach((button) => button.addEventListener('click', async () => {
       const source = promptText?.textContent || '';
-      try {
-        await navigator.clipboard.writeText(source);
-        if (status) status.textContent = 'Prompt copied.';
-      } catch {
-        if (status) status.textContent = 'Copy failed. Select the prompt text and copy it manually.';
-      }
+      try { await navigator.clipboard.writeText(source); if (status) status.textContent = 'Prompt copied.'; }
+      catch { if (status) status.textContent = 'Copy failed. Select the prompt text and copy it manually.'; }
     }));
-
     document.querySelector('[data-download]')?.addEventListener('click', makePdf);
     document.querySelector('[data-expand]')?.addEventListener('click', () => dialog?.showModal());
     document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
