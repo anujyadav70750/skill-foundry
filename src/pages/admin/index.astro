@@ -139,7 +139,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const makeSlug = () => { const title = form.elements.title?.value || ''; if (form.elements.slug && !form.elements.slug.value) form.elements.slug.value = slugify(title); };
     const renderPreview = () => {
       const d = readForm();
-      const safe = (value) => String(value || '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+      const safe = (value) => String(value || '').replace(/[&<>]/g, (c) => c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;');
       preview.innerHTML = `<h3>${safe(d.title || 'Untitled resource')}</h3><p class="meta">${safe(d.category || 'Category')} · ${safe(d.tool || 'Tool')}${d.date ? ` · ${safe(d.date)}` : ''}</p><p>${safe(d.description || 'Add a description to see it here.')}</p>${d.intro ? `<h4>Introduction</h4><p>${safe(d.intro)}</p>` : ''}${d.whatItDoes ? `<h4>What this resource does</h4><p>${safe(d.whatItDoes)}</p>` : ''}${d.prompt ? `<h4>Prompt</h4><p class="copy">${safe(d.prompt)}</p>` : ''}`;
     };
     const save = () => { localStorage.setItem(storageKey, JSON.stringify(readForm())); status.textContent = 'Draft saved in this browser.'; };
