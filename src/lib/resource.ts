@@ -6,14 +6,24 @@ export function resourceSlug(resource: CollectionEntry<'resources'>) {
   return resource.data.slug || resource.id.replace(/\.md$/, '');
 }
 
+function firstUsableImage(...images: Array<string | null | undefined>) {
+  return images.find((image) => image && image !== PLACEHOLDER_IMAGE) || PLACEHOLDER_IMAGE;
+}
+
 export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
-  return resource.data.thumbnail === PLACEHOLDER_IMAGE && resource.data.resultImages.length > 0
-    ? resource.data.resultImages[0]
-    : resource.data.thumbnail;
+  return firstUsableImage(
+    resource.data.thumbnail,
+    resource.data.heroImage,
+    resource.data.inputImage,
+    ...resource.data.resultImages
+  );
 }
 
 export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
-  return resource.data.heroImage === PLACEHOLDER_IMAGE && resource.data.resultImages.length > 0
-    ? resource.data.resultImages[0]
-    : resource.data.heroImage;
+  return firstUsableImage(
+    resource.data.heroImage,
+    resource.data.thumbnail,
+    resource.data.resultImages[0],
+    resource.data.inputImage
+  );
 }
