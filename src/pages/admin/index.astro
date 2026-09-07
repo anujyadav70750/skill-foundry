@@ -13,12 +13,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <h1>Create a resource without writing code.</h1>
         <p>Fill in the fields, save a draft in this browser, preview the content, and download a ready-to-publish resource file.</p>
       </div>
-
       <div class="notice">
         <strong>Manual fallback</strong>
         <span>This builder does not store or publish content to the public site by itself. It prepares the same structured resource format used by Skill Foundry, so you still have a publishing path if an external connection is unavailable.</span>
       </div>
-
       <form id="resource-form" class="builder-grid">
         <section class="panel">
           <div class="panel-heading"><span>01</span><h2>Core details</h2></div>
@@ -33,7 +31,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <label class="full">Tags<input name="tags" placeholder="ai, prompt, image generation" /></label>
           </div>
         </section>
-
         <section class="panel">
           <div class="panel-heading"><span>02</span><h2>Images</h2></div>
           <div class="field-grid">
@@ -43,7 +40,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <label class="full">Result image paths<textarea name="resultImages" rows="3" placeholder="/images/result-1.jpg, /images/result-2.jpg, /images/result-3.jpg"></textarea></label>
           </div>
         </section>
-
         <section class="panel">
           <div class="panel-heading"><span>03</span><h2>Resource content</h2></div>
           <div class="field-grid">
@@ -52,7 +48,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <label class="full">Prompt<textarea name="prompt" required rows="10" placeholder="Paste the complete prompt here."></textarea></label>
           </div>
         </section>
-
         <section class="panel">
           <div class="panel-heading"><span>04</span><h2>Tutorial & steps</h2></div>
           <div class="field-grid">
@@ -63,7 +58,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <label class="full">Related resource slugs<textarea name="relatedResources" rows="3" placeholder="ai-video-cinematic-prompt, another-resource-slug"></textarea></label>
           </div>
         </section>
-
         <section class="panel">
           <div class="panel-heading"><span>05</span><h2>SEO & publishing</h2></div>
           <div class="field-grid">
@@ -79,14 +73,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <p class="status" id="status" role="status" aria-live="polite"></p>
         </section>
       </form>
-
       <section class="preview panel" aria-live="polite">
         <div class="panel-heading"><span>06</span><h2>Preview</h2></div>
         <div id="preview-content" class="preview-content"><p>Start filling the form to preview your resource.</p></div>
       </section>
     </div>
   </section>
-
   <style>
     .builder-page { padding: 58px 0 90px; }
     .builder-shell { width: min(1080px, calc(100% - 48px)); margin: 0 auto; }
@@ -124,44 +116,115 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       .actions .button { width: 100%; }
     }
   </style>
-
   <script>
     const form = document.querySelector('#resource-form');
     const preview = document.querySelector('#preview-content');
     const status = document.querySelector('#status');
     const storageKey = 'skill-foundry-resource-draft-v1';
-    const fields = [...form.querySelectorAll('input, textarea')];
-    const slugify = (value) => value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
-    const yamlQuote = (value) => `"${String(value ?? '').replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\r?\n/g, '\\n')}"`;
-    const yamlList = (items) => items.length ? `[${items.map(yamlQuote).join(', ')}]` : '[]';
-    const readForm = () => Object.fromEntries(fields.map((field) => [field.name, field.type === 'checkbox' ? field.checked : field.value]));
-    const writeForm = (data) => fields.forEach((field) => { if (!(field.name in data)) return; if (field.type === 'checkbox') field.checked = Boolean(data[field.name]); else field.value = data[field.name] ?? ''; });
-    const makeSlug = () => { const title = form.elements.title?.value || ''; if (form.elements.slug && !form.elements.slug.value) form.elements.slug.value = slugify(title); };
-    const renderPreview = () => {
-      const d = readForm();
-      const safe = (value) => String(value || '').replace(/[&<>]/g, (c) => c === '&' ? '&amp;' : c === '<' ? '&lt;' : '&gt;');
-      preview.innerHTML = `<h3>${safe(d.title || 'Untitled resource')}</h3><p class="meta">${safe(d.category || 'Category')} · ${safe(d.tool || 'Tool')}${d.date ? ` · ${safe(d.date)}` : ''}</p><p>${safe(d.description || 'Add a description to see it here.')}</p>${d.intro ? `<h4>Introduction</h4><p>${safe(d.intro)}</p>` : ''}${d.whatItDoes ? `<h4>What this resource does</h4><p>${safe(d.whatItDoes)}</p>` : ''}${d.prompt ? `<h4>Prompt</h4><p class="copy">${safe(d.prompt)}</p>` : ''}`;
+    const fields = Array.from(form.querySelectorAll('input, textarea'));
+    const slugify = function (value) { return String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80); };
+    const yamlQuote = function (value) { return JSON.stringify(String(value == null ? '' : value)); };
+    const yamlList = function (items) { return items.length ? '[' + items.map(yamlQuote).join(', ') + ']' : '[]'; };
+    const readForm = function () {
+      const data = {};
+      fields.forEach(function (field) { data[field.name] = field.type === 'checkbox' ? field.checked : field.value; });
+      return data;
     };
-    const save = () => { localStorage.setItem(storageKey, JSON.stringify(readForm())); status.textContent = 'Draft saved in this browser.'; };
-    const restore = () => { try { const saved = JSON.parse(localStorage.getItem(storageKey) || 'null'); if (saved) { writeForm(saved); status.textContent = 'Saved draft restored.'; } } catch {} renderPreview(); };
-    const makeMarkdown = (d) => {
-      const results = d.resultImages.split(',').map((x) => x.trim()).filter(Boolean);
-      const tags = d.tags.split(',').map((x) => x.trim()).filter(Boolean);
-      const related = d.relatedResources.split(',').map((x) => x.trim()).filter(Boolean);
-      const steps = d.steps.split(/\n+/).map((x) => x.trim()).filter(Boolean).map((x) => { const [title, ...rest] = x.split('|'); return { title: title.trim(), description: rest.join('|').trim() }; });
-      const tips = d.tips.split(/\n+/).map((x) => x.trim()).filter(Boolean);
-      const lines = ['---', `title: ${yamlQuote(d.title)}`, `slug: ${yamlQuote(d.slug || slugify(d.title))}`, `description: ${yamlQuote(d.description)}`, `category: ${yamlQuote(d.category)}`, `tool: ${yamlQuote(d.tool)}`, `date: ${yamlQuote(d.date)}`, `thumbnail: ${d.thumbnail ? yamlQuote(d.thumbnail) : 'null'}`, `heroImage: ${d.heroImage ? yamlQuote(d.heroImage) : 'null'}`, `inputImage: ${d.inputImage ? yamlQuote(d.inputImage) : 'null'}`, `resultImages: ${yamlList(results)}`, `imageAlt: ${d.imageAlt ? yamlQuote(d.imageAlt) : 'null'}`, `intro: ${d.intro ? yamlQuote(d.intro) : '""'}`, `whatItDoes: ${d.whatItDoes ? yamlQuote(d.whatItDoes) : '""'}`, 'toolsUsed: []', `prompt: ${yamlQuote(d.prompt)}`, `videoEmbedUrl: ${d.videoEmbedUrl ? yamlQuote(d.videoEmbedUrl) : 'null'}`, `originalVideoUrl: ${d.originalVideoUrl ? yamlQuote(d.originalVideoUrl) : 'null'}`, 'steps:'];
-      if (steps.length) steps.forEach((s) => lines.push(`  - title: ${yamlQuote(s.title)}`, `    description: ${yamlQuote(s.description)}`)); else lines.push('  []');
+    const writeForm = function (data) {
+      fields.forEach(function (field) {
+        if (!(field.name in data)) return;
+        if (field.type === 'checkbox') field.checked = Boolean(data[field.name]);
+        else field.value = data[field.name] == null ? '' : data[field.name];
+      });
+    };
+    const makeSlug = function () {
+      const title = form.elements.title ? form.elements.title.value : '';
+      const slug = form.elements.slug;
+      if (slug && !slug.value) slug.value = slugify(title);
+    };
+    const escapeHtml = function (value) {
+      return String(value || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    };
+    const renderPreview = function () {
+      const d = readForm();
+      let html = '<h3>' + escapeHtml(d.title || 'Untitled resource') + '</h3>';
+      html += '<p class="meta">' + escapeHtml(d.category || 'Category') + ' · ' + escapeHtml(d.tool || 'Tool') + (d.date ? ' · ' + escapeHtml(d.date) : '') + '</p>';
+      html += '<p>' + escapeHtml(d.description || 'Add a description to see it here.') + '</p>';
+      if (d.intro) html += '<h4>Introduction</h4><p>' + escapeHtml(d.intro) + '</p>';
+      if (d.whatItDoes) html += '<h4>What this resource does</h4><p>' + escapeHtml(d.whatItDoes) + '</p>';
+      if (d.prompt) html += '<h4>Prompt</h4><p class="copy">' + escapeHtml(d.prompt) + '</p>';
+      preview.innerHTML = html;
+    };
+    const save = function () { localStorage.setItem(storageKey, JSON.stringify(readForm())); status.textContent = 'Draft saved in this browser.'; };
+    const restore = function () {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+        if (saved) { writeForm(saved); status.textContent = 'Saved draft restored.'; }
+      } catch (error) {}
+      renderPreview();
+    };
+    const makeMarkdown = function (d) {
+      const results = String(d.resultImages || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      const tags = String(d.tags || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      const related = String(d.relatedResources || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      const steps = String(d.steps || '').split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean).map(function (x) {
+        const parts = x.split('|');
+        return { title: parts.shift().trim(), description: parts.join('|').trim() };
+      });
+      const tips = String(d.tips || '').split(/\n+/).map(function (x) { return x.trim(); }).filter(Boolean);
+      const lines = [
+        '---',
+        'title: ' + yamlQuote(d.title),
+        'slug: ' + yamlQuote(d.slug || slugify(d.title)),
+        'description: ' + yamlQuote(d.description),
+        'category: ' + yamlQuote(d.category),
+        'tool: ' + yamlQuote(d.tool),
+        'date: ' + yamlQuote(d.date),
+        'thumbnail: ' + (d.thumbnail ? yamlQuote(d.thumbnail) : 'null'),
+        'heroImage: ' + (d.heroImage ? yamlQuote(d.heroImage) : 'null'),
+        'inputImage: ' + (d.inputImage ? yamlQuote(d.inputImage) : 'null'),
+        'resultImages: ' + yamlList(results),
+        'imageAlt: ' + (d.imageAlt ? yamlQuote(d.imageAlt) : 'null'),
+        'intro: ' + (d.intro ? yamlQuote(d.intro) : '""'),
+        'whatItDoes: ' + (d.whatItDoes ? yamlQuote(d.whatItDoes) : '""'),
+        'toolsUsed: []',
+        'prompt: ' + yamlQuote(d.prompt),
+        'videoEmbedUrl: ' + (d.videoEmbedUrl ? yamlQuote(d.videoEmbedUrl) : 'null'),
+        'originalVideoUrl: ' + (d.originalVideoUrl ? yamlQuote(d.originalVideoUrl) : 'null'),
+        'steps:'
+      ];
+      if (steps.length) steps.forEach(function (step) { lines.push('  - title: ' + yamlQuote(step.title), '    description: ' + yamlQuote(step.description)); });
+      else lines.push('  []');
       lines.push('tips:');
-      if (tips.length) tips.forEach((tip) => lines.push(`  - ${yamlQuote(tip)}`)); else lines.push('  []');
-      lines.push(`relatedResources: ${yamlList(related)}`, `tags: ${yamlList(tags)}`, `seoTitle: ${d.seoTitle ? yamlQuote(d.seoTitle) : 'null'}`, `seoDescription: ${d.seoDescription ? yamlQuote(d.seoDescription) : 'null'}`, `featured: ${d.featured ? 'true' : 'false'}`, '---', '', d.intro || '', '', d.whatItDoes || '', '', d.prompt ? `## Prompt\n\n${d.prompt}` : '', ''];
+      if (tips.length) tips.forEach(function (tip) { lines.push('  - ' + yamlQuote(tip)); });
+      else lines.push('  []');
+      lines.push('relatedResources: ' + yamlList(related));
+      lines.push('tags: ' + yamlList(tags));
+      lines.push('seoTitle: ' + (d.seoTitle ? yamlQuote(d.seoTitle) : 'null'));
+      lines.push('seoDescription: ' + (d.seoDescription ? yamlQuote(d.seoDescription) : 'null'));
+      lines.push('featured: ' + (d.featured ? 'true' : 'false'));
+      lines.push('---', '', d.intro || '', '', d.whatItDoes || '', '', d.prompt ? '## Prompt\n\n' + d.prompt : '', '');
       return lines.join('\n');
     };
-    form.elements.title?.addEventListener('input', () => { makeSlug(); renderPreview(); });
-    fields.forEach((field) => field.addEventListener('input', renderPreview));
-    document.querySelector('#save-draft')?.addEventListener('click', save);
-    document.querySelector('#clear-draft')?.addEventListener('click', () => { localStorage.removeItem(storageKey); form.reset(); status.textContent = 'Draft cleared.'; renderPreview(); });
-    form.addEventListener('submit', (event) => { event.preventDefault(); makeSlug(); const d = readForm(); const blob = new Blob([makeMarkdown(d)], { type: 'text/markdown;charset=utf-8' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `${d.slug || slugify(d.title) || 'resource'}.md`; a.click(); URL.revokeObjectURL(url); status.textContent = 'Resource file downloaded. Add it to src/content/resources/ when publishing.'; save(); });
-    const today = new Date().toISOString().slice(0, 10); if (form.elements.date && !form.elements.date.value) form.elements.date.value = today; restore();
+    form.elements.title && form.elements.title.addEventListener('input', function () { makeSlug(); renderPreview(); });
+    fields.forEach(function (field) { field.addEventListener('input', renderPreview); });
+    document.querySelector('#save-draft').addEventListener('click', save);
+    document.querySelector('#clear-draft').addEventListener('click', function () { localStorage.removeItem(storageKey); form.reset(); status.textContent = 'Draft cleared.'; renderPreview(); });
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      makeSlug();
+      const d = readForm();
+      const blob = new Blob([makeMarkdown(d)], { type: 'text/markdown;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = (d.slug || slugify(d.title) || 'resource') + '.md';
+      a.click();
+      URL.revokeObjectURL(url);
+      status.textContent = 'Resource file downloaded. Add it to src/content/resources/ when publishing.';
+      save();
+    });
+    if (form.elements.date && !form.elements.date.value) form.elements.date.value = new Date().toISOString().slice(0, 10);
+    restore();
   </script>
 </BaseLayout>
