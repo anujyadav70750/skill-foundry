@@ -42,7 +42,6 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     {socialImage && <meta property="og:image" content={socialImage} />}
-
     <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
@@ -55,11 +54,14 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
           <span class="brand-mark">SF</span>
           <span>SKILL FOUNDRY</span>
         </a>
-        <nav aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="/resources/">Resources</a>
-          <a href="/about/">About</a>
-        </nav>
+        <div class="nav-actions">
+          <nav aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="/resources/">Resources</a>
+            <a href="/about/">About</a>
+          </nav>
+          <a class="header-search" href="/resources/#resource-search" aria-label="Search resources">⌕</a>
+        </div>
       </div>
     </header>
 
