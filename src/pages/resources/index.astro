@@ -70,16 +70,14 @@ const categories = [...new Set(resources.map((resource) => resource.data.categor
       transform: translateY(-1px);
     }
 
-    .search-box input {
-      min-width: 0;
-    }
+    .search-box input { min-width: 0; }
 
     .search-highlight {
-      padding: 0 .08em;
-      border-radius: .18em;
-      background: rgba(61,214,208,.18);
-      color: var(--accent);
-      box-shadow: 0 0 12px rgba(61,214,208,.22);
+      padding: 0 .08em !important;
+      border-radius: .18em !important;
+      background: rgba(61,214,208,.20) !important;
+      color: #9be8ff !important;
+      box-shadow: 0 0 12px rgba(61,214,208,.30) !important;
     }
   </style>
 
