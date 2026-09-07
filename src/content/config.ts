@@ -12,9 +12,17 @@ const resources = defineCollection({
     thumbnail: z.string().default('/images/placeholder.svg'),
     heroImage: z.string().default('/images/placeholder.svg'),
     resultImages: z.array(z.string()).default([]),
+    intro: z.string().optional(),
+    whatItDoes: z.string().optional(),
     prompt: z.string(),
     videoEmbedUrl: z.string().nullish(),
     originalVideoUrl: z.string().nullish(),
+    steps: z.array(z.object({
+      title: z.string(),
+      description: z.string()
+    })).default([]),
+    tips: z.array(z.string()).default([]),
+    relatedResources: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
     seoTitle: z.string().optional(),
     seoDescription: z.string().optional(),
