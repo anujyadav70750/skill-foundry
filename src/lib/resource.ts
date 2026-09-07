@@ -3,7 +3,7 @@ import type { CollectionEntry } from 'astro:content';
 export const PLACEHOLDER_IMAGE = '/images/placeholder.svg';
 
 export function resourceSlug(resource: CollectionEntry<'resources'>) {
-  return resource.data.slug || resource.id;
+  return resource.data.slug || resource.id.replace(/\.md$/, '');
 }
 
 export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
