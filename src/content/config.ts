@@ -11,6 +11,7 @@ const resources = defineCollection({
     date: z.coerce.date(),
     thumbnail: z.string().default('/images/placeholder.svg'),
     heroImage: z.string().default('/images/placeholder.svg'),
+    inputImage: z.string().nullish(),
     resultImages: z.array(z.string()).default([]),
     intro: z.string().optional(),
     whatItDoes: z.string().optional(),
