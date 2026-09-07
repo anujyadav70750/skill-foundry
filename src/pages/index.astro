@@ -8,7 +8,6 @@ const featured = resources.filter((item) => item.data.featured);
 const categories = [...new Set(resources.map((resource) => resource.data.category))].sort((a, b) => a.localeCompare(b));
 const featuredIds = new Set(featured.slice(0, 3).map((item) => item.id));
 const newest = resources.filter((item) => !featuredIds.has(item.id)).slice(0, 6);
-const latest = newest.length > 0 ? newest : resources.slice(0, 6);
 ---
 <BaseLayout title="Skill Foundry — Practical AI Skills, Prompts & Tutorials">
   <section class="hero">
@@ -56,18 +55,19 @@ const latest = newest.length > 0 ? newest : resources.slice(0, 6);
     </div>
   </section>}
 
-  <section class="section section-muted" id="latest">
+  {newest.length > 0 && <section class="section section-muted" id="latest">
     <div class="container">
       <div class="section-heading"><div><p class="eyebrow">LATEST</p><h2>Newest resources</h2></div><a href="/resources/">View all →</a></div>
       <div class="resource-grid">
-        {latest.map((resource) => <a class="resource-card" href={`/resources/${resourceSlug(resource)}/`}>
+        {newest.map((resource) => <a class="resource-card" href={`/resources/${resourceSlug(resource)}/`}>
           <img src={resourceThumbnail(resource)} alt={resourceImageAlt(resource)} loading="lazy" />
           <div class="card-body"><span class="tag">{resource.data.category}</span><h3>{resource.data.title}</h3><p>{resource.data.description}</p><span class="card-link">Get prompt →</span></div>
         </a>)}
       </div>
-      {resources.length === 0 && <div class="empty-state">New resources are being prepared. Check back soon.</div>}
     </div>
-  </section>
+  </section>}
+
+  {resources.length === 0 && <section class="section section-muted"><div class="container"><div class="empty-state">New resources are being prepared. Check back soon.</div></div></section>}
 
   <section class="section" id="how-it-works">
     <div class="container">
