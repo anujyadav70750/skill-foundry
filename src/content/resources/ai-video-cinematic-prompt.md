@@ -12,10 +12,13 @@ resultImages:
   - /images/cinematic-night-glow-hero.jpg
 intro: A practical image-to-video starting point for creators who want cinematic motion without losing the composition, identity or lighting of the source image.
 whatItDoes: This prompt focuses the video model on subtle camera movement, natural subject motion and continuity so the generated clip feels intentional rather than overly animated.
+toolsUsed:
+  - name: AI Video Generator
+    purpose: Turn the starting image into a cinematic motion clip.
 prompt: |
   Create a cinematic image-to-video shot from the provided starting image. Preserve the subject's identity, facial structure, wardrobe, environment, framing and overall visual style. Add subtle natural movement: gentle breathing, realistic micro-expressions and minimal believable environmental motion. Use a slow controlled camera push-in with slight parallax and stable composition. Keep the existing light direction consistent, preserve the teal-blue night ambience and realistic skin texture, and maintain shallow depth of field. Motion should feel photographic and physically plausible, with smooth temporal consistency and no sudden camera shake. Avoid face distortion, identity changes, warped hands, extra limbs, flicker, melting details, excessive motion blur, artificial zooms, text, logos or watermarks.
-videoEmbedUrl: https://www.youtube.com/embed/NFfnrO-X3j4
-originalVideoUrl: https://www.youtube.com/watch?v=NFfnrO-X3j4
+videoEmbedUrl: https://www.youtube.com/embed/1m-u2DIBI2s
+originalVideoUrl: https://www.youtube.com/watch?v=1m-u2DIBI2s
 steps:
   - title: Choose a strong starting image
     description: Use an image with a clear subject, stable composition and enough visual detail for the video model to track across frames.

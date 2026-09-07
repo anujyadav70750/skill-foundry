@@ -7,11 +7,13 @@ tool: AI Image Generator
 date: 2026-09-06
 thumbnail: /images/cinematic-night-glow-hero.jpg
 heroImage: /images/cinematic-night-glow-hero.jpg
-inputImage: /images/cinematic-night-glow-hero.jpg
 resultImages:
   - /images/cinematic-night-glow-hero.jpg
 intro: A practical starting point for creating polished cinematic portraits with believable night ambience, controlled rim lighting and a refined editorial finish.
 whatItDoes: This prompt keeps the lighting, realism and composition consistent while leaving room to adapt the subject, wardrobe and scene.
+toolsUsed:
+  - name: AI Image Generator
+    purpose: Generate the cinematic portrait result.
 prompt: |
   Create a cinematic portrait with a realistic subject, subtle night ambience, soft directional rim light, controlled teal-blue glow, natural skin texture, detailed eyes, realistic fabric, shallow depth of field, premium editorial composition, balanced contrast, clean background separation, photographic detail, and a refined modern color grade. Keep the lighting believable and avoid excessive bloom, plastic skin, distorted facial features, extra fingers, text, logos, or watermarks.
 videoEmbedUrl: https://www.youtube.com/embed/NFfnrO-X3j4

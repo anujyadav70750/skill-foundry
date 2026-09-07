@@ -12,6 +12,9 @@ resultImages:
   - /images/cinematic-night-glow-hero.jpg
 intro: A practical product-visual prompt designed for mockups, social posts and concept boards when you need a polished commercial look without visual clutter.
 whatItDoes: The prompt emphasizes accurate product structure, believable materials, controlled reflections and clean studio composition while leaving the background easy to customize.
+toolsUsed:
+  - name: AI Image Generator
+    purpose: Generate the polished commercial product visual.
 prompt: |
   Create a premium commercial product photograph using the provided product as the visual reference. Preserve the product's exact shape, proportions, key details, materials and branding without inventing or changing important features. Place it in a clean studio environment with soft directional key light, subtle fill, controlled edge light and realistic contact shadow. Use believable reflections and material texture, balanced contrast, crisp product edges and a refined editorial color grade. Keep the composition simple, centered and visually intentional with generous negative space. Photographic realism, high detail, natural depth of field, professional advertising photography. Avoid warped geometry, incorrect labels, extra objects, floating products, plastic-looking materials, excessive reflections, text changes, logos that were not present, watermarks or clutter.
 videoEmbedUrl:
