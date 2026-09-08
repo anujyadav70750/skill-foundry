@@ -231,20 +231,20 @@
       else dialog.setAttribute('open', '');
     } catch (error) {
       closeDialog(dialog);
+      URL.revokeObjectURL(sourceUrl);
       const preview = previewOf(input);
       if (preview) {
         preview.className = 'image-preview has-image';
-        preview.innerHTML = `<img src="${sourceUrl}" alt="Selected image preview"><span>${file.name}</span>`;
+        preview.innerHTML = `<span>Selected: ${file.name}</span>`;
       }
       console.error('Skill Foundry image ratio popup could not open:', error);
     }
   };
 
-  // Public bridge used by the builder as a fallback. This makes the workflow
-  // independent of listener order when the repeatable fields are created later.
+  // Public bridge makes the popup callable even when repeatable fields are created after this script loads.
   window.SkillFoundryImageRatio = { open: openDialog };
 
-  const handleFileEvent = event => {
+  const handleFileChange = event => {
     const input = event.target;
     if (!isTarget(input)) return;
     const file = input.files?.[0];
@@ -256,9 +256,8 @@
     openDialog(input, file);
   };
 
-  // Capture at window level so this wins before document-level legacy handlers.
-  window.addEventListener('change', handleFileEvent, true);
-  window.addEventListener('input', handleFileEvent, true);
+  // Window capture runs before document/target legacy listeners.
+  window.addEventListener('change', handleFileChange, true);
 
   document.addEventListener('click', event => {
     const clear = event.target.closest?.('.image-clear');
