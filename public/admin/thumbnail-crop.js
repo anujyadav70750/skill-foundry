@@ -1,38 +1,109 @@
 (() => {
   const form = document.querySelector('#resource-form');
   if (!form) return;
-  const state = { file:null, objectUrl:null, controller:null, role:null };
+
+  const state = { file:null, objectUrl:null, controller:null, role:null, dialog:null };
   const style = document.createElement('style');
   style.textContent = `
-    .builder-page .sf-thumb-crop{margin-top:12px;padding:14px;border:1px solid rgba(61,214,208,.25);border-radius:14px;background:rgba(7,17,31,.72)}
-    .builder-page .sf-thumb-crop-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--text);font-size:13px;font-weight:800}
-    .builder-page .sf-thumb-crop-badge{color:var(--accent);font-size:11px}
-    .builder-page .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:12px;background:#050b13;touch-action:none;cursor:grab}
+    .builder-page .sf-thumb-dialog{width:min(720px,calc(100vw - 24px));max-width:720px;max-height:90vh;margin:auto;padding:0;border:1px solid rgba(61,214,208,.28);border-radius:18px;background:#07111f;color:var(--text);box-shadow:0 28px 90px rgba(0,0,0,.55);overflow:hidden}
+    .builder-page .sf-thumb-dialog::backdrop{background:rgba(2,7,13,.68);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .builder-page .sf-thumb-modal{max-height:90vh;overflow:auto;padding:18px}
+    .builder-page .sf-thumb-crop-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;color:var(--text);font-size:15px;font-weight:800}
+    .builder-page .sf-thumb-crop-badge{color:var(--accent);font-size:11px;white-space:nowrap}
+    .builder-page .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13;touch-action:none;cursor:grab}
     .builder-page .sf-thumb-frame:active{cursor:grabbing}
     .builder-page .sf-thumb-frame img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none}
-    .builder-page .sf-thumb-help{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
-    .builder-page .sf-thumb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .builder-page .sf-thumb-actions button{min-height:38px;padding:0 13px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .builder-page .sf-thumb-help{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.55}
+    .builder-page .sf-thumb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+    .builder-page .sf-thumb-actions button{min-height:42px;padding:0 15px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:13px;font-weight:800;cursor:pointer}
     .builder-page .sf-thumb-actions .primary{border-color:rgba(61,214,208,.4);background:rgba(61,214,208,.1);color:var(--accent)}
-    .builder-page .sf-thumb-status{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
+    .builder-page .sf-thumb-actions button:disabled{opacity:.55;cursor:wait}
+    .builder-page .sf-thumb-status{margin-top:9px;color:var(--muted);font-size:12px;line-height:1.5}
     .builder-page .sf-thumb-status.error{color:#ff9b9b}.builder-page .sf-thumb-status.success{color:var(--accent)}
     .builder-page .sf-thumb-result{position:relative;margin-top:10px}.builder-page .sf-thumb-result img{display:block;width:min(100%,420px);aspect-ratio:16/9;object-fit:cover;border:1px solid var(--line);border-radius:12px}
     .builder-page .sf-thumb-result button{position:absolute;top:8px;right:8px;width:30px;height:30px;min-width:30px;min-height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(7,17,31,.9);color:var(--muted);font:inherit;font-size:18px;line-height:1;cursor:pointer}
+    @media(max-width:600px){.builder-page .sf-thumb-dialog{width:calc(100vw - 18px);max-height:92vh;border-radius:16px}.builder-page .sf-thumb-modal{max-height:92vh;padding:14px}.builder-page .sf-thumb-crop-title{font-size:14px}.builder-page .sf-thumb-help{font-size:11px}.builder-page .sf-thumb-actions button{min-height:40px}}
   `;
   document.head.appendChild(style);
+
   const host=role=>form.querySelector(`.image-field:has(input[data-image-file="${role}"])`)||form.querySelector(`input[data-image-file="${role}"]`)?.closest('.image-field');
   const input=role=>form.querySelector(`input[data-image-file="${role}"]`);
   const path=role=>form.querySelector(`input[name="${role==='thumbnail'?'thumbnail':'heroImage'}"]`);
   const preview=role=>form.querySelector(`[data-preview="${role}"]`);
   const revoke=()=>{if(state.objectUrl)URL.revokeObjectURL(state.objectUrl);state.objectUrl=null};
+  const removeDialog=()=>{const dialog=state.dialog;if(dialog){if(dialog.open)dialog.close();dialog.remove()}state.dialog=null};
   const setStatus=(message,kind='')=>{const h=host(state.role);if(!h)return;let n=h.querySelector('.sf-thumb-status');if(!n){n=document.createElement('div');n.className='sf-thumb-status';h.querySelector('.upload-row')?.after(n)}n.textContent=message;n.className=`sf-thumb-status${kind?` ${kind}`:''}`};
   const clearResult=role=>{const p=preview(role);if(p){p.classList.remove('has-image');p.innerHTML=''}};
-  const showResult=(role,url,filename)=>{const p=preview(role);if(!p)return;p.className='image-preview has-image';p.innerHTML='';const box=document.createElement('div');box.className='sf-thumb-result';const img=document.createElement('img');img.src=url;img.alt=role==='thumbnail'?'Thumbnail preview':'Hero image preview';const clear=document.createElement('button');clear.type='button';clear.textContent='×';clear.title=`Remove ${role==='thumbnail'?'thumbnail':'hero image'}`;clear.setAttribute('aria-label',clear.title);clear.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();state.controller?.abort();state.file=null;state.role=null;revoke();const f=input(role),v=path(role);if(f)f.value='';if(v)v.value='';clearResult(role);form.querySelector('.sf-thumb-crop')?.remove();host(role)?.querySelector('.sf-thumb-status')?.remove()});const label=document.createElement('span');label.textContent=filename||(role==='thumbnail'?'Thumbnail':'Hero image');box.append(img,clear,label);p.append(box)};
+  const showResult=(role,url,filename)=>{const p=preview(role);if(!p)return;p.className='image-preview has-image';p.innerHTML='';const box=document.createElement('div');box.className='sf-thumb-result';const img=document.createElement('img');img.src=url;img.alt=role==='thumbnail'?'Thumbnail preview':'Hero image preview';const clear=document.createElement('button');clear.type='button';clear.textContent='×';clear.title=`Remove ${role==='thumbnail'?'thumbnail':'hero image'}`;clear.setAttribute('aria-label',clear.title);clear.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();state.controller?.abort();state.file=null;state.role=null;revoke();const f=input(role),v=path(role);if(f)f.value='';if(v)v.value='';clearResult(role);removeDialog();host(role)?.querySelector('.sf-thumb-status')?.remove()});const label=document.createElement('span');label.textContent=filename||(role==='thumbnail'?'Thumbnail':'Hero image');box.append(img,clear,label);p.append(box)};
   const makeCrop=async(file,zoom,offsetX,offsetY)=>{const bitmap=await createImageBitmap(file),targetRatio=16/9,sourceRatio=bitmap.width/bitmap.height;let cropW=sourceRatio>targetRatio?bitmap.height*targetRatio:bitmap.width;let cropH=sourceRatio>targetRatio?bitmap.height:bitmap.width/targetRatio;cropW/=zoom;cropH/=zoom;const sx=Math.max(0,Math.min(bitmap.width-cropW,(bitmap.width-cropW)*offsetX/100)),sy=Math.max(0,Math.min(bitmap.height-cropH,(bitmap.height-cropH)*offsetY/100));const canvas=document.createElement('canvas');canvas.width=1600;canvas.height=900;const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Could not prepare the image.');ctx.drawImage(bitmap,sx,sy,cropW,cropH,0,0,1600,900);bitmap.close?.();return new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(new Error('Could not prepare the image.')),'image/jpeg',.92))};
   const upload=async(blob,role)=>{const controller=new AbortController();state.controller=controller;const base=(state.file.name||role).replace(/\.[^.]+$/,'');const filename=`${base}-${role==='thumbnail'?'thumbnail':'hero'}-16x9.jpg`;const response=await fetch('/api/upload-image',{method:'POST',headers:{'Content-Type':'image/jpeg','X-File-Name':encodeURIComponent(filename)},body:blob,credentials:'same-origin',signal:controller.signal});const data=await response.json().catch(()=>({}));if(!response.ok||!data.path)throw new Error(data.error||`Upload failed (${response.status||'network error'}).`);return data.path};
-  const openCrop=(file,role)=>{const h=host(role);if(!h)return;form.querySelector('.sf-thumb-crop')?.remove();revoke();state.file=file;state.role=role;state.objectUrl=URL.createObjectURL(file);const panel=document.createElement('div');panel.className='sf-thumb-crop';panel.innerHTML=`<div class="sf-thumb-crop-title"><span>Adjust ${role==='thumbnail'?'thumbnail':'hero image'}</span><span class="sf-thumb-crop-badge">16:9 fixed</span></div><div class="sf-thumb-frame"><img alt="Crop preview"></div><div class="sf-thumb-help">Drag the image with your finger. Pinch with two fingers to zoom and position it exactly where you want.</div><div class="sf-thumb-actions"><button type="button" class="primary sf-use">Done</button><button type="button" class="sf-cancel">Cancel</button></div><div class="sf-thumb-status">Position the image, then tap Done.</div>`;h.querySelector('.upload-row')?.after(panel);const frame=panel.querySelector('.sf-thumb-frame'),image=panel.querySelector('img'),done=panel.querySelector('.sf-use'),cancel=panel.querySelector('.sf-cancel');image.src=state.objectUrl;const crop={zoom:1,x:50,y:50,pointers:new Map(),startDistance:0,startZoom:1};const update=()=>{const fw=frame.clientWidth,fh=frame.clientHeight,nw=image.naturalWidth||1,nh=image.naturalHeight||1,scale=Math.max(fw/nw,fh/nh)*crop.zoom,w=nw*scale,h=nh*scale;image.style.width=`${w}px`;image.style.height=`${h}px`;image.style.left=`${(fw-w)*crop.x/100}px`;image.style.top=`${(fh-h)*crop.y/100}px`};image.onload=update;const points=()=>[...crop.pointers.values()];const distance=()=>{const p=points();return p.length<2?0:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)};frame.addEventListener('pointerdown',e=>{e.preventDefault();frame.setPointerCapture?.(e.pointerId);crop.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(crop.pointers.size===2){crop.startDistance=distance();crop.startZoom=crop.zoom}});frame.addEventListener('pointermove',e=>{if(!crop.pointers.has(e.pointerId))return;e.preventDefault();const previous=crop.pointers.get(e.pointerId);crop.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(crop.pointers.size===1){crop.x=Math.max(0,Math.min(100,crop.x-((e.clientX-previous.x)/frame.clientWidth)*100));crop.y=Math.max(0,Math.min(100,crop.y-((e.clientY-previous.y)/frame.clientHeight)*100))}else if(crop.pointers.size===2&&crop.startDistance){crop.zoom=Math.max(1,Math.min(4,crop.startZoom*(distance()/crop.startDistance)))}update()});const end=e=>{crop.pointers.delete(e.pointerId);if(crop.pointers.size<2)crop.startDistance=0};frame.addEventListener('pointerup',end);frame.addEventListener('pointercancel',end);
-    cancel.addEventListener('click',()=>{panel.remove();revoke();state.file=null;state.role=null;const f=input(role);if(f)f.value='';h.querySelector('.sf-thumb-status')?.remove()});
-    done.addEventListener('click',async()=>{try{done.disabled=true;cancel.disabled=true;setStatus('Preparing image…');const blob=await makeCrop(file,crop.zoom,crop.x,crop.y),localUrl=URL.createObjectURL(blob);showResult(role,localUrl,file.name);const uploadedPath=await upload(blob,role);path(role).value=uploadedPath;URL.revokeObjectURL(localUrl);showResult(role,uploadedPath,file.name);panel.remove();revoke();state.file=null;state.role=null;setStatus('Uploaded to website','success')}catch(error){setStatus(error?.name==='AbortError'?'Upload cancelled.':(error?.message||'Upload failed. The cropped preview is kept.'),'error')}finally{done.removeAttribute('disabled');cancel.removeAttribute('disabled')}})
+
+  const openCrop=(file,role)=>{
+    const h=host(role);
+    if(!h)return;
+    removeDialog();
+    revoke();
+    state.file=file;
+    state.role=role;
+    state.objectUrl=URL.createObjectURL(file);
+
+    const dialog=document.createElement('dialog');
+    dialog.className='sf-thumb-dialog';
+    dialog.setAttribute('aria-labelledby','sf-thumb-dialog-title');
+    dialog.innerHTML=`<div class="sf-thumb-modal"><div class="sf-thumb-crop-title"><span id="sf-thumb-dialog-title">Adjust ${role==='thumbnail'?'thumbnail':'hero image'}</span><span class="sf-thumb-crop-badge">16:9 fixed</span></div><div class="sf-thumb-frame"><img alt="Crop preview"></div><div class="sf-thumb-help">Drag the image with your finger. Pinch with two fingers to zoom and position it exactly where you want.</div><div class="sf-thumb-actions"><button type="button" class="primary sf-use">Done</button><button type="button" class="sf-cancel">Cancel</button></div><div class="sf-thumb-status">Position the image, then tap Done.</div></div>`;
+    document.body.append(dialog);
+    state.dialog=dialog;
+
+    const frame=dialog.querySelector('.sf-thumb-frame'),image=dialog.querySelector('img'),done=dialog.querySelector('.sf-use'),cancel=dialog.querySelector('.sf-cancel');
+    image.src=state.objectUrl;
+    const crop={zoom:1,x:50,y:50,pointers:new Map(),startDistance:0,startZoom:1};
+    const update=()=>{const fw=frame.clientWidth,fh=frame.clientHeight,nw=image.naturalWidth||1,nh=image.naturalHeight||1,scale=Math.max(fw/nw,fh/nh)*crop.zoom,w=nw*scale,h=nh*scale;image.style.width=`${w}px`;image.style.height=`${h}px`;image.style.left=`${(fw-w)*crop.x/100}px`;image.style.top=`${(fh-h)*crop.y/100}px`};
+    image.onload=update;
+    const points=()=>[...crop.pointers.values()];
+    const distance=()=>{const p=points();return p.length<2?0:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y)};
+    frame.addEventListener('pointerdown',e=>{e.preventDefault();frame.setPointerCapture?.(e.pointerId);crop.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(crop.pointers.size===2){crop.startDistance=distance();crop.startZoom=crop.zoom}});
+    frame.addEventListener('pointermove',e=>{if(!crop.pointers.has(e.pointerId))return;e.preventDefault();const previous=crop.pointers.get(e.pointerId);crop.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(crop.pointers.size===1){crop.x=Math.max(0,Math.min(100,crop.x-((e.clientX-previous.x)/frame.clientWidth)*100));crop.y=Math.max(0,Math.min(100,crop.y-((e.clientY-previous.y)/frame.clientHeight)*100))}else if(crop.pointers.size===2&&crop.startDistance){crop.zoom=Math.max(1,Math.min(4,crop.startZoom*(distance()/crop.startDistance)))}update()});
+    const end=e=>{crop.pointers.delete(e.pointerId);if(crop.pointers.size<2)crop.startDistance=0};
+    frame.addEventListener('pointerup',end);
+    frame.addEventListener('pointercancel',end);
+
+    const closeCancel=()=>{dialog.close();dialog.remove();state.dialog=null;revoke();state.file=null;state.role=null;const f=input(role);if(f)f.value='';h.querySelector('.sf-thumb-status')?.remove()};
+    cancel.addEventListener('click',closeCancel);
+    dialog.addEventListener('cancel',event=>{event.preventDefault();closeCancel()});
+
+    done.addEventListener('click',async()=>{
+      try{
+        done.disabled=true;
+        cancel.disabled=true;
+        const status=dialog.querySelector('.sf-thumb-status');
+        status.textContent='Preparing image…';
+        status.className='sf-thumb-status';
+        const blob=await makeCrop(file,crop.zoom,crop.x,crop.y);
+        const localUrl=URL.createObjectURL(blob);
+        showResult(role,localUrl,file.name);
+        const uploadedPath=await upload(blob,role);
+        path(role).value=uploadedPath;
+        URL.revokeObjectURL(localUrl);
+        showResult(role,uploadedPath,file.name);
+        dialog.close();
+        dialog.remove();
+        state.dialog=null;
+        revoke();
+        state.file=null;
+        state.role=null;
+        setStatus('Uploaded to website','success');
+      }catch(error){
+        const status=dialog.querySelector('.sf-thumb-status');
+        status.textContent=error?.name==='AbortError'?'Upload cancelled.':(error?.message||'Upload failed. The cropped preview is kept.');
+        status.className='sf-thumb-status error';
+      }finally{
+        done.removeAttribute('disabled');
+        cancel.removeAttribute('disabled');
+      }
+    });
+
+    dialog.showModal();
   };
+
   document.addEventListener('change',event=>{const target=event.target;if(!(target instanceof HTMLInputElement))return;const fileRole=target.dataset.imageFile;if(fileRole!=='thumbnail'&&fileRole!=='heroImage')return;const file=target.files?.[0];if(!file)return;event.preventDefault();event.stopPropagation();event.stopImmediatePropagation();openCrop(file,fileRole)},true);
 })();
