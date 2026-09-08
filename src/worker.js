@@ -72,8 +72,8 @@ export default {
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) response = injectBodyScript(response,'/resource-tool-logos.js');
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
-      response = injectBodyScript(response,'/admin/thumbnail-crop.js?v=20260908-4');
-      response = injectBodyScript(response,'/admin/image-controls.js?v=20260908-4');
+      response = injectBodyScript(response,'/admin/thumbnail-crop.js?v=20260908-5');
+      response = injectBodyScript(response,'/admin/image-controls.js?v=20260908-5');
     }
     return response;
   }
