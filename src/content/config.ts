@@ -8,6 +8,8 @@ const resources = defineCollection({
     description: z.string(),
     category: z.string(),
     tool: z.string(),
+    toolUrl: z.string().url().optional(),
+    toolAffiliate: z.boolean().default(false),
     date: z.coerce.date(),
     thumbnail: z.string().nullish(),
     heroImage: z.string().nullish(),
