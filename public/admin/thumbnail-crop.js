@@ -2,18 +2,18 @@
   const form = document.querySelector('#resource-form');
   if (!form) return;
 
-  const state = { file: null, objectUrl: null, controller: null, crop: null };
+  const state = { file: null, objectUrl: null, controller: null, role: null };
 
   const style = document.createElement('style');
   style.textContent = `
     .builder-page .sf-thumb-crop{margin-top:12px;padding:14px;border:1px solid rgba(61,214,208,.25);border-radius:14px;background:rgba(7,17,31,.72)}
     .builder-page .sf-thumb-crop-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;color:var(--text);font-size:13px;font-weight:800}
     .builder-page .sf-thumb-crop-badge{color:var(--accent);font-size:11px}
-    .builder-page .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:12px;background:#050b13;touch-action:none;cursor:grab;user-select:none}
+    .builder-page .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:12px;background:#050b13;touch-action:none;cursor:grab}
     .builder-page .sf-thumb-frame:active{cursor:grabbing}
-    .builder-page .sf-thumb-frame img{position:absolute;display:block;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none;will-change:transform}
-    .builder-page .sf-thumb-hint{margin-top:9px;color:var(--muted);font-size:11px;line-height:1.5;text-align:center}
-    .builder-page .sf-thumb-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
+    .builder-page .sf-thumb-frame img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none}
+    .builder-page .sf-thumb-help{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
+    .builder-page .sf-thumb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
     .builder-page .sf-thumb-actions button{min-height:38px;padding:0 13px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
     .builder-page .sf-thumb-actions .primary{border-color:rgba(61,214,208,.4);background:rgba(61,214,208,.1);color:var(--accent)}
     .builder-page .sf-thumb-status{margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}
@@ -22,14 +22,13 @@
     .builder-page .sf-thumb-result{position:relative;margin-top:10px}
     .builder-page .sf-thumb-result img{display:block;width:min(100%,420px);aspect-ratio:16/9;object-fit:cover;border:1px solid var(--line);border-radius:12px}
     .builder-page .sf-thumb-result button{position:absolute;top:8px;right:8px;width:30px;height:30px;min-width:30px;min-height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(7,17,31,.9);color:var(--muted);font:inherit;font-size:18px;line-height:1;cursor:pointer}
-    .builder-page .sf-thumb-result button:hover{border-color:rgba(255,100,100,.5);color:#ff9b9b}
   `;
   document.head.appendChild(style);
 
-  const host = () => form.querySelector('.image-field:has(input[data-image-file="thumbnail"])') || form.querySelector('input[data-image-file="thumbnail"]')?.closest('.image-field');
-  const input = () => form.querySelector('input[data-image-file="thumbnail"]');
-  const path = () => form.querySelector('input[name="thumbnail"]');
-  const preview = () => form.querySelector('[data-preview="thumbnail"]');
+  const host = role => form.querySelector(`.image-field:has(input[data-image-file="${role}"])`) || form.querySelector(`input[data-image-file="${role}"]`)?.closest('.image-field');
+  const input = role => form.querySelector(`input[data-image-file="${role}"]`);
+  const path = role => form.querySelector(`input[name="${role === 'thumbnail' ? 'thumbnail' : 'heroImage'}"]`);
+  const preview = role => form.querySelector(`[data-preview="${role}"]`);
 
   const revoke = () => {
     if (state.objectUrl) URL.revokeObjectURL(state.objectUrl);
@@ -37,7 +36,7 @@
   };
 
   const setStatus = (message, kind = '') => {
-    const h = host();
+    const h = host(state.role);
     if (!h) return;
     let node = h.querySelector('.sf-thumb-status');
     if (!node) {
@@ -49,17 +48,15 @@
     node.className = `sf-thumb-status${kind ? ` ${kind}` : ''}`;
   };
 
-  const clearCrop = () => form.querySelector('.sf-thumb-crop')?.remove();
-
-  const clearResult = () => {
-    const p = preview();
+  const clearResult = role => {
+    const p = preview(role);
     if (!p) return;
     p.classList.remove('has-image');
     p.innerHTML = '';
   };
 
-  const showResult = (url, filename) => {
-    const p = preview();
+  const showResult = (role, url, filename) => {
+    const p = preview(role);
     if (!p) return;
     p.className = 'image-preview has-image';
     p.innerHTML = '';
@@ -67,61 +64,59 @@
     box.className = 'sf-thumb-result';
     const img = document.createElement('img');
     img.src = url;
-    img.alt = 'Final 16:9 thumbnail preview';
+    img.alt = role === 'thumbnail' ? 'Thumbnail preview' : 'Hero image preview';
     const clear = document.createElement('button');
     clear.type = 'button';
     clear.textContent = '×';
-    clear.title = 'Remove thumbnail';
-    clear.setAttribute('aria-label', 'Remove thumbnail');
+    clear.title = `Remove ${role === 'thumbnail' ? 'thumbnail' : 'hero image'}`;
+    clear.setAttribute('aria-label', clear.title);
     clear.addEventListener('click', event => {
       event.preventDefault();
       event.stopPropagation();
       state.controller?.abort();
+      if (state.role === role) state.role = null;
       state.file = null;
-      state.crop = null;
       revoke();
-      const f = input();
-      const v = path();
+      const f = input(role);
+      const v = path(role);
       if (f) f.value = '';
       if (v) v.value = '';
-      clearCrop();
-      clearResult();
-      setStatus('');
+      clearResult(role);
+      form.querySelector('.sf-thumb-crop')?.remove();
+      const h = host(role);
+      h?.querySelector('.sf-thumb-status')?.remove();
     });
     const label = document.createElement('span');
-    label.textContent = filename || 'Thumbnail';
-    label.style.cssText = 'display:block;margin-top:6px;color:var(--muted);font-size:11px';
+    label.textContent = filename || (role === 'thumbnail' ? 'Thumbnail' : 'Hero image');
     box.append(img, clear, label);
     p.append(box);
   };
 
-  const makeCrop = async file => {
+  const makeCrop = async (file, zoom, offsetX, offsetY) => {
     const bitmap = await createImageBitmap(file);
     const targetRatio = 16 / 9;
     const sourceRatio = bitmap.width / bitmap.height;
     let cropW = sourceRatio > targetRatio ? bitmap.height * targetRatio : bitmap.width;
     let cropH = sourceRatio > targetRatio ? bitmap.height : bitmap.width / targetRatio;
-    const zoom = Math.max(1, state.crop?.zoom || 1);
     cropW /= zoom;
     cropH /= zoom;
-    const maxX = Math.max(0, bitmap.width - cropW);
-    const maxY = Math.max(0, bitmap.height - cropH);
-    const x = Math.max(0, Math.min(maxX, state.crop?.x || 0));
-    const y = Math.max(0, Math.min(maxY, state.crop?.y || 0));
+    const sx = Math.max(0, Math.min(bitmap.width - cropW, (bitmap.width - cropW) * offsetX / 100));
+    const sy = Math.max(0, Math.min(bitmap.height - cropH, (bitmap.height - cropH) * offsetY / 100));
     const canvas = document.createElement('canvas');
     canvas.width = 1600;
     canvas.height = 900;
     const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('Could not prepare the thumbnail.');
-    ctx.drawImage(bitmap, x, y, cropW, cropH, 0, 0, 1600, 900);
+    if (!ctx) throw new Error('Could not prepare the image.');
+    ctx.drawImage(bitmap, sx, sy, cropW, cropH, 0, 0, 1600, 900);
     bitmap.close?.();
-    return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not prepare the thumbnail.')), 'image/jpeg', 0.92));
+    return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not prepare the image.')), 'image/jpeg', 0.92));
   };
 
-  const upload = async blob => {
+  const upload = async (blob, role) => {
     const controller = new AbortController();
     state.controller = controller;
-    const filename = `${(state.file.name || 'thumbnail').replace(/\.[^.]+$/, '')}-thumbnail-16x9.jpg`;
+    const base = (state.file.name || role).replace(/\.[^.]+$/, '');
+    const filename = `${base}-${role === 'thumbnail' ? 'thumbnail' : 'hero'}-16x9.jpg`;
     const response = await fetch('/api/upload-image', {
       method: 'POST',
       headers: { 'Content-Type': 'image/jpeg', 'X-File-Name': encodeURIComponent(filename) },
@@ -134,146 +129,130 @@
     return data.path;
   };
 
-  const openCrop = file => {
-    const h = host();
+  const openCrop = (file, role) => {
+    const h = host(role);
     if (!h) return;
-    clearCrop();
-    clearResult();
+    form.querySelector('.sf-thumb-crop')?.remove();
     revoke();
     state.file = file;
-    state.crop = { x: 0, y: 0, zoom: 1 };
+    state.role = role;
     state.objectUrl = URL.createObjectURL(file);
-
     const panel = document.createElement('div');
     panel.className = 'sf-thumb-crop';
     panel.innerHTML = `
-      <div class="sf-thumb-crop-title"><span>Adjust thumbnail</span><span class="sf-thumb-crop-badge">16:9 fixed</span></div>
-      <div class="sf-thumb-frame"><img alt="Thumbnail crop preview"></div>
-      <div class="sf-thumb-hint">Drag the image with one finger. Pinch to zoom. The frame stays 16:9.</div>
-      <div class="sf-thumb-actions"><button type="button" class="sf-cancel">Cancel</button><button type="button" class="primary sf-use">Done</button></div>
+      <div class="sf-thumb-crop-title"><span>Adjust ${role === 'thumbnail' ? 'thumbnail' : 'hero image'}</span><span class="sf-thumb-crop-badge">16:9 fixed</span></div>
+      <div class="sf-thumb-frame"><img alt="Crop preview"></div>
+      <div class="sf-thumb-help">Drag the image with your finger. Pinch with two fingers to zoom and position it exactly where you want.</div>
+      <div class="sf-thumb-actions"><button type="button" class="primary sf-use">Done</button><button type="button" class="sf-cancel">Cancel</button></div>
       <div class="sf-thumb-status">Position the image, then tap Done.</div>
     `;
     h.querySelector('.upload-row')?.after(panel);
 
     const frame = panel.querySelector('.sf-thumb-frame');
     const image = panel.querySelector('img');
+    const done = panel.querySelector('.sf-use');
+    const cancel = panel.querySelector('.sf-cancel');
     image.src = state.objectUrl;
 
-    let naturalW = 0, naturalH = 0, baseScale = 1;
+    const crop = { zoom: 1, x: 50, y: 50, pointers: new Map(), startX: 50, startY: 50, startDistance: 0, startZoom: 1 };
     const update = () => {
-      if (!naturalW || !naturalH) return;
       const frameW = frame.clientWidth;
       const frameH = frame.clientHeight;
-      baseScale = Math.max(frameW / naturalW, frameH / naturalH);
-      const scale = baseScale * state.crop.zoom;
+      const naturalW = image.naturalWidth || 1;
+      const naturalH = image.naturalHeight || 1;
+      const scale = Math.max(frameW / naturalW, frameH / naturalH) * crop.zoom;
       const width = naturalW * scale;
       const height = naturalH * scale;
-      const minX = Math.min(0, frameW - width);
-      const minY = Math.min(0, frameH - height);
-      state.crop.x = Math.max(minX, Math.min(0, state.crop.x));
-      state.crop.y = Math.max(minY, Math.min(0, state.crop.y));
       image.style.width = `${width}px`;
       image.style.height = `${height}px`;
-      image.style.left = `${state.crop.x}px`;
-      image.style.top = `${state.crop.y}px`;
+      image.style.left = `${(frameW - width) * crop.x / 100}px`;
+      image.style.top = `${(frameH - height) * crop.y / 100}px`;
     };
+    image.onload = update;
 
-    image.onload = () => {
-      naturalW = image.naturalWidth;
-      naturalH = image.naturalHeight;
-      state.crop.x = (frame.clientWidth - naturalW * Math.max(frame.clientWidth / naturalW, frame.clientHeight / naturalH)) / 2;
-      state.crop.y = (frame.clientHeight - naturalH * Math.max(frame.clientWidth / naturalW, frame.clientHeight / naturalH)) / 2;
-      update();
+    const distance = () => {
+      const points = [...crop.pointers.values()];
+      if (points.length < 2) return 0;
+      return Math.hypot(points[0].x - points[1].x, points[0].y - points[1].y);
     };
-
-    const distance = touches => Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
-    let dragging = false, lastX = 0, lastY = 0, pinchStart = 0, pinchZoom = 1;
-
     frame.addEventListener('pointerdown', event => {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-      dragging = true;
-      lastX = event.clientX;
-      lastY = event.clientY;
+      event.preventDefault();
       frame.setPointerCapture?.(event.pointerId);
+      crop.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (crop.pointers.size === 1) {
+        crop.startX = crop.x;
+        crop.startY = crop.y;
+      } else if (crop.pointers.size === 2) {
+        crop.startDistance = distance();
+        crop.startZoom = crop.zoom;
+      }
     });
     frame.addEventListener('pointermove', event => {
-      if (!dragging) return;
-      const dx = event.clientX - lastX;
-      const dy = event.clientY - lastY;
-      lastX = event.clientX;
-      lastY = event.clientY;
-      state.crop.x += dx;
-      state.crop.y += dy;
+      if (!crop.pointers.has(event.pointerId)) return;
+      event.preventDefault();
+      crop.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const points = [...crop.pointers.values()];
+      if (points.length === 1) {
+        const dx = event.clientX - [...crop.pointers.values()][0].x;
+        const dy = event.clientY - [...crop.pointers.values()][0].y;
+        crop.x = Math.max(0, Math.min(100, crop.startX - (dx / frame.clientWidth) * 100));
+        crop.y = Math.max(0, Math.min(100, crop.startY - (dy / frame.clientHeight) * 100));
+      } else if (points.length === 2 && crop.startDistance) {
+        crop.zoom = Math.max(1, Math.min(4, crop.startZoom * (distance() / crop.startDistance)));
+      }
       update();
     });
-    frame.addEventListener('pointerup', () => { dragging = false; });
-    frame.addEventListener('pointercancel', () => { dragging = false; });
+    const endPointer = event => { crop.pointers.delete(event.pointerId); if (crop.pointers.size < 2) crop.startDistance = 0; };
+    frame.addEventListener('pointerup', endPointer);
+    frame.addEventListener('pointercancel', endPointer);
+    frame.addEventListener('pointerleave', () => {});
 
-    frame.addEventListener('touchstart', event => {
-      if (event.touches.length === 2) {
-        dragging = false;
-        pinchStart = distance(event.touches);
-        pinchZoom = state.crop.zoom;
-      }
-    }, { passive: true });
-    frame.addEventListener('touchmove', event => {
-      if (event.touches.length !== 2 || !pinchStart) return;
-      event.preventDefault();
-      const ratio = distance(event.touches) / pinchStart;
-      state.crop.zoom = Math.max(1, Math.min(3, pinchZoom * ratio));
-      update();
-    }, { passive: false });
-    frame.addEventListener('touchend', event => {
-      if (event.touches.length < 2) pinchStart = 0;
-    }, { passive: true });
-
-    panel.querySelector('.sf-cancel').addEventListener('click', event => {
-      event.preventDefault();
-      clearCrop();
+    cancel.addEventListener('click', () => {
+      panel.remove();
       revoke();
       state.file = null;
-      state.crop = null;
-      const f = input();
+      state.role = null;
+      const f = input(role);
       if (f) f.value = '';
-      setStatus('');
+      h.querySelector('.sf-thumb-status')?.remove();
     });
 
-    panel.querySelector('.sf-use').addEventListener('click', async event => {
-      event.preventDefault();
-      const use = panel.querySelector('.sf-use');
-      const cancel = panel.querySelector('.sf-cancel');
+    done.addEventListener('click', async () => {
       try {
-        use.disabled = true;
+        done.disabled = true;
         cancel.disabled = true;
-        setStatus('Preparing 16:9 thumbnail…');
-        const blob = await makeCrop(file);
+        setStatus('Preparing image…');
+        const blob = await makeCrop(file, crop.zoom, crop.x, crop.y);
         const localUrl = URL.createObjectURL(blob);
-        clearCrop();
-        showResult(localUrl, file.name);
-        setStatus('Uploading…');
-        const uploadedPath = await upload(blob);
-        path().value = uploadedPath;
+        showResult(role, localUrl, file.name);
+        const uploadedPath = await upload(blob, role);
+        path(role).value = uploadedPath;
         URL.revokeObjectURL(localUrl);
-        showResult(uploadedPath, file.name);
+        showResult(role, uploadedPath, file.name);
+        panel.remove();
+        revoke();
+        state.file = null;
+        state.role = null;
         setStatus('Uploaded to website', 'success');
-        state.crop = null;
       } catch (error) {
-        if (error?.name === 'AbortError') setStatus('Upload cancelled.', 'error');
-        else setStatus(error?.message || 'Upload failed. The cropped preview is kept.', 'error');
-        use.disabled = false;
-        cancel.disabled = false;
+        setStatus(error?.name === 'AbortError' ? 'Upload cancelled.' : (error?.message || 'Upload failed. The cropped preview is kept.'), 'error');
+      } finally {
+        done.removeAttribute('disabled');
+        cancel.removeAttribute('disabled');
       }
     });
   };
 
   document.addEventListener('change', event => {
     const target = event.target;
-    if (!(target instanceof HTMLInputElement) || target.dataset.imageFile !== 'thumbnail') return;
+    if (!(target instanceof HTMLInputElement)) return;
+    const role = target.dataset.imageFile;
+    if (role !== 'thumbnail' && role !== 'heroImage') return;
     const file = target.files?.[0];
     if (!file) return;
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    openCrop(file);
+    openCrop(file, role === 'heroImage' ? 'hero' : 'thumbnail');
   }, true);
 })();
