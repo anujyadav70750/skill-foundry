@@ -51,7 +51,7 @@ async function fetchToolLogo(request) {
   let resolvedOrigin = target.origin;
   try {
     const landing = await fetch(target.href, { method: 'GET', headers: { 'User-Agent': 'Mozilla/5.0 Skill-Foundry-Logo-Fetcher' }, redirect: 'follow' });
-    if (landing.ok || landing.status < 400) { resolvedOrigin = new URL(landing.url).origin; const htmlType = landing.headers.get('content-type') || ''; if (htmlType.includes('text/html')) { const html = await landing.text(); const match = html.match(/<link[^>]+rel=["'][^"']*icon[^"']*["'][^>]+href=["']([^"']+)["']/i) || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["'][^"']*icon[^"']*["']/i); if (match?.[1]) { try { return json({ logoUrl: new URL(match[1], landing.url).href }, 200, request); } catch {} } } }
+    if (landing.ok || landing.status < 400) { resolvedOrigin = new URL(landing.url).origin; const htmlType = landing.headers.get('content-type') || ''; if (htmlType.includes('text/html')) { const html = await landing.text(); const match = html.match(/<link[^>]+rel=[\"'][^\"']*icon[^\"']*[\"'][^>]+href=[\"']([^\"']+)[\"']/i) || html.match(/<link[^>]+href=[\"']([^\"']+)[\"'][^>]+rel=[\"'][^\"']*icon[^\"']*[\"']/i); if (match?.[1]) { try { return json({ logoUrl: new URL(match[1], landing.url).href }, 200, request); } catch {} } } }
   } catch {}
   for (const candidate of [`${resolvedOrigin}/favicon.svg`, `${resolvedOrigin}/favicon.ico`, `${resolvedOrigin}/apple-touch-icon.png`]) { try { const response = await fetch(candidate, { headers: { 'User-Agent': 'Mozilla/5.0 Skill-Foundry-Logo-Fetcher' }, redirect: 'follow' }); const type = response.headers.get('content-type') || ''; if (response.ok && (type.startsWith('image/') || candidate.endsWith('.ico'))) return json({ logoUrl: response.url }, 200, request); } catch {} }
   return json({ logoUrl: `${resolvedOrigin}/favicon.svg` }, 200, request);
@@ -70,7 +70,10 @@ export default {
     const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) response = injectBodyScript(response, '/resource-tool-logos.js');
-    if (request.method === 'GET' && url.pathname.startsWith('/admin/') && contentType.includes('text/html')) response = injectBodyScript(response, '/admin/image-controls.js?v=20260908-1');
+    if (request.method === 'GET' && url.pathname.startsWith('/admin/') && contentType.includes('text/html')) {
+      response = injectBodyScript(response, '/admin/thumbnail-crop.js?v=20260908-3');
+      response = injectBodyScript(response, '/admin/image-controls.js?v=20260908-3');
+    }
     return response;
   }
 };
