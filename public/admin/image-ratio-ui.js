@@ -51,16 +51,18 @@
   `;
   document.head.appendChild(style);
 
-  const roleFrom = file => file?.dataset.fileRole;
-  const hostFor = file => file?.closest('.media-item');
-  const previewFor = file => hostFor(file)?.querySelector(`[data-preview-role="${roleFrom(file)}"]`);
-  const pathFor = file => hostFor(file)?.querySelector(`[data-role="${roleFrom(file)}"]`);
-  const clearBuilderStatus = file => {
-    const host = hostFor(file);
-    const status = host?.querySelector('[data-upload-state]');
-    if (status) { status.textContent = ''; status.className = 'upload-state'; }
+  const isTarget = input => input instanceof HTMLInputElement && (input.dataset.fileRole === 'input' || input.dataset.fileRole === 'result');
+  const roleOf = input => input.dataset.fileRole;
+  const hostOf = input => input.closest('.media-item');
+  const previewOf = input => hostOf(input)?.querySelector(`[data-preview-role="${roleOf(input)}"]`);
+  const pathOf = input => hostOf(input)?.querySelector(`[data-role="${roleOf(input)}"]`);
+  const oldStatusOf = input => hostOf(input)?.querySelector('[data-upload-state]');
+
+  const clearOldStatus = input => {
+    const node = oldStatusOf(input);
+    if (node) { node.textContent = ''; node.className = 'upload-state'; }
   };
-  const revokeItem = item => { if (item?.url) URL.revokeObjectURL(item.url); };
+  const revoke = item => { if (item?.url) URL.revokeObjectURL(item.url); };
 
   const makeCrop = async (file, ratio) => {
     const source = await createImageBitmap(file);
@@ -85,51 +87,21 @@
     return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not prepare the cropped image.')), 'image/jpeg', .92));
   };
 
-  const renderResult = (file, item) => {
-    const preview = previewFor(file);
-    if (!preview) return;
-    preview.className = 'image-preview has-image';
-    preview.innerHTML = '';
-    const box = document.createElement('div');
-    box.className = 'sf-ratio-result';
-    const media = document.createElement('div');
-    media.className = 'sf-ratio-result-media';
-    const image = document.createElement('img');
-    image.src = item.url;
-    image.alt = `${roleFrom(file) === 'input' ? 'Input' : 'Output'} image preview (${item.ratio})`;
-    image.style.aspectRatio = item.ratio === 'original' ? 'auto' : item.ratio;
-    const label = document.createElement('span');
-    label.className = 'sf-ratio-result-file';
-    label.textContent = `${item.originalName} · ${item.ratio === 'original' ? 'Original' : item.ratio}`;
-    media.append(image, label);
-
-    const actions = document.createElement('div');
-    actions.className = 'sf-ratio-result-actions';
-    const upload = document.createElement('button');
-    upload.type = 'button';
-    upload.className = 'sf-ratio-upload';
-    upload.textContent = item.uploaded ? 'Done' : 'Upload';
-    upload.disabled = !!item.uploaded;
-    const status = document.createElement('div');
-    status.className = `sf-ratio-status${item.uploaded ? ' success' : ''}`;
-    status.textContent = item.uploaded ? 'Uploaded to website' : 'Ready to upload';
-    upload.addEventListener('click', () => uploadItem(file, upload, status));
-    actions.append(upload, status);
-
-    const clear = document.createElement('button');
-    clear.type = 'button';
-    clear.className = 'sf-ratio-clear';
-    clear.textContent = '×';
-    clear.title = 'Remove selected image';
-    clear.setAttribute('aria-label', 'Remove selected image');
-    clear.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); clearItem(file); });
-
-    box.append(media, actions, clear);
-    preview.append(box);
+  const clearInput = input => {
+    const item = pending.get(input);
+    item?.controller?.abort();
+    revoke(item);
+    pending.delete(input);
+    const preview = previewOf(input);
+    const path = pathOf(input);
+    if (preview) { preview.className = 'image-preview'; preview.innerHTML = ''; }
+    if (path) path.value = '';
+    input.value = '';
+    clearOldStatus(input);
   };
 
-  const uploadItem = async (file, button, status) => {
-    const item = pending.get(file);
+  const uploadItem = async (input, button, status) => {
+    const item = pending.get(input);
     if (!item || item.uploaded) return;
     button.disabled = true;
     button.textContent = 'Uploading…';
@@ -140,17 +112,11 @@
     try {
       const base = item.originalName.replace(/\.[^.]+$/, '');
       const ratioName = item.ratio === 'original' ? 'original' : item.ratio.replace(':', 'x');
-      const filename = `${base}-${roleFrom(file)}-${ratioName}.jpg`;
-      const response = await fetch('/api/upload-image', {
-        method: 'POST',
-        headers: { 'Content-Type': 'image/jpeg', 'X-File-Name': encodeURIComponent(filename) },
-        body: item.blob,
-        credentials: 'same-origin',
-        signal: controller.signal
-      });
+      const filename = `${base}-${item.role}-${ratioName}.jpg`;
+      const response = await fetch('/api/upload-image', { method:'POST', headers:{'Content-Type':'image/jpeg','X-File-Name':encodeURIComponent(filename)}, body:item.blob, credentials:'same-origin', signal:controller.signal });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.path) throw new Error(data.error || `Image upload failed (${response.status || 'network error'}).`);
-      const path = pathFor(file);
+      const path = pathOf(input);
       if (path) path.value = data.path;
       item.uploaded = true;
       item.uploadedPath = data.path;
@@ -162,24 +128,38 @@
       button.textContent = 'Upload';
       status.textContent = error?.name === 'AbortError' ? 'Upload cancelled.' : (error?.message || 'Upload failed.');
       status.className = 'sf-ratio-status error';
-    } finally {
-      item.controller = null;
-    }
+    } finally { item.controller = null; }
   };
 
-  const clearItem = file => {
-    const item = pending.get(file);
-    item?.controller?.abort();
-    revokeItem(item);
-    pending.delete(file);
-    const preview = previewFor(file);
-    const path = pathFor(file);
-    const host = hostFor(file);
-    if (preview) { preview.className = 'image-preview'; preview.innerHTML = ''; }
-    if (path) path.value = '';
-    clearBuilderStatus(file);
-    const fileInput = host?.querySelector(`input[data-file-role="${roleFrom(file)}"]`);
-    if (fileInput) fileInput.value = '';
+  const renderResult = (input, item) => {
+    const preview = previewOf(input);
+    if (!preview) return;
+    preview.className = 'image-preview has-image';
+    preview.innerHTML = '';
+    const box = document.createElement('div');
+    box.className = 'sf-ratio-result';
+    const media = document.createElement('div');
+    media.className = 'sf-ratio-result-media';
+    const image = document.createElement('img');
+    image.src = item.url;
+    image.alt = `${item.role === 'input' ? 'Input' : 'Output'} image preview`;
+    if (item.ratio !== 'original') image.style.aspectRatio = item.ratio;
+    const label = document.createElement('span');
+    label.className = 'sf-ratio-result-file';
+    label.textContent = `${item.originalName} · ${item.ratio === 'original' ? 'Original' : item.ratio}`;
+    media.append(image, label);
+    const actions = document.createElement('div');
+    actions.className = 'sf-ratio-result-actions';
+    const upload = document.createElement('button');
+    upload.type = 'button'; upload.className = 'sf-ratio-upload'; upload.textContent = 'Upload';
+    const status = document.createElement('div'); status.className = 'sf-ratio-status'; status.textContent = 'Ready to upload';
+    upload.addEventListener('click', () => uploadItem(input, upload, status));
+    actions.append(upload, status);
+    const clear = document.createElement('button');
+    clear.type = 'button'; clear.className = 'sf-ratio-clear'; clear.textContent = '×'; clear.title = 'Remove selected image'; clear.setAttribute('aria-label','Remove selected image');
+    clear.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); clearInput(input); });
+    box.append(media, actions, clear);
+    preview.append(box);
   };
 
   const closeDialog = dialog => {
@@ -189,93 +169,72 @@
     if (activeDialog === dialog) activeDialog = null;
   };
 
-  const openDialog = (file, role) => {
+  const openDialog = (input, file) => {
     if (activeDialog) closeDialog(activeDialog);
+    const role = roleOf(input);
     const dialog = document.createElement('dialog');
     dialog.className = 'sf-ratio-dialog';
-    dialog.innerHTML = `<div class="sf-ratio-modal"><div class="sf-ratio-title"><span>Adjust ${role === 'input' ? 'input' : 'output'} image</span><span class="sf-ratio-badge">Choose ratio</span></div><label class="sf-ratio-picker"><span>Display ratio</span><select class="sf-ratio-select" aria-label="Display ratio">${ratios.map(([label, value]) => `<option value="${value}">${label}</option>`).join('')}</select></label><div class="sf-ratio-frame"><img alt="Crop preview"></div><div class="sf-ratio-help">Choose a ratio to crop the image automatically. Check the preview, then tap Done. Nothing is uploaded until you press Upload on the main screen.</div><div class="sf-ratio-actions"><button type="button" class="primary sf-ratio-done">Done</button><button type="button" class="sf-ratio-cancel">Cancel</button></div></div>`;
-    document.body.append(dialog);
-    activeDialog = dialog;
-
+    dialog.innerHTML = `<div class="sf-ratio-modal"><div class="sf-ratio-title"><span>Adjust ${role === 'input' ? 'input' : 'output'} image</span><span class="sf-ratio-badge">Choose ratio</span></div><label class="sf-ratio-picker"><span>Display ratio</span><select class="sf-ratio-select" aria-label="Display ratio">${ratios.map(([label,value]) => `<option value="${value}">${label}</option>`).join('')}</select></label><div class="sf-ratio-frame"><img alt="Crop preview"></div><div class="sf-ratio-help">Choose a ratio and the image will be automatically cropped to that shape. Check the preview, then tap Done. Nothing is uploaded yet.</div><div class="sf-ratio-actions"><button type="button" class="primary sf-ratio-done">Done</button><button type="button" class="sf-ratio-cancel">Cancel</button></div></div>`;
+    document.body.append(dialog); activeDialog = dialog;
     const frame = dialog.querySelector('.sf-ratio-frame');
     const image = dialog.querySelector('img');
     const select = dialog.querySelector('.sf-ratio-select');
     const done = dialog.querySelector('.sf-ratio-done');
     const cancel = dialog.querySelector('.sf-ratio-cancel');
-    let sourceUrl = URL.createObjectURL(file);
+    const sourceUrl = URL.createObjectURL(file);
     image.src = sourceUrl;
-
     const update = () => {
-      const [rw, rh] = select.value === 'original' ? [image.naturalWidth || 1, image.naturalHeight || 1] : select.value.split(':').map(Number);
+      const [rw,rh] = select.value === 'original' ? [image.naturalWidth || 1,image.naturalHeight || 1] : select.value.split(':').map(Number);
       frame.style.aspectRatio = `${rw}/${rh}`;
-      const fw = frame.clientWidth;
-      const fh = frame.clientHeight;
-      const nw = image.naturalWidth || 1;
-      const nh = image.naturalHeight || 1;
-      const scale = Math.max(fw / nw, fh / nh);
-      const w = nw * scale;
-      const h = nh * scale;
-      image.style.width = `${w}px`;
-      image.style.height = `${h}px`;
-      image.style.left = `${(fw - w) / 2}px`;
-      image.style.top = `${(fh - h) / 2}px`;
+      const fw=frame.clientWidth,fh=frame.clientHeight,nw=image.naturalWidth||1,nh=image.naturalHeight||1,scale=Math.max(fw/nw,fh/nh),w=nw*scale,h=nh*scale;
+      image.style.width=`${w}px`; image.style.height=`${h}px`; image.style.left=`${(fw-w)/2}px`; image.style.top=`${(fh-h)/2}px`;
     };
     image.onload = update;
     select.addEventListener('change', update);
-
     const cleanup = () => { URL.revokeObjectURL(sourceUrl); closeDialog(dialog); };
     cancel.addEventListener('click', cleanup);
     dialog.addEventListener('cancel', event => { event.preventDefault(); cleanup(); });
-
     done.addEventListener('click', async () => {
-      done.disabled = true;
-      cancel.disabled = true;
+      done.disabled=true; cancel.disabled=true;
       try {
-        const ratio = select.value;
-        const blob = ratio === 'original' ? file : await makeCrop(file, ratio);
-        const old = pending.get(file);
-        revokeItem(old);
-        const item = { blob, url: URL.createObjectURL(blob), originalName: file.name, ratio, uploaded: false, controller: null, uploadedPath: '' };
-        pending.set(file, item);
-        const path = pathFor(file);
-        if (path) path.value = '';
-        clearBuilderStatus(file);
-        renderResult(file, item);
-        cleanup();
-      } catch (error) {
-        done.disabled = false;
-        cancel.disabled = false;
-        const help = document.createElement('div');
-        help.className = 'sf-ratio-help';
-        help.textContent = error?.message || 'Could not prepare the image.';
-        dialog.querySelector('.sf-ratio-modal')?.append(help);
+        const ratio=select.value;
+        const blob=ratio==='original' ? file : await makeCrop(file,ratio);
+        const previous=pending.get(input); revoke(previous);
+        const item={blob,url:URL.createObjectURL(blob),originalName:file.name,ratio,role,uploaded:false,uploadedPath:'',controller:null};
+        pending.set(input,item);
+        const path=pathOf(input); if(path) path.value='';
+        clearOldStatus(input); renderResult(input,item); input.value=''; cleanup();
+      } catch(error) {
+        done.disabled=false; cancel.disabled=false;
+        const help=dialog.querySelector('.sf-ratio-help'); if(help) help.textContent=error?.message||'Could not prepare the image.';
       }
     });
-
     dialog.showModal();
   };
 
+  // This document-level capture handler runs before the old builder's input listener,
+  // including for media items created dynamically after this script loads.
   document.addEventListener('change', event => {
-    const file = event.target;
-    if (!(file instanceof HTMLInputElement)) return;
-    const role = roleFrom(file);
-    if (role !== 'input' && role !== 'result') return;
-    const selected = file.files?.[0];
-    if (!selected) return;
+    const input=event.target;
+    if(!isTarget(input)) return;
+    const file=input.files?.[0];
+    if(!file) return;
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
-    file.value = '';
-    clearBuilderStatus(file);
-    openDialog(file, role);
+    clearOldStatus(input);
+    openDialog(input,file);
   }, true);
 
+  // Removing an Input/Output image must also clear any stale old upload/error message.
   document.addEventListener('click', event => {
-    const clear = event.target.closest?.('.image-clear');
-    if (!clear) return;
-    const item = clear.closest('.media-item');
-    const file = item?.querySelector('input[data-file-role="input"],input[data-file-role="result"]');
-    if (!file) return;
-    clearItem(file);
+    const clear=event.target.closest?.('.image-clear');
+    if(!clear) return;
+    const item=clear.closest('.media-item');
+    const input=item?.querySelector('input[data-file-role="input"],input[data-file-role="result"]');
+    if(!input) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    clearInput(input);
   }, true);
 })();
