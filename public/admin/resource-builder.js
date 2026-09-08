@@ -5,7 +5,7 @@
   const preview = document.querySelector('#preview-content');
   const status = document.querySelector('#status');
   const storageKey = 'skill-foundry-resource-draft-v5';
-  const escapeHtml = (value) => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+  const escapeHtml = (value) => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#039;');
   const yamlQuote = (value) => JSON.stringify(String(value ?? ''));
   const slugify = (value) => String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
   const value = (name) => form.elements[name]?.value || '';
@@ -22,7 +22,7 @@
   });
 
   const style = document.createElement('style');
-  style.textContent = `.builder-page .repeat-add-button{display:flex;width:100%;align-items:center;justify-content:center;margin-top:10px;min-height:42px}.builder-page .repeat-item .remove-button{z-index:2}.builder-page .media-item{padding-bottom:14px}.builder-page .media-control{display:grid;gap:8px}.builder-page .media-control .upload-row{width:100%}.builder-page .repeat-item input,.builder-page .repeat-item textarea{background:rgba(7,17,31,.75)!important;color:var(--text)!important;border:1px solid var(--line)!important}.builder-page .repeat-item input::placeholder,.builder-page .repeat-item textarea::placeholder{color:#71849a!important;opacity:1}`;
+  style.textContent = `.builder-page textarea{resize:none!important}.builder-page .repeat-add-button{display:flex;width:100%;align-items:center;justify-content:center;margin-top:10px;min-height:42px}.builder-page .repeat-item .remove-button{z-index:2}.builder-page .media-item{padding-bottom:14px}.builder-page .media-control{display:grid;gap:8px}.builder-page .media-control .upload-row{width:100%}.builder-page .repeat-item input,.builder-page .repeat-item textarea{background:rgba(7,17,31,.75)!important;color:var(--text)!important;border:1px solid var(--line)!important}.builder-page .repeat-item input::placeholder,.builder-page .repeat-item textarea::placeholder{color:#71849a!important;opacity:1}`;
   document.head.appendChild(style);
 
   const removeButton = () => '<button class="remove-button" type="button" aria-label="Remove item" title="Remove item">×</button>';
@@ -159,7 +159,7 @@
   const yamlList = (items) => `[${items.map(yamlQuote).join(', ')}]`;
   const makeMarkdown = (d) => {
     const r = d.repeat; const primary = r.tools[0] || { name: '', purpose: '', url: '', affiliate: false };
-    const lines = ['---', `title: ${yamlQuote(d.title)}`, `slug: ${yamlQuote(d.slug || slugify(d.title))}`, `description: ${yamlQuote(d.description)}`, `category: ${yamlQuote(d.category)}`, `tool: ${yamlQuote(primary.name)}`, `toolUrl: ${primary.url ? yamlQuote(primary.url) : 'null'}`, `toolAffiliate: ${primary.affiliate ? 'true' : 'false'}`, `date: ${yamlQuote(d.date)}`, `thumbnail: ${d.thumbnail ? yamlQuote(d.thumbnail) : 'null'}`, `heroImage: ${d.heroImage ? yamlQuote(d.heroImage) : 'null'}`, `inputImage: ${r.inputs[0] ? yamlQuote(r.inputs[0]) : 'null'}`, `inputImages: ${yamlList(r.inputs)}`, `resultImages: ${yamlList(r.results)}`, `imageAlt: ${d.imageAlt ? yamlQuote(d.imageAlt) : 'null'}`, `intro: ${d.intro ? yamlQuote(d.intro) : '""'}`, `whatItDoes: ${d.whatItDoes ? yamlQuote(d.whatItDoes) : '""'}`, 'toolsUsed:'];
+    const lines = ['---', `title: ${yamlQuote(d.title)}`, `slug: ${yamlQuote(d.slug || slugify(d.title))}`, `description: ${yamlQuote(d.description)}`, `category: ${yamlQuote(d.category)}`, `tool: ${yamlQuote(primary.name)}`, `toolUrl: ${primary.url ? yamlQuote(primary.url) : 'null'}`, `toolAffiliate: ${primary.affiliate ? 'true' : 'false'}`, `date: ${yamlQuote(d.date)}`, `thumbnail: ${d.thumbnail ? yamlQuote(d.thumbnail) : 'null'}`, `heroImage: ${d.heroImage ? yamlQuote(d.heroImage) : 'null'}`, `inputImage: ${r.inputs[0] ? yamlQuote(r.inputs[0]) : 'null'}`, `inputImages: ${yamlList(r.inputs)}`, `resultImages: ${yamlList(r.results)}`, `imageAlt: ${d.imageAlt ? yamlQuote(d.imageAlt) : 'null'}`, `intro: ${d.intro ? yamlQuote(d.intro) : '\"\"'}`, `whatItDoes: ${d.whatItDoes ? yamlQuote(d.whatItDoes) : '\"\"'}`, 'toolsUsed:'];
     if (r.tools.length) r.tools.forEach((x) => lines.push(`  - name: ${yamlQuote(x.name)}`, `    purpose: ${yamlQuote(x.purpose)}`, `    url: ${x.url ? yamlQuote(x.url) : 'null'}`, `    affiliate: ${x.affiliate ? 'true' : 'false'}`)); else lines.push('  []');
     lines.push(`prompt: ${yamlQuote(d.prompt)}`, `videoEmbedUrl: ${d.videoEmbedUrl ? yamlQuote(d.videoEmbedUrl) : 'null'}`, `originalVideoUrl: ${d.originalVideoUrl ? yamlQuote(d.originalVideoUrl) : 'null'}`, 'steps:');
     if (r.steps.length) r.steps.forEach((x) => lines.push(`  - title: ${yamlQuote(x.title)}`, `    description: ${yamlQuote(x.description)}`)); else lines.push('  []');
