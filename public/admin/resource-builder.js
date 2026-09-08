@@ -1,190 +1,35 @@
 (() => {
-  const form = document.querySelector('#resource-form');
-  if (!form) return;
-
-  const preview = document.querySelector('#preview-content');
-  const status = document.querySelector('#status');
-  const storageKey = 'skill-foundry-resource-draft-v5';
-  const escapeHtml = (value) => String(value ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\"/g, '&quot;').replace(/'/g, '&#039;');
-  const yamlQuote = (value) => JSON.stringify(String(value ?? ''));
-  const slugify = (value) => String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
-  const value = (name) => form.elements[name]?.value || '';
-  const setStatus = (message) => { if (status) status.textContent = message; };
-  let slugManuallyEdited = false;
-
-  // Section 05 is the single source of truth for tools. Hide the legacy duplicate fields in Core details.
-  ['tool', 'toolUrl', 'toolAffiliate'].forEach((name) => {
-    const field = form.elements[name];
-    if (!field) return;
-    field.required = false;
-    const label = field.closest('label');
-    if (label) label.hidden = true;
-  });
-
-  const style = document.createElement('style');
-  style.textContent = `.builder-page textarea{resize:none!important}.builder-page .repeat-add-button{display:flex;width:100%;align-items:center;justify-content:center;margin-top:10px;min-height:42px}.builder-page .repeat-item .remove-button{z-index:2}.builder-page .media-item{padding-bottom:14px}.builder-page .media-control{display:grid;gap:8px}.builder-page .media-control .upload-row{width:100%}.builder-page .repeat-item input,.builder-page .repeat-item textarea{background:rgba(7,17,31,.75)!important;color:var(--text)!important;border:1px solid var(--line)!important}.builder-page .repeat-item input::placeholder,.builder-page .repeat-item textarea::placeholder{color:#71849a!important;opacity:1}`;
-  document.head.appendChild(style);
-
-  const removeButton = () => '<button class="remove-button" type="button" aria-label="Remove item" title="Remove item">×</button>';
-  const fileField = (role, placeholder) => `<div class="media-control"><div class="upload-row"><input data-role="${role}" class="path-input" placeholder="${placeholder}" /><label class="file-button"><input type="file" accept="image/*" data-file-role="${role}" />Choose image</label></div><div class="image-preview" data-preview-role="${role}"></div></div>`;
-
-  const showLocalPreview = (target, file) => {
-    if (!target || !file) return;
-    const old = target.dataset.objectUrl;
-    if (old) URL.revokeObjectURL(old);
-    const url = URL.createObjectURL(file);
-    target.dataset.objectUrl = url;
-    target.classList.add('has-image');
-    target.innerHTML = `<img src="${url}" alt="Selected image preview"><span>${escapeHtml(file.name)}</span>`;
-  };
-  const showPathPreview = (target, path) => {
-    if (!target || !path) return;
-    target.classList.add('has-image');
-    target.innerHTML = `<img src="${escapeHtml(path)}" alt="Image preview" onerror="this.closest('.image-preview')?.classList.remove('has-image')"><span>Preview</span>`;
-  };
-
-  const bindItem = (item) => {
-    item.querySelector('.remove-button')?.addEventListener('click', () => {
-      const list = item.parentElement;
-      const minimum = list?.dataset.minimum === '1';
-      if (minimum && list?.children.length === 1) {
-        item.querySelectorAll('input, textarea').forEach((field) => {
-          if (field.type === 'checkbox') field.checked = false;
-          else if (field.type !== 'file') field.value = '';
-        });
-        item.querySelectorAll('.image-preview').forEach((target) => { target.classList.remove('has-image'); target.innerHTML = ''; });
-      } else {
-        item.remove();
-      }
-      placeAddButtons();
-      renderPreview();
-    });
-    item.querySelectorAll('input:not([type="file"]), textarea, select').forEach((field) => {
-      field.addEventListener('input', renderPreview);
-      field.addEventListener('change', renderPreview);
-    });
-    item.querySelectorAll('[data-file-role]').forEach((file) => file.addEventListener('change', () => {
-      const selected = file.files?.[0];
-      if (!selected) return;
-      const role = file.dataset.fileRole;
-      const pathInput = item.querySelector(`[data-role="${role}"]`);
-      if (pathInput) pathInput.value = `/images/${selected.name.replace(/[^a-zA-Z0-9._-]+/g, '-').toLowerCase()}`;
-      showLocalPreview(item.querySelector(`[data-preview-role="${role}"]`), selected);
-      renderPreview();
-    }));
-  };
-
-  const addInput = (data = '') => {
-    const item = document.createElement('div'); item.className = 'repeat-item media-item';
-    item.innerHTML = `<div><label>Input image</label>${fileField('input', 'https://.../input.jpg or /images/input.jpg')}</div>${removeButton()}`;
-    item.querySelector('[data-role="input"]').value = data;
-    document.querySelector('#inputs-list').appendChild(item); bindItem(item);
-    if (data) showPathPreview(item.querySelector('[data-preview-role="input"]'), data);
-  };
-  const addResult = (data = '') => {
-    const item = document.createElement('div'); item.className = 'repeat-item media-item';
-    item.innerHTML = `<div><label>Output image</label>${fileField('result', 'https://.../result.jpg or /images/result.jpg')}</div>${removeButton()}`;
-    item.querySelector('[data-role="result"]').value = data;
-    document.querySelector('#results-list').appendChild(item); bindItem(item);
-    if (data) showPathPreview(item.querySelector('[data-preview-role="result"]'), data);
-  };
-  const addTool = (data = {}) => {
-    const item = document.createElement('div'); item.className = 'repeat-item tool';
-    item.innerHTML = `<label>Tool name<input data-role="tool-name" placeholder="e.g. Photoshop" /></label><label>Purpose<input data-role="tool-purpose" placeholder="What this tool was used for" /></label><label>Website URL<input data-role="tool-url" type="url" placeholder="https://..." /></label><label class="check-inline compact"><input data-role="tool-affiliate" type="checkbox" /> Affiliate link</label>${removeButton()}`;
-    item.querySelector('[data-role="tool-name"]').value = data.name || '';
-    item.querySelector('[data-role="tool-purpose"]').value = data.purpose || '';
-    item.querySelector('[data-role="tool-url"]').value = data.url || '';
-    item.querySelector('[data-role="tool-affiliate"]').checked = Boolean(data.affiliate);
-    document.querySelector('#tools-list').appendChild(item); bindItem(item);
-  };
-  const addStep = (data = {}) => {
-    const item = document.createElement('div'); item.className = 'repeat-item step';
-    item.innerHTML = `<label>Step title<input data-role="step-title" placeholder="Prepare the input" /></label><label>Description<textarea data-role="step-description" rows="3" placeholder="Describe what to do and what to look for."></textarea></label>${removeButton()}`;
-    item.querySelector('[data-role="step-title"]').value = data.title || '';
-    item.querySelector('[data-role="step-description"]').value = data.description || '';
-    document.querySelector('#steps-list').appendChild(item); bindItem(item);
-  };
-  const addTip = (data = '') => {
-    const item = document.createElement('div'); item.className = 'repeat-item';
-    item.innerHTML = `<textarea data-role="tip" rows="3" aria-label="Tip" placeholder="Keep the main subject clearly described."></textarea>${removeButton()}`;
-    item.querySelector('textarea').value = data; document.querySelector('#tips-list').appendChild(item); bindItem(item);
-  };
-  const addTag = (data = '') => {
-    const item = document.createElement('div'); item.className = 'repeat-item';
-    item.innerHTML = `<input data-role="tag" aria-label="Tag" placeholder="image-generation" />${removeButton()}`;
-    item.querySelector('input').value = data; document.querySelector('#tags-list').appendChild(item); bindItem(item);
-  };
-  const addRelated = (data = '') => {
-    const item = document.createElement('div'); item.className = 'repeat-item';
-    item.innerHTML = `<input data-role="related" aria-label="Related resource slug" placeholder="ai-video-cinematic-prompt" />${removeButton()}`;
-    item.querySelector('input').value = data; document.querySelector('#related-list').appendChild(item); bindItem(item);
-  };
-
-  const listConfig = [
-    ['inputs-list', addInput, 1], ['results-list', addResult, 1], ['tools-list', addTool, 1], ['steps-list', addStep, 1], ['tips-list', addTip, 1], ['tags-list', addTag, 1], ['related-list', addRelated, 1]
-  ];
-  listConfig.forEach(([id, fn, minimum]) => { const list = document.querySelector('#' + id); if (list) list.dataset.minimum = String(minimum); });
-
-  const placeAddButtons = () => {
-    document.querySelectorAll('[data-add]').forEach((button) => {
-      const type = button.dataset.add;
-      const targetId = type === 'input' ? 'inputs-list' : type === 'result' ? 'results-list' : `${type}s-list`;
-      const list = document.querySelector('#' + targetId);
-      if (!list) return;
-      list.insertAdjacentElement('afterend', button);
-      button.classList.add('repeat-add-button');
-    });
-  };
-  const ensureMinimums = () => listConfig.forEach(([id, fn, minimum]) => { const list = document.querySelector('#' + id); if (!list) return; while (list.children.length < minimum) fn(); });
-
-  const collect = () => ({
-    inputs: [...document.querySelectorAll('[data-role="input"]')].map((x) => x.value.trim()).filter(Boolean),
-    results: [...document.querySelectorAll('[data-role="result"]')].map((x) => x.value.trim()).filter(Boolean),
-    tools: [...document.querySelectorAll('#tools-list .repeat-item')].map((item) => ({ name: item.querySelector('[data-role="tool-name"]').value.trim(), purpose: item.querySelector('[data-role="tool-purpose"]').value.trim(), url: item.querySelector('[data-role="tool-url"]').value.trim(), affiliate: item.querySelector('[data-role="tool-affiliate"]').checked })).filter((x) => x.name || x.purpose || x.url),
-    steps: [...document.querySelectorAll('#steps-list .repeat-item')].map((item) => ({ title: item.querySelector('[data-role="step-title"]').value.trim(), description: item.querySelector('[data-role="step-description"]').value.trim() })).filter((x) => x.title || x.description),
-    tips: [...document.querySelectorAll('[data-role="tip"]')].map((x) => x.value.trim()).filter(Boolean), tags: [...document.querySelectorAll('[data-role="tag"]')].map((x) => x.value.trim()).filter(Boolean), related: [...document.querySelectorAll('[data-role="related"]')].map((x) => x.value.trim()).filter(Boolean)
-  });
-  const readForm = () => { const data = {}; form.querySelectorAll('input[name], textarea[name], select[name]').forEach((field) => { data[field.name] = field.type === 'checkbox' ? field.checked : field.value; }); data.repeat = collect(); return data; };
-  const renderPreview = () => {
-    const d = readForm(); const r = d.repeat; const primary = r.tools[0]; let html = `<h3>${escapeHtml(d.title || 'Untitled resource')}</h3><p class="preview-meta">${escapeHtml(d.category || 'Category')} · ${escapeHtml(primary?.name || 'Tool used')}${d.date ? ` · Published ${escapeHtml(d.date)}` : ''}</p>`;
-    if (d.heroImage) html += `<img class="preview-image" src="${escapeHtml(d.heroImage)}" alt="${escapeHtml(d.imageAlt || d.title || 'Resource image')}" />`; html += `<p class="preview-copy">${escapeHtml(d.description || 'Add a description to see it here.')}</p>`;
-    if (d.intro) html += `<h4>Introduction</h4><p class="preview-copy">${escapeHtml(d.intro)}</p>`; if (d.whatItDoes) html += `<h4>What this resource does</h4><p class="preview-copy">${escapeHtml(d.whatItDoes)}</p>`;
-    if (r.tools.length) html += `<h4>Tools used</h4><div class="preview-tools">${r.tools.map((x) => `<div class="preview-tool"><strong>${escapeHtml(x.name || 'Unnamed tool')}</strong><span>${escapeHtml(x.purpose || 'Purpose not added')}</span>${x.url ? `<a href="${escapeHtml(x.url)}" target="_blank" rel="noopener">Open tool →</a>` : ''}</div>`).join('')}</div>`;
-    if (r.inputs.length || r.results.length) html += `<h4>Results</h4><div class="preview-list">${r.inputs.map((x,i) => `<div>INPUT ${i+1} · ${escapeHtml(x)}</div>`).join('')}${r.results.map((x,i) => `<div>OUTPUT ${i+1} · ${escapeHtml(x)}</div>`).join('')}</div>`;
-    if (d.prompt) html += `<h4>Prompt</h4><div class="preview-prompt">${escapeHtml(d.prompt)}</div>`; if (d.videoEmbedUrl || d.originalVideoUrl) html += `<h4>Tutorial</h4><p class="preview-copy">${escapeHtml(d.originalVideoUrl || d.videoEmbedUrl)}</p>`;
-    if (r.steps.length) html += `<h4>Step by step</h4><ol class="preview-list">${r.steps.map((x) => `<li><strong>${escapeHtml(x.title)}</strong>${x.description ? ` — ${escapeHtml(x.description)}` : ''}</li>`).join('')}</ol>`;
-    if (r.tips.length) html += `<h4>Tips for better results</h4><ul class="preview-list">${r.tips.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>`; if (r.tags.length) html += `<h4>Tags</h4><p class="preview-copy">${escapeHtml(r.tags.join(', '))}</p>`; if (r.related.length) html += `<h4>Related resources</h4><ul class="preview-list">${r.related.map((x) => `<li>${escapeHtml(x)}</li>`).join('')}</ul>`;
-    preview.innerHTML = html;
-  };
-  const yamlList = (items) => `[${items.map(yamlQuote).join(', ')}]`;
-  const makeMarkdown = (d) => {
-    const r = d.repeat; const primary = r.tools[0] || { name: '', purpose: '', url: '', affiliate: false };
-    const lines = ['---', `title: ${yamlQuote(d.title)}`, `slug: ${yamlQuote(d.slug || slugify(d.title))}`, `description: ${yamlQuote(d.description)}`, `category: ${yamlQuote(d.category)}`, `tool: ${yamlQuote(primary.name)}`, `toolUrl: ${primary.url ? yamlQuote(primary.url) : 'null'}`, `toolAffiliate: ${primary.affiliate ? 'true' : 'false'}`, `date: ${yamlQuote(d.date)}`, `thumbnail: ${d.thumbnail ? yamlQuote(d.thumbnail) : 'null'}`, `heroImage: ${d.heroImage ? yamlQuote(d.heroImage) : 'null'}`, `inputImage: ${r.inputs[0] ? yamlQuote(r.inputs[0]) : 'null'}`, `inputImages: ${yamlList(r.inputs)}`, `resultImages: ${yamlList(r.results)}`, `imageAlt: ${d.imageAlt ? yamlQuote(d.imageAlt) : 'null'}`, `intro: ${d.intro ? yamlQuote(d.intro) : '\"\"'}`, `whatItDoes: ${d.whatItDoes ? yamlQuote(d.whatItDoes) : '\"\"'}`, 'toolsUsed:'];
-    if (r.tools.length) r.tools.forEach((x) => lines.push(`  - name: ${yamlQuote(x.name)}`, `    purpose: ${yamlQuote(x.purpose)}`, `    url: ${x.url ? yamlQuote(x.url) : 'null'}`, `    affiliate: ${x.affiliate ? 'true' : 'false'}`)); else lines.push('  []');
-    lines.push(`prompt: ${yamlQuote(d.prompt)}`, `videoEmbedUrl: ${d.videoEmbedUrl ? yamlQuote(d.videoEmbedUrl) : 'null'}`, `originalVideoUrl: ${d.originalVideoUrl ? yamlQuote(d.originalVideoUrl) : 'null'}`, 'steps:');
-    if (r.steps.length) r.steps.forEach((x) => lines.push(`  - title: ${yamlQuote(x.title)}`, `    description: ${yamlQuote(x.description)}`)); else lines.push('  []');
-    lines.push('tips:'); if (r.tips.length) r.tips.forEach((x) => lines.push(`  - ${yamlQuote(x)}`)); else lines.push('  []');
-    lines.push(`relatedResources: ${yamlList(r.related)}`, `tags: ${yamlList(r.tags)}`, `seoTitle: ${d.seoTitle ? yamlQuote(d.seoTitle) : 'null'}`, `seoDescription: ${d.seoDescription ? yamlQuote(d.seoDescription) : 'null'}`, `featured: ${d.featured ? 'true' : 'false'}`, '---', '', d.intro || '', '', d.whatItDoes || '', '', d.prompt ? `## Prompt\n\n${d.prompt}` : '', ''); return lines.join('\n');
-  };
-
-  const restoreRepeats = (repeat = {}, legacy = {}) => {
-    ['inputs-list','results-list','tools-list','steps-list','tips-list','tags-list','related-list'].forEach((id) => { document.querySelector('#' + id).innerHTML = ''; });
-    const legacyTool = legacy.tool ? { name: legacy.tool, purpose: 'Primary tool/model used for this resource.', url: legacy.toolUrl || '', affiliate: Boolean(legacy.toolAffiliate) } : null;
-    const tools = repeat.tools?.length ? repeat.tools : (legacyTool ? [legacyTool] : [{}]);
-    (repeat.inputs?.length ? repeat.inputs : ['']).forEach(addInput); (repeat.results?.length ? repeat.results : ['']).forEach(addResult); tools.forEach(addTool); (repeat.steps?.length ? repeat.steps : [{}]).forEach(addStep); (repeat.tips?.length ? repeat.tips : ['']).forEach(addTip); (repeat.tags?.length ? repeat.tags : ['']).forEach(addTag); (repeat.related?.length ? repeat.related : ['']).forEach(addRelated); placeAddButtons();
-  };
-  const writeForm = (data) => { form.querySelectorAll('input[name], textarea[name], select[name]').forEach((field) => { if (!(field.name in data)) return; if (field.type === 'checkbox') field.checked = Boolean(data[field.name]); else field.value = data[field.name] ?? ''; }); slugManuallyEdited = Boolean(data.slug); restoreRepeats(data.repeat || {}, data); };
-
-  document.querySelector('#make-slug')?.addEventListener('click', () => { const generated = slugify(value('title')); form.elements.slug.value = generated; slugManuallyEdited = false; setStatus(generated ? 'Slug generated from the title.' : 'Add a title first.'); renderPreview(); });
-  form.elements.slug?.addEventListener('input', () => { slugManuallyEdited = true; renderPreview(); }); form.elements.title?.addEventListener('input', () => { if (!slugManuallyEdited) form.elements.slug.value = slugify(value('title')); renderPreview(); });
-  form.querySelectorAll('input[name], textarea[name], select[name]').forEach((field) => { field.addEventListener('input', renderPreview); field.addEventListener('change', renderPreview); });
-  document.querySelectorAll('[data-add]').forEach((button) => button.addEventListener('click', () => { const type = button.dataset.add; if (type === 'input') addInput(); if (type === 'result') addResult(); if (type === 'tool') addTool(); if (type === 'step') addStep(); if (type === 'tip') addTip(); if (type === 'tag') addTag(); if (type === 'related') addRelated(); placeAddButtons(); renderPreview(); }));
-  document.querySelectorAll('[data-file-role]').forEach((file) => file.addEventListener('change', () => { const selected = file.files?.[0]; if (!selected) return; const role = file.dataset.fileRole; const input = form.elements[role]; if (input) input.value = `/images/${selected.name.replace(/[^a-zA-Z0-9._-]+/g, '-').toLowerCase()}`; showLocalPreview(document.querySelector(`[data-preview-role="${role}"]`), selected); renderPreview(); }));
-  document.querySelector('#save-draft')?.addEventListener('click', () => { localStorage.setItem(storageKey, JSON.stringify(readForm())); setStatus('Draft saved in this browser.'); });
-  document.querySelector('#clear-draft')?.addEventListener('click', () => { localStorage.removeItem(storageKey); form.reset(); slugManuallyEdited = false; restoreRepeats(); setStatus('Draft cleared.'); renderPreview(); });
-  form.addEventListener('submit', (event) => { event.preventDefault(); if (!form.reportValidity()) return; const d = readForm(); const blob = new Blob([makeMarkdown(d)], { type: 'text/markdown;charset=utf-8' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = `${d.slug || slugify(d.title) || 'resource'}.md`; document.body.appendChild(link); link.click(); link.remove(); URL.revokeObjectURL(url); localStorage.setItem(storageKey, JSON.stringify(d)); setStatus('Resource file downloaded.'); });
-
-  try { const saved = JSON.parse(localStorage.getItem(storageKey) || 'null'); if (saved) { writeForm(saved); setStatus('Saved draft restored.'); } else restoreRepeats(); } catch { restoreRepeats(); }
-  if (form.elements.date && !form.elements.date.value) form.elements.date.value = new Date().toISOString().slice(0, 10);
-  ensureMinimums(); placeAddButtons(); renderPreview();
+  const form = document.querySelector('#resource-form'); if (!form) return;
+  const preview=document.querySelector('#preview-content'),status=document.querySelector('#status'),storageKey='skill-foundry-resource-draft-v6';
+  const esc=v=>String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  const quote=v=>JSON.stringify(String(v??'')), slugify=v=>String(v||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,80), val=n=>form.elements[n]?.value||'';
+  const setStatus=m=>{if(status)status.textContent=m}; let slugManual=false,uploadBusy=0;
+  ['tool','toolUrl','toolAffiliate'].forEach(n=>{const f=form.elements[n];if(f){f.required=false;f.closest('label')?.setAttribute('hidden','')}});
+  const style=document.createElement('style');style.textContent=`.builder-page textarea{resize:none!important}.builder-page .repeat-add-button{display:grid!important;place-items:center;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;padding:0!important;margin-top:10px;border-radius:50%!important;font-size:20px!important;line-height:1}.builder-page .media-item{padding-bottom:14px}.builder-page .media-control{display:grid;gap:8px}.builder-page .media-control .upload-row,.builder-page .image-field .upload-row{display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:8px;align-items:stretch;width:100%}.builder-page .media-control .file-button,.builder-page .image-field .file-button{width:88px;min-width:88px;font-size:0}.builder-page .media-control .file-button::after,.builder-page .image-field .file-button::after{content:'Select';font-size:12px}.builder-page .repeat-item input,.builder-page .repeat-item textarea{background:rgba(7,17,31,.75)!important;color:var(--text)!important;border:1px solid var(--line)!important}.builder-page .upload-state{font-size:11px;color:var(--muted)}.builder-page .upload-state.success{color:var(--accent)}.builder-page .upload-state.error{color:#ff9b9b}.builder-page .tool-logo-preview{display:flex;align-items:center;gap:8px;margin-top:6px}.builder-page .tool-logo-preview img{width:32px;height:32px;object-fit:contain;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.035)}@media(max-width:420px){.builder-page .media-control .upload-row,.builder-page .image-field .upload-row{grid-template-columns:minmax(0,1fr) 78px}.builder-page .media-control .file-button,.builder-page .image-field .file-button{width:78px;min-width:78px}}`;document.head.appendChild(style);
+  const remove=()=>'<button class="remove-button" type="button" aria-label="Remove item" title="Remove item">×</button>',state=()=>'<div class="upload-state" data-upload-state aria-live="polite"></div>';
+  const media=(role,placeholder)=>`<div class="media-control"><div class="upload-row"><input data-role="${role}" class="path-input" placeholder="${placeholder}" /><label class="file-button"><input type="file" accept="image/*" data-file-role="${role}" />Select</label></div>${state()}<div class="image-preview" data-preview-role="${role}"></div></div>`;
+  const localPreview=(t,file)=>{if(!t||!file)return;const old=t.dataset.objectUrl;if(old)URL.revokeObjectURL(old);const u=URL.createObjectURL(file);t.dataset.objectUrl=u;t.classList.add('has-image');t.innerHTML=`<img src="${u}" alt="Selected image preview"><span>${esc(file.name)}</span>`};
+  const pathPreview=(t,path)=>{if(!t||!path)return;t.classList.add('has-image');t.innerHTML=`<img src="${esc(path)}" alt="Image preview" onerror="this.closest('.image-preview')?.classList.remove('has-image')"><span>Preview</span>`};
+  const uploadState=(t,m,k='')=>{if(t){t.textContent=m;t.className=`upload-state${k?' '+k:''}`}};
+  const upload=async(file,input,prev,st)=>{uploadBusy++;uploadState(st,'Uploading…');try{const body=new FormData();body.append('file',file,file.name);const r=await fetch('/api/upload-image',{method:'POST',body,credentials:'same-origin'}),d=await r.json().catch(()=>({}));if(!r.ok||!d.path)throw new Error(d.error||'Image upload failed.');if(input)input.value=d.path;pathPreview(prev,d.path);uploadState(st,'Uploaded to website','success');render();return d.path}catch(e){localPreview(prev,file);uploadState(st,e?.message||'Upload failed.','error');return''}finally{uploadBusy--}};
+  const logo=async(url,item)=>{const p=item?.querySelector('[data-tool-logo-preview]');if(!p||!url)return;try{const r=await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`),d=await r.json();p.innerHTML=r.ok&&d.logoUrl?`<img src="${esc(d.logoUrl)}" alt=""><span>Logo detected automatically</span>`:''}catch{p.innerHTML=''}};
+  const bind=item=>{item.querySelector('.remove-button')?.addEventListener('click',()=>{const list=item.parentElement,min=list?.dataset.minimum==='1';if(min&&list.children.length===1){item.querySelectorAll('input,textarea').forEach(f=>{if(f.type==='checkbox')f.checked=false;else if(f.type!=='file')f.value=''});item.querySelectorAll('.image-preview').forEach(t=>{t.classList.remove('has-image');t.innerHTML=''})}else item.remove();place();render()});item.querySelectorAll('input:not([type="file"]),textarea,select').forEach(f=>{f.addEventListener('input',render);f.addEventListener('change',render)});item.querySelectorAll('[data-file-role]').forEach(f=>f.addEventListener('change',async()=>{const x=f.files?.[0];if(!x)return;const role=f.dataset.fileRole,i=item.querySelector(`[data-role="${role}"]`),p=item.querySelector(`[data-preview-role="${role}"]`),s=item.querySelector('[data-upload-state]');localPreview(p,x);await upload(x,i,p,s)}));const u=item.querySelector('[data-role="tool-url"]');if(u)u.addEventListener('change',()=>logo(u.value.trim(),item))};
+  const addInput=(d='')=>{const i=document.createElement('div');i.className='repeat-item media-item';i.innerHTML=`<div><label>Input image</label>${media('input','https://.../input.jpg or /images/input.jpg')}</div>${remove()}`;i.querySelector('[data-role="input"]').value=d;document.querySelector('#inputs-list').appendChild(i);bind(i);if(d)pathPreview(i.querySelector('[data-preview-role="input"]'),d)};
+  const addResult=(d='')=>{const i=document.createElement('div');i.className='repeat-item media-item';i.innerHTML=`<div><label>Output image</label>${media('result','https://.../result.jpg or /images/result.jpg')}</div>${remove()}`;i.querySelector('[data-role="result"]').value=d;document.querySelector('#results-list').appendChild(i);bind(i);if(d)pathPreview(i.querySelector('[data-preview-role="result"]'),d)};
+  const addTool=(d={})=>{const i=document.createElement('div');i.className='repeat-item tool';i.innerHTML=`<label>Tool name<input data-role="tool-name" placeholder="e.g. ChatGPT" /></label><label>Purpose<input data-role="tool-purpose" placeholder="What this tool was used for" /></label><label>Website URL<input data-role="tool-url" type="url" placeholder="https://..." /><div class="tool-logo-preview" data-tool-logo-preview></div></label><label class="check-inline compact"><input data-role="tool-affiliate" type="checkbox" /> Affiliate link</label>${remove()}`;i.querySelector('[data-role="tool-name"]').value=d.name||'';i.querySelector('[data-role="tool-purpose"]').value=d.purpose||'';i.querySelector('[data-role="tool-url"]').value=d.url||'';i.querySelector('[data-role="tool-affiliate"]').checked=!!d.affiliate;document.querySelector('#tools-list').appendChild(i);bind(i);if(d.url)logo(d.url,i)};
+  const addStep=(d={})=>{const i=document.createElement('div');i.className='repeat-item step';i.innerHTML=`<label>Step title<input data-role="step-title" placeholder="Prepare the input" /></label><label>Description<textarea data-role="step-description" rows="3" placeholder="Describe what to do and what to look for."></textarea></label>${remove()}`;i.querySelector('[data-role="step-title"]').value=d.title||'';i.querySelector('[data-role="step-description"]').value=d.description||'';document.querySelector('#steps-list').appendChild(i);bind(i)};
+  const addTip=(d='')=>{const i=document.createElement('div');i.className='repeat-item';i.innerHTML=`<textarea data-role="tip" rows="3" aria-label="Tip" placeholder="Keep the main subject clearly described."></textarea>${remove()}`;i.querySelector('textarea').value=d;document.querySelector('#tips-list').appendChild(i);bind(i)};
+  const addTag=(d='')=>{const i=document.createElement('div');i.className='repeat-item';i.innerHTML=`<input data-role="tag" aria-label="Tag" placeholder="image-generation" />${remove()}`;i.querySelector('input').value=d;document.querySelector('#tags-list').appendChild(i);bind(i)};
+  const addRelated=(d='')=>{const i=document.createElement('div');i.className='repeat-item';i.innerHTML=`<input data-role="related" aria-label="Related resource slug" placeholder="ai-video-cinematic-prompt" />${remove()}`;i.querySelector('input').value=d;document.querySelector('#related-list').appendChild(i);bind(i)};
+  const cfg=[['inputs-list',addInput],['results-list',addResult],['tools-list',addTool],['steps-list',addStep],['tips-list',addTip],['tags-list',addTag],['related-list',addRelated]];cfg.forEach(([id])=>{const l=document.querySelector('#'+id);if(l)l.dataset.minimum='1'});
+  const place=()=>document.querySelectorAll('[data-add]').forEach(b=>{const t=b.dataset.add,id=t==='input'?'inputs-list':t==='result'?'results-list':`${t}s-list`,l=document.querySelector('#'+id);if(l){l.insertAdjacentElement('afterend',b);b.classList.add('repeat-add-button')}});
+  const collect=()=>({inputs:[...document.querySelectorAll('[data-role="input"]')].map(x=>x.value.trim()).filter(Boolean),results:[...document.querySelectorAll('[data-role="result"]')].map(x=>x.value.trim()).filter(Boolean),tools:[...document.querySelectorAll('#tools-list .repeat-item')].map(i=>({name:i.querySelector('[data-role="tool-name"]').value.trim(),purpose:i.querySelector('[data-role="tool-purpose"]').value.trim(),url:i.querySelector('[data-role="tool-url"]').value.trim(),affiliate:i.querySelector('[data-role="tool-affiliate"]').checked})).filter(x=>x.name||x.purpose||x.url),steps:[...document.querySelectorAll('#steps-list .repeat-item')].map(i=>({title:i.querySelector('[data-role="step-title"]').value.trim(),description:i.querySelector('[data-role="step-description"]').value.trim()})).filter(x=>x.title||x.description),tips:[...document.querySelectorAll('[data-role="tip"]')].map(x=>x.value.trim()).filter(Boolean),tags:[...document.querySelectorAll('[data-role="tag"]')].map(x=>x.value.trim()).filter(Boolean),related:[...document.querySelectorAll('[data-role="related"]')].map(x=>x.value.trim()).filter(Boolean)});
+  const read=()=>{const d={};form.querySelectorAll('input[name],textarea[name],select[name]').forEach(f=>d[f.name]=f.type==='checkbox'?f.checked:f.value);d.repeat=collect();return d};
+  const render=()=>{const d=read(),r=d.repeat,p=r.tools[0];let h=`<h3>${esc(d.title||'Untitled resource')}</h3><p class="preview-meta">${esc(d.category||'Category')} · ${esc(p?.name||'Tool used')}${d.date?` · Published ${esc(d.date)}`:''}</p>`;if(d.heroImage)h+=`<img class="preview-image" src="${esc(d.heroImage)}" alt="${esc(d.imageAlt||d.title||'Resource image')}" />`;h+=`<p class="preview-copy">${esc(d.description||'Add a description to see it here.')}</p>`;if(d.intro)h+=`<h4>Introduction</h4><p class="preview-copy">${esc(d.intro)}</p>`;if(d.whatItDoes)h+=`<h4>What this resource does</h4><p class="preview-copy">${esc(d.whatItDoes)}</p>`;if(r.tools.length)h+=`<h4>Tools used</h4><div class="preview-tools">${r.tools.map(x=>`<div class="preview-tool"><strong>${esc(x.name||'Unnamed tool')}</strong><span>${esc(x.purpose||'Purpose not added')}</span></div>`).join('')}</div>`;if(d.prompt)h+=`<h4>Prompt</h4><div class="preview-prompt">${esc(d.prompt)}</div>`;preview.innerHTML=h};
+  const list=a=>`[${a.map(quote).join(', ')}]`, markdown=d=>{const r=d.repeat,p=r.tools[0]||{name:'',url:'',affiliate:false},L=['---',`title: ${quote(d.title)}`,`slug: ${quote(d.slug||slugify(d.title))}`,`description: ${quote(d.description)}`,`category: ${quote(d.category)}`,`tool: ${quote(p.name)}`,`toolUrl: ${p.url?quote(p.url):'null'}`,`toolAffiliate: ${p.affiliate?'true':'false'}`,`date: ${quote(d.date)}`,`thumbnail: ${d.thumbnail?quote(d.thumbnail):'null'}`,`heroImage: ${d.heroImage?quote(d.heroImage):'null'}`,`inputImage: ${r.inputs[0]?quote(r.inputs[0]):'null'}`,`inputImages: ${list(r.inputs)}`,`resultImages: ${list(r.results)}`,`imageAlt: ${d.imageAlt?quote(d.imageAlt):'null'}`,`intro: ${d.intro?quote(d.intro):'""'}`,`whatItDoes: ${d.whatItDoes?quote(d.whatItDoes):'""'}`,'toolsUsed:'];if(r.tools.length)r.tools.forEach(x=>L.push(`  - name: ${quote(x.name)}`,`    purpose: ${quote(x.purpose)}`,`    url: ${x.url?quote(x.url):'null'}`,`    affiliate: ${x.affiliate?'true':'false'}`));else L.push('  []');L.push(`prompt: ${quote(d.prompt)}`,`videoEmbedUrl: ${d.videoEmbedUrl?quote(d.videoEmbedUrl):'null'}`,`originalVideoUrl: ${d.originalVideoUrl?quote(d.originalVideoUrl):'null'}`,'steps:');if(r.steps.length)r.steps.forEach(x=>L.push(`  - title: ${quote(x.title)}`,`    description: ${quote(x.description)}`));else L.push('  []');L.push('tips:');if(r.tips.length)r.tips.forEach(x=>L.push(`  - ${quote(x)}`));else L.push('  []');L.push(`relatedResources: ${list(r.related)}`,`tags: ${list(r.tags)}`,`seoTitle: ${d.seoTitle?quote(d.seoTitle):'null'}`,`seoDescription: ${d.seoDescription?quote(d.seoDescription):'null'}`,`featured: ${d.featured?'true':'false'}`,'---','',d.intro||'','',d.whatItDoes||'','',d.prompt?`## Prompt\n\n${d.prompt}`:'','');return L.join('\n')};
+  const restore=(r={},legacy={})=>{cfg.forEach(([id])=>document.querySelector('#'+id).innerHTML='');const old=legacy.tool?{name:legacy.tool,purpose:'Primary tool/model used for this resource.',url:legacy.toolUrl||'',affiliate:!!legacy.toolAffiliate}:null;(r.inputs?.length?r.inputs:['']).forEach(addInput);(r.results?.length?r.results:['']).forEach(addResult);(r.tools?.length?r.tools:old?[old]:[{}]).forEach(addTool);(r.steps?.length?r.steps:[{}]).forEach(addStep);(r.tips?.length?r.tips:['']).forEach(addTip);(r.tags?.length?r.tags:['']).forEach(addTag);(r.related?.length?r.related:['']).forEach(addRelated);place()};
+  const write=d=>{form.querySelectorAll('input[name],textarea[name],select[name]').forEach(f=>{if(!(f.name in d))return;f.type==='checkbox'?f.checked=!!d[f.name]:f.value=d[f.name]??''});slugManual=!!d.slug;restore(d.repeat||{},d)};
+  const bindStatic=f=>f.addEventListener('change',async()=>{const x=f.files?.[0];if(!x)return;const role=f.dataset.imageFile,i=form.elements[role],p=document.querySelector(`[data-preview="${role}"]`),box=f.closest('.image-field');let s=box?.querySelector('[data-upload-state]');if(!s){s=document.createElement('div');s.className='upload-state';s.dataset.uploadState='';f.closest('.upload-row')?.insertAdjacentElement('afterend',s)}localPreview(p,x);await upload(x,i,p,s)});
+  document.querySelector('#make-slug')?.addEventListener('click',()=>{const g=slugify(val('title'));form.elements.slug.value=g;slugManual=false;setStatus(g?'Slug generated from the title.':'Add a title first.');render()});form.elements.slug?.addEventListener('input',()=>{slugManual=true;render()});form.elements.title?.addEventListener('input',()=>{if(!slugManual)form.elements.slug.value=slugify(val('title'));render()});form.querySelectorAll('input[name],textarea[name],select[name]').forEach(f=>{f.addEventListener('input',render);f.addEventListener('change',render)});document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.add;t==='input'?addInput():t==='result'?addResult():t==='tool'?addTool():t==='step'?addStep():t==='tip'?addTip():t==='tag'?addTag():addRelated();place();render()}));document.querySelectorAll('[data-image-file]').forEach(bindStatic);document.querySelector('#save-draft')?.addEventListener('click',()=>{localStorage.setItem(storageKey,JSON.stringify(read()));setStatus('Draft saved in this browser.')});document.querySelector('#clear-draft')?.addEventListener('click',()=>{localStorage.removeItem(storageKey);form.reset();slugManual=false;restore();setStatus('Draft cleared.');render()});form.addEventListener('submit',e=>{e.preventDefault();if(uploadBusy){setStatus('Please wait for image uploads to finish.');return}if(!form.reportValidity())return;const d=read(),blob=new Blob([markdown(d)],{type:'text/markdown;charset=utf-8'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=`${d.slug||slugify(d.title)||'resource'}.md`;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u);localStorage.setItem(storageKey,JSON.stringify(d));setStatus('Resource file downloaded. Uploaded images are stored in GitHub.')});
+  try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');saved?(write(saved),setStatus('Saved draft restored.')):restore()}catch{restore()}if(form.elements.date&&!form.elements.date.value)form.elements.date.value=new Date().toISOString().slice(0,10);place();render();
 })();
