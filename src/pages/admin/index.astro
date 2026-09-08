@@ -44,7 +44,187 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </div></section>
   <style is:global>
     .builder-page{padding:58px 0 90px}.builder-shell{width:min(1080px,calc(100% - 48px));margin:0 auto}.builder-heading{max-width:800px;margin-bottom:28px}.builder-heading h1{margin-top:0;font-size:clamp(36px,6vw,62px)}.builder-heading p:not(.eyebrow){max-width:760px;color:var(--muted);font-size:17px}.notice{display:grid;gap:5px;margin-bottom:20px;padding:15px 17px;border:1px solid rgba(61,214,208,.2);border-radius:14px;background:rgba(61,214,208,.055);color:var(--muted);line-height:1.6}.notice strong{color:var(--text)}.builder-grid{display:grid;gap:18px}.panel{padding:22px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.025)}.panel-heading{display:flex;align-items:center;gap:11px;margin-bottom:20px}.panel-heading span{display:grid;place-items:center;width:30px;height:30px;flex:0 0 auto;border:1px solid rgba(61,214,208,.3);border-radius:9px;color:var(--accent);font-size:12px;font-weight:800}.panel-heading h2{margin:0;font-size:20px}.panel-help{margin:-7px 0 18px;color:var(--muted);font-size:13px;line-height:1.6}.bottom-help{margin:15px 0 0}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.builder-page label{display:grid;gap:7px;color:var(--muted);font-size:13px;font-weight:700}.builder-page label.full{grid-column:1/-1}.field-note{color:var(--muted);font-size:11px;font-weight:500;line-height:1.5}.builder-page .check-inline{display:flex!important;align-items:center;gap:8px;min-height:46px}.builder-page .check-inline input{width:17px;height:17px;min-height:0;accent-color:var(--accent)}.builder-page input,.builder-page textarea,.builder-page select{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:11px;background:rgba(7,17,31,.75);color:var(--text);font:inherit;font-size:14px;line-height:1.5;outline:none}.builder-page input,.builder-page select{min-height:46px;padding:10px 12px}.builder-page textarea{padding:11px 12px;resize:none}.builder-page select{appearance:auto}.builder-page input:focus,.builder-page textarea:focus,.builder-page select:focus{border-color:rgba(61,214,208,.55);box-shadow:0 0 0 3px rgba(61,214,208,.07)}.input-action{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px}.mini-button,.add-button{border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.035);color:var(--muted);font:inherit;font-size:12px;font-weight:800;cursor:pointer}.mini-button{padding:0 12px}.mini-button:hover,.add-button:hover{border-color:rgba(61,214,208,.45);color:var(--accent);background:rgba(61,214,208,.055)}.repeat-list{display:grid;gap:10px}.repeat-add-button{display:grid!important;place-items:center;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;padding:0!important;margin-top:10px;border-radius:50%!important;font-size:20px!important;line-height:1!important}.repeat-item{position:relative;display:grid;gap:9px;padding:12px;padding-right:56px;border:1px solid var(--line);border-radius:12px;background:rgba(7,17,31,.45)}.repeat-item.tool{grid-template-columns:repeat(3,minmax(0,1fr))}.repeat-item.step{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}.repeat-item label{font-size:11px}.repeat-item input,.repeat-item textarea{min-height:42px;font-size:13px}.remove-button{position:absolute;top:10px;right:10px;display:grid;place-items:center;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;padding:0!important;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.035);color:var(--muted);font:inherit;font-size:18px;font-weight:500;line-height:1;cursor:pointer;appearance:none;-webkit-appearance:none}.remove-button:hover,.remove-button:focus-visible{border-color:rgba(255,100,100,.5);color:#ff9b9b;background:rgba(255,100,100,.07);outline:none}.subsection,.image-group{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}.image-group:first-child{margin-top:0;padding-top:0;border-top:0}.subheading{display:flex;align-items:center;gap:12px;margin-bottom:11px}.subheading h3{margin:0;color:var(--text);font-size:14px}.upload-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch}.file-button{display:flex!important;align-items:center;justify-content:center;min-width:96px;min-height:46px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:rgba(16,34,56,.55);color:var(--text);font-size:12px;font-weight:800;cursor:pointer}.file-button:hover{border-color:rgba(61,214,208,.45);color:var(--accent);background:rgba(61,214,208,.07)}.file-button input{display:none!important}.image-preview{display:none;margin-top:9px}.image-preview.has-image{display:block}.image-preview img{display:block;width:min(100%,420px);max-height:260px;object-fit:cover;border:1px solid var(--line);border-radius:12px}.image-preview span{display:block;margin-top:6px;color:var(--muted);font-size:11px}.media-item .file-button{font-size:0}.media-item .file-button::after{content:'Select';font-size:12px}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}.status{min-height:20px;margin:10px 0 0;color:var(--muted);font-size:13px}.preview{margin-top:18px}.preview-content{display:grid;gap:15px}.preview-content h3{margin:0;font-size:clamp(28px,4vw,42px);line-height:1.1}.preview-content h4{margin:8px 0 -7px;font-size:15px}.preview-meta{color:var(--muted);font-size:13px}.preview-copy{margin:0;color:var(--muted);line-height:1.7;white-space:pre-wrap}.preview-image{width:min(100%,720px);max-height:420px;object-fit:cover;border:1px solid var(--line);border-radius:14px}.preview-list{display:grid;gap:8px;margin:0;padding-left:20px;color:var(--muted);line-height:1.6}.preview-prompt{padding:16px;border:1px solid var(--line);border-radius:13px;background:rgba(7,17,31,.7);color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}.preview-tools{display:grid;gap:9px}.preview-tool{padding:12px 14px;border:1px solid var(--line);border-radius:11px}.preview-tool strong{display:block;margin-bottom:4px;color:var(--text)}.preview-tool span{color:var(--muted)}
+    .thumbnail-crop{display:grid;gap:10px;margin-top:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(7,17,31,.55)}
+    .thumbnail-crop-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(61,214,208,.35);border-radius:10px;background:#050b13;touch-action:none;cursor:grab}
+    .thumbnail-crop-frame:active{cursor:grabbing}.thumbnail-crop-frame img{position:absolute;max-width:none;user-select:none;pointer-events:none}
+    .thumbnail-crop-controls{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;color:var(--muted);font-size:11px}.thumbnail-crop-controls input{min-height:28px!important;padding:4px 6px!important}
+    .thumbnail-crop-actions{display:flex;gap:8px}.thumbnail-crop-actions button{min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}.thumbnail-crop-actions .primary{background:rgba(61,214,208,.1);border-color:rgba(61,214,208,.35);color:var(--accent)}
+    .thumbnail-upload-preview{position:relative;display:none;margin-top:10px}.thumbnail-upload-preview.has-image{display:block}.thumbnail-upload-preview img{display:block;width:100%;max-width:420px;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--line);border-radius:12px}.thumbnail-upload-preview .thumbnail-clear{position:absolute;top:8px;right:8px;z-index:4;width:30px;height:30px;min-width:30px;min-height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(7,17,31,.9);color:var(--muted);font:inherit;font-size:18px;line-height:1;cursor:pointer}.thumbnail-upload-preview .thumbnail-clear:hover{border-color:rgba(255,100,100,.5);color:#ff9b9b}.thumbnail-upload-state{margin-top:7px;font-size:11px;color:var(--muted)}.thumbnail-upload-state.error{color:#ff9b9b}.thumbnail-upload-state.success{color:var(--accent)}
     @media(max-width:760px){.builder-shell{width:min(100% - 24px,680px)}.field-grid{grid-template-columns:1fr}.repeat-item.tool,.repeat-item.step{grid-template-columns:1fr}.panel{padding:18px}.builder-heading h1{font-size:38px}}
   </style>
+  <script>
+    (() => {
+      const input = document.querySelector('[data-image-file="thumbnail"]');
+      const field = input?.closest('.image-field');
+      const path = document.querySelector('input[name="thumbnail"]');
+      const preview = field?.querySelector('[data-preview="thumbnail"]');
+      if (!input || !field || !path || !preview) return;
+
+      let sourceFile = null;
+      let controller = null;
+      let objectUrl = '';
+
+      const state = (message, kind = '') => {
+        let node = field.querySelector('.thumbnail-upload-state');
+        if (!node) {
+          node = document.createElement('div');
+          node.className = 'thumbnail-upload-state';
+          field.querySelector('.upload-row')?.after(node);
+        }
+        node.textContent = message;
+        node.className = `thumbnail-upload-state${kind ? ` ${kind}` : ''}`;
+      };
+
+      const clearPreview = () => {
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
+        objectUrl = '';
+        preview.className = 'thumbnail-upload-preview';
+        preview.innerHTML = '';
+      };
+
+      const clearEverything = () => {
+        controller?.abort();
+        controller = null;
+        sourceFile = null;
+        input.value = '';
+        path.value = '';
+        field.querySelector('.thumbnail-crop')?.remove();
+        clearPreview();
+        state('');
+      };
+
+      const showPreview = (url, name, local = false) => {
+        clearPreview();
+        preview.className = 'thumbnail-upload-preview has-image';
+        if (local) objectUrl = url;
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = '16:9 thumbnail preview';
+        preview.append(img);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'thumbnail-clear';
+        button.textContent = '×';
+        button.title = 'Remove thumbnail';
+        button.setAttribute('aria-label', 'Remove thumbnail');
+        button.addEventListener('click', clearEverything);
+        preview.append(button);
+        const label = document.createElement('span');
+        label.textContent = name;
+        label.style.cssText = 'display:block;margin-top:6px;color:var(--muted);font-size:11px';
+        preview.append(label);
+      };
+
+      const cropImage = async (file, zoom, x, y) => {
+        const bitmap = await createImageBitmap(file);
+        const sw = bitmap.width;
+        const sh = bitmap.height;
+        const target = 16 / 9;
+        const sourceRatio = sw / sh;
+        let cw = sourceRatio > target ? sh * target : sw;
+        let ch = sourceRatio > target ? sh : sw / target;
+        cw /= zoom;
+        ch /= zoom;
+        const sx = Math.max(0, Math.min(sw - cw, (sw - cw) * (x / 100)));
+        const sy = Math.max(0, Math.min(sh - ch, (sh - ch) * (y / 100)));
+        const canvas = document.createElement('canvas');
+        canvas.width = 1600;
+        canvas.height = 900;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Could not prepare the thumbnail crop.');
+        ctx.drawImage(bitmap, sx, sy, cw, ch, 0, 0, 1600, 900);
+        bitmap.close?.();
+        return new Promise((resolve, reject) => canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Could not prepare the thumbnail crop.')), 'image/jpeg', .92));
+      };
+
+      const upload = async blob => {
+        controller = new AbortController();
+        state('Uploading thumbnail…');
+        const response = await fetch('/api/upload-image', {
+          method: 'POST',
+          headers: {'Content-Type': 'image/jpeg', 'X-File-Name': encodeURIComponent(`${sourceFile.name.replace(/\\.[^.]+$/, '')}-thumbnail-16x9.jpg`)},
+          body: blob,
+          credentials: 'same-origin',
+          signal: controller.signal
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok || !data.path) throw new Error(data.error || `Upload failed (${response.status || 'network error'}).`);
+        path.value = data.path;
+        showPreview(data.path, sourceFile.name);
+        state('Thumbnail uploaded to website.', 'success');
+      };
+
+      const openCrop = file => {
+        field.querySelector('.thumbnail-crop')?.remove();
+        const panel = document.createElement('div');
+        panel.className = 'thumbnail-crop';
+        panel.innerHTML = `
+          <strong style="color:var(--text);font-size:12px">Adjust thumbnail crop · 16:9</strong>
+          <div class="thumbnail-crop-frame"><img alt="Thumbnail crop preview"></div>
+          <div class="thumbnail-crop-controls"><span>Zoom</span><input class="thumb-zoom" type="range" min="1" max="3" step="0.01" value="1"><span class="thumb-zoom-value">1×</span></div>
+          <div class="thumbnail-crop-controls"><span>Horizontal</span><input class="thumb-x" type="range" min="0" max="100" value="50"><span>↔</span></div>
+          <div class="thumbnail-crop-controls"><span>Vertical</span><input class="thumb-y" type="range" min="0" max="100" value="50"><span>↕</span></div>
+          <div class="thumbnail-crop-actions"><button type="button" class="primary thumb-use">Use image</button><button type="button" class="thumb-cancel">Cancel</button></div>
+        `;
+        const frame = panel.querySelector('.thumbnail-crop-frame');
+        const image = panel.querySelector('img');
+        const zoom = panel.querySelector('.thumb-zoom');
+        const x = panel.querySelector('.thumb-x');
+        const y = panel.querySelector('.thumb-y');
+        const url = URL.createObjectURL(file);
+        image.src = url;
+
+        const update = () => {
+          const z = Number(zoom.value);
+          const ox = Number(x.value);
+          const oy = Number(y.value);
+          const w = frame.clientWidth * z;
+          const h = frame.clientHeight * z;
+          image.style.width = `${w}px`;
+          image.style.height = `${h}px`;
+          image.style.left = `${(frame.clientWidth - w) * ox / 100}px`;
+          image.style.top = `${(frame.clientHeight - h) * oy / 100}px`;
+          panel.querySelector('.thumb-zoom-value').textContent = `${z.toFixed(2)}×`;
+        };
+        image.onload = update;
+        [zoom, x, y].forEach(control => control.addEventListener('input', update));
+
+        let dragging = false, startX = 0, startY = 0, startOffsetX = 50, startOffsetY = 50;
+        frame.addEventListener('pointerdown', event => { dragging = true; startX = event.clientX; startY = event.clientY; startOffsetX = Number(x.value); startOffsetY = Number(y.value); frame.setPointerCapture(event.pointerId); });
+        frame.addEventListener('pointermove', event => { if (!dragging) return; x.value = Math.max(0, Math.min(100, startOffsetX - ((event.clientX - startX) / frame.clientWidth) * 100)); y.value = Math.max(0, Math.min(100, startOffsetY - ((event.clientY - startY) / frame.clientHeight) * 100)); update(); });
+        frame.addEventListener('pointerup', () => { dragging = false; });
+        frame.addEventListener('pointercancel', () => { dragging = false; });
+
+        const cleanup = () => { URL.revokeObjectURL(url); panel.remove(); };
+        panel.querySelector('.thumb-cancel').addEventListener('click', () => { cleanup(); input.value = ''; state(''); });
+        panel.querySelector('.thumb-use').addEventListener('click', async () => {
+          cleanup();
+          try {
+            const blob = await cropImage(file, Number(zoom.value), Number(x.value), Number(y.value));
+            await upload(blob);
+          } catch (error) {
+            if (error?.name === 'AbortError') { state('Upload cancelled.', 'error'); return; }
+            const localUrl = URL.createObjectURL(file);
+            showPreview(localUrl, file.name, true);
+            state(error?.message || 'Thumbnail upload failed.', 'error');
+          }
+        });
+        preview.after(panel);
+      };
+
+      input.addEventListener('change', event => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const file = input.files?.[0];
+        if (!file) return;
+        sourceFile = file;
+        controller?.abort();
+        controller = null;
+        state('');
+        clearPreview();
+        openCrop(file);
+      }, true);
+    })();
+  </script>
   <script src="/admin/resource-builder.js"></script>
 </BaseLayout>
