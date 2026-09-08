@@ -12,6 +12,7 @@ const resources = defineCollection({
     thumbnail: z.string().nullish(),
     heroImage: z.string().nullish(),
     inputImage: z.string().nullish(),
+    inputImages: z.array(z.string()).default([]),
     resultImages: z.array(z.string()).default([]),
     imageAlt: z.string().nullish(),
     intro: z.string().optional(),
