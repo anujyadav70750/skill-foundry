@@ -1,0 +1,15 @@
+.resource-card > img,
+.library-grid .resource-card > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: cover;
+}
+
+.result-card img {
+  width: 100%;
+  height: auto !important;
+  aspect-ratio: auto !important;
+  object-fit: cover;
+}
