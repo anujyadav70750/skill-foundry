@@ -149,6 +149,45 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         .footer-bottom { margin-top: 18px; padding-top: 12px; font-size: 12px; }
       }
     </style>
+    <style is:global>
+      .builder-page .repeat-item input:not([type="checkbox"]),
+      .builder-page .repeat-item textarea,
+      .builder-page .repeat-item select,
+      .builder-page .media-control input.path-input,
+      .builder-page .media-item input.path-input {
+        width:100%; box-sizing:border-box; min-height:46px; padding:10px 12px; border:1px solid var(--line); border-radius:11px; background:rgba(7,17,31,.75); color:var(--text); font:inherit; font-size:14px; line-height:1.5; outline:none; color-scheme:dark;
+      }
+      .builder-page .repeat-item textarea { min-height:84px; resize:vertical; }
+      .builder-page .repeat-item input::placeholder,
+      .builder-page .repeat-item textarea::placeholder,
+      .builder-page .media-control input::placeholder { color:#71849a; opacity:1; }
+      .builder-page .repeat-item input:focus,
+      .builder-page .repeat-item textarea:focus,
+      .builder-page .media-control input.path-input:focus { border-color:rgba(61,214,208,.55); box-shadow:0 0 0 3px rgba(61,214,208,.07); }
+      .builder-page .remove-button { position:absolute; top:10px; right:10px; display:grid; place-items:center; width:32px!important; height:32px!important; min-width:32px!important; min-height:32px!important; margin:0; padding:0!important; border:1px solid var(--line); border-radius:50%; background:rgba(255,255,255,.035); color:var(--muted); font:inherit; font-size:18px; font-weight:500; line-height:1; cursor:pointer; appearance:none; -webkit-appearance:none; }
+      .builder-page .remove-button:hover,
+      .builder-page .remove-button:focus-visible { border-color:rgba(255,100,100,.5); color:#ff9b9b; background:rgba(255,100,100,.07); outline:none; }
+      .builder-page .repeat-item { position:relative; padding-right:56px; }
+      .builder-page .file-button { display:flex!important; align-items:center; justify-content:center; min-height:46px; min-width:118px; box-sizing:border-box; padding:0 14px; border:1px solid var(--line); border-radius:10px; background:rgba(16,34,56,.55); color:var(--text); font-size:12px; font-weight:800; cursor:pointer; }
+      .builder-page .file-button:hover { border-color:rgba(61,214,208,.45); color:var(--accent); background:rgba(61,214,208,.08); }
+      .builder-page .file-button input[type="file"] { display:none!important; }
+      .builder-page .upload-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; align-items:stretch; }
+      .builder-page .media-control { min-width:0; }
+      .builder-page .image-preview { display:none; margin-top:10px; padding:10px; border:1px solid var(--line); border-radius:12px; background:rgba(7,17,31,.5); }
+      .builder-page .image-preview.has-image { display:block; }
+      .builder-page .image-preview img { display:block; width:min(100%,420px); max-height:260px; object-fit:cover; border:1px solid var(--line); border-radius:10px; }
+      .builder-page .image-preview span { display:block; margin-top:7px; color:var(--muted); font-size:11px; }
+      .builder-page .check-inline { display:flex!important; align-items:center; gap:8px; min-height:46px; }
+      .builder-page .check-inline input[type="checkbox"] { width:17px!important; height:17px!important; min-height:17px!important; padding:0!important; accent-color:var(--accent); }
+      @media(max-width:700px){
+        .builder-page .repeat-item.tool,
+        .builder-page .repeat-item.step { grid-template-columns:1fr; }
+        .builder-page .upload-row { grid-template-columns:1fr; }
+        .builder-page .file-button { min-height:44px; width:100%; }
+        .builder-page .repeat-item { padding-right:52px; }
+        .builder-page .remove-button { width:32px!important; height:32px!important; }
+      }
+    </style>
     <script>
       const menuToggle = document.querySelector('#menu-toggle');
       const siteMenu = document.querySelector('#site-menu');
