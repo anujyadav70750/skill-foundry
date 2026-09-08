@@ -57,7 +57,6 @@
   const previewOf = input => hostOf(input)?.querySelector(`[data-preview-role="${roleOf(input)}"]`);
   const pathOf = input => hostOf(input)?.querySelector(`[data-role="${roleOf(input)}"]`);
   const oldStatusOf = input => hostOf(input)?.querySelector('[data-upload-state]');
-
   const clearOldStatus = input => {
     const node = oldStatusOf(input);
     if (node) { node.textContent = ''; node.className = 'upload-state'; }
@@ -170,12 +169,15 @@
   };
 
   const openDialog = (input, file) => {
+    if (!isTarget(input) || !file) return;
     if (activeDialog) closeDialog(activeDialog);
     const role = roleOf(input);
     const dialog = document.createElement('dialog');
     dialog.className = 'sf-ratio-dialog';
     dialog.innerHTML = `<div class="sf-ratio-modal"><div class="sf-ratio-title"><span>Adjust ${role === 'input' ? 'input' : 'output'} image</span><span class="sf-ratio-badge">Choose ratio</span></div><label class="sf-ratio-picker"><span>Display ratio</span><select class="sf-ratio-select" aria-label="Display ratio">${ratios.map(([label,value]) => `<option value="${value}">${label}</option>`).join('')}</select></label><div class="sf-ratio-frame"><img alt="Crop preview"></div><div class="sf-ratio-help">Choose a ratio and the image will be automatically cropped to that shape. Check the preview, then tap Done. Nothing is uploaded yet.</div><div class="sf-ratio-actions"><button type="button" class="primary sf-ratio-done">Done</button><button type="button" class="sf-ratio-cancel">Cancel</button></div></div>`;
-    document.body.append(dialog); activeDialog = dialog;
+    document.body.append(dialog);
+    activeDialog = dialog;
+
     const frame = dialog.querySelector('.sf-ratio-frame');
     const image = dialog.querySelector('img');
     const select = dialog.querySelector('.sf-ratio-select');
@@ -183,6 +185,7 @@
     const cancel = dialog.querySelector('.sf-ratio-cancel');
     const sourceUrl = URL.createObjectURL(file);
     image.src = sourceUrl;
+
     const update = () => {
       const [rw,rh] = select.value === 'original' ? [image.naturalWidth || 1,image.naturalHeight || 1] : select.value.split(':').map(Number);
       frame.style.aspectRatio = `${rw}/${rh}`;
@@ -191,48 +194,78 @@
     };
     image.onload = update;
     select.addEventListener('change', update);
-    const cleanup = () => { URL.revokeObjectURL(sourceUrl); closeDialog(dialog); };
+
+    const cleanup = () => {
+      URL.revokeObjectURL(sourceUrl);
+      closeDialog(dialog);
+      input.value = '';
+    };
     cancel.addEventListener('click', cleanup);
     dialog.addEventListener('cancel', event => { event.preventDefault(); cleanup(); });
+
     done.addEventListener('click', async () => {
-      done.disabled=true; cancel.disabled=true;
+      done.disabled = true;
+      cancel.disabled = true;
       try {
-        const ratio=select.value;
-        const blob=ratio==='original' ? file : await makeCrop(file,ratio);
-        const previous=pending.get(input); revoke(previous);
-        const item={blob,url:URL.createObjectURL(blob),originalName:file.name,ratio,role,uploaded:false,uploadedPath:'',controller:null};
-        pending.set(input,item);
-        const path=pathOf(input); if(path) path.value='';
-        clearOldStatus(input); renderResult(input,item); input.value=''; cleanup();
-      } catch(error) {
-        done.disabled=false; cancel.disabled=false;
-        const help=dialog.querySelector('.sf-ratio-help'); if(help) help.textContent=error?.message||'Could not prepare the image.';
+        const ratio = select.value;
+        const blob = ratio === 'original' ? file : await makeCrop(file, ratio);
+        const previous = pending.get(input);
+        revoke(previous);
+        const item = { blob, url:URL.createObjectURL(blob), originalName:file.name, ratio, role, uploaded:false, uploadedPath:'', controller:null };
+        pending.set(input, item);
+        const path = pathOf(input);
+        if (path) path.value = '';
+        clearOldStatus(input);
+        renderResult(input, item);
+        cleanup();
+      } catch (error) {
+        done.disabled = false;
+        cancel.disabled = false;
+        const help = dialog.querySelector('.sf-ratio-help');
+        if (help) help.textContent = error?.message || 'Could not prepare the image.';
       }
     });
-    dialog.showModal();
+
+    try {
+      if (typeof dialog.showModal === 'function') dialog.showModal();
+      else dialog.setAttribute('open', '');
+    } catch (error) {
+      closeDialog(dialog);
+      const preview = previewOf(input);
+      if (preview) {
+        preview.className = 'image-preview has-image';
+        preview.innerHTML = `<img src="${sourceUrl}" alt="Selected image preview"><span>${file.name}</span>`;
+      }
+      console.error('Skill Foundry image ratio popup could not open:', error);
+    }
   };
 
-  // This document-level capture handler runs before the old builder's input listener,
-  // including for media items created dynamically after this script loads.
-  document.addEventListener('change', event => {
-    const input=event.target;
-    if(!isTarget(input)) return;
-    const file=input.files?.[0];
-    if(!file) return;
+  // Public bridge used by the builder as a fallback. This makes the workflow
+  // independent of listener order when the repeatable fields are created later.
+  window.SkillFoundryImageRatio = { open: openDialog };
+
+  const handleFileEvent = event => {
+    const input = event.target;
+    if (!isTarget(input)) return;
+    const file = input.files?.[0];
+    if (!file) return;
     event.preventDefault();
     event.stopPropagation();
     event.stopImmediatePropagation();
     clearOldStatus(input);
-    openDialog(input,file);
-  }, true);
+    openDialog(input, file);
+  };
 
-  // Removing an Input/Output image must also clear any stale old upload/error message.
+  // Capture at window level so this wins before document-level legacy handlers.
+  window.addEventListener('change', handleFileEvent, true);
+  window.addEventListener('input', handleFileEvent, true);
+
   document.addEventListener('click', event => {
-    const clear=event.target.closest?.('.image-clear');
-    if(!clear) return;
-    const item=clear.closest('.media-item');
-    const input=item?.querySelector('input[data-file-role="input"],input[data-file-role="result"]');
-    if(!input) return;
+    const clear = event.target.closest?.('.image-clear');
+    if (!clear) return;
+    const item = clear.closest('.media-item');
+    const input = item?.querySelector('input[data-file-role="input"],input[data-file-role="result"]');
+    if (!input) return;
     event.preventDefault();
     event.stopImmediatePropagation();
     clearInput(input);
