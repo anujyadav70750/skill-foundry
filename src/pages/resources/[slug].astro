@@ -12,8 +12,12 @@ const { resource } = Astro.props;
 const data = resource.data;
 const slug = resourceSlug(resource);
 const resultImages = resourceResultImages(resource);
-const hasInputImage = Boolean(data.inputImage?.trim());
-const hasResults = hasInputImage || resultImages.length > 0;
+const inputImages = data.inputImages.length > 0 ? data.inputImages : (data.inputImage ? [data.inputImage] : []);
+const hasResults = inputImages.length > 0 || resultImages.length > 0;
+const tools = [
+  { name: data.tool, purpose: 'Primary tool/model used for this resource.', url: data.toolUrl, affiliate: data.toolAffiliate },
+  ...data.toolsUsed
+].filter((tool) => tool.name?.trim());
 const allResources = await getCollection('resources');
 const related = (data.relatedResources.length > 0
   ? data.relatedResources.flatMap((relatedSlug) => {
@@ -36,246 +40,51 @@ const seoDescription = data.seoDescription ?? data.description;
 const heroImage = resourceHeroImage(resource);
 const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
-const schema = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Article',
-      headline: data.title,
-      description: data.description,
-      datePublished: data.date.toISOString(),
-      dateModified: data.date.toISOString(),
-      articleSection: data.category,
-      url: canonicalUrl,
-      mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
-      image: [absoluteImage],
-      author: { '@type': 'Organization', name: 'Skill Foundry' },
-      publisher: { '@type': 'Organization', name: 'Skill Foundry' },
-      keywords: data.tags.join(', ')
-    },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
-        { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
-        { '@type': 'ListItem', position: 3, name: data.title, item: canonicalUrl }
-      ]
-    }
-  ]
-};
+const schema = { '@context': 'https://schema.org', '@graph': [
+  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
+  { '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
+    { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
+    { '@type': 'ListItem', position: 3, name: data.title, item: canonicalUrl }
+  ] }
+] };
 ---
 <BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
-
   <article class="resource-page">
     <div class="container narrow resource-intro">
       <div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/resources/">Resources</a><span>/</span><span>{data.category}</span></div>
-      <p class="eyebrow">{data.tool} • {data.category}</p>
-      <h1>{data.title}</h1>
-      <p class="lead">{data.description}</p>
+      <p class="eyebrow">{data.tool} • {data.category}</p><h1>{data.title}</h1><p class="lead">{data.description}</p>
       <div class="resource-top-meta"><span>Published {data.date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}</span><span>•</span><span>{data.tool}</span></div>
-      <div class="quick-actions">
-        <a class="button button-primary" href="#prompt">Get the prompt ↓</a>
-        {(data.videoEmbedUrl || data.originalVideoUrl) && <a class="button button-secondary" href="#tutorial">Watch tutorial</a>}
-      </div>
+      <div class="quick-actions"><a class="button button-primary" href="#prompt">Get the prompt ↓</a>{(data.videoEmbedUrl || data.originalVideoUrl) && <a class="button button-secondary" href="#tutorial">Watch tutorial</a>}</div>
     </div>
-
-    <div class="container content-wide">
-      <img class="hero-image" src={heroImage} alt={imageAlt} />
-    </div>
-
+    <div class="container content-wide"><img class="hero-image" src={heroImage} alt={imageAlt} /></div>
     <div class="container narrow article-layout">
-      {data.intro && <section class="resource-section intro-section">
-        <div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Start here</h2></div></div>
-        <p class="section-lead">{data.intro}</p>
-      </section>}
-
-      {data.whatItDoes && <section class="resource-section">
-        <div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div>
-        <p class="section-lead">{data.whatItDoes}</p>
-      </section>}
-
-      {data.toolsUsed.length > 0 && <section class="resource-section tools-section">
-        <div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">These are the tools used or recommended for this resource. Links open the tool's external website.</p></div></div>
-        <div class="tools-list">
-          {data.toolsUsed.map((tool) => <article class="tool-card">
-            <div class="tool-card-main"><div><h3>{tool.name}</h3><p>{tool.purpose}</p></div>{tool.affiliate && <span class="affiliate-badge">Affiliate link</span>}</div>
-            {tool.url && <a class="tool-link" href={tool.url} target="_blank" rel="noopener noreferrer sponsored">Open {tool.name} →</a>}
-          </article>)}
-        </div>
-        {data.toolsUsed.some((tool) => tool.affiliate) && <p class="affiliate-disclosure"><strong>Affiliate disclosure:</strong> Some tool links on Skill Foundry may be affiliate links. If you use one, we may earn a commission at no additional cost to you.</p>}
-      </section>}
-
-      {hasResults && <section class="resource-section results-section">
-        <div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{hasInputImage ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{hasInputImage ? 'Compare the starting image with the result created using this resource.' : 'See the visual output created with this resource.'}</p></div></div>
-        <div class:list={['results-gallery', hasInputImage ? 'has-input' : '', resultImages.length + (hasInputImage ? 1 : 0) === 1 ? 'single-result' : '']}>
-          {hasInputImage && <figure class="result-card input-result"><img src={data.inputImage!} alt={`${imageAlt} input image`} loading="lazy" /><figcaption><span>INPUT</span><strong>Starting image</strong></figcaption></figure>}
-          {resultImages.map((image, index) => <figure class="result-card"><img src={image} alt={`${imageAlt} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
-        </div>
-      </section>}
-
-      <section class="resource-section prompt-section" id="prompt">
-        <div class="section-heading prompt-heading"><div><p class="eyebrow">PROMPT SOURCE</p><h2>Copy the full prompt</h2><p class="section-subcopy">Review the prompt in the scrollable box. Copy it, expand it, or download it as a PDF when you're ready to use it.</p></div></div>
-        <div class="prompt-shell">
-          <div class="prompt-toolbar" role="toolbar" aria-label="Prompt actions">
-            <button class="prompt-control prompt-copy" type="button" data-copy>Copy</button>
-            <div class="prompt-label">Full Prompt</div>
-            <button class="prompt-control prompt-expand" type="button" data-expand>Expand</button>
-          </div>
-          <pre id="prompt-text">{data.prompt}</pre>
-          <button class="prompt-download" type="button" data-download>Download PDF</button>
-        </div>
-        <p class="copy-status" data-status aria-live="polite"></p>
-      </section>
-
-      {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial">
-        <div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to copy and adapt the prompt.</p></div></div>
-        {data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}
-        {data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}
-      </section>}
-
-      {data.steps.length > 0 && <section class="resource-section steps-section">
-        <div class="section-heading"><div><p class="eyebrow">STEP BY STEP</p><h2>How to use it</h2></div></div>
-        <div class="steps-grid resource-steps">
-          {data.steps.map((step, index) => <article class="step-card"><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></article>)}
-        </div>
-      </section>}
-
-      {data.tips.length > 0 && <section class="resource-section tips-section">
-        <div class="section-heading"><div><p class="eyebrow">CUSTOMIZE</p><h2>Tips for better results</h2></div></div>
-        <ul class="tips-list">{data.tips.map((tip) => <li>{tip}</li>)}</ul>
-      </section>}
-
+      {data.intro && <section class="resource-section intro-section"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Start here</h2></div></div><p class="section-lead">{data.intro}</p></section>}
+      {data.whatItDoes && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{data.whatItDoes}</p></section>}
+      {tools.length > 0 && <section class="resource-section tools-section"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Use the tools below to create or complete this resource.</p></div></div><div class="tools-list">{tools.map((tool) => <article class="tool-card"><div class="tool-card-main"><div><h3>{tool.name}</h3><p>{tool.purpose}</p></div>{tool.affiliate && <span class="affiliate-badge">Affiliate</span>}</div>{tool.url && <a class="tool-link" href={tool.url} target="_blank" rel={`noopener noreferrer${tool.affiliate ? ' sponsored' : ''}`}>Open {tool.name} →</a>}</article>)}</div>{tools.some((tool) => tool.affiliate) && <p class="affiliate-disclosure"><strong>Affiliate disclosure:</strong> Some tool links on Skill Foundry may be affiliate links. If you use one, we may earn a commission at no additional cost to you.</p>}</section>}
+      {hasResults && <section class="resource-section results-section"><div class="section-heading"><div><p class="eyebrow">RESULTS</p><h2>{inputImages.length > 0 ? 'From input to result' : 'See the result'}</h2><p class="section-subcopy">{inputImages.length > 0 ? 'Compare the starting images with the results created using this resource.' : 'See the visual output created with this resource.'}</p></div></div><div class:list={['results-gallery', inputImages.length > 0 ? 'has-input' : '', inputImages.length + resultImages.length === 1 ? 'single-result' : '']}>
+        {inputImages.map((image, index) => <figure class="result-card input-result"><img src={image} alt={`${imageAlt} input image ${index + 1}`} loading="lazy" /><figcaption><span>INPUT{inputImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{inputImages.length > 1 ? `Starting image ${index + 1}` : 'Starting image'}</strong></figcaption></figure>)}
+        {resultImages.map((image, index) => <figure class="result-card"><img src={image} alt={`${imageAlt} output result ${index + 1}`} loading="lazy" /><figcaption><span>OUTPUT{resultImages.length > 1 ? ` ${index + 1}` : ''}</span><strong>{resultImages.length > 1 ? `Result ${index + 1}` : 'Generated result'}</strong></figcaption></figure>)}
+      </div></section>}
+      <section class="resource-section prompt-section" id="prompt"><div class="section-heading prompt-heading"><div><p class="eyebrow">PROMPT SOURCE</p><h2>Copy the full prompt</h2><p class="section-subcopy">Review the prompt in the scrollable box. Copy it, expand it, or download it as a PDF when you're ready to use it.</p></div></div><div class="prompt-shell"><div class="prompt-toolbar" role="toolbar" aria-label="Prompt actions"><button class="prompt-control prompt-copy" type="button" data-copy>Copy</button><div class="prompt-label">Full Prompt</div><button class="prompt-control prompt-expand" type="button" data-expand>Expand</button></div><pre id="prompt-text">{data.prompt}</pre><button class="prompt-download" type="button" data-download>Download PDF</button></div><p class="copy-status" data-status aria-live="polite"></p></section>
+      {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to copy and adapt the prompt.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
+      {data.steps.length > 0 && <section class="resource-section steps-section"><div class="section-heading"><div><p class="eyebrow">STEP BY STEP</p><h2>How to use it</h2></div></div><div class="steps-grid resource-steps">{data.steps.map((step, index) => <article class="step-card"><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.description}</p></article>)}</div></section>}
+      {data.tips.length > 0 && <section class="resource-section tips-section"><div class="section-heading"><div><p class="eyebrow">CUSTOMIZE</p><h2>Tips for better results</h2></div></div><ul class="tips-list">{data.tips.map((tip) => <li>{tip}</li>)}</ul></section>}
       {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}
     </div>
   </article>
-
-  {related.length > 0 && <section class="section section-muted related-section">
-    <div class="container">
-      <div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div>
-      <div class="resource-grid">{related.map((item) => { const relatedSlug = resourceSlug(item); return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)} /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>; })}</div>
-    </div>
-  </section>}
-
+  {related.length > 0 && <section class="section section-muted related-section"><div class="container"><div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div><div class="resource-grid">{related.map((item) => { const relatedSlug = resourceSlug(item); return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)} /><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>; })}</div></div></section>}
   <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><p class="eyebrow">SKILL FOUNDRY</p><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
-
   <dialog class="prompt-dialog" data-dialog aria-labelledby="prompt-dialog-title"><div class="dialog-card"><div class="section-heading"><div><p class="eyebrow">FULL PROMPT</p><h2 id="prompt-dialog-title">{data.title}</h2></div><button type="button" class="dialog-close" data-close aria-label="Close prompt">×</button></div><pre>{data.prompt}</pre><button class="button button-primary" type="button" data-copy>Copy full prompt</button></div></dialog>
-
   <style>
-    .results-gallery { align-items: start; }
-    .result-card { min-width: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
-    .result-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--surface-2); }
-    .result-card figcaption { display: grid; gap: 3px; padding: 12px 14px 14px; }
-    .result-card figcaption span { color: var(--accent); font-size: 10px; font-weight: 850; letter-spacing: .14em; }
-    .result-card figcaption strong { color: var(--text); font-size: 14px; }
-    .results-gallery.has-input { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .results-gallery.has-input .result-card.input-result { border-color: rgba(124,140,255,.28); }
-    .results-gallery.single-result { display: block; }
-    .results-gallery.single-result .result-card img { aspect-ratio: 16 / 9; }
-    .tools-list { display: grid; gap: 12px; }
-    .tool-card { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
-    .tool-card-main { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-    .tool-card h3 { margin: 0 0 5px; color: var(--text); font-size: 17px; }
-    .tool-card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
-    .affiliate-badge { flex: 0 0 auto; padding: 5px 8px; border: 1px solid rgba(61,214,208,.28); border-radius: 999px; color: var(--accent); background: rgba(61,214,208,.08); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
-    .tool-link { display: inline-flex; width: fit-content; align-items: center; min-height: 42px; padding: 0 14px; border: 1px solid var(--line); border-radius: 10px; color: var(--text); background: rgba(16,34,56,.55); font-size: 12px; font-weight: 800; transition: border-color .18s ease, color .18s ease, background .18s ease; }
-    .tool-link:hover, .tool-link:focus-visible { border-color: rgba(61,214,208,.38); color: var(--accent); background: rgba(61,214,208,.08); outline: none; }
-    .affiliate-disclosure { margin: 14px 0 0; padding: 12px 14px; border-left: 2px solid var(--accent); color: var(--muted); font-size: 12px; line-height: 1.6; }
-    .affiliate-disclosure strong { color: var(--text); }
-    .prompt-shell { overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-    .prompt-toolbar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; min-height: 56px; overflow: hidden; border: 0; border-radius: 13px 13px 0 0; background: rgba(16,34,56,.55); }
-    .prompt-control, .prompt-label { min-width: 0; min-height: 56px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 0; font: inherit; }
-    .prompt-control { padding: 0 20px; color: var(--text); background: rgba(16,34,56,.68); cursor: pointer; font-size: 12px; font-weight: 800; letter-spacing: .01em; transition: background .18s ease, color .18s ease; }
-    .prompt-control:hover, .prompt-control:focus-visible { background: rgba(54,216,218,.12); color: var(--accent); outline: none; }
-    .prompt-copy { border-right: 1px solid var(--line); }
-    .prompt-expand { border-left: 1px solid var(--line); }
-    .prompt-label { color: var(--muted); background: transparent; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .prompt-shell pre { max-height: 306px; margin: 0; border: 0; border-radius: 0; padding: 20px 22px; background: #07111f; }
-    .prompt-download { display: flex; width: 100%; min-height: 50px; align-items: center; justify-content: center; margin: 0; padding: 0 16px; border: 0; border-top: 1px solid var(--line); border-radius: 0 0 13px 13px; background: rgba(16,34,56,.42); color: var(--text); font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .01em; cursor: pointer; transition: background .18s ease, color .18s ease; }
-    .prompt-download:hover, .prompt-download:focus-visible { background: rgba(61,214,208,.10); color: var(--accent); outline: none; }
-    .tips-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-    .tips-list li { position: relative; padding: 16px 18px 16px 42px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: #d5dfeb; }
-    .tips-list li::before { content: '✓'; position: absolute; left: 17px; top: 15px; color: var(--accent); font-weight: 900; }
-    .resource-cta { padding-top: 18px; }
-    @media (max-width: 600px) {
-      .results-gallery.has-input { grid-template-columns: 1fr; }
-      .tool-card-main { display: grid; gap: 10px; }
-      .affiliate-badge { width: fit-content; }
-      .tool-link { width: 100%; justify-content: center; }
-      .prompt-toolbar { min-height: 52px; }
-      .prompt-control, .prompt-label { min-height: 52px; }
-      .prompt-control { padding: 0 14px; font-size: 11px; }
-      .prompt-label { font-size: 10px; letter-spacing: .12em; }
-      .prompt-shell pre { max-height: 300px; padding: 18px; }
-      .prompt-download { min-height: 48px; }
-    }
+    .results-gallery{align-items:start}.result-card{min-width:0;margin:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.result-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--surface-2)}.result-card figcaption{display:grid;gap:3px;padding:12px 14px 14px}.result-card figcaption span{color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.14em}.result-card figcaption strong{color:var(--text);font-size:14px}.results-gallery.has-input{grid-template-columns:repeat(2,minmax(0,1fr))}.results-gallery.has-input .result-card.input-result{border-color:rgba(124,140,255,.28)}.results-gallery.single-result{display:block}.results-gallery.single-result .result-card img{aspect-ratio:16/9}.tools-list{display:grid;gap:12px}.tool-card{display:grid;gap:14px;padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}.tool-card-main{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.tool-card h3{margin:0 0 5px;color:var(--text);font-size:17px}.tool-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}.affiliate-badge{flex:0 0 auto;padding:5px 8px;border:1px solid rgba(61,214,208,.28);border-radius:999px;color:var(--accent);background:rgba(61,214,208,.08);font-size:10px;font-weight:800}.tool-link{display:inline-flex;width:fit-content;align-items:center;min-height:42px;padding:0 14px;border:1px solid var(--line);border-radius:10px;color:var(--text);background:rgba(16,34,56,.55);font-size:12px;font-weight:800}.tool-link:hover,.tool-link:focus-visible{border-color:rgba(61,214,208,.38);color:var(--accent);background:rgba(61,214,208,.08);outline:none}.affiliate-disclosure{margin:14px 0 0;padding:12px 14px;border-left:2px solid var(--accent);color:var(--muted);font-size:12px;line-height:1.6}.affiliate-disclosure strong{color:var(--text)}
+    @media(max-width:600px){.results-gallery.has-input{grid-template-columns:1fr}.tool-card-main{display:grid;gap:10px}.affiliate-badge{width:fit-content}.tool-link{width:100%;justify-content:center}}
   </style>
-
   <script>
-    document.querySelectorAll('a[href="#prompt"]').forEach((link) => link.addEventListener('click', (event) => {
-      const target = document.getElementById('prompt');
-      if (!target) return;
-      event.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.history.replaceState(null, '', window.location.pathname + window.location.search);
-    }));
-    const promptText = document.querySelector('#prompt-text');
-    const status = document.querySelector('[data-status]');
-    const dialog = document.querySelector('[data-dialog]');
-    const makePdf = () => {
-      if (!promptText) return;
-      const source = promptText.textContent || '';
-      const lines = [];
-      const maxChars = 78;
-      source.split(/\r?\n/).forEach((line) => {
-        if (!line) { lines.push(''); return; }
-        let remaining = line;
-        while (remaining.length > maxChars) {
-          let cut = remaining.lastIndexOf(' ', maxChars);
-          if (cut < 1) cut = maxChars;
-          lines.push(remaining.slice(0, cut));
-          remaining = remaining.slice(cut).trimStart();
-        }
-        lines.push(remaining);
-      });
-      const encoder = new TextEncoder();
-      const chunks = [];
-      const offsets = [0];
-      const add = (text) => { const bytes = encoder.encode(text); chunks.push(bytes); offsets.push(offsets[offsets.length - 1] + bytes.length); };
-      add('%PDF-1.4\n');
-      const objects = [];
-      const contentLines = ['BT', '/F1 10 Tf', '48 760 Td', '13 TL'];
-      lines.forEach((line) => {
-        const safe = line.replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-        contentLines.push(`(${safe}) Tj`, 'T*');
-      });
-      contentLines.push('ET');
-      const stream = contentLines.join('\n');
-      objects.push('1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n');
-      objects.push('2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n');
-      objects.push('3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj\n');
-      objects.push('4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Courier >> endobj\n');
-      objects.push(`5 0 obj << /Length ${encoder.encode(stream).length} >> stream\n${stream}\nendstream endobj\n`);
-      const objectOffsets = [];
-      objects.forEach((object) => { objectOffsets.push(chunks.reduce((total, chunk) => total + chunk.length, 0)); add(object); });
-      const xrefOffset = chunks.reduce((total, chunk) => total + chunk.length, 0);
-      add(`xref\n0 ${objects.length + 1}\n0000000000 65535 f \n${objectOffsets.map((offset) => `${String(offset).padStart(10, '0')} 00000 n `).join('\n')}\ntrailer << /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
-      const blob = new Blob(chunks, { type: 'application/pdf' });
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement('a');
-      anchor.href = url;
-      anchor.download = `${data.title.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'skill-foundry-prompt'}.pdf`;
-      anchor.click();
-      URL.revokeObjectURL(url);
-    };
-    document.querySelectorAll('[data-copy]').forEach((button) => button.addEventListener('click', async () => {
-      const source = promptText?.textContent || '';
-      try { await navigator.clipboard.writeText(source); if (status) status.textContent = 'Prompt copied.'; }
-      catch { if (status) status.textContent = 'Copy failed. Select the prompt text and copy it manually.'; }
-    }));
-    document.querySelector('[data-download]')?.addEventListener('click', makePdf);
-    document.querySelector('[data-expand]')?.addEventListener('click', () => dialog?.showModal());
-    document.querySelector('[data-close]')?.addEventListener('click', () => dialog?.close());
-    dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    document.querySelectorAll('a[href="#prompt"]').forEach((link)=>link.addEventListener('click',(event)=>{const target=document.getElementById('prompt');if(!target)return;event.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'});window.history.replaceState(null,'',window.location.pathname+window.location.search);}));
+    const promptText=document.querySelector('#prompt-text');const status=document.querySelector('[data-status]');const dialog=document.querySelector('[data-dialog]');
+    const makePdf=()=>{if(!promptText)return;const source=promptText.textContent||'';const lines=[];const maxChars=78;source.split(/\r?\n/).forEach((line)=>{if(!line){lines.push('');return;}let remaining=line;while(remaining.length>maxChars){let cut=remaining.lastIndexOf(' ',maxChars);if(cut<1)cut=maxChars;lines.push(remaining.slice(0,cut));remaining=remaining.slice(cut).trimStart();}lines.push(remaining);});const encoder=new TextEncoder();const chunks=[];const add=(text)=>chunks.push(encoder.encode(text));add('%PDF-1.4\n');const objects=[];const contentLines=['BT','/F1 10 Tf','48 760 Td','13 TL'];lines.forEach((line)=>{const safe=line.replace(/[^\x20-\x7E]/g,'?').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');contentLines.push(`(${safe}) Tj`,'T*');});contentLines.push('ET');const stream=contentLines.join('\n');objects.push('1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n','2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n','3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >> endobj\n','4 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Courier >> endobj\n',`5 0 obj << /Length ${encoder.encode(stream).length} >> stream\n${stream}\nendstream endobj\n`);const offsets=[];objects.forEach((object)=>{offsets.push(chunks.reduce((sum,chunk)=>sum+chunk.length,0));add(object);});const xref=chunks.reduce((sum,chunk)=>sum+chunk.length,0);add(`xref\n0 ${objects.length+1}\n0000000000 65535 f \n${offsets.map((offset)=>`${String(offset).padStart(10,'0')} 00000 n `).join('\n')}\ntrailer << /Size ${objects.length+1} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);const url=URL.createObjectURL(new Blob(chunks,{type:'application/pdf'}));const anchor=document.createElement('a');anchor.href=url;anchor.download=`${data.title.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').toLowerCase()||'skill-foundry-prompt'}.pdf`;anchor.click();URL.revokeObjectURL(url);};
+    document.querySelectorAll('[data-copy]').forEach((button)=>button.addEventListener('click',async()=>{const source=promptText?.textContent||'';try{await navigator.clipboard.writeText(source);if(status)status.textContent='Prompt copied.';}catch{if(status)status.textContent='Copy failed. Select the prompt text and copy it manually.';}}));document.querySelector('[data-download]')?.addEventListener('click',makePdf);document.querySelector('[data-expand]')?.addEventListener('click',()=>dialog?.showModal());document.querySelector('[data-close]')?.addEventListener('click',()=>dialog?.close());dialog?.addEventListener('click',(event)=>{if(event.target===dialog)dialog.close();});
   </script>
 </BaseLayout>
