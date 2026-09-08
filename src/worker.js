@@ -70,7 +70,7 @@ export default {
     const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) response = injectBodyScript(response, '/resource-tool-logos.js');
-    if (request.method === 'GET' && url.pathname.startsWith('/admin/') && contentType.includes('text/html')) response = injectBodyScript(response, '/admin/image-controls.js');
+    if (request.method === 'GET' && url.pathname.startsWith('/admin/') && contentType.includes('text/html')) response = injectBodyScript(response, '/admin/image-controls.js?v=20260908-1');
     return response;
   }
 };
