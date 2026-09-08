@@ -3,9 +3,19 @@ const REPO_NAME = 'skill-foundry';
 const DEFAULT_BRANCH = 'main';
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
-const json = (body, status = 200) => new Response(JSON.stringify(body), {
+const corsHeaders = (request) => {
+  const origin = request.headers.get('Origin');
+  const allowed = origin && new URL(request.url).origin === origin ? origin : null;
+  return allowed ? { 'Access-Control-Allow-Origin': allowed, 'Vary': 'Origin' } : {};
+};
+
+const json = (body, status = 200, request = null) => new Response(JSON.stringify(body), {
   status,
-  headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'no-store',
+    ...(request ? corsHeaders(request) : {})
+  }
 });
 
 const safeFilename = (name) => {
@@ -25,22 +35,44 @@ const toBase64 = (bytes) => {
 const githubHeaders = (token) => ({
   'Accept': 'application/vnd.github+json',
   'Authorization': `Bearer ${token}`,
-  'X-GitHub-Api-Version': '2026-03-10',
+  'X-GitHub-Api-Version': '2022-11-28',
   'User-Agent': 'Skill-Foundry-Resource-Builder',
   'Content-Type': 'application/json'
 });
 
-async function uploadImage(request, env) {
-  if (!env.GITHUB_TOKEN) return json({ error: 'GitHub upload is not configured yet. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503);
-  const form = await request.formData();
-  const file = form.get('file');
-  if (!(file instanceof File)) return json({ error: 'No image file was received.' }, 400);
-  if (!file.type.startsWith('image/')) return json({ error: 'Only image files are allowed.' }, 415);
-  if (file.size > MAX_IMAGE_BYTES) return json({ error: 'Image is too large. Maximum size is 8 MB.' }, 413);
+async function readImage(request) {
+  const contentLength = Number(request.headers.get('Content-Length') || 0);
+  if (contentLength > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
 
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : (file.type.split('/')[1] || 'jpg');
-  const base = safeFilename(file.name.replace(/\.[^.]+$/, ''));
+  const type = request.headers.get('Content-Type') || '';
+  let fileName = decodeURIComponent(request.headers.get('X-File-Name') || 'image');
+  let mimeType = type.split(';')[0].trim().toLowerCase();
+  let bytes;
+
+  if (type.toLowerCase().startsWith('multipart/form-data')) {
+    const form = await request.formData();
+    const file = form.get('file');
+    if (!(file instanceof File)) throw Object.assign(new Error('No image file was received.'), { status: 400 });
+    fileName = file.name || fileName;
+    mimeType = file.type || mimeType;
+    if (file.size > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
+    bytes = new Uint8Array(await file.arrayBuffer());
+  } else {
+    if (!mimeType.startsWith('image/')) throw Object.assign(new Error('Only image files are allowed.'), { status: 415 });
+    bytes = new Uint8Array(await request.arrayBuffer());
+    if (bytes.byteLength > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
+  }
+
+  if (!mimeType.startsWith('image/')) throw Object.assign(new Error('Only image files are allowed.'), { status: 415 });
+  return { bytes, fileName, mimeType };
+}
+
+async function uploadImage(request, env) {
+  if (!env.GITHUB_TOKEN) return json({ error: 'GitHub upload is not configured yet. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503, request);
+  const { bytes, fileName, mimeType } = await readImage(request);
+  const rawExt = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : (mimeType.split('/')[1] || 'jpg');
+  const ext = /^[a-z0-9]{1,8}$/.test(rawExt) ? rawExt : 'jpg';
+  const base = safeFilename(fileName.replace(/\.[^.]+$/, ''));
   const filename = `${base}-${Date.now()}.${ext}`;
   const path = `public/images/${filename}`;
   const apiUrl = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
@@ -55,45 +87,62 @@ async function uploadImage(request, env) {
     })
   });
   const result = await response.json().catch(() => ({}));
-  if (!response.ok) return json({ error: result.message || 'GitHub rejected the image upload.' }, response.status);
-  return json({ path: `/images/${filename}`, name: filename });
+  if (!response.ok) return json({ error: result.message || `GitHub rejected the image upload (${response.status}).` }, response.status, request);
+  return json({ path: `/images/${filename}`, name: filename }, 200, request);
 }
 
 async function fetchToolLogo(request) {
   const url = new URL(request.url).searchParams.get('url');
-  if (!url) return json({ error: 'Tool website URL is required.' }, 400);
+  if (!url) return json({ error: 'Tool website URL is required.' }, 400, request);
   let target;
-  try { target = new URL(url); } catch { return json({ error: 'Invalid tool website URL.' }, 400); }
-  if (!['http:', 'https:'].includes(target.protocol)) return json({ error: 'Only HTTP and HTTPS websites are supported.' }, 400);
+  try { target = new URL(url); } catch { return json({ error: 'Invalid tool website URL.' }, 400, request); }
+  if (!['http:', 'https:'].includes(target.protocol)) return json({ error: 'Only HTTP and HTTPS websites are supported.' }, 400, request);
+
+  const requestOrigin = new URL(request.url).origin;
+  if (target.origin === requestOrigin) return json({ logoUrl: `${target.origin}/favicon.svg` }, 200, request);
 
   let resolvedOrigin = target.origin;
   try {
     const landing = await fetch(target.href, { method: 'GET', headers: { 'User-Agent': 'Mozilla/5.0 Skill-Foundry-Logo-Fetcher' }, redirect: 'follow' });
-    if (landing.ok || landing.status < 400) resolvedOrigin = new URL(landing.url).origin;
+    if (landing.ok || landing.status < 400) {
+      resolvedOrigin = new URL(landing.url).origin;
+      const htmlType = landing.headers.get('content-type') || '';
+      if (htmlType.includes('text/html')) {
+        const html = await landing.text();
+        const match = html.match(/<link[^>]+rel=["'][^"']*icon[^"']*["'][^>]+href=["']([^"']+)["']/i) || html.match(/<link[^>]+href=["']([^"']+)["'][^>]+rel=["'][^"']*icon[^"']*["']/i);
+        if (match?.[1]) {
+          try { return json({ logoUrl: new URL(match[1], landing.url).href }, 200, request); } catch {}
+        }
+      }
+    }
   } catch {}
+
   const candidates = [
-    `${resolvedOrigin}/favicon.ico`,
     `${resolvedOrigin}/favicon.svg`,
+    `${resolvedOrigin}/favicon.ico`,
     `${resolvedOrigin}/apple-touch-icon.png`
   ];
   for (const candidate of candidates) {
     try {
       const response = await fetch(candidate, { headers: { 'User-Agent': 'Mozilla/5.0 Skill-Foundry-Logo-Fetcher' }, redirect: 'follow' });
       const type = response.headers.get('content-type') || '';
-      if (response.ok && (type.startsWith('image/') || candidate.endsWith('.ico'))) return json({ logoUrl: response.url });
+      if (response.ok && (type.startsWith('image/') || candidate.endsWith('.ico'))) return json({ logoUrl: response.url }, 200, request);
     } catch {}
   }
-  return json({ logoUrl: `${resolvedOrigin}/favicon.ico` });
+  return json({ logoUrl: `${resolvedOrigin}/favicon.svg` }, 200, request);
 }
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) {
+      return new Response(null, { status: 204, headers: { ...corsHeaders(request), 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-File-Name' } });
+    }
     if (request.method === 'POST' && url.pathname === '/api/upload-image') {
-      try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, 500); }
+      try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); }
     }
     if (request.method === 'GET' && url.pathname === '/api/tool-logo') {
-      try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500); }
+      try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); }
     }
     const response = await env.ASSETS.fetch(request);
     const contentType = response.headers.get('content-type') || '';
