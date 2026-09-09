@@ -24,11 +24,11 @@
     .builder-page .sf-crop-controls{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;margin-top:9px;color:var(--muted);font-size:11px}
     .builder-page .sf-crop-controls input{min-height:28px!important;padding:4px 6px!important}
     .builder-page .sf-crop-actions{display:flex;gap:8px;margin-top:10px}
-    .builder-page .sf-crop-actions button{min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .builder-page .sf-crop-actions button{min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.035);color:var(--text);font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
     .builder-page .sf-crop-actions .primary{background:rgba(61,214,208,.10);border-color:rgba(61,214,208,.35);color:var(--accent)}
     .builder-page .sf-upload-preview{position:relative;margin-top:9px}
     .builder-page .sf-upload-preview img{display:block;width:min(100%,420px);max-height:300px;object-fit:cover;border:1px solid var(--line);border-radius:12px}
-    .builder-page .sf-upload-preview .sf-clear{position:absolute;top:8px;right:8px;z-index:4;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0!important;border:1px solid var(--line);border-radius:50%;background:rgba(7,17,31,.9);color:var(--muted);font:inherit;font-size:18px!important;line-height:1!important;cursor:pointer}
+    .builder-page .sf-upload-preview .sf-clear{position:absolute;top:8px;right:8px;z-index:4;width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(255,100,100,.08);color:var(--muted);font-size:20px;line-height:1;cursor:pointer;transition:all .2s}
     .builder-page .sf-upload-preview .sf-clear:hover{border-color:rgba(255,100,100,.5);color:#ff9b9b}
     .builder-page .sf-upload-state{font-size:11px;color:var(--muted);margin-top:7px}
     .builder-page .sf-upload-state.error{color:#ff9b9b}
@@ -243,7 +243,7 @@
 
   const setup = host => {
     if (!host || host.dataset.sfImageReady === '1') return;
-    const fileInput = host.querySelector('input[type=file][data-file-role],input[type=file][data-image-file]');
+    const fileInput = host.querySelector('input[type=file][data-image-file]');
     if (!fileInput) return;
 
     const role = fileInput.dataset.fileRole || fileInput.dataset.imageFile;
