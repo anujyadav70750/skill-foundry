@@ -3,6 +3,9 @@
   "name":"hub",
   "main":"./src/worker.js",
   "compatibility_date":"2026-09-07",
+  "secrets":{
+    "required":["GITHUB_TOKEN"]
+  },
   "assets":{
     "directory":"./dist",
     "binding":"ASSETS",
