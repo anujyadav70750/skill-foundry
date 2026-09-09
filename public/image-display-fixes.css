@@ -13,3 +13,96 @@
   aspect-ratio: auto !important;
   object-fit: cover;
 }
+
+/* Public resources never expose internal affiliate metadata. */
+.affiliate-badge,
+.affiliate-disclosure {
+  display: none !important;
+}
+
+/* Keep the admin builder focused on the actual tool information. */
+.builder-page label:has([data-role="tool-affiliate"]) {
+  display: none !important;
+}
+
+/* The source/original tutorial URL is derived automatically from the tutorial URL. */
+.builder-page label:has(input[name="originalVideoUrl"]) {
+  display: none !important;
+}
+
+/* Restore the structured prompt panel UI. */
+.prompt-shell {
+  position: relative;
+  background: #050b13;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.prompt-toolbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch;
+  min-height: 48px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.prompt-control {
+  min-width: 82px;
+  padding: 0 16px;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.prompt-control:hover,
+.prompt-control:focus-visible {
+  background: rgba(61,214,208,.08);
+  color: var(--accent);
+  outline: none;
+}
+.prompt-label {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.prompt-shell pre {
+  margin: 0;
+  padding: 22px 22px 24px;
+  max-height: 360px;
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: #dce8f4;
+  font: 14px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.prompt-download {
+  display: flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.prompt-download:hover,
+.prompt-download:focus-visible {
+  background: rgba(61,214,208,.08);
+  color: var(--accent);
+  outline: none;
+}
+@media (max-width: 600px) {
+  .prompt-control { min-width: 68px; padding-inline: 10px; }
+  .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
+}
