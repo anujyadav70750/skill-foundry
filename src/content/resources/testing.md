@@ -1,7 +1,7 @@
 ---
-title: "Testing "
+title: "Testing"
 slug: "testing"
-description: "Testing "
+description: "Testing"
 category: "Other"
 tool: ""
 toolUrl: "https://hub.skillfoundryai.workers.dev/admin/"
@@ -15,15 +15,15 @@ inputImages: []
 inputImageRatios: []
 resultImages: []
 resultImageRatios: []
-imageAlt: "Research "
-intro: "Testing caption "
-whatItDoes: "How "
+imageAlt: "Research"
+intro: "Testing caption"
+whatItDoes: "How"
 toolsUsed:
   - name: ""
     purpose: ""
     url: "https://hub.skillfoundryai.workers.dev/admin/"
     affiliate: true
-prompt: "Testing prompt "
+prompt: "Testing prompt"
 videoEmbedUrl: null
 originalVideoUrl: null
 steps:
@@ -32,15 +32,15 @@ tips:
   []
 relatedResources: []
 tags: []
-seoTitle: null
-seoDescription: null
+seoTitle: ""
+seoDescription: ""
 featured: false
 ---
 
-Testing caption 
+Testing caption
 
-How 
+How
 
 ## Prompt
 
-Testing prompt 
+Testing prompt
