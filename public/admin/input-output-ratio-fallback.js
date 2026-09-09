@@ -8,7 +8,7 @@
   const preview = input => host(input)?.querySelector(`[data-preview-role="${input.dataset.fileRole}"]`);
   const state = input => host(input)?.querySelector('[data-upload-state]');
 
-  window.__sfInputOutputRatioFallback = '2026-09-09-5';
+  window.__sfInputOutputRatioFallback = '2026-09-09-6';
 
   const style = document.createElement('style');
   style.textContent = `
@@ -19,9 +19,11 @@
     .sf-io-ratio select,.sf-io-ratio button{min-height:40px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.04);color:inherit;font:inherit;padding:0 12px}
     .sf-io-ratio select{width:100%;margin:8px 0 10px;flex:0 0 auto}
     .sf-io-stage-wrap{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:4px 0}
-    .sf-io-stage{position:relative;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13;touch-action:none;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
+    .sf-io-stage{position:relative;overflow:hidden;aspect-ratio:1/1;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13;touch-action:none;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
     .sf-io-stage:active{cursor:grabbing}
-    .sf-io-stage img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none;transform-origin:0 0}
+    .sf-io-backdrop{position:absolute!important;inset:-18px!important;width:calc(100% + 36px)!important;height:calc(100% + 36px)!important;max-width:none!important;object-fit:cover!important;filter:blur(18px);opacity:.55;transform:scale(1.06);user-select:none;pointer-events:none;-webkit-user-drag:none}
+    .sf-io-crop-window{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;border:1px solid rgba(255,255,255,.38);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.06);touch-action:none}
+    .sf-io-crop-window img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none;transform-origin:0 0}
     .sf-io-help{color:#9aaabd;font-size:11px;line-height:1.5;margin-top:7px;flex:0 0 auto;text-align:center}
     .sf-io-zoom{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:8px;flex:0 0 auto}
     .sf-io-zoom button{width:40px;padding:0;font-size:18px;font-weight:700}
@@ -30,9 +32,11 @@
     .sf-io-actions button{flex:1}
     .sf-io-actions .primary{border-color:rgba(61,214,208,.45);color:#3dd6d0;background:rgba(61,214,208,.1)}
     .sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}
-    .sf-io-result img{display:block;width:min(100%,420px);max-height:280px;object-fit:contain;border-radius:10px}
+    .sf-io-preview-box{position:relative;width:min(100%,420px);aspect-ratio:1/1;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#050b13;display:flex;align-items:center;justify-content:center}
+    .sf-io-preview-box .sf-preview-backdrop{position:absolute;inset:-16px;width:calc(100% + 32px);height:calc(100% + 32px);object-fit:cover;filter:blur(16px);opacity:.55;transform:scale(1.06);pointer-events:none;user-select:none;-webkit-user-drag:none}
+    .sf-io-preview-box .sf-preview-foreground{position:relative;z-index:1;display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;border-radius:7px;box-shadow:0 6px 22px rgba(0,0,0,.24)}
     .sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}
-    .sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important}
+    .sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important;z-index:3}
     @media(max-width:600px){
       .sf-io-ratio{width:calc(100vw - 24px);height:min(560px,calc(100vh - 24px));max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);border-radius:16px}
       .sf-io-modal{padding:12px}
@@ -64,7 +68,10 @@
     p.replaceChildren();
     const box = document.createElement('div'); box.className = 'sf-io-result';
     const objectUrl = URL.createObjectURL(blob);
-    const img = document.createElement('img'); img.src = objectUrl; img.alt = 'Selected image preview';
+    const previewBox = document.createElement('div'); previewBox.className = 'sf-io-preview-box';
+    const backdrop = document.createElement('img'); backdrop.className = 'sf-preview-backdrop'; backdrop.src = objectUrl; backdrop.alt = '';
+    const img = document.createElement('img'); img.className = 'sf-preview-foreground'; img.src = objectUrl; img.alt = 'Selected image preview';
+    previewBox.append(backdrop, img);
     const label = document.createElement('span'); label.textContent = `${file.name} · ${ratio === 'original' ? 'Original' : ratio}`;
     const upload = document.createElement('button'); upload.type = 'button'; upload.className = 'sf-upload'; upload.textContent = 'Upload';
     const msg = document.createElement('span'); msg.className = 'upload-state'; msg.textContent = 'Ready to upload';
@@ -85,7 +92,7 @@
     });
     const clear = document.createElement('button'); clear.type = 'button'; clear.className = 'sf-io-clear'; clear.textContent = '×'; clear.title = 'Remove selected image';
     clear.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); URL.revokeObjectURL(objectUrl); clearPreview(input); });
-    box.append(img, label, upload, msg, clear); p.append(box);
+    box.append(previewBox, label, upload, msg, clear); p.append(box);
     p.dataset.objectUrl = objectUrl;
   };
 
@@ -116,27 +123,33 @@
     close();
     const d = document.createElement('dialog'); d.className = 'sf-io-ratio';
     const role = input.dataset.fileRole === 'input' ? 'input' : 'output';
-    d.innerHTML = `<div class="sf-io-modal"><strong class="sf-io-title">Adjust ${role} image</strong><select aria-label="Image ratio">${RATIOS.map(([a,v]) => `<option value="${v}">${a}</option>`).join('')}</select><div class="sf-io-stage-wrap"><div class="sf-io-stage"><img alt="Crop preview"></div></div><div class="sf-io-zoom"><button type="button" class="sf-zoom-out" aria-label="Zoom out">−</button><output>100%</output><button type="button" class="sf-zoom-in" aria-label="Zoom in">+</button></div><div class="sf-io-help">Drag to move the image. Pinch or use + / − to zoom. Only the part inside the selected ratio will be saved.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Use image</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
+    d.innerHTML = `<div class="sf-io-modal"><strong class="sf-io-title">Adjust ${role} image</strong><select aria-label="Image ratio">${RATIOS.map(([a,v]) => `<option value="${v}">${a}</option>`).join('')}</select><div class="sf-io-stage-wrap"><div class="sf-io-stage"><img class="sf-io-backdrop" alt=""><div class="sf-io-crop-window"><img class="sf-io-crop-image" alt="Crop preview"></div></div></div><div class="sf-io-zoom"><button type="button" class="sf-zoom-out" aria-label="Zoom out">−</button><output>100%</output><button type="button" class="sf-zoom-in" aria-label="Zoom in">+</button></div><div class="sf-io-help">Drag to move the image. Pinch or use + / − to zoom. Only the part inside the selected ratio will be saved.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Use image</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
     document.body.append(d); dialog = d;
 
-    const img = d.querySelector('img'), stage = d.querySelector('.sf-io-stage'), wrap = d.querySelector('.sf-io-stage-wrap'), select = d.querySelector('select');
+    const stage = d.querySelector('.sf-io-stage'), cropWindow = d.querySelector('.sf-io-crop-window'), backdrop = d.querySelector('.sf-io-backdrop'), img = d.querySelector('.sf-io-crop-image'), wrap = d.querySelector('.sf-io-stage-wrap'), select = d.querySelector('select');
     const zoomOut = d.querySelector('.sf-zoom-out'), zoomIn = d.querySelector('.sf-zoom-in'), zoomLabel = d.querySelector('output');
-    const url = URL.createObjectURL(file); img.src = url;
+    const url = URL.createObjectURL(file); backdrop.src = url; img.src = url;
     const crop = { zoom: 1, x: 50, y: 50, pointers: new Map(), startDistance: 0, startZoom: 1 };
 
     const ratioValue = () => select.value === 'original' ? (img.naturalWidth || 1) / (img.naturalHeight || 1) : (() => { const [rw,rh] = select.value.split(':').map(Number); return rw / rh; })();
+    const updateCropWindow = () => {
+      const size = stage.clientWidth || 1, r = ratioValue();
+      let w = size, h = w / r;
+      if (h > size) { h = size; w = h * r; }
+      cropWindow.style.width = `${Math.max(1, Math.round(w))}px`;
+      cropWindow.style.height = `${Math.max(1, Math.round(h))}px`;
+    };
     const fitStage = () => {
       const maxW = Math.max(120, wrap.clientWidth - 4), maxH = Math.max(120, wrap.clientHeight - 4);
-      const r = ratioValue();
-      let w = maxW, h = w / r;
-      if (h > maxH) { h = maxH; w = h * r; }
-      stage.style.width = `${Math.max(1, Math.round(w))}px`;
-      stage.style.height = `${Math.max(1, Math.round(h))}px`;
+      const size = Math.max(120, Math.min(maxW, maxH));
+      stage.style.width = `${Math.round(size)}px`;
+      stage.style.height = `${Math.round(size)}px`;
+      updateCropWindow();
       updateImage();
     };
     const updateZoomLabel = () => { zoomLabel.textContent = `${Math.round(crop.zoom * 100)}%`; };
     const updateImage = () => {
-      const fw = stage.clientWidth, fh = stage.clientHeight, nw = img.naturalWidth || 1, nh = img.naturalHeight || 1;
+      const fw = cropWindow.clientWidth, fh = cropWindow.clientHeight, nw = img.naturalWidth || 1, nh = img.naturalHeight || 1;
       const scale = Math.max(fw / nw, fh / nh) * crop.zoom;
       const w = nw * scale, h = nh * scale;
       img.style.width = `${w}px`; img.style.height = `${h}px`;
@@ -144,30 +157,31 @@
       updateZoomLabel();
     };
     img.onload = fitStage;
-    select.addEventListener('change', () => { crop.zoom = 1; crop.x = 50; crop.y = 50; fitStage(); });
+    select.addEventListener('change', () => { crop.zoom = 1; crop.x = 50; crop.y = 50; updateCropWindow(); updateImage(); });
 
     const points = () => [...crop.pointers.values()];
     const distance = () => { const p = points(); return p.length < 2 ? 0 : Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y); };
-    stage.addEventListener('pointerdown', event => {
-      event.preventDefault(); stage.setPointerCapture?.(event.pointerId);
+    const dragTarget = stage;
+    dragTarget.addEventListener('pointerdown', event => {
+      event.preventDefault(); dragTarget.setPointerCapture?.(event.pointerId);
       crop.pointers.set(event.pointerId, { x:event.clientX, y:event.clientY });
       if (crop.pointers.size === 2) { crop.startDistance = distance(); crop.startZoom = crop.zoom; }
     });
-    stage.addEventListener('pointermove', event => {
+    dragTarget.addEventListener('pointermove', event => {
       if (!crop.pointers.has(event.pointerId)) return;
       event.preventDefault();
       const previous = crop.pointers.get(event.pointerId); crop.pointers.set(event.pointerId, { x:event.clientX, y:event.clientY });
       if (crop.pointers.size === 1) {
-        crop.x = Math.max(0, Math.min(100, crop.x - ((event.clientX - previous.x) / Math.max(1, stage.clientWidth)) * 100));
-        crop.y = Math.max(0, Math.min(100, crop.y - ((event.clientY - previous.y) / Math.max(1, stage.clientHeight)) * 100));
+        crop.x = Math.max(0, Math.min(100, crop.x - ((event.clientX - previous.x) / Math.max(1, cropWindow.clientWidth)) * 100));
+        crop.y = Math.max(0, Math.min(100, crop.y - ((event.clientY - previous.y) / Math.max(1, cropWindow.clientHeight)) * 100));
       } else if (crop.pointers.size === 2 && crop.startDistance) {
         crop.zoom = Math.max(1, Math.min(4, crop.startZoom * (distance() / crop.startDistance)));
       }
       updateImage();
     });
     const endPointer = event => { crop.pointers.delete(event.pointerId); if (crop.pointers.size < 2) crop.startDistance = 0; };
-    stage.addEventListener('pointerup', endPointer); stage.addEventListener('pointercancel', endPointer); stage.addEventListener('pointerleave', event => { if (crop.pointers.has(event.pointerId)) endPointer(event); });
-    stage.addEventListener('wheel', event => { event.preventDefault(); crop.zoom = Math.max(1, Math.min(4, crop.zoom * (event.deltaY < 0 ? 1.08 : .92))); updateImage(); }, {passive:false});
+    dragTarget.addEventListener('pointerup', endPointer); dragTarget.addEventListener('pointercancel', endPointer);
+    dragTarget.addEventListener('wheel', event => { event.preventDefault(); crop.zoom = Math.max(1, Math.min(4, crop.zoom * (event.deltaY < 0 ? 1.08 : .92))); updateImage(); }, {passive:false});
     const setZoom = value => { crop.zoom = Math.max(1, Math.min(4, value)); updateImage(); };
     zoomIn.addEventListener('click', () => setZoom(crop.zoom + .25)); zoomOut.addEventListener('click', () => setZoom(crop.zoom - .25));
 
