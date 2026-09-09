@@ -72,7 +72,7 @@
     objects[pagesId - 1] = `<< /Type /Pages /Kids [${pageIds.map((id) => `${id} 0 R`).join(' ')}] /Count ${pageIds.length} >>`;
     objects[catalogId - 1] = `<< /Type /Catalog /Pages ${pagesId} 0 R >>`;
 
-    let pdf = '%PDF-1.4\n%âãÏÓ\n';
+    let pdf = '%PDF-1.4\n% Skill Foundry\n';
     const offsets = [0];
     objects.forEach((body, index) => {
       offsets[index + 1] = pdf.length;
