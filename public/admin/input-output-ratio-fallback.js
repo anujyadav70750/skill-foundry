@@ -8,10 +8,10 @@
   const preview = input => host(input)?.querySelector(`[data-preview-role="${input.dataset.fileRole}"]`);
   const state = input => host(input)?.querySelector('[data-upload-state]');
 
-  window.__sfInputOutputRatioFallback = '2026-09-09-4';
+  window.__sfInputOutputRatioFallback = '2026-09-09-5';
 
   const style = document.createElement('style');
-  style.textContent = `.sf-io-ratio{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:18px;border:1px solid rgba(61,214,208,.3);border-radius:18px;background:#07111f;color:#eef6ff;box-shadow:0 28px 90px rgba(0,0,0,.6);z-index:2147483647}.sf-io-ratio::backdrop{background:rgba(2,7,13,.7);backdrop-filter:blur(9px)}.sf-io-ratio .sf-frame{position:relative;width:100%;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13}.sf-io-ratio .sf-frame img{position:absolute;max-width:none;pointer-events:none;user-select:none}.sf-io-ratio select,.sf-io-ratio button{min-height:42px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.04);color:inherit;font:inherit;padding:0 12px}.sf-io-ratio select{width:100%;margin:8px 0 12px}.sf-io-actions{display:flex;gap:8px;margin-top:14px}.sf-io-actions .primary{border-color:rgba(61,214,208,.45);color:#3dd6d0;background:rgba(61,214,208,.1)}.sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}.sf-io-result img{display:block;width:min(100%,420px);max-height:280px;object-fit:contain;border-radius:10px}.sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}.sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important}.sf-io-note{color:#9aaabd;font-size:12px;line-height:1.5;margin-top:9px}`;
+  style.textContent = `.sf-io-ratio{box-sizing:border-box;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 24px));height:min(690px,calc(100vh - 24px));max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);margin:0;overflow:hidden;padding:18px;border:1px solid rgba(61,214,208,.3);border-radius:18px;background:#07111f;color:#eef6ff;box-shadow:0 28px 90px rgba(0,0,0,.6);z-index:2147483647}.sf-io-ratio::backdrop{background:rgba(2,7,13,.7);backdrop-filter:blur(9px)}.sf-io-ratio .sf-frame{box-sizing:border-box;position:relative;width:100%;height:360px;max-height:calc(100vh - 250px);min-height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13}.sf-io-ratio .sf-crop-window{position:relative;flex:0 0 auto;overflow:hidden;border-radius:10px;background:#02070d;box-shadow:0 0 0 1px rgba(255,255,255,.08)}.sf-io-ratio .sf-crop-window img{position:absolute;max-width:none;pointer-events:none;user-select:none;-webkit-user-drag:none}.sf-io-ratio select,.sf-io-ratio button{min-height:42px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.04);color:inherit;font:inherit;padding:0 12px}.sf-io-ratio select{width:100%;margin:8px 0 12px}.sf-io-actions{display:flex;gap:8px;margin-top:14px}.sf-io-actions .primary{border-color:rgba(61,214,208,.45);color:#3dd6d0;background:rgba(61,214,208,.1)}.sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}.sf-io-result img{display:block;width:min(100%,420px);max-height:280px;object-fit:contain;border-radius:10px}.sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}.sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important}.sf-io-note{color:#9aaabd;font-size:12px;line-height:1.5;margin-top:9px}@media(max-width:600px){.sf-io-ratio{width:calc(100vw - 28px);height:calc(100vh - 28px);max-width:calc(100vw - 28px);max-height:calc(100vh - 28px);padding:14px;border-radius:16px}.sf-io-ratio .sf-frame{height:min(360px,42vh);max-height:none;min-height:180px}.sf-io-ratio select,.sf-io-ratio button{min-height:40px}.sf-io-note{font-size:11px}}`;
   document.head.appendChild(style);
 
   const clearPreview = input => {
@@ -73,14 +73,27 @@
     close();
     const d=document.createElement('dialog'); d.className='sf-io-ratio';
     const role=input.dataset.fileRole==='input'?'input':'output';
-    d.innerHTML=`<strong>Adjust ${role} image</strong><select aria-label="Image ratio">${RATIOS.map(([a,v])=>`<option value="${v}">${a}</option>`).join('')}</select><div class="sf-frame"><img></div><div class="sf-io-note">Choose the display ratio. The image is automatically cropped to that shape. Nothing is uploaded until you press Upload.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Done</button><button type="button" class="sf-cancel">Cancel</button></div>`;
+    d.innerHTML=`<strong>Adjust ${role} image</strong><select aria-label="Image ratio">${RATIOS.map(([a,v])=>`<option value="${v}">${a}</option>`).join('')}</select><div class="sf-frame"><div class="sf-crop-window"><img></div></div><div class="sf-io-note">Choose the display ratio. The image is automatically cropped to that shape. Nothing is uploaded until you press Upload.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Done</button><button type="button" class="sf-cancel">Cancel</button></div>`;
     document.body.append(d); dialog=d;
-    const img=d.querySelector('img'), frame=d.querySelector('.sf-frame'), select=d.querySelector('select'), url=URL.createObjectURL(file); img.src=url;
-    const fit=()=>{let rw,rh;if(select.value==='original'){rw=img.naturalWidth||1;rh=img.naturalHeight||1}else [rw,rh]=select.value.split(':').map(Number);frame.style.aspectRatio=`${rw}/${rh}`;const fw=frame.clientWidth,fh=frame.clientHeight,nw=img.naturalWidth||1,nh=img.naturalHeight||1,s=Math.max(fw/nw,fh/nh),w=nw*s,h=nh*s;img.style.width=w+'px';img.style.height=h+'px';img.style.left=(fw-w)/2+'px';img.style.top=(fh-h)/2+'px';};
-    img.onload=fit; select.addEventListener('change',fit);
-    d.querySelector('.sf-cancel').onclick=()=>{URL.revokeObjectURL(url);close();input.value='';};
-    d.addEventListener('cancel',e=>{e.preventDefault();URL.revokeObjectURL(url);close();input.value='';});
-    d.querySelector('.sf-done').onclick=async()=>{const done=d.querySelector('.sf-done');done.disabled=true;try{const ratio=select.value;const blob=await crop(file,ratio);URL.revokeObjectURL(url);showResult(input,file,blob,ratio);close();input.value='';}catch(e){done.disabled=false;d.querySelector('.sf-io-note').textContent=e?.message||'Could not prepare image.';}};
+    const img=d.querySelector('img'), frame=d.querySelector('.sf-frame'), cropWindow=d.querySelector('.sf-crop-window'), select=d.querySelector('select'), url=URL.createObjectURL(file); img.src=url;
+    const fit=()=>{
+      let rw,rh;
+      if(select.value==='original'){rw=img.naturalWidth||1;rh=img.naturalHeight||1}
+      else [rw,rh]=select.value.split(':').map(Number);
+      const ratio=rw/rh;
+      const fw=frame.clientWidth, fh=frame.clientHeight;
+      let cw=Math.min(fw,fh*ratio), ch=cw/ratio;
+      if(ch>fh){ch=fh;cw=ch*ratio;}
+      cropWindow.style.width=`${Math.max(1,cw)}px`;
+      cropWindow.style.height=`${Math.max(1,ch)}px`;
+      const nw=img.naturalWidth||1, nh=img.naturalHeight||1;
+      const s=Math.max(cw/nw,ch/nh), w=nw*s, h=nh*s;
+      img.style.width=w+'px'; img.style.height=h+'px'; img.style.left=(cw-w)/2+'px'; img.style.top=(ch-h)/2+'px';
+    };
+    img.onload=fit; select.addEventListener('change',fit); window.addEventListener('resize',fit);
+    d.querySelector('.sf-cancel').onclick=()=>{URL.revokeObjectURL(url);window.removeEventListener('resize',fit);close();input.value='';};
+    d.addEventListener('cancel',e=>{e.preventDefault();URL.revokeObjectURL(url);window.removeEventListener('resize',fit);close();input.value='';});
+    d.querySelector('.sf-done').onclick=async()=>{const done=d.querySelector('.sf-done');done.disabled=true;try{const ratio=select.value;const blob=await crop(file,ratio);URL.revokeObjectURL(url);window.removeEventListener('resize',fit);showResult(input,file,blob,ratio);close();input.value='';}catch(e){done.disabled=false;d.querySelector('.sf-io-note').textContent=e?.message||'Could not prepare image.';}};
     try{d.showModal();}catch{d.setAttribute('open','');}
   };
 
@@ -102,8 +115,6 @@
     if (!file) return;
     delete input.dataset.sfIoPickerOpened;
     handleFile(input, file);
-    // Clear the native selection after copying the File object. This prevents
-    // any legacy bubble listener from processing the same selection again.
     input.value = '';
     event.preventDefault();
     event.stopImmediatePropagation();
