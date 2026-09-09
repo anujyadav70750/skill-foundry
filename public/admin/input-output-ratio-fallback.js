@@ -8,7 +8,7 @@
   const preview = input => host(input)?.querySelector(`[data-preview-role="${input.dataset.fileRole}"]`);
   const state = input => host(input)?.querySelector('[data-upload-state]');
 
-  window.__sfInputOutputRatioFallback = '2026-09-09-3';
+  window.__sfInputOutputRatioFallback = '2026-09-09-4';
 
   const style = document.createElement('style');
   style.textContent = `.sf-io-ratio{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:18px;border:1px solid rgba(61,214,208,.3);border-radius:18px;background:#07111f;color:#eef6ff;box-shadow:0 28px 90px rgba(0,0,0,.6);z-index:2147483647}.sf-io-ratio::backdrop{background:rgba(2,7,13,.7);backdrop-filter:blur(9px)}.sf-io-ratio .sf-frame{position:relative;width:100%;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13}.sf-io-ratio .sf-frame img{position:absolute;max-width:none;pointer-events:none;user-select:none}.sf-io-ratio select,.sf-io-ratio button{min-height:42px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.04);color:inherit;font:inherit;padding:0 12px}.sf-io-ratio select{width:100%;margin:8px 0 12px}.sf-io-actions{display:flex;gap:8px;margin-top:14px}.sf-io-actions .primary{border-color:rgba(61,214,208,.45);color:#3dd6d0;background:rgba(61,214,208,.1)}.sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}.sf-io-result img{display:block;width:min(100%,420px);max-height:280px;object-fit:contain;border-radius:10px}.sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}.sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important}.sf-io-note{color:#9aaabd;font-size:12px;line-height:1.5;margin-top:9px}`;
@@ -91,20 +91,34 @@
     try{open(input,file);}catch(e){if(st)st.textContent=e?.message||'Image selected';}
   };
 
-  const handle = event => { const input=event.target; if(target(input)&&input.files?.[0]) handleFile(input,input.files[0]); };
+  // Capture at the document level so this remains reliable even if another
+  // target-level handler stops propagation on the file input. Input/Output
+  // inputs are owned exclusively by this handler; Thumbnail/Hero use their
+  // separate data-image-file handlers and are intentionally untouched.
+  document.addEventListener('change', event => {
+    const input = event.target;
+    if (!target(input)) return;
+    const file = input.files?.[0];
+    if (!file) return;
+    delete input.dataset.sfIoPickerOpened;
+    handleFile(input, file);
+    // Clear the native selection after copying the File object. This prevents
+    // any legacy bubble listener from processing the same selection again.
+    input.value = '';
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }, true);
 
   const bindInput = input => {
     if(!target(input)||input.dataset.sfIoBound==='1') return;
     input.dataset.sfIoBound='1';
-    input.addEventListener('change',handle,false);
-    input.addEventListener('input',handle,false);
     input.addEventListener('click',()=>{
       input.dataset.sfIoPickerOpened='1';
       const started=Date.now();
       const check=()=>{
         if(!target(input)||!input.dataset.sfIoPickerOpened) return;
         const file=input.files?.[0];
-        if(file){delete input.dataset.sfIoPickerOpened;handleFile(input,file);return;}
+        if(file){delete input.dataset.sfIoPickerOpened;handleFile(input,file);input.value='';return;}
         if(Date.now()-started<2500) setTimeout(check,100);
         else delete input.dataset.sfIoPickerOpened;
       };
