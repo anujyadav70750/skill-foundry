@@ -8,6 +8,8 @@
   const preview = input => host(input)?.querySelector(`[data-preview-role="${input.getAttribute('data-file-role')}"]`);
   const state = input => host(input)?.querySelector('[data-upload-state]');
 
+  window.__sfInputOutputRatioFallback = '2026-09-09-2';
+
   const style = document.createElement('style');
   style.textContent = `.sf-io-ratio{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:18px;border:1px solid rgba(61,214,208,.3);border-radius:18px;background:#07111f;color:#eef6ff;box-shadow:0 28px 90px rgba(0,0,0,.6);z-index:2147483647}.sf-io-ratio::backdrop{background:rgba(2,7,13,.7);backdrop-filter:blur(9px)}.sf-io-ratio .sf-frame{position:relative;width:100%;overflow:hidden;border:1px solid rgba(61,214,208,.4);border-radius:14px;background:#050b13}.sf-io-ratio .sf-frame img{position:absolute;max-width:none;pointer-events:none;user-select:none}.sf-io-ratio select,.sf-io-ratio button{min-height:42px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.04);color:inherit;font:inherit;padding:0 12px}.sf-io-ratio select{width:100%;margin:8px 0 12px}.sf-io-actions{display:flex;gap:8px;margin-top:14px}.sf-io-actions .primary{border-color:rgba(61,214,208,.45);color:#3dd6d0;background:rgba(61,214,208,.1)}.sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}.sf-io-result img{display:block;width:min(100%,420px);max-height:280px;object-fit:contain;border-radius:10px}.sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}.sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important}.sf-io-note{color:#9aaabd;font-size:12px;line-height:1.5;margin-top:9px}`;
   document.head.appendChild(style);
@@ -92,13 +94,29 @@
     if (!target(input)) return;
     const file = input.files && input.files[0];
     if (!file) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
     immediatePreview(input,file);
     const st=state(input);
     if(st) st.textContent='Image selected — choose ratio';
     try { open(input,file); } catch (error) { if(st) st.textContent=error?.message || 'Image selected'; }
   };
 
+  const bindInput = input => {
+    if (!target(input) || input.dataset.sfIoBound === '1') return;
+    input.dataset.sfIoBound = '1';
+    input.addEventListener('change', handle, false);
+  };
+
+  const scan = root => {
+    if (!root || root.nodeType !== 1 && root.nodeType !== 9) return;
+    if (root.matches?.('input[type="file"][data-file-role="input"],input[type="file"][data-file-role="result"]')) bindInput(root);
+    root.querySelectorAll?.('input[type="file"][data-file-role="input"],input[type="file"][data-file-role="result"]').forEach(bindInput);
+  };
+
+  const init = () => {
+    scan(document);
+    if (window.MutationObserver) new MutationObserver(mutations => mutations.forEach(m => m.addedNodes.forEach(node => { if (node.nodeType === 1) scan(node); }))).observe(document.body || document.documentElement,{childList:true,subtree:true});
+  };
+
   window.addEventListener('change', handle, true);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true }); else init();
 })();
