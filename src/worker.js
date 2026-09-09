@@ -181,7 +181,10 @@ export default {
     let response = await env.ASSETS.fetch(request);
     const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
-    if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) response = injectBodyScript(response, '/resource-tool-logos.js');
+    if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
+      response = injectBodyScript(response, '/resource-tool-logos.js');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260910-1');
+    }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
       response = injectBodyScript(response, '/admin/input-output-ratio-fallback.js?v=20260909-6');

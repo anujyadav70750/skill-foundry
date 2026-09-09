@@ -30,7 +30,7 @@
   display: none !important;
 }
 
-/* Restore the structured prompt panel UI. */
+/* Prompt toolbar: only Copy and Expand are controls; Full Prompt is a label. */
 .prompt-shell {
   position: relative;
   background: #050b13;
@@ -44,13 +44,13 @@
   align-items: stretch;
   min-height: 48px;
   border-bottom: 1px solid var(--line);
-  background: var(--surface-2);
+  background: #091321;
 }
 .prompt-control {
   min-width: 82px;
   padding: 0 16px;
   border: 0;
-  background: transparent;
+  background: #08111e;
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
@@ -65,11 +65,17 @@
 .prompt-label {
   display: grid;
   place-items: center;
+  padding: 0 14px;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: #0d1b2d;
   color: var(--muted);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;
+  cursor: default;
+  user-select: none;
 }
 .prompt-shell pre {
   margin: 0;
@@ -104,5 +110,6 @@
 }
 @media (max-width: 600px) {
   .prompt-control { min-width: 68px; padding-inline: 10px; }
+  .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
 }
