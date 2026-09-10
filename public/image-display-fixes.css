@@ -44,13 +44,13 @@
   align-items: stretch;
   min-height: 48px;
   border-bottom: 1px solid var(--line);
-  background: #091321;
+  background: #050b13;
 }
 .prompt-control {
   min-width: 82px;
   padding: 0 16px;
   border: 0;
-  background: #08111e;
+  background: #0d1b2d;
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
@@ -68,7 +68,7 @@
   padding: 0 14px;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
-  background: #0d1b2d;
+  background: #050b13;
   color: var(--muted);
   font-size: 10px;
   font-weight: 800;
@@ -96,7 +96,7 @@
   padding: 0 16px;
   border: 0;
   border-top: 1px solid var(--line);
-  background: var(--surface-2);
+  background: #0d1b2d;
   color: var(--text);
   font-size: 12px;
   font-weight: 800;
