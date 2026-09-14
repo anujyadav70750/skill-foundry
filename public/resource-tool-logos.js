@@ -11,15 +11,45 @@
     }
   };
 
+  const imageQuality = (src) => new Promise((resolve) => {
+    if (!src) return resolve({ src: '', width: 0, height: 0 });
+    const probe = new Image();
+    probe.decoding = 'async';
+    probe.referrerPolicy = 'no-referrer';
+    probe.onload = () => resolve({ src, width: probe.naturalWidth || 0, height: probe.naturalHeight || 0 });
+    probe.onerror = () => resolve({ src, width: 0, height: 0 });
+    probe.src = src;
+  });
+
   const fetchToolLogo = async (url) => {
+    let primary = '';
     try {
       const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
-        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) return data.logoUrl;
+        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) primary = data.logoUrl;
       }
     } catch {}
-    return websiteFallback(url);
+
+    try {
+      const target = new URL(url, window.location.href);
+      const candidates = [
+        primary,
+        `${target.origin}/favicon.svg`,
+        `${target.origin}/favicon.png`,
+        `${target.origin}/apple-touch-icon.png`,
+        websiteFallback(url)
+      ].filter((src, index, list) => src && list.indexOf(src) === index);
+
+      const results = await Promise.all(candidates.map(imageQuality));
+      const valid = results.filter((result) => result.width > 0 && result.height > 0);
+      if (valid.length) {
+        valid.sort((a, b) => (b.width * b.height) - (a.width * a.height));
+        return valid[0].src;
+      }
+    } catch {}
+
+    return primary || websiteFallback(url);
   };
 
   const mountToolLogos = async () => {
