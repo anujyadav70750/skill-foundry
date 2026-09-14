@@ -37,8 +37,8 @@
       image.className = 'tool-logo-image';
       image.src = logoProxyUrl(href);
       image.alt = '';
-      image.width = 56;
-      image.height = 56;
+      image.width = 64;
+      image.height = 64;
       image.loading = 'lazy';
       image.decoding = 'async';
       image.addEventListener('error', () => {
@@ -76,8 +76,8 @@
         }
         .tool-logo-image {
           display: block;
-          width: 56px;
-          height: 56px;
+          width: 64px;
+          height: 64px;
           object-fit: contain;
           border-radius: 14px;
         }
@@ -91,7 +91,7 @@
         @media (max-width: 600px) {
           .tool-logo-grid { gap: 12px; }
           .tool-logo-link { width: 76px; height: 76px; }
-          .tool-logo-image { width: 56px; height: 56px; }
+          .tool-logo-image { width: 64px; height: 64px; }
         }
       `;
       document.head.appendChild(style);
