@@ -1,29 +1,17 @@
 (() => {
-  const toolLogoUrl = (name, url) => {
-    const key = String(name || '').trim().toLowerCase();
-    const knownLogos = {
-      'canva': 'https://cdn.simpleicons.org/canva',
-      'notion': 'https://cdn.simpleicons.org/notion',
-      'github': 'https://cdn.simpleicons.org/github',
-      'chatgpt': 'https://cdn.simpleicons.org/openai',
-      'openai': 'https://cdn.simpleicons.org/openai',
-      'youtube': 'https://cdn.simpleicons.org/youtube',
-      'google drive': 'https://cdn.simpleicons.org/googledrive',
-      'google docs': 'https://cdn.simpleicons.org/googledocs',
-      'figma': 'https://cdn.simpleicons.org/figma',
-      'midjourney': 'https://cdn.simpleicons.org/midjourney',
-      'claude': 'https://cdn.simpleicons.org/anthropic',
-      'perplexity': 'https://cdn.simpleicons.org/perplexity',
-      'elevenlabs': 'https://cdn.simpleicons.org/elevenlabs',
-      'capcut': 'https://cdn.simpleicons.org/capcut',
-      'skill foundary ai': '/favicon.svg',
-      'skill foundry ai': '/favicon.svg'
-    };
-    if (knownLogos[key]) return knownLogos[key];
-
+  const toolLogoUrl = (url) => {
     try {
-      const origin = new URL(url, window.location.href).origin;
-      return `${origin}/favicon.ico`;
+      const parsed = new URL(url, window.location.href);
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=128`;
+    } catch {
+      return '/favicon.svg';
+    }
+  };
+
+  const directFaviconUrl = (url) => {
+    try {
+      const parsed = new URL(url, window.location.href);
+      return `${parsed.origin}/favicon.ico`;
     } catch {
       return '/favicon.svg';
     }
@@ -56,16 +44,20 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = toolLogoUrl(name, href);
-      image.alt = '';
-      image.width = 34;
-      image.height = 34;
+      image.src = toolLogoUrl(href);
+      image.alt = `${name} logo`;
+      image.width = 56;
+      image.height = 56;
       image.loading = 'lazy';
       image.decoding = 'async';
       image.addEventListener('error', () => {
-        if (image.src.endsWith('/favicon.svg')) return;
-        image.src = '/favicon.svg';
-      }, { once: true });
+        const directUrl = directFaviconUrl(href);
+        if (image.src !== directUrl) {
+          image.src = directUrl;
+        } else if (!image.src.endsWith('/favicon.svg')) {
+          image.src = '/favicon.svg';
+        }
+      });
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
@@ -79,38 +71,38 @@
       style.textContent = `
         .tool-logo-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(68px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
           gap: 12px;
           align-items: center;
         }
         .tool-logo-link {
           display: grid;
           place-items: center;
-          width: 68px;
-          height: 68px;
+          width: 76px;
+          height: 76px;
           box-sizing: border-box;
           border: 1px solid var(--line);
           border-radius: 16px;
-          background: rgba(16,34,56,.35);
+          background: rgba(16,34,56,.78);
           text-decoration: none;
           transition: transform .18s ease, border-color .18s ease, background .18s ease;
         }
         .tool-logo-image {
           display: block;
-          width: 34px;
-          height: 34px;
+          width: 56px;
+          height: 56px;
           object-fit: contain;
         }
         .tool-logo-link:hover,
         .tool-logo-link:focus-visible {
           transform: translateY(-2px);
-          border-color: rgba(61,214,208,.45);
-          background: rgba(61,214,208,.06);
+          border-color: rgba(61,214,208,.55);
+          background: rgba(16,34,56,.95);
           outline: none;
         }
         @media (max-width: 600px) {
           .tool-logo-grid {
-            grid-template-columns: repeat(4, 68px);
+            grid-template-columns: repeat(4, 76px);
             justify-content: start;
           }
         }
