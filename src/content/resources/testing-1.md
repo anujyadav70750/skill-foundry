@@ -1,7 +1,7 @@
 ---
-title: "Testing 1"
+title: "Turn Rough Ideas Into Polished AI Content"
 slug: "testing-1"
-description: "B"
+description: "A practical prompt for turning a rough idea into clear, polished content with a strong structure, useful details, and a consistent professional tone."
 category: "Prompts"
 tool: "Skill Foundary AI"
 toolUrl: "https://hub.skillfoundryai.workers.dev/admin/"
