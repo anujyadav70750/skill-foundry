@@ -1,18 +1,18 @@
 (() => {
   const localFallback = '/favicon.svg';
 
-  const logoUrlFromLink = (url) => {
+  const fetchToolLogo = async (url) => {
     try {
-      const target = new URL(url, window.location.href);
-      const hostname = target.hostname.replace(/^www\./, '');
-      if (!hostname) return localFallback;
-      return `https://a.favicon.im/${encodeURIComponent(hostname)}?larger=true&throw-error-on-404=true`;
+      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin' });
+      if (!response.ok) throw new Error('Logo lookup failed');
+      const data = await response.json();
+      return data.logoUrl || localFallback;
     } catch {
       return localFallback;
     }
   };
 
-  const mountToolLogos = () => {
+  const mountToolLogos = async () => {
     const section = document.querySelector('.tools-section');
     if (!section) return;
 
@@ -23,7 +23,9 @@
     if (!list) return;
 
     list.classList.add('tool-logo-grid');
-    list.querySelectorAll('.tool-card').forEach((card) => {
+    const cards = [...list.querySelectorAll('.tool-card')];
+
+    await Promise.all(cards.map(async (card) => {
       const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
       const link = card.querySelector('.tool-link');
       const href = link?.getAttribute('href');
@@ -39,7 +41,7 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = logoUrlFromLink(href);
+      image.src = await fetchToolLogo(href);
       image.alt = `${name} logo`;
       image.width = 72;
       image.height = 72;
@@ -53,7 +55,7 @@
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
-    });
+    }));
 
     section.querySelector('.affiliate-disclosure')?.remove();
 
