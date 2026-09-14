@@ -21,7 +21,6 @@
           </svg>
         </span>
       </div>
-      <span class="sf-publisher-status">Verified publisher</span>
     `;
 
     intro.insertBefore(publisher, meta);
@@ -37,8 +36,7 @@
         .sf-publisher-mark svg{display:block;width:100%;height:100%;overflow:visible}
         .sf-publisher-seal{fill:#C86A08}
         .sf-publisher-check{fill:none;stroke:#FFF8EA;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
-        .sf-publisher-status{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
-        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:18px;height:18px;flex-basis:18px}.sf-publisher-status{font-size:9px}}
+        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:18px;height:18px;flex-basis:18px}}
       `;
       document.head.appendChild(style);
     }
