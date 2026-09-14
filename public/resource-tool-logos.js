@@ -1,26 +1,110 @@
 (() => {
-  const style = document.createElement('style');
-  style.textContent = `.tool-card-main.has-tool-logo{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px}.tool-logo-link{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);overflow:hidden}.tool-logo{display:block;width:34px;height:34px;object-fit:contain}.tool-logo-link:hover{border-color:rgba(61,214,208,.45);background:rgba(61,214,208,.07)}@media(max-width:600px){.tool-card-main.has-tool-logo{grid-template-columns:44px minmax(0,1fr)}}`;
-  document.head.appendChild(style);
-  document.querySelectorAll('.tools-list .tool-card').forEach(async (card) => {
-    const link = card.querySelector('.tool-link[href]');
-    if (!link || card.querySelector('.tool-logo-link')) return;
+  const localFallback = '/favicon.svg';
+
+  const logoUrlFromWebsite = (url) => {
     try {
-      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(link.href)}`, { credentials: 'same-origin' });
-      const data = await response.json();
-      if (!data.logoUrl) return;
-      const logoLink = document.createElement('a');
-      logoLink.className = 'tool-logo-link';
-      logoLink.href = link.href;
-      logoLink.target = '_blank';
-      logoLink.rel = link.rel || 'noopener noreferrer';
-      logoLink.setAttribute('aria-label', `Open ${link.textContent.replace(/^Open\s+/i, '').replace(/\s*→\s*$/, '')}`);
-      const logo = document.createElement('img');
-      logo.className = 'tool-logo'; logo.src = data.logoUrl; logo.alt = ''; logo.width = 34; logo.height = 34; logo.loading = 'lazy'; logo.referrerPolicy = 'no-referrer';
-      logoLink.appendChild(logo);
-      const main = card.querySelector('.tool-card-main');
-      if (!main) return;
-      main.insertBefore(logoLink, main.firstChild); main.classList.add('has-tool-logo');
-    } catch {}
-  });
+      const target = new URL(url, window.location.href);
+      if (target.hostname.endsWith('skillfoundryai.workers.dev')) return `${target.origin}/favicon.svg`;
+      if (target.origin === window.location.origin) return localFallback;
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(target.hostname)}&sz=128`;
+    } catch {
+      return localFallback;
+    }
+  };
+
+  const mountToolLogos = () => {
+    const section = document.querySelector('.tools-section');
+    if (!section) return;
+
+    const subcopy = section.querySelector('.section-subcopy');
+    if (subcopy) subcopy.textContent = 'The apps and AI tools used throughout this resource.';
+
+    const list = section.querySelector('.tools-list');
+    if (!list) return;
+
+    list.classList.add('tool-logo-grid');
+    list.querySelectorAll('.tool-card').forEach((card) => {
+      const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
+      const link = card.querySelector('.tool-link');
+      const href = link?.getAttribute('href');
+      if (!href) return;
+
+      const anchor = document.createElement('a');
+      anchor.className = 'tool-logo-link';
+      anchor.href = href;
+      anchor.target = '_blank';
+      anchor.rel = 'noopener noreferrer';
+      anchor.setAttribute('aria-label', `Open ${name}`);
+      anchor.title = name;
+
+      const image = document.createElement('img');
+      image.className = 'tool-logo-image';
+      image.src = logoUrlFromWebsite(href);
+      image.alt = `${name} logo`;
+      image.width = 76;
+      image.height = 76;
+      image.loading = 'lazy';
+      image.decoding = 'async';
+      image.referrerPolicy = 'no-referrer';
+      image.addEventListener('error', () => {
+        if (image.src === `${window.location.origin}${localFallback}`) return;
+        image.src = localFallback;
+      }, { once: true });
+
+      anchor.appendChild(image);
+      card.replaceWith(anchor);
+    });
+
+    section.querySelector('.affiliate-disclosure')?.remove();
+
+    if (!document.querySelector('#sf-tool-logo-grid-style')) {
+      const style = document.createElement('style');
+      style.id = 'sf-tool-logo-grid-style';
+      style.textContent = `
+        .tool-logo-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 76px);
+          gap: 16px;
+          align-items: center;
+          justify-content: start;
+        }
+        .tool-logo-link {
+          display: block;
+          width: 76px;
+          height: 76px;
+          box-sizing: border-box;
+          border: 0;
+          border-radius: 18px;
+          background: transparent;
+          text-decoration: none;
+          overflow: hidden;
+          transition: transform .18s ease, filter .18s ease;
+        }
+        .tool-logo-image {
+          display: block;
+          width: 76px;
+          height: 76px;
+          max-width: 76px;
+          max-height: 76px;
+          object-fit: cover;
+          border-radius: 18px;
+        }
+        .tool-logo-link:hover,
+        .tool-logo-link:focus-visible {
+          transform: translateY(-2px) scale(1.02);
+          filter: brightness(1.06);
+          outline: none;
+        }
+        @media (max-width: 360px) {
+          .tool-logo-grid { grid-template-columns: repeat(4, 64px); gap: 12px; }
+          .tool-logo-link,
+          .tool-logo-image { width: 64px; height: 64px; }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountToolLogos, { once: true });
+  else mountToolLogos();
 })();
