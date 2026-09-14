@@ -1,15 +1,25 @@
 (() => {
   const localFallback = '/skill-foundry-resource-icon.svg';
 
-  const fetchToolLogo = async (url) => {
+  const websiteFallback = (url) => {
     try {
-      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin' });
-      if (!response.ok) throw new Error('Logo lookup failed');
-      const data = await response.json();
-      return data.logoUrl || localFallback;
+      const target = new URL(url, window.location.href);
+      if (target.hostname.endsWith('skillfoundryai.workers.dev')) return `${target.origin}/favicon.svg`;
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(target.hostname)}&sz=128`;
     } catch {
       return localFallback;
     }
+  };
+
+  const fetchToolLogo = async (url) => {
+    try {
+      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) return data.logoUrl;
+      }
+    } catch {}
+    return websiteFallback(url);
   };
 
   const mountToolLogos = async () => {
@@ -43,11 +53,14 @@
       image.className = 'tool-logo-image';
       image.src = await fetchToolLogo(href);
       image.alt = `${name} logo`;
+      image.width = 56;
+      image.height = 56;
       image.loading = 'lazy';
       image.decoding = 'async';
       image.referrerPolicy = 'no-referrer';
       image.addEventListener('error', () => {
-        if (!image.src.endsWith(localFallback)) image.src = localFallback;
+        const fallback = websiteFallback(href);
+        if (image.src !== fallback) image.src = fallback;
       }, { once: true });
 
       anchor.appendChild(image);
