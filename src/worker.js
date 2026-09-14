@@ -133,7 +133,7 @@ async function fetchToolLogo(request) {
   try { target = new URL(url); } catch { return json({ error: 'Invalid tool website URL.' }, 400, request); }
   if (!['http:', 'https:'].includes(target.protocol)) return json({ error: 'Only HTTP and HTTPS websites are supported.' }, 400, request);
   const requestOrigin = new URL(request.url).origin;
-  if (target.origin === requestOrigin) return json({ logoUrl: `${target.origin}/favicon.svg` }, 200, request);
+  if (target.origin === requestOrigin) return json({ logoUrl: `${target.origin}/skill-foundry-resource-icon.svg` }, 200, request);
   let resolvedOrigin = target.origin;
   try {
     const landing = await fetch(target.href, { method: 'GET', headers: { 'User-Agent': 'Mozilla/5.0 Skill-Foundry-Logo-Fetcher' }, redirect: 'follow' });
@@ -179,8 +179,8 @@ export default {
     const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
-      response = injectBodyScript(response, '/resource-tool-logos.js');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-5');
+      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260914-2');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-6');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
