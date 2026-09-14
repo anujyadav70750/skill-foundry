@@ -97,6 +97,10 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
           <a href="/">Home</a>
           <a href="/resources/">All Resources</a>
           <a href="/about/">About</a>
+          <a href="/contact/">Contact</a>
+        </nav>
+        <nav class="footer-links footer-legal" aria-label="Legal">
+          <strong>Legal</strong>
           <a href="/privacy/">Privacy</a>
           <a href="/terms/">Terms</a>
         </nav>
@@ -125,14 +129,14 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
       .site-menu a { padding: 10px 12px; border-radius: 8px; color: var(--muted); font-size: 13px; font-weight: 700; }
       .site-menu a:hover { background: rgba(61,214,208,.07); color: var(--text); }
       .site-footer { padding: 34px 0 16px; }
-      .footer-grid { display: grid; grid-template-columns: minmax(0, 1fr) 180px; gap: 32px; align-items: start; }
+      .footer-grid { display: grid; grid-template-columns: minmax(0, 1fr) 150px 110px; gap: 32px; align-items: start; }
       .footer-brand-block p { max-width: 430px; margin: 10px 0 0; }
-      .footer-links { display: grid; align-content: start; gap: 2px; }
-      .footer-links strong { display: block; margin: 0 0 12px; color: var(--text); font-size: 14px; }
-      .footer-links a { display: block; margin: 0 !important; padding: 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+      .footer-links { display: grid; align-content: start; gap: 6px; }
+      .footer-links strong { display: block; margin: 0 0 6px; color: var(--text); font-size: 14px; }
+      .footer-links a { display: block; margin: 0 !important; padding: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
       .footer-links a:hover { color: var(--accent); }
-      .footer-bottom { display: flex; align-items: center; justify-content: center; margin-top: 20px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.4; text-align: center; }
-      @media (max-width: 640px) {
+      .footer-bottom { display: flex; align-items: center; justify-content: center; margin-top: 24px; padding-top: 13px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.4; text-align: center; }
+      @media (max-width: 700px) {
         .nav-wrap { min-height: 64px; gap: 10px; }
         .brand { font-size: 11px; gap: 8px; }
         .brand-mark { width: 32px; height: 32px; }
@@ -142,11 +146,17 @@ const socialImage = image ? new URL(image, siteUrl).href : undefined;
         .header-search-submit { width: 32px; height: 32px; }
         .search-svg { width: 16px; height: 16px; }
         .site-footer { padding-top: 30px; }
-        .footer-grid { grid-template-columns: minmax(0, 1fr) 112px; gap: 20px; }
-        .footer-brand-block p { max-width: 240px; }
-        .footer-links strong { font-size: 13px; margin-bottom: 12px; }
-        .footer-links a { font-size: 12px; line-height: 1.35; }
-        .footer-bottom { margin-top: 18px; padding-top: 12px; font-size: 12px; }
+        .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(100px, 120px); gap: 24px 20px; }
+        .footer-legal { grid-column: 2; }
+        .footer-brand-block { grid-column: 1 / -1; }
+        .footer-brand-block p { max-width: 280px; }
+        .footer-links strong { font-size: 13px; margin-bottom: 6px; }
+        .footer-links a { font-size: 12px; line-height: 1.4; }
+        .footer-bottom { margin-top: 20px; padding-top: 12px; font-size: 12px; }
+      }
+      @media (max-width: 380px) {
+        .footer-grid { grid-template-columns: 1fr; gap: 22px; }
+        .footer-brand-block, .footer-legal { grid-column: auto; }
       }
     </style>
     <style is:global>
