@@ -3,6 +3,10 @@ const REPO_NAME = 'skill-foundry';
 const DEFAULT_BRANCH = 'main';
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 const MAX_RESOURCE_BYTES = 200 * 1024;
+const MAX_CONTACT_NAME = 100;
+const MAX_CONTACT_EMAIL = 254;
+const MAX_CONTACT_SUBJECT = 160;
+const MAX_CONTACT_MESSAGE = 5000;
 
 const corsHeaders = (request) => {
   const origin = request.headers.get('Origin');
@@ -91,6 +95,66 @@ const isSameOriginAdminRequest = (request) => {
   try { return new URL(referer).origin === requestOrigin && new URL(referer).pathname.startsWith('/admin'); } catch { return false; }
 };
 
+const isSameOriginRequest = (request) => {
+  const origin = request.headers.get('Origin');
+  const requestOrigin = new URL(request.url).origin;
+  if (origin) return origin === requestOrigin;
+  const referer = request.headers.get('Referer');
+  if (!referer) return false;
+  try { return new URL(referer).origin === requestOrigin; } catch { return false; }
+};
+
+const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+async function sendContactMessage(request, env) {
+  if (!isSameOriginRequest(request)) return json({ error: 'Contact requests must come from the Skill Foundry website.' }, 403, request);
+  if (!env.RESEND_API_KEY || !env.CONTACT_EMAIL || !env.CONTACT_FROM_EMAIL) {
+    return json({ error: 'Contact email delivery is not configured yet.' }, 503, request);
+  }
+  let body;
+  try { body = await request.json(); } catch { return json({ error: 'Invalid contact request.' }, 400, request); }
+
+  const name = String(body?.name || '').trim();
+  const email = String(body?.email || '').trim().toLowerCase();
+  const subject = String(body?.subject || '').trim();
+  const message = String(body?.message || '').trim();
+  const honeypot = String(body?.website || '').trim();
+
+  if (honeypot) return json({ ok: true }, 200, request);
+  if (!name || name.length > MAX_CONTACT_NAME) return json({ error: 'Please enter a valid name.' }, 400, request);
+  if (!email || email.length > MAX_CONTACT_EMAIL || !validEmail(email)) return json({ error: 'Please enter a valid email address.' }, 400, request);
+  if (!subject || subject.length > MAX_CONTACT_SUBJECT) return json({ error: 'Please enter a subject.' }, 400, request);
+  if (!message || message.length > MAX_CONTACT_MESSAGE) return json({ error: 'Please enter a message of up to 5,000 characters.' }, 400, request);
+
+  const text = [
+    'New message from the Skill Foundry contact form',
+    '',
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Subject: ${subject}`,
+    '',
+    message
+  ].join('\n');
+
+  const response = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: env.CONTACT_FROM_EMAIL,
+      to: [env.CONTACT_EMAIL],
+      reply_to: email,
+      subject: `[Skill Foundry Contact] ${subject}`,
+      text
+    })
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok) return json({ error: result?.message || 'We could not send your message right now. Please try again later.' }, 502, request);
+  return json({ ok: true }, 200, request);
+}
+
 async function publishResource(request, env) {
   if (!env.GITHUB_TOKEN) return json({ error: 'GitHub publishing is not configured. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503, request);
   if (!isSameOriginAdminRequest(request)) return json({ error: 'Publishing is available only from the admin builder.' }, 403, request);
@@ -171,6 +235,9 @@ export default {
     }
     if (request.method === 'POST' && url.pathname === '/api/publish-resource') {
       try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); }
+    }
+    if (request.method === 'POST' && url.pathname === '/api/contact') {
+      try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, error?.status || 500, request); }
     }
     if (request.method === 'GET' && url.pathname === '/api/tool-logo') {
       try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); }
