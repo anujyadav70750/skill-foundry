@@ -85,12 +85,12 @@
           width: 56px;
           height: 56px;
           box-sizing: border-box;
-          border: 0;
+          border: 1px solid rgba(148, 163, 184, .34);
           border-radius: 14px;
           background: transparent;
           text-decoration: none;
           overflow: hidden;
-          transition: transform .18s ease, filter .18s ease;
+          transition: transform .18s ease, filter .18s ease, border-color .18s ease;
         }
         .tool-logo-image {
           display: block;
@@ -99,18 +99,27 @@
           max-width: 56px;
           max-height: 56px;
           object-fit: cover;
-          border-radius: 14px;
+          border-radius: 13px;
         }
         .tool-logo-link:hover,
         .tool-logo-link:focus-visible {
           transform: translateY(-2px) scale(1.03);
           filter: brightness(1.06);
+          border-color: rgba(148, 163, 184, .5);
           outline: none;
         }
         @media (max-width: 360px) {
           .tool-logo-grid { grid-template-columns: repeat(4, 52px); gap: 16px 12px; }
-          .tool-logo-link,
-          .tool-logo-image { width: 52px; height: 52px; border-radius: 13px; }
+          .tool-logo-link {
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+          }
+          .tool-logo-image {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+          }
         }
       `;
       document.head.appendChild(style);
