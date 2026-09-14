@@ -1,4 +1,44 @@
 (() => {
+  const mountPublisherIdentity = () => {
+    const intro = document.querySelector('.resource-intro');
+    if (!intro || intro.querySelector('[data-sf-publisher]')) return;
+
+    const lead = intro.querySelector('.lead');
+    const meta = intro.querySelector('.resource-top-meta');
+    if (!lead || !meta) return;
+
+    const publisher = document.createElement('div');
+    publisher.dataset.sfPublisher = 'true';
+    publisher.className = 'sf-publisher-identity';
+    publisher.setAttribute('aria-label', 'Skill Foundry verified publisher');
+    publisher.innerHTML = `
+      <span class="sf-publisher-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false"><path d="M6.5 12.5 10 16l7.5-8" /></svg>
+      </span>
+      <span class="sf-publisher-copy">
+        <strong>Skill Foundry</strong>
+        <span>Verified publisher</span>
+      </span>
+    `;
+
+    intro.insertBefore(publisher, meta);
+
+    if (!document.querySelector('#sf-publisher-identity-style')) {
+      const style = document.createElement('style');
+      style.id = 'sf-publisher-identity-style';
+      style.textContent = `
+        .sf-publisher-identity{display:inline-flex;align-items:center;gap:9px;width:fit-content;margin:18px 0 2px;padding:7px 10px 7px 7px;border:1px solid rgba(61,214,208,.22);border-radius:999px;background:rgba(61,214,208,.055);color:var(--text)}
+        .sf-publisher-mark{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:rgba(61,214,208,.14);color:var(--accent)}
+        .sf-publisher-mark svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+        .sf-publisher-copy{display:inline-flex;align-items:baseline;gap:7px;line-height:1.2}
+        .sf-publisher-copy strong{font-size:12px;font-weight:850;letter-spacing:.01em}
+        .sf-publisher-copy span{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
+        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-copy{gap:6px}.sf-publisher-copy strong{font-size:11px}.sf-publisher-copy span{font-size:9px}}
+      `;
+      document.head.appendChild(style);
+    }
+  };
+
   const downloadPromptAsPdf = (prompt) => {
     const source = String(prompt || '').replace(/\r\n?/g, '\n').trimEnd();
     if (!source) return;
@@ -102,6 +142,13 @@
       setTimeout(() => { if (status.textContent === message) status.textContent = ''; }, 1800);
     }
   };
+
+  const init = () => {
+    mountPublisherIdentity();
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  else init();
 
   document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-download]');
