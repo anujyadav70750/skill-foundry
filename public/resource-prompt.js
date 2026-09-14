@@ -16,8 +16,8 @@
         <strong>Skill Foundry</strong>
         <span class="sf-publisher-mark" aria-hidden="true">
           <svg viewBox="0 0 40 40" focusable="false" role="img">
-            <path class="sf-publisher-seal" d="M20 1.8c1.8 0 3.4 3.2 5.1 3.6 1.8.4 4.8-2 6.2-1 1.5 1 1 4.6 2.3 5.8 1.3 1.2 4.8.5 5.7 2 1 1.5-1.7 4.4-1.3 6.1.4 1.7 3.5 3.4 3.3 5.2-.2 1.8-3.7 2.8-4.4 4.4-.7 1.6 1.3 4.8.1 6.1-1.2 1.3-4.5-.4-6.1.4-1.6.8-2.3 4.3-4.1 4.5-1.8.2-3.7-2.9-5.5-2.9-1.8 0-3.8 3.1-5.5 2.8-1.8-.3-2.4-3.8-4-4.6-1.6-.8-5 1-6.1-.4-1.1-1.4.9-4.5.2-6.1-.7-1.6-4.1-2.6-4.3-4.4-.2-1.8 3-3.5 3.4-5.2.4-1.7-2.2-4.7-1.3-6.1 1-1.5 4.4-.8 5.7-2 1.3-1.2.8-4.8 2.3-5.8 1.4-1 4.4 1.4 6.2 1 1.7-.4 3.3-3.6 5.1-3.6Z" />
-            <path class="sf-publisher-check" d="M12.5 20.8 17.4 25.7 28.3 14.7" />
+            <path class="sf-publisher-seal" d="M18.03 3.66 Q20 2 21.97 3.66 Q23.93 5.32 26.47 4.86 Q29 4.41 29.87 6.83 Q30.75 9.25 33.17 10.13 Q35.59 11 35.14 13.53 Q34.68 16.07 36.34 18.03 Q38 20 36.34 21.97 Q34.68 23.93 35.14 26.47 Q35.59 29 33.17 29.87 Q30.75 30.75 29.87 33.17 Q29 35.59 26.47 35.14 Q23.93 34.68 21.97 36.34 Q20 38 18.03 36.34 Q16.07 34.68 13.53 35.14 Q11 35.59 10.13 33.17 Q9.25 30.75 6.83 29.87 Q4.41 29 4.86 26.47 Q5.32 23.93 3.66 21.97 Q2 20 3.66 18.03 Q5.32 16.07 4.86 13.53 Q4.41 11 6.83 10.13 Q9.25 9.25 10.13 6.83 Q11 4.41 13.53 4.86 Q16.07 5.32 18.03 3.66 Z" />
+            <path class="sf-publisher-check" d="M11.8 20.4 L17.1 25.7 L28.6 14.2" />
           </svg>
         </span>
       </div>
@@ -33,12 +33,12 @@
         .sf-publisher-identity{display:grid;width:fit-content;margin:18px 0 2px;gap:4px;color:var(--text)}
         .sf-publisher-name-row{display:inline-flex;align-items:center;gap:7px;line-height:1.1}
         .sf-publisher-name-row strong{font-size:14px;font-weight:850;letter-spacing:.005em}
-        .sf-publisher-mark{display:grid;place-items:center;width:20px;height:20px;flex:0 0 20px}
+        .sf-publisher-mark{display:grid;place-items:center;width:21px;height:21px;flex:0 0 21px}
         .sf-publisher-mark svg{display:block;width:100%;height:100%;overflow:visible}
-        .sf-publisher-seal{fill:#f3a33a}
-        .sf-publisher-check{fill:none;stroke:#fff;stroke-width:3.7;stroke-linecap:round;stroke-linejoin:round}
+        .sf-publisher-seal{fill:#f6a23a}
+        .sf-publisher-check{fill:none;stroke:#111820;stroke-width:3.8;stroke-linecap:round;stroke-linejoin:round}
         .sf-publisher-status{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
-        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:20px;height:20px;flex-basis:20px}.sf-publisher-status{font-size:9px}}
+        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:21px;height:21px;flex-basis:21px}.sf-publisher-status{font-size:9px}}
       `;
       document.head.appendChild(style);
     }
