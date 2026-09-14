@@ -20,8 +20,20 @@ intro: ""
 whatItDoes: ""
 toolsUsed:
   - name: "Skill Foundary AI"
-    purpose: "Nothing"
+    purpose: "Primary AI tool used for this resource."
     url: "https://hub.skillfoundryai.workers.dev/admin/"
+    affiliate: false
+  - name: "Canva"
+    purpose: "Design and visual editing tool used for testing this resource."
+    url: "https://www.canva.com/"
+    affiliate: false
+  - name: "Notion"
+    purpose: "Workspace used for testing and organizing the resource."
+    url: "https://www.notion.so/"
+    affiliate: false
+  - name: "GitHub"
+    purpose: "Repository and collaboration platform used for testing."
+    url: "https://github.com/"
     affiliate: false
 prompt: "Yb"
 videoEmbedUrl: "https://www.youtube.com/embed/eRTtU1znZI4"
