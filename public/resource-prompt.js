@@ -1,18 +1,18 @@
 (() => {
   const localFallback = '/favicon.svg';
 
-  const fetchToolLogo = async (url) => {
+  const logoUrlFromWebsite = (url) => {
     try {
-      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin' });
-      if (!response.ok) throw new Error('Logo lookup failed');
-      const data = await response.json();
-      return data.logoUrl || localFallback;
+      const target = new URL(url, window.location.href);
+      if (target.origin === window.location.origin) return localFallback;
+      if (target.hostname.endsWith('skillfoundryai.workers.dev')) return `${target.origin}/favicon.svg`;
+      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(target.hostname)}&sz=128`;
     } catch {
       return localFallback;
     }
   };
 
-  const mountToolLogos = async () => {
+  const mountToolLogos = () => {
     const section = document.querySelector('.tools-section');
     if (!section) return;
 
@@ -23,9 +23,7 @@
     if (!list) return;
 
     list.classList.add('tool-logo-grid');
-    const cards = [...list.querySelectorAll('.tool-card')];
-
-    await Promise.all(cards.map(async (card) => {
+    list.querySelectorAll('.tool-card').forEach((card) => {
       const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
       const link = card.querySelector('.tool-link');
       const href = link?.getAttribute('href');
@@ -41,21 +39,21 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = await fetchToolLogo(href);
+      image.src = logoUrlFromWebsite(href);
       image.alt = `${name} logo`;
-      image.width = 72;
-      image.height = 72;
+      image.width = 76;
+      image.height = 76;
       image.loading = 'lazy';
       image.decoding = 'async';
       image.referrerPolicy = 'no-referrer';
       image.addEventListener('error', () => {
-        if (image.src.endsWith(localFallback)) return;
+        if (image.src === `${window.location.origin}${localFallback}`) return;
         image.src = localFallback;
       }, { once: true });
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
-    }));
+    });
 
     section.querySelector('.affiliate-disclosure')?.remove();
 
@@ -64,16 +62,16 @@
       style.id = 'sf-tool-logo-grid-style';
       style.textContent = `
         .tool-logo-grid {
-          display: flex;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(4, 76px);
           gap: 16px;
           align-items: center;
+          justify-content: start;
         }
         .tool-logo-link {
           display: block;
-          width: 72px;
-          height: 72px;
-          flex: 0 0 72px;
+          width: 76px;
+          height: 76px;
           box-sizing: border-box;
           border: 0;
           border-radius: 18px;
@@ -84,11 +82,11 @@
         }
         .tool-logo-image {
           display: block;
-          width: 72px;
-          height: 72px;
-          max-width: 72px;
-          max-height: 72px;
-          object-fit: contain;
+          width: 76px;
+          height: 76px;
+          max-width: 76px;
+          max-height: 76px;
+          object-fit: cover;
           border-radius: 18px;
         }
         .tool-logo-link:hover,
@@ -97,10 +95,10 @@
           filter: brightness(1.06);
           outline: none;
         }
-        @media (max-width: 600px) {
-          .tool-logo-grid { gap: 16px; }
+        @media (max-width: 360px) {
+          .tool-logo-grid { grid-template-columns: repeat(4, 64px); gap: 12px; }
           .tool-logo-link,
-          .tool-logo-image { width: 72px; height: 72px; }
+          .tool-logo-image { width: 64px; height: 64px; }
         }
       `;
       document.head.appendChild(style);
