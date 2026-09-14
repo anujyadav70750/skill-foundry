@@ -15,7 +15,10 @@
       <div class="sf-publisher-name-row">
         <strong>Skill Foundry</strong>
         <span class="sf-publisher-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" focusable="false"><path d="M6.5 12.5 10 16l7.5-8" /></svg>
+          <svg viewBox="0 0 40 40" focusable="false" role="img">
+            <path class="sf-publisher-seal" d="M20 1.8c1.8 0 3.4 3.2 5.1 3.6 1.8.4 4.8-2 6.2-1 1.5 1 1 4.6 2.3 5.8 1.3 1.2 4.8.5 5.7 2 1 1.5-1.7 4.4-1.3 6.1.4 1.7 3.5 3.4 3.3 5.2-.2 1.8-3.7 2.8-4.4 4.4-.7 1.6 1.3 4.8.1 6.1-1.2 1.3-4.5-.4-6.1.4-1.6.8-2.3 4.3-4.1 4.5-1.8.2-3.7-2.9-5.5-2.9-1.8 0-3.8 3.1-5.5 2.8-1.8-.3-2.4-3.8-4-4.6-1.6-.8-5 1-6.1-.4-1.1-1.4.9-4.5.2-6.1-.7-1.6-4.1-2.6-4.3-4.4-.2-1.8 3-3.5 3.4-5.2.4-1.7-2.2-4.7-1.3-6.1 1-1.5 4.4-.8 5.7-2 1.3-1.2.8-4.8 2.3-5.8 1.4-1 4.4 1.4 6.2 1 1.7-.4 3.3-3.6 5.1-3.6Z" />
+            <path class="sf-publisher-check" d="M12.5 20.8 17.4 25.7 28.3 14.7" />
+          </svg>
         </span>
       </div>
       <span class="sf-publisher-status">Verified publisher</span>
@@ -30,10 +33,12 @@
         .sf-publisher-identity{display:grid;width:fit-content;margin:18px 0 2px;gap:4px;color:var(--text)}
         .sf-publisher-name-row{display:inline-flex;align-items:center;gap:7px;line-height:1.1}
         .sf-publisher-name-row strong{font-size:14px;font-weight:850;letter-spacing:.005em}
-        .sf-publisher-mark{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:#f3a33a;color:#fff}
-        .sf-publisher-mark svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+        .sf-publisher-mark{display:grid;place-items:center;width:20px;height:20px;flex:0 0 20px}
+        .sf-publisher-mark svg{display:block;width:100%;height:100%;overflow:visible}
+        .sf-publisher-seal{fill:#f3a33a}
+        .sf-publisher-check{fill:none;stroke:#fff;stroke-width:3.7;stroke-linecap:round;stroke-linejoin:round}
         .sf-publisher-status{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
-        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:17px;height:17px;flex-basis:17px}.sf-publisher-mark svg{width:11px;height:11px}.sf-publisher-status{font-size:9px}}
+        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:20px;height:20px;flex-basis:20px}.sf-publisher-status{font-size:9px}}
       `;
       document.head.appendChild(style);
     }
