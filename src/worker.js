@@ -105,7 +105,7 @@ async function publishResource(request, env) {
   const path = `src/content/resources/${slug}.md`;
   const endpoint = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
   const existing = await fetch(`${endpoint}?ref=${DEFAULT_BRANCH}`, { headers: githubHeaders(env.GITHUB_TOKEN) });
-  if (existing.ok) return json({ error: `A resource with the slug "${slug}" already exists. Choose a different slug.` }, 409, request);
+  if (existing.ok) return json({ error: `A resource with the slug \"${slug}\" already exists. Choose a different slug.` }, 409, request);
   if (existing.status !== 404) {
     const result = await existing.json().catch(() => ({}));
     return json({ error: result.message || `Could not check the resource path (${existing.status}).` }, existing.status, request);
@@ -159,8 +159,8 @@ async function fetchToolLogo(request) {
   return json({ logoUrl: `${resolvedOrigin}/favicon.svg` }, 200, request);
 }
 
-const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src="${script}" defer></script>`, { html: true }); } }).transform(response);
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel="stylesheet" href="/image-display-fixes.css">', { html: true }); } }).transform(response);
+const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src=\"${script}\" defer></script>`, { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel=\"stylesheet\" href=\"/image-display-fixes.css\">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
@@ -180,7 +180,7 @@ export default {
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
       response = injectBodyScript(response, '/resource-tool-logos.js');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-4');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-5');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
