@@ -180,7 +180,7 @@ export default {
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
       response = injectBodyScript(response, '/resource-tool-logos.js');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-3');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260914-4');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
