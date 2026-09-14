@@ -1,17 +1,8 @@
 (() => {
-  const toolLogoUrl = (url) => {
+  const logoProxyUrl = (url) => {
     try {
-      const parsed = new URL(url, window.location.href);
-      return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(parsed.hostname)}&sz=128`;
-    } catch {
-      return '/favicon.svg';
-    }
-  };
-
-  const directFaviconUrl = (url) => {
-    try {
-      const parsed = new URL(url, window.location.href);
-      return `${parsed.origin}/favicon.ico`;
+      const target = new URL(url, window.location.href);
+      return `/tool-logo?url=${encodeURIComponent(target.href)}`;
     } catch {
       return '/favicon.svg';
     }
@@ -44,20 +35,15 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = toolLogoUrl(href);
-      image.alt = `${name} logo`;
+      image.src = logoProxyUrl(href);
+      image.alt = '';
       image.width = 56;
       image.height = 56;
       image.loading = 'lazy';
       image.decoding = 'async';
       image.addEventListener('error', () => {
-        const directUrl = directFaviconUrl(href);
-        if (image.src !== directUrl) {
-          image.src = directUrl;
-        } else if (!image.src.endsWith('/favicon.svg')) {
-          image.src = '/favicon.svg';
-        }
-      });
+        image.src = '/favicon.svg';
+      }, { once: true });
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
@@ -70,9 +56,9 @@
       style.id = 'sf-tool-logo-grid-style';
       style.textContent = `
         .tool-logo-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
-          gap: 12px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
           align-items: center;
         }
         .tool-logo-link {
@@ -82,9 +68,10 @@
           height: 76px;
           box-sizing: border-box;
           border: 1px solid var(--line);
-          border-radius: 16px;
-          background: rgba(16,34,56,.78);
+          border-radius: 18px;
+          background: rgba(16,34,56,.72);
           text-decoration: none;
+          overflow: hidden;
           transition: transform .18s ease, border-color .18s ease, background .18s ease;
         }
         .tool-logo-image {
@@ -92,19 +79,19 @@
           width: 56px;
           height: 56px;
           object-fit: contain;
+          border-radius: 14px;
         }
         .tool-logo-link:hover,
         .tool-logo-link:focus-visible {
           transform: translateY(-2px);
-          border-color: rgba(61,214,208,.55);
-          background: rgba(16,34,56,.95);
+          border-color: rgba(61,214,208,.45);
+          background: rgba(61,214,208,.08);
           outline: none;
         }
         @media (max-width: 600px) {
-          .tool-logo-grid {
-            grid-template-columns: repeat(4, 76px);
-            justify-content: start;
-          }
+          .tool-logo-grid { gap: 12px; }
+          .tool-logo-link { width: 76px; height: 76px; }
+          .tool-logo-image { width: 56px; height: 56px; }
         }
       `;
       document.head.appendChild(style);
