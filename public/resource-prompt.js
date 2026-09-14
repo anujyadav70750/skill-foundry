@@ -12,13 +12,13 @@
     publisher.className = 'sf-publisher-identity';
     publisher.setAttribute('aria-label', 'Skill Foundry verified publisher');
     publisher.innerHTML = `
-      <span class="sf-publisher-mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" focusable="false"><path d="M6.5 12.5 10 16l7.5-8" /></svg>
-      </span>
-      <span class="sf-publisher-copy">
+      <div class="sf-publisher-name-row">
         <strong>Skill Foundry</strong>
-        <span>Verified publisher</span>
-      </span>
+        <span class="sf-publisher-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M6.5 12.5 10 16l7.5-8" /></svg>
+        </span>
+      </div>
+      <span class="sf-publisher-status">Verified publisher</span>
     `;
 
     intro.insertBefore(publisher, meta);
@@ -27,13 +27,13 @@
       const style = document.createElement('style');
       style.id = 'sf-publisher-identity-style';
       style.textContent = `
-        .sf-publisher-identity{display:inline-flex;align-items:center;gap:9px;width:fit-content;margin:18px 0 2px;padding:7px 10px 7px 7px;border:1px solid rgba(61,214,208,.22);border-radius:999px;background:rgba(61,214,208,.055);color:var(--text)}
-        .sf-publisher-mark{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:rgba(61,214,208,.14);color:var(--accent)}
-        .sf-publisher-mark svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-        .sf-publisher-copy{display:inline-flex;align-items:baseline;gap:7px;line-height:1.2}
-        .sf-publisher-copy strong{font-size:12px;font-weight:850;letter-spacing:.01em}
-        .sf-publisher-copy span{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
-        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-copy{gap:6px}.sf-publisher-copy strong{font-size:11px}.sf-publisher-copy span{font-size:9px}}
+        .sf-publisher-identity{display:grid;width:fit-content;margin:18px 0 2px;gap:4px;color:var(--text)}
+        .sf-publisher-name-row{display:inline-flex;align-items:center;gap:7px;line-height:1.1}
+        .sf-publisher-name-row strong{font-size:14px;font-weight:850;letter-spacing:.005em}
+        .sf-publisher-mark{display:grid;place-items:center;width:18px;height:18px;flex:0 0 18px;border-radius:50%;background:#f3a33a;color:#fff}
+        .sf-publisher-mark svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+        .sf-publisher-status{color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase}
+        @media(max-width:600px){.sf-publisher-identity{margin-top:16px}.sf-publisher-name-row strong{font-size:13px}.sf-publisher-mark{width:17px;height:17px;flex-basis:17px}.sf-publisher-mark svg{width:11px;height:11px}.sf-publisher-status{font-size:9px}}
       `;
       document.head.appendChild(style);
     }
