@@ -41,6 +41,22 @@
   color: var(--text) !important;
   border: 1px solid var(--line) !important;
   box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 18px !important;
+}
+.resource-page .quick-actions .button-primary::before,
+.resource-page .quick-actions .button-primary::after {
+  content: "»";
+  display: inline-block;
+  flex: 0 0 auto;
+  color: #000 !important;
+  font-family: Arial, sans-serif;
+  font-size: 27px;
+  font-weight: 900;
+  line-height: 1;
+  transform: rotate(90deg) scaleX(1.05);
 }
 .resource-page .quick-actions .button-primary:hover,
 .resource-page .quick-actions .button-primary:focus-visible {
@@ -133,4 +149,7 @@
   .prompt-control { min-width: 68px; padding-inline: 10px; }
   .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
+  .resource-page .quick-actions .button-primary { gap: 12px !important; }
+  .resource-page .quick-actions .button-primary::before,
+  .resource-page .quick-actions .button-primary::after { font-size: 24px; }
 }
