@@ -1,4 +1,7 @@
 (() => {
+  document.querySelector('.resource-page .prompt-section')?.remove();
+  document.querySelector('.resource-page .prompt-dialog')?.remove();
+
   // Keep the guide instruction visible as a plain, non-interactive instruction.
   // Replace it immediately when this deferred script runs so the old arrow cannot flash during refresh.
   const style = document.createElement('style');
