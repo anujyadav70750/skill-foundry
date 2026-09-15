@@ -26,6 +26,13 @@ const workflowStep = z.object({
   description: z.string().default('')
 });
 
+const resourceTool = z.object({
+  name: z.string(),
+  purpose: z.string(),
+  url: z.string().url().optional(),
+  affiliate: z.boolean().default(false)
+});
+
 const resources = defineCollection({
   type: 'content',
   schema: z.object({
@@ -50,12 +57,7 @@ const resources = defineCollection({
     imageAlt: z.string().nullish(),
     intro: z.string().optional(),
     whatItDoes: z.string().optional(),
-    toolsUsed: z.array(z.object({
-      name: z.string(),
-      purpose: z.string(),
-      url: z.string().url().optional(),
-      affiliate: z.boolean().default(false)
-    })).default([]),
+    toolsUsed: z.array(resourceTool).default([]),
     prompt: z.string(),
     videoEmbedUrl: z.string().nullish(),
     originalVideoUrl: z.string().nullish(),
