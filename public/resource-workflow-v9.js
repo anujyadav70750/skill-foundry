@@ -1,21 +1,44 @@
-import('/resource-workflow-v8.js?v=20260915-2').then(() => {
-  const apply = () => {
-    const section = document.querySelector('.workflow-section.sf-v7');
-    const card = section?.querySelector('.workflow-card');
-    const start = card?.querySelector('.sf-v7-start');
-    const rail = start?.querySelector('.sf-v7-rail');
-    if (!start || !rail || start.querySelector('.sf-v9-instruction')) return;
+import('/resource-workflow-v8.js?v=20260915-3').then(() => {
+  const setupExpand = () => {
+    if (document.getElementById('sf-workflow-v9-style')) return;
 
-    const instruction = document.createElement('p');
-    instruction.className = 'sf-v9-instruction';
-    instruction.textContent = 'Use both images with the prompt below.';
-    instruction.style.cssText = 'margin:0 0 10px;color:var(--muted);font-size:11px;line-height:1.45;font-weight:650;';
-    start.insertBefore(instruction, rail);
+    const style = document.createElement('style');
+    style.id = 'sf-workflow-v9-style';
+    style.textContent = `
+      .workflow-section.sf-v7 .sf-v7-prompt.sf-v9-expanded{
+        height:60vh!important;
+        min-height:60vh!important;
+        max-height:60vh!important;
+        overflow-y:auto!important;
+      }
+      @media(max-width:420px){
+        .workflow-section.sf-v7 .sf-v7-prompt.sf-v9-expanded{
+          height:55vh!important;
+          min-height:55vh!important;
+          max-height:55vh!important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    document.addEventListener('click', (event) => {
+      const button = event.target.closest('.sf-v7-head button');
+      if (!button) return;
+      const label = button.textContent.trim().toLowerCase();
+      if (label !== 'expand' && label !== 'collapse') return;
+
+      const action = button.closest('.sf-v7-action');
+      const prompt = action?.querySelector('.sf-v7-prompt');
+      if (!prompt) return;
+
+      const expanded = prompt.classList.toggle('sf-v9-expanded');
+      button.textContent = expanded ? 'Collapse' : 'Expand';
+    });
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', apply, { once: true });
+    document.addEventListener('DOMContentLoaded', setupExpand, { once: true });
   } else {
-    apply();
+    setupExpand();
   }
 });
