@@ -1,15 +1,31 @@
-/* Prevent first-paint flash of legacy markup while resource enhancements are loading. */
-.resource-page .tools-section:not(:has(.tool-logo-link)):not(:has(.tool-card)) {
+/* Prevent first-paint flash while enhanced resource sections are loading. */
+.resource-page .tools-section:not(.sf-tools-ready),
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready),
+.resource-page .quick-actions:not(.sf-guide-ready) {
+  position: relative !important;
+}
+.resource-page .tools-section:not(.sf-tools-ready),
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready),
+.resource-page .quick-actions:not(.sf-guide-ready) {
   visibility: hidden !important;
 }
-.resource-page .tools-section:has(.tool-card) {
-  visibility: hidden !important;
+.resource-page .tools-section:not(.sf-tools-ready)::after,
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after,
+.resource-page .quick-actions:not(.sf-guide-ready)::after {
+  content: "Loading…";
+  visibility: visible !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
 }
-.resource-page .workflow-section.sf-v7:not(:has(.sf-v8-final-media)) {
-  visibility: hidden !important;
-}
-.resource-page .quick-actions:not(:has(span.button-primary)) {
-  visibility: hidden !important;
+.resource-page .quick-actions:not(.sf-guide-ready)::after {
+  min-height: 48px;
 }
 
 .resource-card > img,
