@@ -13,7 +13,6 @@
   let slugManual = false;
   let uploadBusy = 0;
 
-  // These legacy core fields are represented by the repeatable Tools section.
   ['tool', 'toolUrl', 'toolAffiliate'].forEach(n => {
     const field = form.elements[n];
     if (field) {
@@ -40,6 +39,10 @@
     .builder-page .image-preview{position:relative}
     .builder-page .image-clear{position:absolute;top:18px;right:18px;display:grid;place-items:center;width:30px;height:30px;min-width:30px;min-height:30px;padding:0;border:1px solid var(--line);border-radius:50%;background:rgba(7,17,31,.9);color:var(--muted);font:inherit;font-size:18px;font-weight:500;line-height:1;cursor:pointer;z-index:2}
     .builder-page .image-clear:hover,.builder-page .image-clear:focus-visible{border-color:rgba(255,100,100,.5);color:#ff9b9b;background:rgba(255,100,100,.95);outline:none}
+    .builder-page .workflow-editor{display:grid;gap:10px;grid-column:1/-1}
+    .builder-page .workflow-editor .workflow-field{display:grid;gap:7px}
+    .builder-page .workflow-editor .workflow-field textarea{min-height:72px}
+    @media(max-width:700px){.builder-page .workflow-editor{grid-column:1}.builder-page .workflow-field textarea{min-height:64px}}
     @media(max-width:420px){.builder-page .media-control .upload-row,.builder-page .image-field .upload-row{grid-template-columns:minmax(0,1fr) 78px}.builder-page .media-control .file-button,.builder-page .image-field .file-button{width:78px;min-width:78px}}
   `;
   document.head.appendChild(style);
@@ -86,7 +89,6 @@
     uploadState(stateEl, '');
   };
 
-  // Static thumbnail/hero images keep their existing direct-upload behavior.
   const uploadStatic = async (file, input, prev, st) => {
     uploadBusy++;
     uploadState(st, 'Uploading…');
@@ -169,9 +171,6 @@
       field.addEventListener('change', render);
     });
 
-    // IMPORTANT: Input/Output file inputs are intentionally NOT given an upload
-    // listener here. image-ratio-ui.js owns their change event so selecting a
-    // file always opens the ratio popup first and never uploads immediately.
     item.querySelectorAll('[data-file-role="input"],[data-file-role="result"]').forEach(fileInput => {
       fileInput.addEventListener('click', () => {
         const old = fileInput.dataset.sfLastSelection;
@@ -224,9 +223,13 @@
   const addStep = (data = {}) => {
     const item = document.createElement('div');
     item.className = 'repeat-item step';
-    item.innerHTML = `<label>Step title<input data-role="step-title" placeholder="Prepare the input" /></label><label>Description<textarea data-role="step-description" rows="3" placeholder="Describe what to do and what to look for."></textarea></label>${remove()}`;
+    item.innerHTML = `<div class="workflow-editor"><label class="workflow-field">Step title<input data-role="step-title" placeholder="Create the character" /></label><label class="workflow-field">Tool used<input data-role="step-tool" placeholder="Google Flow · Nano Banana" /></label><label class="workflow-field">Input<textarea data-role="step-input" rows="2" placeholder="What enters this step? Example: character concept or previous step output."></textarea></label><label class="workflow-field">Process / prompt action<textarea data-role="step-process" rows="3" placeholder="What you do here. Reference the existing Full Prompt rather than creating a separate prompt box."></textarea></label><label class="workflow-field">Output<textarea data-role="step-output" rows="2" placeholder="What comes out of this step? Example: finished character image."></textarea></label><label class="workflow-field">Next step<textarea data-role="step-next" rows="2" placeholder="What happens to this output next? Example: use the character image as input for Step 02."></textarea></label></div>${remove()}`;
     item.querySelector('[data-role="step-title"]').value = data.title || '';
-    item.querySelector('[data-role="step-description"]').value = data.description || '';
+    item.querySelector('[data-role="step-tool"]').value = data.tool || '';
+    item.querySelector('[data-role="step-input"]').value = data.input || '';
+    item.querySelector('[data-role="step-process"]').value = data.process || data.description || '';
+    item.querySelector('[data-role="step-output"]').value = data.output || '';
+    item.querySelector('[data-role="step-next"]').value = data.next || '';
     document.querySelector('#steps-list').appendChild(item);
     bind(item);
   };
@@ -288,12 +291,19 @@
     })).filter(x => x.name || x.purpose || x.url),
     steps: [...document.querySelectorAll('#steps-list .repeat-item')].map(item => ({
       title: item.querySelector('[data-role="step-title"]').value.trim(),
-      description: item.querySelector('[data-role="step-description"]').value.trim()
-    })).filter(x => x.title || x.description),
+      tool: item.querySelector('[data-role="step-tool"]').value.trim(),
+      input: item.querySelector('[data-role="step-input"]').value.trim(),
+      process: item.querySelector('[data-role="step-process"]').value.trim(),
+      output: item.querySelector('[data-role="step-output"]').value.trim(),
+      next: item.querySelector('[data-role="step-next"]').value.trim(),
+      description: item.querySelector('[data-role="step-process"]').value.trim()
+    })).filter(x => x.title || x.tool || x.input || x.process || x.output || x.next),
     tips: [...document.querySelectorAll('[data-role="tip"]')].map(x => x.value.trim()).filter(Boolean),
     tags: [...document.querySelectorAll('[data-role="tag"]')].map(x => x.value.trim()).filter(Boolean),
     related: [...document.querySelectorAll('[data-role="related"]')].map(x => x.value.trim()).filter(Boolean)
   });
+
+  const workflowDescription = step => `[[SF_WORKFLOW]]${JSON.stringify({ tool: step.tool, input: step.input, process: step.process, output: step.output, next: step.next, description: step.description })}`;
 
   const read = () => {
     const data = {};
@@ -314,6 +324,7 @@
     if (data.intro) html += `<h4>Introduction</h4><p class="preview-copy">${esc(data.intro)}</p>`;
     if (data.whatItDoes) html += `<h4>What this resource does</h4><p class="preview-copy">${esc(data.whatItDoes)}</p>`;
     if (repeat.tools.length) html += `<h4>Tools used</h4><div class="preview-tools">${repeat.tools.map(x => `<div class="preview-tool"><strong>${esc(x.name || 'Unnamed tool')}</strong><span>${esc(x.purpose || 'Purpose not added')}</span></div>`).join('')}</div>`;
+    if (repeat.steps.length) html += `<h4>Results workflow</h4><div class="preview-tools">${repeat.steps.map((x, i) => `<div class="preview-tool"><strong>Step ${String(i + 1).padStart(2, '0')} · ${esc(x.title || 'Untitled step')}</strong><span>${esc(x.tool || 'Tool not added')} · ${esc(x.input || 'Input not added')} → ${esc(x.output || 'Output not added')}</span></div>`).join('')}</div>`;
     if (data.prompt) html += `<h4>Prompt</h4><div class="preview-prompt">${esc(data.prompt)}</div>`;
     preview.innerHTML = html;
   };
@@ -348,7 +359,7 @@
     if (repeat.tools.length) repeat.tools.forEach(x => lines.push(`  - name: ${quote(x.name)}`, `    purpose: ${quote(x.purpose)}`, `    url: ${x.url ? quote(x.url) : 'null'}`, `    affiliate: ${x.affiliate ? 'true' : 'false'}`));
     else lines.push('  []');
     lines.push(`prompt: ${quote(data.prompt)}`, `videoEmbedUrl: ${data.videoEmbedUrl ? quote(data.videoEmbedUrl) : 'null'}`, `originalVideoUrl: ${data.originalVideoUrl ? quote(data.originalVideoUrl) : 'null'}`, 'steps:');
-    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(`  - title: ${quote(x.title)}`, `    description: ${quote(x.description)}`));
+    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(`  - title: ${quote(x.title)}`, `    description: ${quote(workflowDescription(x))}`));
     else lines.push('  []');
     lines.push('tips:');
     if (repeat.tips.length) repeat.tips.forEach(x => lines.push(`  - ${quote(x)}`));
@@ -404,7 +415,6 @@
     if (!role) return;
     const previewBox = box.querySelector(`[data-preview="${role}"]`);
     const input = form.elements[role];
-    const fileInput = box.querySelector('[data-image-file]');
     if (previewBox && !previewBox.querySelector('.image-clear')) previewBox.innerHTML = clearButton();
     bindClear(box);
     if (input?.value) pathPreview(previewBox, input.value);
