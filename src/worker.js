@@ -165,7 +165,7 @@ export default {
     let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
-      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260915-3');
+      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260916-4');
       response = injectBodyScript(response, '/resource-prompt.js?v=20260916-4');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
