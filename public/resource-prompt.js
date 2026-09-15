@@ -22,15 +22,17 @@
         .workflow-structured-node p{color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
         .workflow-prompt-link{display:inline-flex;margin-top:18px}
         .workflow-prompt-shell{margin-top:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
-        .workflow-prompt-shell .prompt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;border-bottom:1px solid var(--line)}
-        .workflow-prompt-shell .prompt-label{flex:1;text-align:center;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
-        .workflow-prompt-shell .prompt-control{min-width:82px;min-height:42px;padding:0 12px;border:0;background:transparent;color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
-        .workflow-prompt-shell .prompt-control:hover,.workflow-prompt-shell .prompt-control:focus-visible{color:var(--accent);outline:none}
-        .workflow-prompt-shell pre{margin:0;padding:18px;max-height:320px;overflow:auto;color:var(--text);font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12.5px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
-        .workflow-prompt-shell .prompt-download{display:block;width:100%;min-height:42px;border:0;border-top:1px solid var(--line);background:rgba(16,34,56,.42);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+        .workflow-prompt-shell .prompt-toolbar{display:grid;grid-template-columns:auto 1fr auto;align-items:stretch;min-height:46px;border-bottom:1px solid var(--line)}
+        .workflow-prompt-shell .prompt-label{display:flex;align-items:center;justify-content:center;min-width:0;padding:0 10px;color:var(--muted);font-size:10px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+        .workflow-prompt-shell .prompt-control{min-width:88px;min-height:46px;padding:0 14px;border:0;background:rgba(16,34,56,.34);color:var(--text);font:inherit;font-size:12px;font-weight:850;cursor:pointer}
+        .workflow-prompt-shell .prompt-copy{border-right:1px solid var(--line)}
+        .workflow-prompt-shell .prompt-expand{border-left:1px solid var(--line)}
+        .workflow-prompt-shell .prompt-control:hover,.workflow-prompt-shell .prompt-control:focus-visible{background:rgba(61,214,208,.08);color:var(--accent);outline:none}
+        .workflow-prompt-shell pre{box-sizing:border-box;margin:0;padding:18px;max-height:270px;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;color:var(--text);font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12.5px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;scrollbar-width:thin}
+        .workflow-prompt-shell .prompt-download{display:block;width:100%;min-height:44px;padding:0 14px;border:0;border-top:1px solid var(--line);background:rgba(16,34,56,.52);color:var(--text);font:inherit;font-size:12px;font-weight:850;cursor:pointer}
         .workflow-prompt-shell .prompt-download:hover,.workflow-prompt-shell .prompt-download:focus-visible{color:var(--accent);background:rgba(61,214,208,.08);outline:none}
         @media (min-width:769px){ .workflow-structured-body{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px} .workflow-prompt-shell{grid-column:1/-1} }
-        @media (max-width:768px){ .workflow-prompt-shell .prompt-label{font-size:9px}.workflow-prompt-shell .prompt-control{min-width:72px;padding-inline:9px}.workflow-prompt-shell pre{font-size:12px;padding:16px;max-height:300px} }
+        @media (max-width:768px){ .workflow-prompt-shell .prompt-label{font-size:9px;padding-inline:6px}.workflow-prompt-shell .prompt-control{min-width:72px;padding-inline:9px}.workflow-prompt-shell pre{font-size:12px;padding:16px;max-height:240px} }
       `;
       document.head.appendChild(style);
     }
@@ -153,7 +155,7 @@
         const copy = document.createElement('button');
         copy.type = 'button'; copy.className = 'prompt-control prompt-copy'; copy.textContent = 'Copy';
         const label = document.createElement('div');
-        label.className = 'prompt-label'; label.textContent = 'Process / Prompt';
+        label.className = 'prompt-label'; label.textContent = 'Step Prompt';
         const expand = document.createElement('button');
         expand.type = 'button'; expand.className = 'prompt-control prompt-expand'; expand.textContent = 'Expand';
         toolbar.append(copy, label, expand);
@@ -163,7 +165,7 @@
         node.append(toolbar, pre, download);
         const stepTitle = card.querySelector('.workflow-step h3')?.textContent?.trim() || 'Step';
         copy.addEventListener('click', () => copyText(process));
-        expand.addEventListener('click', () => openPrompt(`${stepTitle} — Process / Prompt`, process));
+        expand.addEventListener('click', () => openPrompt(`${stepTitle} — Step Prompt`, process));
         download.addEventListener('click', () => makePdf(process, `${pageTitle}-${stepTitle}`));
         body.appendChild(node);
       }
