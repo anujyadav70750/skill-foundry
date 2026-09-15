@@ -1,7 +1,7 @@
 ---
 title: "Turn Rough Ideas Into Polished AI Content"
 slug: "testing-1"
-description: "A practical prompt for turning a rough idea into clear, polished content with a strong structure, useful details, and a consistent professional tone."
+description: "A practical workflow for turning a rough idea into clear, polished content with a strong hook, useful structure, and a consistent professional tone."
 category: "Prompts"
 tool: "Skill Foundary AI"
 toolUrl: "https://hub.skillfoundryai.workers.dev/admin/"
@@ -16,39 +16,79 @@ inputImageRatios: ["original"]
 resultImages: ["/images/1000069056-result-16x9-1788985389269.jpg"]
 resultImageRatios: ["original"]
 imageAlt: null
-intro: ""
-whatItDoes: ""
+intro: "Start with the idea you actually have, even if it is incomplete. The workflow turns the rough input into a clear direction, develops that direction into a polished draft, and then prepares it for presentation."
+whatItDoes: "The prompt gives an AI model enough context to understand the audience, purpose, tone, format, and important details before writing. It also asks the model to preserve supplied facts, avoid generic filler, and make assumptions explicit when information is missing."
 toolsUsed:
   - name: "Skill Foundary AI"
     purpose: "Primary AI tool used for this resource."
     url: "https://hub.skillfoundryai.workers.dev/admin/"
     affiliate: false
   - name: "Canva"
-    purpose: "Design and visual editing tool used for testing this resource."
+    purpose: "Design and visual editing tool used for the final presentation test."
     url: "https://www.canva.com/"
     affiliate: false
   - name: "Notion"
-    purpose: "Workspace used for testing and organizing the resource."
+    purpose: "Workspace used for organizing the draft and testing the workflow."
     url: "https://www.notion.so/"
     affiliate: false
   - name: "GitHub"
-    purpose: "Repository and collaboration platform used for testing."
+    purpose: "Repository and collaboration platform used for the resource test."
     url: "https://github.com/"
     affiliate: false
-prompt: "Yb"
+prompt: |-
+  You are an expert content strategist and editor. Turn my rough idea into polished, useful content without making it sound generic, robotic, or over-written.
+
+  INPUTS
+  - Rough idea or topic: [PASTE YOUR IDEA]
+  - Target audience: [WHO IS THIS FOR?]
+  - Goal: [WHAT SHOULD THE CONTENT ACHIEVE?]
+  - Desired tone: [e.g. practical, friendly, authoritative, conversational]
+  - Format/platform: [e.g. Instagram Reel, carousel, YouTube script, LinkedIn post, blog]
+  - Key details or facts that must be preserved: [PASTE DETAILS]
+  - Call to action, if needed: [PASTE CTA OR WRITE "NONE"]
+
+  TASK
+  1. Understand the real purpose of the idea and the audience before writing.
+  2. Turn the rough idea into one clear content angle. Remove unnecessary repetition and keep the central message easy to understand.
+  3. Create 3 strong opening hooks suited to the chosen format. Make them specific to the topic rather than generic clickbait.
+  4. Build a logical structure so every section naturally leads to the next.
+  5. Write the polished draft in the requested tone and format. Keep the language natural and useful. Avoid filler, exaggerated claims, empty motivational phrases, and unnecessary jargon.
+  6. Preserve all facts and important details supplied by me. Never invent statistics, quotations, product features, results, or personal experiences. If important information is missing, make the smallest reasonable assumption and clearly label it.
+  7. Make the final content easy to scan and easy to edit. Use short paragraphs, clear headings, bullets, or scene/section breaks when the format benefits from them.
+  8. If the requested platform has an obvious length or structure expectation, adapt the draft to it while keeping the main message intact.
+  9. End with a natural call to action only when a CTA is requested or clearly appropriate for the format.
+
+  OUTPUT FORMAT
+  A. CONTENT ANGLE
+  One sentence explaining the strongest angle for this idea.
+
+  B. 3 HOOKS
+  Give three different opening options.
+
+  C. POLISHED CONTENT
+  Give the final ready-to-use draft. Do not add commentary inside the draft unless it is part of the requested format.
+
+  D. CTA
+  Give the final CTA if one is needed; otherwise write "No CTA needed."
+
+  E. EDITOR NOTES
+  List only the most important assumptions, missing information, or factual points that I should verify before publishing.
+
+  QUALITY CHECK
+  Before returning the answer, check that the content matches the audience, goal, tone, and format; the structure is logical; supplied facts were preserved; and no unsupported claims were introduced.
 videoEmbedUrl: "https://www.youtube.com/embed/eRTtU1znZI4"
 originalVideoUrl: "https://www.youtube.com/watch?v=eRTtU1znZI4"
 steps:
   - title: "Prepare the rough idea"
     tool: "Skill Foundary AI"
     input: "Rough topic or idea\nTarget audience\nDesired tone"
-    process: "Organize the rough idea into a clear content direction. Keep the audience, purpose, and tone consistent before generating the draft."
+    process: "Organize the rough idea into a clear content direction with a defined audience, purpose, and tone."
     output: "A clear, structured content direction ready for drafting."
     next: "Use this structured direction as the input for Step 2."
   - title: "Generate the polished draft"
     tool: "Skill Foundary AI"
     input: "Structured content direction from Step 1\nKey details to preserve"
-    process: "Turn the structured direction into a polished draft with a strong opening, logical structure, useful details, and a consistent professional tone."
+    process: "Turn the direction into a polished draft with a strong opening, logical structure, useful details, and a consistent professional tone."
     output: "A polished first draft ready for visual formatting."
     next: "Take the polished draft into Step 3 for final presentation."
   - title: "Format the final presentation"
@@ -58,16 +98,58 @@ steps:
     output: "A finished, presentation-ready AI content piece."
     next: "Final result is ready to publish or share."
 tips:
-  []
+  - "Give the model the real audience and goal instead of only describing the topic."
+  - "Add facts, examples, references, or brand constraints that must not be lost."
+  - "For platform-specific content, name the platform and desired format before generating."
+  - "Review the Editor Notes and verify important facts before publishing."
 relatedResources: []
-tags: []
+tags:
+  - "prompt-engineering"
+  - "content-creation"
+  - "ai-writing"
+  - "content-workflow"
 featured: false
 ---
 
-
-
-
-
 ## Prompt
 
-Yb
+You are an expert content strategist and editor. Turn my rough idea into polished, useful content without making it sound generic, robotic, or over-written.
+
+INPUTS
+- Rough idea or topic: [PASTE YOUR IDEA]
+- Target audience: [WHO IS THIS FOR?]
+- Goal: [WHAT SHOULD THE CONTENT ACHIEVE?]
+- Desired tone: [e.g. practical, friendly, authoritative, conversational]
+- Format/platform: [e.g. Instagram Reel, carousel, YouTube script, LinkedIn post, blog]
+- Key details or facts that must be preserved: [PASTE DETAILS]
+- Call to action, if needed: [PASTE CTA OR WRITE "NONE"]
+
+TASK
+1. Understand the real purpose of the idea and the audience before writing.
+2. Turn the rough idea into one clear content angle. Remove unnecessary repetition and keep the central message easy to understand.
+3. Create 3 strong opening hooks suited to the chosen format. Make them specific to the topic rather than generic clickbait.
+4. Build a logical structure so every section naturally leads to the next.
+5. Write the polished draft in the requested tone and format. Keep the language natural and useful. Avoid filler, exaggerated claims, empty motivational phrases, and unnecessary jargon.
+6. Preserve all facts and important details supplied by me. Never invent statistics, quotations, product features, results, or personal experiences. If important information is missing, make the smallest reasonable assumption and clearly label it.
+7. Make the final content easy to scan and easy to edit. Use short paragraphs, clear headings, bullets, or scene/section breaks when the format benefits from them.
+8. If the requested platform has an obvious length or structure expectation, adapt the draft to it while keeping the main message intact.
+9. End with a natural call to action only when a CTA is requested or clearly appropriate for the format.
+
+OUTPUT FORMAT
+A. CONTENT ANGLE
+One sentence explaining the strongest angle for this idea.
+
+B. 3 HOOKS
+Give three different opening options.
+
+C. POLISHED CONTENT
+Give the final ready-to-use draft. Do not add commentary inside the draft unless it is part of the requested format.
+
+D. CTA
+Give the final CTA if one is needed; otherwise write "No CTA needed."
+
+E. EDITOR NOTES
+List only the most important assumptions, missing information, or factual points that I should verify before publishing.
+
+QUALITY CHECK
+Before returning the answer, check that the content matches the audience, goal, tone, and format; the structure is logical; supplied facts were preserved; and no unsupported claims were introduced.
