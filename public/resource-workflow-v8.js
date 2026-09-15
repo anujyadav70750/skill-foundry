@@ -20,7 +20,8 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
         .workflow-section.sf-v7 .workflow-card{display:block!important;overflow:visible!important}
         .workflow-section.sf-v7 .workflow-body{display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important}
         .workflow-section.sf-v7 .sf-v7-tool,.workflow-section.sf-v7 .sf-v7-settings,.workflow-section.sf-v7 .sf-v7-start,.workflow-section.sf-v7 .sf-v7-action,.workflow-section.sf-v7 .sf-v7-output,.workflow-section.sf-v7 .sf-v7-arrow{width:100%!important;max-width:100%!important;min-width:0!important}
-        .workflow-section.sf-v7 .sf-v7-tool{display:flex!important;flex-wrap:nowrap!important;align-items:center!important}
+        .workflow-section.sf-v7 .sf-v8-section-label{margin:0 0 8px!important;color:var(--muted)!important;font-size:9px!important;font-weight:900!important;letter-spacing:.14em!important;text-transform:uppercase!important}
+        .workflow-section.sf-v7 .sf-v7-tool{display:flex!important;flex-wrap:nowrap!important;align-items:center!important;gap:12px!important}
         .workflow-section.sf-v7 .sf-v7-tool a{flex:0 0 48px!important;width:48px!important;height:48px!important}
         .workflow-section.sf-v7 .sf-v7-tool img{width:40px!important;height:40px!important}
         .workflow-section.sf-v7 .sf-v7-purpose{flex:1 1 auto!important;min-width:0!important}
@@ -59,6 +60,20 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
       if (!body || !tool) return;
 
       if (settings) tool.insertAdjacentElement('afterend', settings);
+
+      if (!body.querySelector('.sf-v8-tool-label')) {
+        const label = document.createElement('div');
+        label.className = 'sf-v8-section-label sf-v8-tool-label';
+        label.textContent = 'TOOL USED';
+        body.insertBefore(label, tool);
+      }
+
+      if (settings && !body.querySelector('.sf-v8-settings-label')) {
+        const label = document.createElement('div');
+        label.className = 'sf-v8-section-label sf-v8-settings-label';
+        label.textContent = 'SETTINGS';
+        settings.insertAdjacentElement('beforebegin', label);
+      }
 
       const link = tool.querySelector('a');
       const img = tool.querySelector('img');
