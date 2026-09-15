@@ -224,7 +224,7 @@ async function fetchToolLogo(request) {
 }
 
 const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src=\"${script}\" defer></script>`, { html: true }); } }).transform(response);
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel=\"stylesheet\" href=\"/image-display-fixes.css?v=20260915-2\">', { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel=\"stylesheet\" href=\"/image-display-fixes.css?v=20260915-3\">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
@@ -246,8 +246,8 @@ export default {
     const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
-      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260915-1');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260915-8');
+      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260915-2');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260915-9');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
