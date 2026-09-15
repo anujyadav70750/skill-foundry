@@ -151,8 +151,10 @@
     const sourceInputImages = [...document.querySelectorAll('.results-gallery .input-result img')];
     const sourceResultImages = [...document.querySelectorAll('.results-gallery .result-card:not(.input-result) img')];
     const sourceInputSection = document.querySelector('.results-section');
+    const workflowCards = [...document.querySelectorAll('.workflow-card')];
+    const workflowStepCount = workflowCards.length;
 
-    document.querySelectorAll('.workflow-card').forEach((card, index) => {
+    workflowCards.forEach((card, index) => {
       const body = card.querySelector('.workflow-body');
       if (!body) return;
 
@@ -276,7 +278,9 @@
         outputLabel.textContent = 'OUTPUT';
         outputLabel.style.cssText = 'color:var(--accent);font-size:9px;font-weight:850;letter-spacing:.14em';
         outputWrap.appendChild(outputLabel);
-        const resultImage = sourceResultImages[index];
+        const resultImage = sourceResultImages.length === workflowStepCount
+          ? sourceResultImages[index]
+          : (sourceResultImages.length === 1 && index === workflowStepCount - 1 ? sourceResultImages[0] : null);
         if (resultImage) {
           const outputCard = document.createElement('figure');
           outputCard.className = 'workflow-structured-node workflow-output-card';
@@ -297,7 +301,7 @@
         if (node) node.dataset.node = 'next';
       }
 
-      if (index < document.querySelectorAll('.workflow-card').length - 1) {
+      if (index < workflowStepCount - 1) {
         const note = document.createElement('div');
         note.className = 'workflow-flow-note';
         note.textContent = 'Output from this step continues into the next step';
