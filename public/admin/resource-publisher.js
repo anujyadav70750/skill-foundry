@@ -7,6 +7,11 @@
   const slugify = value => String(value || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
   const list = values => `[${values.map(quote).join(', ')}]`;
   const setStatus = message => { if (status) status.textContent = message; };
+  const parseJsonMarker = (value, marker) => {
+    const text = String(value || '').trim();
+    if (!text.startsWith(marker)) return null;
+    try { return JSON.parse(text.slice(marker.length)); } catch { return null; }
+  };
 
   const normalizeTutorialUrl = value => {
     let url = String(value || '').trim();
@@ -68,6 +73,29 @@
     });
   };
 
+  const collectStructuredInputs = item => {
+    const rows = [...item.querySelectorAll('[data-workflow-input]')];
+    if (rows.length) return rows.map(row => ({
+      type: row.querySelector('[data-role="workflow-input-type"]')?.value || 'text',
+      label: row.querySelector('[data-role="workflow-input-label"]')?.value.trim() || '',
+      role: row.querySelector('[data-role="workflow-input-role"]')?.value.trim() || '',
+      value: row.querySelector('[data-role="workflow-input-value"]')?.value.trim() || '',
+      src: row.querySelector('[data-role="workflow-input-src"]')?.value.trim() || ''
+    })).filter(x => x.label || x.role || x.value || x.src);
+    const legacy = item.querySelector('[data-role="step-input"]')?.value.trim() || '';
+    return parseJsonMarker(legacy, '[[SF_INPUTS]]') || [];
+  };
+
+  const collectStructuredSettings = item => {
+    const rows = [...item.querySelectorAll('[data-workflow-setting]')];
+    if (rows.length) return rows.map(row => ({
+      label: row.querySelector('[data-role="workflow-setting-label"]')?.value.trim() || '',
+      value: row.querySelector('[data-role="workflow-setting-value"]')?.value.trim() || ''
+    })).filter(x => x.label || x.value);
+    const legacy = item.querySelector('[data-role="step-process"]')?.value.trim() || '';
+    return parseJsonMarker(legacy, '[[SF_SETTINGS]]') || [];
+  };
+
   const collect = () => ({
     inputs: [...document.querySelectorAll('[data-role="input"]')].map(x => x.value.trim()).filter(Boolean),
     results: [...document.querySelectorAll('[data-role="result"]')].map(x => x.value.trim()).filter(Boolean),
@@ -79,12 +107,15 @@
     steps: [...document.querySelectorAll('#steps-list .repeat-item')].map(item => ({
       title: item.querySelector('[data-role="step-title"]')?.value.trim() || '',
       tool: item.querySelector('[data-role="step-tool"]')?.value.trim() || '',
+      toolPurpose: item.querySelector('[data-role="step-tool-purpose"]')?.value.trim() || '',
       input: item.querySelector('[data-role="step-input"]')?.value.trim() || '',
+      inputs: collectStructuredInputs(item),
+      settings: collectStructuredSettings(item),
       process: item.querySelector('[data-role="step-process"]')?.value.trim() || '',
       output: item.querySelector('[data-role="step-output"]')?.value.trim() || '',
       next: item.querySelector('[data-role="step-next"]')?.value.trim() || '',
       description: item.querySelector('[data-role="step-description"]')?.value.trim() || ''
-    })).filter(x => x.title || x.tool || x.input || x.process || x.output || x.next || x.description),
+    })).filter(x => x.title || x.tool || x.input || x.inputs.length || x.settings.length || x.process || x.output || x.next || x.description),
     tips: [...document.querySelectorAll('[data-role="tip"]')].map(x => x.value.trim()).filter(Boolean),
     tags: [...document.querySelectorAll('[data-role="tag"]')].map(x => x.value.trim()).filter(Boolean),
     related: [...document.querySelectorAll('[data-role="related"]')].map(x => x.value.trim()).filter(Boolean)
@@ -132,15 +163,19 @@
     if (repeat.tools.length) repeat.tools.forEach(x => lines.push(`  - name: ${quote(x.name)}`, `    purpose: ${quote(x.purpose)}`, `    url: ${x.url ? quote(x.url) : 'null'}`, '    affiliate: false'));
     else lines.push('  []');
     lines.push(`prompt: ${quote(data.prompt)}`, `videoEmbedUrl: ${tutorial ? quote(tutorial) : 'null'}`, `originalVideoUrl: ${originalTutorial ? quote(originalTutorial) : 'null'}`, 'steps:');
-    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(
-      `  - title: ${quote(x.title)}`,
-      `    tool: ${quote(x.tool)}`,
-      `    input: ${quote(x.input)}`,
-      `    process: ${quote(x.process)}`,
-      `    output: ${quote(x.output)}`,
-      `    next: ${quote(x.next)}`,
-      `    description: ${quote(workflowDescription(x))}`
-    ));
+    if (repeat.steps.length) repeat.steps.forEach(x => {
+      lines.push(`  - title: ${quote(x.title)}`);
+      lines.push(`    tool: ${quote(x.tool)}`);
+      lines.push(`    toolPurpose: ${quote(x.toolPurpose)}`);
+      lines.push(`    input: ${quote(x.input)}`);
+      lines.push('    inputs:');
+      if (x.inputs.length) x.inputs.forEach(input => lines.push(`      - type: ${quote(input.type)}`, `        label: ${quote(input.label)}`, `        role: ${quote(input.role)}`, `        value: ${quote(input.value)}`, `        src: ${input.src ? quote(input.src) : '""'}`));
+      else lines.push('      []');
+      lines.push('    settings:');
+      if (x.settings.length) x.settings.forEach(setting => lines.push(`      - label: ${quote(setting.label)}`, `        value: ${quote(setting.value)}`));
+      else lines.push('      []');
+      lines.push(`    process: ${quote(x.process)}`, `    output: ${quote(x.output)}`, `    next: ${quote(x.next)}`, `    description: ${quote(workflowDescription(x))}`);
+    });
     else lines.push('  []');
     lines.push('tips:');
     if (repeat.tips.length) repeat.tips.forEach(x => lines.push(`  - ${quote(x)}`));
