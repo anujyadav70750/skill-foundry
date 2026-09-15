@@ -25,7 +25,7 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
         .workflow-section.sf-v7 .sf-v7-tool img{width:40px!important;height:40px!important}
         .workflow-section.sf-v7 .sf-v7-purpose{flex:1 1 auto!important;min-width:0!important}
         .workflow-section.sf-v7 .sf-v7-purpose b{display:none!important}
-        .workflow-section.sf-v7 .sf-v7-purpose span{margin:0!important;font-size:12px!important;font-weight:850!important;letter-spacing:.06em!important}
+        .workflow-section.sf-v7 .sf-v7-purpose span{margin:0!important;font-size:12px!important;font-weight:800!important}
         .workflow-section.sf-v7 .sf-v7-settings{display:flex!important;flex-wrap:nowrap!important;overflow-x:auto!important;padding:0 0 2px!important}
         .workflow-section.sf-v7 .sf-v7-setting{flex:0 0 auto!important}
         .workflow-section.sf-v7 .sf-v7-input{position:relative!important}
@@ -38,6 +38,7 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
         .workflow-section.sf-v7 .sf-v7-head button,.workflow-section.sf-v7 .sf-v7-head .title{min-width:0!important;max-width:100%!important;overflow:hidden!important}
         .workflow-section.sf-v7 .sf-v7-prompt{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;height:132px!important;min-height:132px!important;max-height:132px!important;overflow-y:auto!important;overflow-x:hidden!important;box-sizing:border-box!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:break-word!important}
         .workflow-section.sf-v7 .sf-v7-download{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+        .workflow-section.sf-v7 .sf-v7-audience-note{margin:0 0 12px!important;color:var(--muted)!important;font-size:10px!important;line-height:1.45!important}
         @media(max-width:420px){
           .workflow-section.sf-v7 .workflow-card{width:100%!important;max-width:100%!important;padding-left:14px!important;padding-right:14px!important}
           .workflow-section.sf-v7 .workflow-body{width:100%!important;max-width:100%!important}
@@ -80,8 +81,19 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
         purpose.style.fontWeight = '850';
       }
 
+      const start = body.querySelector('.sf-v7-start');
+      if (index === 0 && start) {
+        const heading = start.querySelector('div');
+        if (heading) heading.textContent = 'INPUTS';
+        if (!start.querySelector('.sf-v7-audience-note')) {
+          const note = document.createElement('div');
+          note.className = 'sf-v7-audience-note';
+          note.textContent = 'Use both images with the prompt below.';
+          start.insertBefore(note, start.querySelector('.sf-v7-rail'));
+        }
+      }
+
       const inputs = [...body.querySelectorAll('.sf-v7-input')];
-      const demoForStep = [demoImages.character, demoImages.dress, demoImages.character, demoImages.clip1, demoImages.clip2];
       inputs.forEach((input, inputIndex) => {
         if (input.querySelector('img.sf-v8-media')) return;
         const type = input.querySelector('.sf-v7-type')?.textContent?.trim().toLowerCase();
