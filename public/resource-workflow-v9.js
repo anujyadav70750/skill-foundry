@@ -1,7 +1,10 @@
 import('/resource-workflow-v8.js?v=20260915-4').then(() => {
   const setupPrompts = () => {
     const section = document.querySelector('.workflow-section.sf-v7');
-    if (!section) return;
+    if (!section) return false;
+
+    const actions = section.querySelectorAll('.sf-v7-action');
+    if (!actions.length) return false;
 
     const downloadPdf = (text, name) => {
       const esc = (value) => String(value).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
@@ -65,7 +68,7 @@ import('/resource-workflow-v8.js?v=20260915-4').then(() => {
       dialog.showModal();
     };
 
-    section.querySelectorAll('.sf-v7-action').forEach((action, index) => {
+    actions.forEach((action, index) => {
       const oldPrompt = action.querySelector('.sf-v7-prompt');
       if (!oldPrompt || action.dataset.sfPromptReady === 'true') return;
       const text = oldPrompt.textContent || '';
@@ -113,11 +116,23 @@ import('/resource-workflow-v8.js?v=20260915-4').then(() => {
       expand.addEventListener('click', () => openDialog(text, heading));
       download.addEventListener('click', () => downloadPdf(text, heading));
     });
+    return true;
+  };
+
+  const runWhenReady = () => {
+    if (setupPrompts()) return;
+    let attempts = 0;
+    const retry = () => {
+      attempts += 1;
+      if (setupPrompts() || attempts >= 60) return;
+      setTimeout(retry, 50);
+    };
+    retry();
   };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupPrompts, { once: true });
+    document.addEventListener('DOMContentLoaded', runWhenReady, { once: true });
   } else {
-    setupPrompts();
+    runWhenReady();
   }
 });
