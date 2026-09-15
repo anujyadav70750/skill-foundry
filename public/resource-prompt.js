@@ -14,9 +14,12 @@
     instruction.textContent = 'Follow the full guide';
     instruction.setAttribute('aria-label', 'Instruction: follow the full guide below');
     link.replaceWith(instruction);
+    link.closest('.quick-actions')?.classList.add('sf-guide-ready');
   };
 
   makeGuideInstruction();
 
-  import('/resource-workflow-v9.js?v=20260915-3').catch(() => {});
+  import('/resource-workflow-v9.js?v=20260915-4').catch(() => {
+    document.querySelector('.workflow-section.sf-v7')?.classList.add('sf-workflow-ready');
+  });
 })();
