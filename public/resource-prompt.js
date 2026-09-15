@@ -1,1 +1,1 @@
-import('/resource-workflow-data.js?v=20260915-1').then(() => import('/resource-workflow-v5.js?v=20260915-1')).catch(() => {});
+import('/resource-workflow-v6.js?v=20260915-1').catch(() => {});
