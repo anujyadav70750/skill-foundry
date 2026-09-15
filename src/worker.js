@@ -176,8 +176,6 @@ async function fetchToolLogo(request) {
       const htmlType = landing.headers.get('content-type') || '';
       if (htmlType.includes('text/html')) {
         const html = await landing.text();
-        // Read the site's declared icon URL. Attribute order varies between sites,
-        // so capture href itself rather than accidentally returning the rel value.
         const iconMatch = html.match(/<link\b[^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/i)
           || html.match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*>/i);
         if (iconMatch?.[1]) {
@@ -197,7 +195,7 @@ async function fetchToolLogo(request) {
 }
 
 const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src="${script}" defer></script>`, { html: true }); } }).transform(response);
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel="stylesheet" href="/image-display-fixes.css?v=20260915-4">', { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<style id="sf-critical-resource-guard">.resource-page .tools-section:not(.sf-tools-ready) .tools-list{visibility:hidden!important;min-height:74px!important;position:relative!important}.resource-page .tools-section:not(.sf-tools-ready) .tools-list::after{content:\'Loading tools…\';position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready){visibility:hidden!important;position:relative!important;min-height:120px!important}.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after{content:\'Loading…\';visibility:visible!important;position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:34px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}</style><link rel="stylesheet" href="/image-display-fixes.css?v=20260915-4">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
