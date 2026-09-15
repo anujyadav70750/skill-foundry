@@ -1,5 +1,28 @@
 (() => {
   const localFallback = '/skill-foundry-resource-icon.svg';
+  const CACHE_KEY = 'sf-tool-logo-cache-v1';
+  const CACHE_TTL = 7 * 24 * 60 * 60 * 1000;
+  const inFlight = new Map();
+
+  const readCache = () => {
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      const data = raw ? JSON.parse(raw) : {};
+      const now = Date.now();
+      Object.keys(data).forEach((key) => {
+        if (!data[key] || now - Number(data[key].savedAt || 0) > CACHE_TTL) delete data[key];
+      });
+      return data;
+    } catch { return {}; }
+  };
+
+  const writeCache = (data) => {
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(data)); } catch {}
+  };
+
+  const cacheKey = (url) => {
+    try { return new URL(url, window.location.href).href.replace(/\/$/, ''); } catch { return String(url || ''); }
+  };
 
   const websiteFallback = (url) => {
     try {
@@ -22,33 +45,73 @@
   });
 
   const resolveLogo = async (url) => {
-    // The worker is the canonical resolver because it can inspect the site's own
-    // HTML and declared icon. Do not replace that result with a different favicon
-    // merely because another candidate has larger pixel dimensions.
+    const key = cacheKey(url);
+    if (!key) return localFallback;
+    if (inFlight.has(key)) return inFlight.get(key);
+
+    const cached = readCache()[key];
+    if (cached?.logoUrl) return cached.logoUrl;
+
+    const promise = (async () => {
+      let logoUrl = '';
+      try {
+        const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) logoUrl = data.logoUrl;
+        }
+      } catch {}
+
+      if (!logoUrl) {
+        try {
+          const target = new URL(url, window.location.href);
+          const candidates = [
+            `${target.origin}/favicon.svg`,
+            `${target.origin}/favicon.png`,
+            `${target.origin}/favicon.ico`,
+            `${target.origin}/apple-touch-icon.png`
+          ];
+          for (const candidate of candidates) {
+            const result = await imageQuality(candidate);
+            if (result.width > 0 && result.height > 0) { logoUrl = result.src; break; }
+          }
+        } catch {}
+      }
+
+      logoUrl = logoUrl || websiteFallback(url);
+      const cache = readCache();
+      cache[key] = { logoUrl, savedAt: Date.now() };
+      writeCache(cache);
+      return logoUrl;
+    })().finally(() => inFlight.delete(key));
+
+    inFlight.set(key, promise);
+    return promise;
+  };
+
+  // Share one universal resolver with every resource-page script and persist the
+  // resolved canonical logo so a normal refresh does not trigger the same lookup again.
+  window.SkillFoundryToolLogo = { resolve: resolveLogo };
+
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async (input, init) => {
     try {
-      const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) return data.logoUrl;
+      const requestUrl = typeof input === 'string' ? input : input?.url;
+      if (requestUrl) {
+        const parsed = new URL(requestUrl, window.location.href);
+        if (parsed.pathname === '/api/tool-logo') {
+          const target = parsed.searchParams.get('url');
+          if (target) {
+            const logoUrl = await resolveLogo(target);
+            return new Response(JSON.stringify({ logoUrl }), {
+              status: 200,
+              headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+            });
+          }
+        }
       }
     } catch {}
-
-    // Only use direct site candidates when the canonical resolver is unavailable.
-    try {
-      const target = new URL(url, window.location.href);
-      const candidates = [
-        `${target.origin}/favicon.svg`,
-        `${target.origin}/favicon.png`,
-        `${target.origin}/favicon.ico`,
-        `${target.origin}/apple-touch-icon.png`
-      ];
-      for (const candidate of candidates) {
-        const result = await imageQuality(candidate);
-        if (result.width > 0 && result.height > 0) return result.src;
-      }
-    } catch {}
-
-    return websiteFallback(url);
+    return originalFetch(input, init);
   };
 
   const mountToolLogos = () => {
@@ -71,9 +134,6 @@
       const href = link?.href;
       if (!href) return;
 
-      // Replace the card immediately so the Tools section never disappears while
-      // logo resolution is happening. The temporary source is the site's origin,
-      // not Google's favicon service; it is only used if the canonical resolver fails.
       const anchor = document.createElement('a');
       anchor.className = 'tool-logo-link';
       anchor.href = href;
