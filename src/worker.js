@@ -224,7 +224,7 @@ async function fetchToolLogo(request) {
 }
 
 const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src=\"${script}\" defer></script>`, { html: true }); } }).transform(response);
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel=\"stylesheet\" href=\"/image-display-fixes.css\">', { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel=\"stylesheet\" href=\"/image-display-fixes.css?v=20260915-2\">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
