@@ -1,4 +1,4 @@
-import('/resource-workflow-v8.js?v=20260915-3').then(() => {
+import('/resource-workflow-v8.js?v=20260915-4').then(() => {
   const setupExpand = () => {
     if (document.getElementById('sf-workflow-v9-style')) return;
 
