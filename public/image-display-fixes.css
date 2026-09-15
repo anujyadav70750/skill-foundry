@@ -30,7 +30,7 @@
   display: none !important;
 }
 
-/* Guide CTA keeps its original button shape, but is a muted instruction only. */
+/* Guide instruction keeps the original box shape while clearly reading as non-interactive. */
 .resource-page .quick-actions {
   margin-top: 18px;
 }
@@ -46,6 +46,7 @@
   align-items: center !important;
   justify-content: center !important;
   gap: 0 !important;
+  text-align: center !important;
 }
 .resource-page .quick-actions .button-primary::before,
 .resource-page .quick-actions .button-primary::after {
@@ -53,18 +54,22 @@
   position: absolute;
   top: 50%;
   display: block;
+  width: 38px;
+  height: 38px;
+  margin: 0;
   color: #000 !important;
   font-family: Arial, sans-serif;
-  font-size: 44px;
+  font-size: 34px;
   font-weight: 900;
-  line-height: 1;
+  line-height: 38px;
+  text-align: center;
   transform: translateY(-50%) rotate(90deg) scaleX(1.05);
 }
 .resource-page .quick-actions .button-primary::before {
-  left: 7%;
+  left: 22px;
 }
 .resource-page .quick-actions .button-primary::after {
-  right: 7%;
+  right: 22px;
 }
 .resource-page .quick-actions .button-primary:hover,
 .resource-page .quick-actions .button-primary:focus-visible {
@@ -158,7 +163,12 @@
   .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
   .resource-page .quick-actions .button-primary::before,
-  .resource-page .quick-actions .button-primary::after { font-size: 38px; }
-  .resource-page .quick-actions .button-primary::before { left: 5%; }
-  .resource-page .quick-actions .button-primary::after { right: 5%; }
+  .resource-page .quick-actions .button-primary::after {
+    width: 32px;
+    height: 32px;
+    font-size: 29px;
+    line-height: 32px;
+  }
+  .resource-page .quick-actions .button-primary::before { left: 16px; }
+  .resource-page .quick-actions .button-primary::after { right: 16px; }
 }
