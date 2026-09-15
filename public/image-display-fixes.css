@@ -1,13 +1,8 @@
-/* Prevent first-paint flash while enhanced resource sections are loading. */
-.resource-page .tools-section:not(.sf-tools-ready),
+/* Prevent first-paint flash while the workflow enhancement is loading. Tools stay visible because logo lookup is progressive. */
 .resource-page .workflow-section.sf-v7:not(.sf-workflow-ready) {
   position: relative !important;
-}
-.resource-page .tools-section:not(.sf-tools-ready),
-.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready) {
   visibility: hidden !important;
 }
-.resource-page .tools-section:not(.sf-tools-ready)::after,
 .resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after {
   content: "Loading…";
   visibility: visible !important;
