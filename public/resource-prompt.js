@@ -13,32 +13,13 @@
       const style = document.createElement('style');
       style.id = 'sf-guide-instruction-style';
       style.textContent = `
-        .guide-instruction {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          min-height: 46px;
-          box-sizing: border-box;
-          padding: 12px 16px;
-          border: 1px solid var(--line);
-          border-radius: 12px;
-          background: transparent;
-          color: var(--text);
-          font-size: 13px;
-          font-weight: 750;
-          line-height: 1.35;
-          text-align: center;
-        }
-        @media (min-width: 769px) {
-          .guide-instruction { width: fit-content; min-height: 48px; padding-inline: 20px; }
-        }
+        .guide-instruction { display:flex; align-items:center; justify-content:center; width:100%; min-height:46px; box-sizing:border-box; padding:12px 16px; border:1px solid var(--line); border-radius:12px; background:transparent; color:var(--text); font-size:13px; font-weight:750; line-height:1.35; text-align:center; }
+        @media (min-width:769px){ .guide-instruction{width:fit-content;min-height:48px;padding-inline:20px} }
         .workflow-structured-body{display:grid;gap:10px;margin-top:18px}
         .workflow-structured-node{display:grid;gap:5px;padding:14px 15px;border:1px solid var(--line);border-radius:13px;background:rgba(7,17,31,.38);min-width:0}
         .workflow-structured-node span{color:var(--accent);font-size:9px;font-weight:850;letter-spacing:.14em}
         .workflow-structured-node strong,.workflow-structured-node p{margin:0;color:var(--text);font-size:13px;line-height:1.55}
         .workflow-structured-node p{color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere}
-        .workflow-structured-arrow{display:grid;place-items:center;color:var(--muted);font-size:16px;line-height:1}
         .workflow-prompt-link{display:inline-flex;margin-top:18px}
         .workflow-prompt-shell{margin-top:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
         .workflow-prompt-shell .prompt-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;border-bottom:1px solid var(--line)}
@@ -48,16 +29,8 @@
         .workflow-prompt-shell pre{margin:0;padding:18px;max-height:320px;overflow:auto;color:var(--text);font:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:12.5px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
         .workflow-prompt-shell .prompt-download{display:block;width:100%;min-height:42px;border:0;border-top:1px solid var(--line);background:rgba(16,34,56,.42);color:var(--text);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
         .workflow-prompt-shell .prompt-download:hover,.workflow-prompt-shell .prompt-download:focus-visible{color:var(--accent);background:rgba(61,214,208,.08);outline:none}
-        @media (min-width:769px){
-          .workflow-structured-body{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
-          .workflow-structured-arrow{display:none}
-          .workflow-prompt-shell{grid-column:1/-1}
-        }
-        @media (max-width:768px){
-          .workflow-prompt-shell .prompt-label{font-size:9px}
-          .workflow-prompt-shell .prompt-control{min-width:72px;padding-inline:9px}
-          .workflow-prompt-shell pre{font-size:12px;padding:16px;max-height:300px}
-        }
+        @media (min-width:769px){ .workflow-structured-body{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px} .workflow-prompt-shell{grid-column:1/-1} }
+        @media (max-width:768px){ .workflow-prompt-shell .prompt-label{font-size:9px}.workflow-prompt-shell .prompt-control{min-width:72px;padding-inline:9px}.workflow-prompt-shell pre{font-size:12px;padding:16px;max-height:300px} }
       `;
       document.head.appendChild(style);
     }
@@ -115,12 +88,8 @@
     };
 
     const copyText = async (source) => {
-      try {
-        await navigator.clipboard.writeText(source);
-        if (status) status.textContent = 'Prompt copied.';
-      } catch {
-        if (status) status.textContent = 'Copy failed. Select the prompt text and copy it manually.';
-      }
+      try { await navigator.clipboard.writeText(source); if (status) status.textContent = 'Prompt copied.'; }
+      catch { if (status) status.textContent = 'Copy failed. Select the prompt text and copy it manually.'; }
     };
 
     const openPrompt = (title, source) => {
@@ -131,15 +100,29 @@
     };
 
     document.querySelectorAll('.workflow-card').forEach((card) => {
-      const process = card.querySelector('.workflow-action p');
-      if (!process) return;
-      const raw = process.textContent?.trim() || '';
-      if (!raw.startsWith('[[SF_WORKFLOW]]')) return;
-      let data;
-      try { data = JSON.parse(raw.slice('[[SF_WORKFLOW]]'.length)); } catch { return; }
-
       const body = card.querySelector('.workflow-body');
       if (!body) return;
+
+      const readNode = (label) => {
+        const nodes = [...body.querySelectorAll('.workflow-node')];
+        const node = nodes.find((item) => item.querySelector('span')?.textContent?.trim() === label);
+        return node?.querySelector('p,strong')?.textContent?.trim() || '';
+      };
+
+      const legacyProcess = body.querySelector('.workflow-action p')?.textContent?.trim() || '';
+      let data = null;
+      if (legacyProcess.startsWith('[[SF_WORKFLOW]]')) {
+        try { data = JSON.parse(legacyProcess.slice('[[SF_WORKFLOW]]'.length)); } catch { data = null; }
+      }
+
+      // Use structured renderer fields when available; fall back to the legacy marker.
+      const tool = data?.tool?.trim() || readNode('TOOL');
+      const input = data?.input?.trim() || readNode('INPUT');
+      const process = data?.process?.trim() || data?.description?.trim() || legacyProcess.replace(/^\[\[SF_WORKFLOW\]\].*$/s, '') || readNode('PROCESS / PROMPT');
+      const output = data?.output?.trim() || readNode('OUTPUT');
+      const next = data?.next?.trim() || readNode('NEXT STEP');
+      if (!tool && !input && !process && !output && !next) return;
+
       body.className = 'workflow-structured-body';
       body.innerHTML = '';
 
@@ -156,13 +139,11 @@
         body.appendChild(node);
       };
 
-      addNode('TOOL', data.tool, true);
-
-      const inputs = String(data.input || '').split(/\r?\n/).map((value) => value.trim()).filter(Boolean).slice(0, 10);
+      addNode('TOOL', tool, true);
+      const inputs = String(input || '').split(/\r?\n/).map((value) => value.trim()).filter(Boolean).slice(0, 10);
       inputs.forEach((value, index) => addNode(inputs.length > 1 ? `INPUT ${index + 1}` : 'INPUT', value));
 
-      if (data.process || data.description) {
-        const source = data.process || data.description;
+      if (process) {
         const node = document.createElement('div');
         node.className = 'workflow-prompt-shell';
         const toolbar = document.createElement('div');
@@ -170,32 +151,25 @@
         toolbar.setAttribute('role', 'toolbar');
         toolbar.setAttribute('aria-label', 'Step prompt actions');
         const copy = document.createElement('button');
-        copy.type = 'button';
-        copy.className = 'prompt-control prompt-copy';
-        copy.textContent = 'Copy';
+        copy.type = 'button'; copy.className = 'prompt-control prompt-copy'; copy.textContent = 'Copy';
         const label = document.createElement('div');
-        label.className = 'prompt-label';
-        label.textContent = 'Process / Prompt';
+        label.className = 'prompt-label'; label.textContent = 'Process / Prompt';
         const expand = document.createElement('button');
-        expand.type = 'button';
-        expand.className = 'prompt-control prompt-expand';
-        expand.textContent = 'Expand';
+        expand.type = 'button'; expand.className = 'prompt-control prompt-expand'; expand.textContent = 'Expand';
         toolbar.append(copy, label, expand);
-        const pre = document.createElement('pre');
-        pre.textContent = source;
+        const pre = document.createElement('pre'); pre.textContent = process;
         const download = document.createElement('button');
-        download.type = 'button';
-        download.className = 'prompt-download';
-        download.textContent = 'Download PDF';
+        download.type = 'button'; download.className = 'prompt-download'; download.textContent = 'Download PDF';
         node.append(toolbar, pre, download);
-        copy.addEventListener('click', () => copyText(source));
-        expand.addEventListener('click', () => openPrompt(`${card.querySelector('.workflow-step h3')?.textContent || pageTitle} — Process / Prompt`, source));
-        download.addEventListener('click', () => makePdf(source, `${pageTitle}-${card.querySelector('.workflow-step h3')?.textContent || 'step'}`));
+        const stepTitle = card.querySelector('.workflow-step h3')?.textContent?.trim() || 'Step';
+        copy.addEventListener('click', () => copyText(process));
+        expand.addEventListener('click', () => openPrompt(`${stepTitle} — Process / Prompt`, process));
+        download.addEventListener('click', () => makePdf(process, `${pageTitle}-${stepTitle}`));
         body.appendChild(node);
       }
 
-      addNode('OUTPUT', data.output);
-      addNode('NEXT STEP', data.next);
+      addNode('OUTPUT', output);
+      addNode('NEXT STEP', next);
     });
 
     document.querySelectorAll('[data-copy]').forEach((button) => button.addEventListener('click', () => {
