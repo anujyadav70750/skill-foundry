@@ -39,7 +39,24 @@ prompt: "Yb"
 videoEmbedUrl: "https://www.youtube.com/embed/eRTtU1znZI4"
 originalVideoUrl: "https://www.youtube.com/watch?v=eRTtU1znZI4"
 steps:
-  []
+  - title: "Prepare the rough idea"
+    tool: "Skill Foundary AI"
+    input: "Rough topic or idea\nTarget audience\nDesired tone"
+    process: "Organize the rough idea into a clear content direction. Keep the audience, purpose, and tone consistent before generating the draft."
+    output: "A clear, structured content direction ready for drafting."
+    next: "Use this structured direction as the input for Step 2."
+  - title: "Generate the polished draft"
+    tool: "Skill Foundary AI"
+    input: "Structured content direction from Step 1\nKey details to preserve"
+    process: "Turn the structured direction into a polished draft with a strong opening, logical structure, useful details, and a consistent professional tone."
+    output: "A polished first draft ready for visual formatting."
+    next: "Take the polished draft into Step 3 for final presentation."
+  - title: "Format the final presentation"
+    tool: "Canva"
+    input: "Polished draft from Step 2\nBrand/style reference\nFinal dimensions"
+    process: "Place the polished content into the chosen visual layout, refine spacing and hierarchy, and prepare the final presentation."
+    output: "A finished, presentation-ready AI content piece."
+    next: "Final result is ready to publish or share."
 tips:
   []
 relatedResources: []
