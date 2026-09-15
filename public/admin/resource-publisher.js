@@ -11,7 +11,7 @@
   const normalizeTutorialUrl = value => {
     let url = String(value || '').trim();
     if (!url) return '';
-    const iframe = url.match(/<iframe[^>]+src=["']([^"']+)["']/i);
+    const iframe = url.match(/<iframe[^>]+src=[\"']([^\"']+)[\"']/i);
     if (iframe) url = iframe[1];
     try {
       const parsed = new URL(url);
@@ -91,15 +91,14 @@
   });
 
   const workflowDescription = step => {
-    const payload = {
-      tool: step.tool,
-      input: step.input,
-      process: step.process,
-      output: step.output,
-      next: step.next,
-      description: step.description
-    };
-    return `[[SF_WORKFLOW]]${JSON.stringify(payload)}`;
+    const parts = [
+      step.tool && `Tool: ${step.tool}`,
+      step.input && `Input: ${step.input}`,
+      step.process && `Process: ${step.process}`,
+      step.output && `Output: ${step.output}`,
+      step.next && `Next: ${step.next}`
+    ].filter(Boolean);
+    return parts.join('\n\n') || step.description || '';
   };
 
   const markdown = data => {
@@ -126,14 +125,22 @@
       `resultImages: ${list(repeat.results)}`,
       `resultImageRatios: ${list(repeat.results.map(() => 'original'))}`,
       `imageAlt: ${data.imageAlt ? quote(data.imageAlt) : 'null'}`,
-      `intro: ${data.intro ? quote(data.intro) : '""'}`,
-      `whatItDoes: ${data.whatItDoes ? quote(data.whatItDoes) : '""'}`,
+      `intro: ${data.intro ? quote(data.intro) : '\"\"'}`,
+      `whatItDoes: ${data.whatItDoes ? quote(data.whatItDoes) : '\"\"'}`,
       'toolsUsed:'
     ];
     if (repeat.tools.length) repeat.tools.forEach(x => lines.push(`  - name: ${quote(x.name)}`, `    purpose: ${quote(x.purpose)}`, `    url: ${x.url ? quote(x.url) : 'null'}`, '    affiliate: false'));
     else lines.push('  []');
     lines.push(`prompt: ${quote(data.prompt)}`, `videoEmbedUrl: ${tutorial ? quote(tutorial) : 'null'}`, `originalVideoUrl: ${originalTutorial ? quote(originalTutorial) : 'null'}`, 'steps:');
-    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(`  - title: ${quote(x.title)}`, `    description: ${quote(workflowDescription(x))}`));
+    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(
+      `  - title: ${quote(x.title)}`,
+      `    tool: ${quote(x.tool)}`,
+      `    input: ${quote(x.input)}`,
+      `    process: ${quote(x.process)}`,
+      `    output: ${quote(x.output)}`,
+      `    next: ${quote(x.next)}`,
+      `    description: ${quote(workflowDescription(x))}`
+    ));
     else lines.push('  []');
     lines.push('tips:');
     if (repeat.tips.length) repeat.tips.forEach(x => lines.push(`  - ${quote(x)}`));
