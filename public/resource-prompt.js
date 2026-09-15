@@ -19,7 +19,7 @@
 
   makeGuideInstruction();
 
-  import('/resource-workflow-v9.js?v=20260915-4').catch(() => {
+  import('/resource-workflow-v9.js?v=20260915-5').catch(() => {
     document.querySelector('.workflow-section.sf-v7')?.classList.add('sf-workflow-ready');
   });
 })();
