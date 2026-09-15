@@ -1,17 +1,14 @@
 /* Prevent first-paint flash while enhanced resource sections are loading. */
 .resource-page .tools-section:not(.sf-tools-ready),
-.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready),
-.resource-page .quick-actions:not(.sf-guide-ready) {
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready) {
   position: relative !important;
 }
 .resource-page .tools-section:not(.sf-tools-ready),
-.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready),
-.resource-page .quick-actions:not(.sf-guide-ready) {
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready) {
   visibility: hidden !important;
 }
 .resource-page .tools-section:not(.sf-tools-ready)::after,
-.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after,
-.resource-page .quick-actions:not(.sf-guide-ready)::after {
+.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after {
   content: "Loading…";
   visibility: visible !important;
   display: flex;
@@ -23,9 +20,6 @@
   font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
-}
-.resource-page .quick-actions:not(.sf-guide-ready)::after {
-  min-height: 48px;
 }
 
 .resource-card > img,
