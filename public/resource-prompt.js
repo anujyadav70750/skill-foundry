@@ -1,5 +1,5 @@
 (() => {
-  // Keep the guide CTA visible as plain instructional text; it must never scroll or act like a button.
+  // Keep the guide CTA visible as a non-interactive instruction.
   const style = document.createElement('style');
   style.id = 'sf-guide-instruction-style';
   style.textContent = '.resource-page .quick-actions .button-primary{pointer-events:none!important;cursor:default!important}';
@@ -10,7 +10,7 @@
     if (!link) return;
     const instruction = document.createElement('span');
     instruction.className = link.className;
-    instruction.textContent = link.textContent;
+    instruction.textContent = 'Follow the full guide';
     instruction.setAttribute('aria-label', 'Instruction: follow the full guide below');
     link.replaceWith(instruction);
   };
