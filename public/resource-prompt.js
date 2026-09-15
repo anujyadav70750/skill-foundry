@@ -18,7 +18,9 @@
   };
 
   makeGuideInstruction();
-  import('/resource-workflow-v10.js?v=20260916-1').catch(() => {
-    document.querySelector('.workflow-section.sf-v7')?.classList.add('sf-workflow-ready');
-  });
+  import('/resource-workflow-data-bridge.js?v=20260916-1')
+    .then(() => import('/resource-workflow-v10.js?v=20260916-1'))
+    .catch(() => {
+      document.querySelector('.workflow-section.sf-v7')?.classList.add('sf-workflow-ready');
+    });
 })();
