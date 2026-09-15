@@ -65,7 +65,7 @@
     list.classList.add('tool-logo-grid');
     const cards = [...list.querySelectorAll('.tool-card')];
 
-    await Promise.all(cards.map(async (card) => {
+    cards.forEach((card) => {
       const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
       const purpose = card.querySelector('p')?.textContent?.trim() || '';
       const link = card.querySelector('.tool-link');
@@ -84,21 +84,24 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = await fetchToolLogo(href);
+      image.src = websiteFallback(href);
       image.alt = `${name} logo`;
       image.width = 56;
       image.height = 56;
-      image.loading = 'lazy';
+      image.loading = 'eager';
       image.decoding = 'async';
       image.referrerPolicy = 'no-referrer';
       image.addEventListener('error', () => {
-        const fallback = websiteFallback(href);
-        if (image.src !== fallback) image.src = fallback;
+        if (image.src !== localFallback) image.src = localFallback;
       }, { once: true });
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
-    }));
+
+      fetchToolLogo(href).then((src) => {
+        if (src) image.src = src;
+      }).catch(() => {});
+    });
 
     section.querySelector('.affiliate-disclosure')?.remove();
 
@@ -114,6 +117,8 @@
       `;
       document.head.appendChild(style);
     }
+
+    section.classList.add('sf-tools-ready');
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountToolLogos, { once: true });
