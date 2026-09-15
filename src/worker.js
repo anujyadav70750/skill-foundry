@@ -140,7 +140,7 @@ async function fetchToolLogo(request) {
       resolvedOrigin = new URL(landing.url).origin; const htmlType = landing.headers.get('content-type') || '';
       if (htmlType.includes('text/html')) {
         const html = await landing.text();
-        const iconMatch = html.match(/<link\b[^>]*\brel\s*=\s*[\"'][^\"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^\"']*[\"'][^>]*\bhref\s*=\s*[\"']([^\"']+)[\"'][^>]*>/i) || html.match(/<link\b[^>]*\bhref\s*=\s*[\"']([^\"']+)[\"'][^>]*\brel\s*=\s*[\"'][^\"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^\"']*[\"'][^>]*>/i);
+        const iconMatch = html.match(/<link\b[^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/i) || html.match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*>/i);
         if (iconMatch?.[1]) { try { return json({ logoUrl: new URL(iconMatch[1], landing.url).href }, 200, request); } catch {} }
       }
     }
@@ -152,7 +152,7 @@ async function fetchToolLogo(request) {
 }
 
 const injectBodyScript = (response, script) => new HTMLRewriter().on('body', { element(element) { element.append(`<script src="${script}" defer></script>`, { html: true }); } }).transform(response);
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<style id="sf-critical-resource-guard">.resource-page .tools-section:not(.sf-tools-ready) .tools-list{visibility:hidden!important;min-height:74px!important;position:relative!important}.resource-page .tools-section:not(.sf-tools-ready) .tools-list::after{content:\'Loading tools…\';position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.resource-page .workflow-section.sf-v8:not(.sf-workflow-ready){visibility:hidden!important;position:relative!important;min-height:120px!important}.resource-page .workflow-section.sf-v8:not(.sf-workflow-ready)::after{content:\'Loading…\';visibility:visible!important;position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:34px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}</style><link rel="stylesheet" href="/image-display-fixes.css?v=20260915-4">', { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<style id="sf-critical-resource-guard">.resource-page .tools-section:not(.sf-tools-ready) .tools-list{visibility:hidden!important;min-height:74px!important;position:relative!important}.resource-page .tools-section:not(.sf-tools-ready) .tools-list::after{content:\'Loading tools…\';position:absolute;inset:0;display:flex;align-items:center;justify-content:flex-start;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready){visibility:hidden!important;position:relative!important;min-height:120px!important}.resource-page .workflow-section.sf-v7:not(.sf-workflow-ready)::after{content:\'Loading…\';visibility:visible!important;position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:center;padding-top:34px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}</style><link rel="stylesheet" href="/image-display-fixes.css?v=20260915-4">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
@@ -161,12 +161,12 @@ export default {
     if (request.method === 'POST' && url.pathname === '/api/upload-image') { try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); } }
     if (request.method === 'POST' && url.pathname === '/api/publish-resource') { try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); } }
     if (request.method === 'POST' && url.pathname === '/api/contact') { try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); } }
-    if (request.method === 'GET' && url.pathname === '/api/tool-logo') { try { return await fetchToolLogo(request, env); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } }
+    if (request.method === 'GET' && url.pathname === '/api/tool-logo') { try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } }
     let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
-      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260916-6');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260916-6');
+      response = injectBodyScript(response, '/resource-tool-logos.js?v=20260916-5');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260916-5');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
