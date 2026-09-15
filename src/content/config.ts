@@ -1,9 +1,25 @@
 import { defineCollection, z } from 'astro:content';
 
+const workflowInput = z.object({
+  type: z.enum(['image', 'video', 'audio', 'text', 'document']).default('text'),
+  label: z.string().default(''),
+  role: z.string().default(''),
+  value: z.string().default(''),
+  src: z.string().default('')
+});
+
+const workflowSetting = z.object({
+  label: z.string(),
+  value: z.string()
+});
+
 const workflowStep = z.object({
   title: z.string(),
   tool: z.string().default(''),
+  toolPurpose: z.string().default(''),
   input: z.string().default(''),
+  inputs: z.array(workflowInput).default([]),
+  settings: z.array(workflowSetting).default([]),
   process: z.string().default(''),
   output: z.string().default(''),
   next: z.string().default(''),
