@@ -1,3 +1,17 @@
+/* Prevent first-paint flash of legacy markup while resource enhancements are loading. */
+.resource-page .tools-section:not(:has(.tool-logo-link)):not(:has(.tool-card)) {
+  visibility: hidden !important;
+}
+.resource-page .tools-section:has(.tool-card) {
+  visibility: hidden !important;
+}
+.resource-page .workflow-section.sf-v7:not(:has(.sf-v8-final-media)) {
+  visibility: hidden !important;
+}
+.resource-page .quick-actions:not(:has(span.button-primary)) {
+  visibility: hidden !important;
+}
+
 .resource-card > img,
 .library-grid .resource-card > img {
   display: block;
