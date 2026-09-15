@@ -39,7 +39,8 @@
   pointer-events: none !important;
   cursor: default !important;
   background: #0c1829 !important;
-  color: var(--text) !important;
+  color: transparent !important;
+  font-size: 0 !important;
   border: 1px solid var(--line) !important;
   box-shadow: none !important;
   display: flex !important;
@@ -48,33 +49,45 @@
   gap: 0 !important;
   text-align: center !important;
 }
-.resource-page .quick-actions .button-primary::before,
+.resource-page .quick-actions .button-primary::before {
+  content: "Follow the full guide";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 72px;
+  color: var(--text) !important;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: .01em;
+  text-align: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M10 16l14 14 14-14M10 26l14 14 14-14' fill='none' stroke='black' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 22px center;
+  background-size: 38px 38px;
+}
 .resource-page .quick-actions .button-primary::after {
-  content: "»";
+  content: "";
   position: absolute;
   top: 50%;
+  right: 22px;
   display: block;
   width: 38px;
   height: 38px;
   margin: 0;
-  color: #000 !important;
-  font-family: Arial, sans-serif;
-  font-size: 34px;
-  font-weight: 900;
-  line-height: 38px;
-  text-align: center;
-  transform: translateY(-50%) rotate(90deg) scaleX(1.05);
-}
-.resource-page .quick-actions .button-primary::before {
-  left: 22px;
-}
-.resource-page .quick-actions .button-primary::after {
-  right: 22px;
+  transform: translateY(-50%);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M10 16l14 14 14-14M10 26l14 14 14-14' fill='none' stroke='black' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 38px 38px;
 }
 .resource-page .quick-actions .button-primary:hover,
 .resource-page .quick-actions .button-primary:focus-visible {
   background: #0c1829 !important;
-  color: var(--text) !important;
+  color: transparent !important;
   border-color: var(--line) !important;
   transform: none !important;
   outline: none !important;
@@ -162,13 +175,16 @@
   .prompt-control { min-width: 68px; padding-inline: 10px; }
   .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
-  .resource-page .quick-actions .button-primary::before,
+  .resource-page .quick-actions .button-primary::before {
+    padding: 0 58px;
+    font-size: 13px;
+    background-position: left 16px center;
+    background-size: 32px 32px;
+  }
   .resource-page .quick-actions .button-primary::after {
+    right: 16px;
     width: 32px;
     height: 32px;
-    font-size: 29px;
-    line-height: 32px;
+    background-size: 32px 32px;
   }
-  .resource-page .quick-actions .button-primary::before { left: 16px; }
-  .resource-page .quick-actions .button-primary::after { right: 16px; }
 }
