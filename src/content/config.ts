@@ -1,5 +1,15 @@
 import { defineCollection, z } from 'astro:content';
 
+const workflowStep = z.object({
+  title: z.string(),
+  tool: z.string().default(''),
+  input: z.string().default(''),
+  process: z.string().default(''),
+  output: z.string().default(''),
+  next: z.string().default(''),
+  description: z.string().default('')
+});
+
 const resources = defineCollection({
   type: 'content',
   schema: z.object({
@@ -33,10 +43,7 @@ const resources = defineCollection({
     prompt: z.string(),
     videoEmbedUrl: z.string().nullish(),
     originalVideoUrl: z.string().nullish(),
-    steps: z.array(z.object({
-      title: z.string(),
-      description: z.string()
-    })).default([]),
+    steps: z.array(workflowStep).default([]),
     tips: z.array(z.string()).default([]),
     relatedResources: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
