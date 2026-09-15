@@ -72,14 +72,8 @@ async function uploadImage(request, env) {
   const filename = `${safeFilename(fileName.replace(/\.[^.]+$/, ''))}-${Date.now()}.${ext}`;
   const path = `public/images/${filename}`;
   const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
-    method: 'PUT',
-    headers: githubHeaders(env.GITHUB_TOKEN),
-    body: JSON.stringify({
-      message: `Add resource image ${filename}`,
-      content: toBase64(bytes),
-      branch: DEFAULT_BRANCH,
-      committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' }
-    })
+    method: 'PUT', headers: githubHeaders(env.GITHUB_TOKEN),
+    body: JSON.stringify({ message: `Add resource image ${filename}`, content: toBase64(bytes), branch: DEFAULT_BRANCH, committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' } })
   });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) return json({ error: result.message || `GitHub rejected the image upload (${response.status}).` }, response.status, request);
@@ -87,46 +81,30 @@ async function uploadImage(request, env) {
 }
 
 const isSameOriginAdminRequest = (request) => {
-  const origin = request.headers.get('Origin');
-  const referer = request.headers.get('Referer');
-  const requestOrigin = new URL(request.url).origin;
-  if (origin !== requestOrigin) return false;
-  if (!referer) return false;
+  const origin = request.headers.get('Origin'); const referer = request.headers.get('Referer'); const requestOrigin = new URL(request.url).origin;
+  if (origin !== requestOrigin || !referer) return false;
   try { return new URL(referer).origin === requestOrigin && new URL(referer).pathname.startsWith('/admin'); } catch { return false; }
 };
-
 const isSameOriginRequest = (request) => {
-  const origin = request.headers.get('Origin');
-  const requestOrigin = new URL(request.url).origin;
+  const origin = request.headers.get('Origin'); const requestOrigin = new URL(request.url).origin;
   if (origin) return origin === requestOrigin;
-  const referer = request.headers.get('Referer');
-  if (!referer) return false;
+  const referer = request.headers.get('Referer'); if (!referer) return false;
   try { return new URL(referer).origin === requestOrigin; } catch { return false; }
 };
-
 const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 async function sendContactMessage(request, env) {
   if (!isSameOriginRequest(request)) return json({ error: 'Contact requests must come from the Skill Foundry website.' }, 403, request);
   if (!env.RESEND_API_KEY || !env.CONTACT_EMAIL || !env.CONTACT_FROM_EMAIL) return json({ error: 'Contact email delivery is not configured yet.' }, 503, request);
-  let body;
-  try { body = await request.json(); } catch { return json({ error: 'Invalid contact request.' }, 400, request); }
-  const name = String(body?.name || '').trim();
-  const email = String(body?.email || '').trim().toLowerCase();
-  const subject = String(body?.subject || '').trim();
-  const message = String(body?.message || '').trim();
-  const honeypot = String(body?.website || '').trim();
+  let body; try { body = await request.json(); } catch { return json({ error: 'Invalid contact request.' }, 400, request); }
+  const name = String(body?.name || '').trim(); const email = String(body?.email || '').trim().toLowerCase(); const subject = String(body?.subject || '').trim(); const message = String(body?.message || '').trim(); const honeypot = String(body?.website || '').trim();
   if (honeypot) return json({ ok: true }, 200, request);
   if (!name || name.length > MAX_CONTACT_NAME) return json({ error: 'Please enter a valid name.' }, 400, request);
   if (!email || email.length > MAX_CONTACT_EMAIL || !validEmail(email)) return json({ error: 'Please enter a valid email address.' }, 400, request);
   if (!subject || subject.length > MAX_CONTACT_SUBJECT) return json({ error: 'Please enter a subject.' }, 400, request);
   if (!message || message.length > MAX_CONTACT_MESSAGE) return json({ error: 'Please enter a message of up to 5,000 characters.' }, 400, request);
   const text = ['New message from the Skill Foundry contact form', '', `Name: ${name}`, `Email: ${email}`, `Subject: ${subject}`, '', message].join('\n');
-  const response = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: env.CONTACT_FROM_EMAIL, to: [env.CONTACT_EMAIL], reply_to: email, subject: `[Skill Foundry Contact] ${subject}`, text })
-  });
+  const response = await fetch('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ from: env.CONTACT_FROM_EMAIL, to: [env.CONTACT_EMAIL], reply_to: email, subject: `[Skill Foundry Contact] ${subject}`, text }) });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) return json({ error: result?.message || 'We could not send your message right now. Please try again later.' }, 502, request);
   return json({ ok: true }, 200, request);
@@ -135,61 +113,40 @@ async function sendContactMessage(request, env) {
 async function publishResource(request, env) {
   if (!env.GITHUB_TOKEN) return json({ error: 'GitHub publishing is not configured. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503, request);
   if (!isSameOriginAdminRequest(request)) return json({ error: 'Publishing is available only from the admin builder.' }, 403, request);
-  let body;
-  try { body = await request.json(); } catch { return json({ error: 'Invalid publish request.' }, 400, request); }
-  const slug = String(body?.slug || '').trim();
-  const content = String(body?.content || '');
+  let body; try { body = await request.json(); } catch { return json({ error: 'Invalid publish request.' }, 400, request); }
+  const slug = String(body?.slug || '').trim(); const content = String(body?.content || '');
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return json({ error: 'Invalid resource slug.' }, 400, request);
   if (!content.startsWith('---')) return json({ error: 'Resource content is missing frontmatter.' }, 400, request);
   if (new TextEncoder().encode(content).byteLength > MAX_RESOURCE_BYTES) return json({ error: 'Resource content is too large.' }, 413, request);
-  const path = `src/content/resources/${slug}.md`;
-  const endpoint = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
+  const path = `src/content/resources/${slug}.md`; const endpoint = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`;
   const existing = await fetch(`${endpoint}?ref=${DEFAULT_BRANCH}`, { headers: githubHeaders(env.GITHUB_TOKEN) });
   if (existing.ok) return json({ error: `A resource with the slug \"${slug}\" already exists. Choose a different slug.` }, 409, request);
-  if (existing.status !== 404) {
-    const result = await existing.json().catch(() => ({}));
-    return json({ error: result.message || `Could not check the resource path (${existing.status}).` }, existing.status, request);
-  }
-  const response = await fetch(endpoint, {
-    method: 'PUT',
-    headers: githubHeaders(env.GITHUB_TOKEN),
-    body: JSON.stringify({ message: `Publish resource ${slug}`, content: toBase64(new TextEncoder().encode(content)), branch: DEFAULT_BRANCH, committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' } })
-  });
+  if (existing.status !== 404) { const result = await existing.json().catch(() => ({})); return json({ error: result.message || `Could not check the resource path (${existing.status}).` }, existing.status, request); }
+  const response = await fetch(endpoint, { method: 'PUT', headers: githubHeaders(env.GITHUB_TOKEN), body: JSON.stringify({ message: `Publish resource ${slug}`, content: toBase64(new TextEncoder().encode(content)), branch: DEFAULT_BRANCH, committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' } }) });
   const result = await response.json().catch(() => ({}));
   if (!response.ok) return json({ error: result.message || `GitHub rejected the resource publish (${response.status}).` }, response.status, request);
   return json({ path, slug, url: `/resources/${slug}/` }, 201, request);
 }
 
 async function fetchToolLogo(request) {
-  const url = new URL(request.url).searchParams.get('url');
-  if (!url) return json({ error: 'Tool website URL is required.' }, 400, request);
-  let target;
-  try { target = new URL(url); } catch { return json({ error: 'Invalid tool website URL.' }, 400, request); }
+  const url = new URL(request.url).searchParams.get('url'); if (!url) return json({ error: 'Tool website URL is required.' }, 400, request);
+  let target; try { target = new URL(url); } catch { return json({ error: 'Invalid tool website URL.' }, 400, request); }
   if (!['http:', 'https:'].includes(target.protocol)) return json({ error: 'Only HTTP and HTTPS websites are supported.' }, 400, request);
-  const requestOrigin = new URL(request.url).origin;
-  if (target.origin === requestOrigin) return json({ logoUrl: `${target.origin}/skill-foundry-resource-icon.svg` }, 200, request);
+  const requestOrigin = new URL(request.url).origin; if (target.origin === requestOrigin) return json({ logoUrl: `${target.origin}/skill-foundry-resource-icon.svg` }, 200, request);
   let resolvedOrigin = target.origin;
   try {
     const landing = await fetch(target.href, { method: 'GET', headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }, redirect: 'follow' });
     if (landing.ok || landing.status < 400) {
-      resolvedOrigin = new URL(landing.url).origin;
-      const htmlType = landing.headers.get('content-type') || '';
+      resolvedOrigin = new URL(landing.url).origin; const htmlType = landing.headers.get('content-type') || '';
       if (htmlType.includes('text/html')) {
         const html = await landing.text();
-        const iconMatch = html.match(/<link\b[^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/i)
-          || html.match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*>/i);
-        if (iconMatch?.[1]) {
-          try { return json({ logoUrl: new URL(iconMatch[1], landing.url).href }, 200, request); } catch {}
-        }
+        const iconMatch = html.match(/<link\b[^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/i) || html.match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'][^"']*\b(?:icon|shortcut icon|apple-touch-icon)\b[^"']*["'][^>]*>/i);
+        if (iconMatch?.[1]) { try { return json({ logoUrl: new URL(iconMatch[1], landing.url).href }, 200, request); } catch {} }
       }
     }
   } catch {}
   for (const candidate of [`${resolvedOrigin}/favicon.svg`, `${resolvedOrigin}/favicon.png`, `${resolvedOrigin}/favicon.ico`, `${resolvedOrigin}/apple-touch-icon.png`]) {
-    try {
-      const response = await fetch(candidate, { headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }, redirect: 'follow' });
-      const type = response.headers.get('content-type') || '';
-      if (response.ok && (type.startsWith('image/') || candidate.endsWith('.ico'))) return json({ logoUrl: response.url }, 200, request);
-    } catch {}
+    try { const response = await fetch(candidate, { headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }, redirect: 'follow' }); const type = response.headers.get('content-type') || ''; if (response.ok && (type.startsWith('image/') || candidate.endsWith('.ico'))) return json({ logoUrl: response.url }, 200, request); } catch {}
   }
   return json({ logoUrl: `${resolvedOrigin}/favicon.svg` }, 200, request);
 }
@@ -201,24 +158,15 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) return new Response(null, { status: 204, headers: { ...corsHeaders(request), 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-File-Name' } });
-    if (request.method === 'POST' && url.pathname === '/api/upload-image') {
-      try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); }
-    }
-    if (request.method === 'POST' && url.pathname === '/api/publish-resource') {
-      try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); }
-    }
-    if (request.method === 'POST' && url.pathname === '/api/contact') {
-      try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); }
-    }
-    if (request.method === 'GET' && url.pathname === '/api/tool-logo') {
-      try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); }
-    }
-    let response = await env.ASSETS.fetch(request);
-    const contentType = response.headers.get('content-type') || '';
+    if (request.method === 'POST' && url.pathname === '/api/upload-image') { try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); } }
+    if (request.method === 'POST' && url.pathname === '/api/publish-resource') { try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); } }
+    if (request.method === 'POST' && url.pathname === '/api/contact') { try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); } }
+    if (request.method === 'GET' && url.pathname === '/api/tool-logo') { try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } }
+    let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || '';
     if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response);
     if (request.method === 'GET' && url.pathname.startsWith('/resources/') && contentType.includes('text/html')) {
       response = injectBodyScript(response, '/resource-tool-logos.js?v=20260915-3');
-      response = injectBodyScript(response, '/resource-prompt.js?v=20260916-2');
+      response = injectBodyScript(response, '/resource-prompt.js?v=20260916-4');
     }
     const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/');
     if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) {
