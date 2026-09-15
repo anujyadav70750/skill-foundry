@@ -1,6 +1,10 @@
 (() => {
   const localFallback = '/skill-foundry-resource-icon.svg';
 
+  const normalizeOrigin = (url) => {
+    try { return new URL(url, window.location.href).origin; } catch { return ''; }
+  };
+
   const websiteFallback = (url) => {
     try {
       const target = new URL(url, window.location.href);
@@ -21,24 +25,24 @@
     probe.src = src;
   });
 
-  const fetchToolLogo = async (url) => {
-    let primary = '';
+  const resolveLogo = async (url) => {
+    let apiLogo = '';
     try {
       const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
-        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) primary = data.logoUrl;
+        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) apiLogo = data.logoUrl;
       }
     } catch {}
 
     try {
       const target = new URL(url, window.location.href);
       const candidates = [
-        primary,
+        apiLogo,
         `${target.origin}/favicon.svg`,
         `${target.origin}/favicon.png`,
-        `${target.origin}/apple-touch-icon.png`,
-        websiteFallback(url)
+        `${target.origin}/favicon.ico`,
+        `${target.origin}/apple-touch-icon.png`
       ].filter((src, index, list) => src && list.indexOf(src) === index);
 
       const results = await Promise.all(candidates.map(imageQuality));
@@ -49,7 +53,7 @@
       }
     } catch {}
 
-    return primary || websiteFallback(url);
+    return apiLogo || websiteFallback(url);
   };
 
   const mountToolLogos = async () => {
@@ -65,13 +69,19 @@
     list.classList.add('tool-logo-grid');
     const cards = [...list.querySelectorAll('.tool-card')];
 
-    cards.forEach((card) => {
+    // Resolve each tool before mounting its visible logo. This prevents a temporary
+    // Google-favicon logo from being replaced by a different logo after the request completes.
+    const resolvedCards = await Promise.all(cards.map(async (card) => {
       const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
       const purpose = card.querySelector('p')?.textContent?.trim() || '';
       const link = card.querySelector('.tool-link');
       const href = link?.href;
-      if (!href) return;
+      if (!href) return null;
+      const logo = await resolveLogo(href);
+      return { card, name, purpose, href, logo };
+    }));
 
+    resolvedCards.filter(Boolean).forEach(({ card, name, purpose, href, logo }) => {
       const anchor = document.createElement('a');
       anchor.className = 'tool-logo-link';
       anchor.href = href;
@@ -84,7 +94,7 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = websiteFallback(href);
+      image.src = logo || websiteFallback(href);
       image.alt = `${name} logo`;
       image.width = 56;
       image.height = 56;
@@ -97,10 +107,6 @@
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
-
-      fetchToolLogo(href).then((src) => {
-        if (src) image.src = src;
-      }).catch(() => {});
     });
 
     section.querySelector('.affiliate-disclosure')?.remove();
