@@ -1,1 +1,1 @@
-import('/resource-workflow-v2.js').catch(() => {});
+import('/resource-workflow-v3.js').catch(() => {});
