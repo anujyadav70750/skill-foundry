@@ -1,4 +1,4 @@
-import('/resource-workflow-v7.js?v=20260915-2').then(() => {
+import('/resource-workflow-v7.js?v=20260915-4').then(() => {
   const demoImages = {
     character: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85',
     dress: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=85',
@@ -149,6 +149,8 @@ import('/resource-workflow-v7.js?v=20260915-2').then(() => {
       media.alt = 'Final video preview';
       final.prepend(media);
     }
+
+    section.classList.add('sf-workflow-ready');
   };
 
   if (document.readyState === 'loading') {
