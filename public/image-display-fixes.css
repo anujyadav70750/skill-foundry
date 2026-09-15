@@ -30,25 +30,13 @@
   display: none !important;
 }
 
-/* Guide CTA is an instruction only, never a button or navigation control. */
+/* Guide CTA keeps its original button appearance, but is instruction-only. */
 .resource-page .quick-actions {
   margin-top: 18px;
 }
 .resource-page .quick-actions .button-primary {
-  display: inline-block;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent !important;
-  color: var(--muted) !important;
-  box-shadow: none !important;
-  font-size: 12px;
-  font-weight: 750;
-  line-height: 1.5;
-  text-decoration: none;
-  cursor: default;
-  pointer-events: none;
+  pointer-events: none !important;
+  cursor: default !important;
 }
 
 /* Prompt toolbar: only Copy and Expand are controls; Full Prompt is a label. */
@@ -133,5 +121,4 @@
   .prompt-control { min-width: 68px; padding-inline: 10px; }
   .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
-  .resource-page .quick-actions .button-primary { font-size: 11px; }
 }
