@@ -1,1 +1,1 @@
-import('/resource-workflow-v7.js?v=20260915-1').catch(() => {});
+import('/resource-workflow-v8.js?v=20260915-1').catch(() => {});
