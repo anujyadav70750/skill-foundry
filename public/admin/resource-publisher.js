@@ -78,12 +78,29 @@
     })).filter(x => x.name || x.purpose || x.url),
     steps: [...document.querySelectorAll('#steps-list .repeat-item')].map(item => ({
       title: item.querySelector('[data-role="step-title"]')?.value.trim() || '',
+      tool: item.querySelector('[data-role="step-tool"]')?.value.trim() || '',
+      input: item.querySelector('[data-role="step-input"]')?.value.trim() || '',
+      process: item.querySelector('[data-role="step-process"]')?.value.trim() || '',
+      output: item.querySelector('[data-role="step-output"]')?.value.trim() || '',
+      next: item.querySelector('[data-role="step-next"]')?.value.trim() || '',
       description: item.querySelector('[data-role="step-description"]')?.value.trim() || ''
-    })).filter(x => x.title || x.description),
+    })).filter(x => x.title || x.tool || x.input || x.process || x.output || x.next || x.description),
     tips: [...document.querySelectorAll('[data-role="tip"]')].map(x => x.value.trim()).filter(Boolean),
     tags: [...document.querySelectorAll('[data-role="tag"]')].map(x => x.value.trim()).filter(Boolean),
     related: [...document.querySelectorAll('[data-role="related"]')].map(x => x.value.trim()).filter(Boolean)
   });
+
+  const workflowDescription = step => {
+    const payload = {
+      tool: step.tool,
+      input: step.input,
+      process: step.process,
+      output: step.output,
+      next: step.next,
+      description: step.description
+    };
+    return `[[SF_WORKFLOW]]${JSON.stringify(payload)}`;
+  };
 
   const markdown = data => {
     const repeat = data.repeat;
@@ -116,7 +133,7 @@
     if (repeat.tools.length) repeat.tools.forEach(x => lines.push(`  - name: ${quote(x.name)}`, `    purpose: ${quote(x.purpose)}`, `    url: ${x.url ? quote(x.url) : 'null'}`, '    affiliate: false'));
     else lines.push('  []');
     lines.push(`prompt: ${quote(data.prompt)}`, `videoEmbedUrl: ${tutorial ? quote(tutorial) : 'null'}`, `originalVideoUrl: ${originalTutorial ? quote(originalTutorial) : 'null'}`, 'steps:');
-    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(`  - title: ${quote(x.title)}`, `    description: ${quote(x.description)}`));
+    if (repeat.steps.length) repeat.steps.forEach(x => lines.push(`  - title: ${quote(x.title)}`, `    description: ${quote(workflowDescription(x))}`));
     else lines.push('  []');
     lines.push('tips:');
     if (repeat.tips.length) repeat.tips.forEach(x => lines.push(`  - ${quote(x)}`));
