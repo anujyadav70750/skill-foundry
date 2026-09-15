@@ -35,6 +35,14 @@ toolsUsed:
     purpose: "Repository and collaboration platform used for the resource test."
     url: "https://github.com/"
     affiliate: false
+  - name: "Google Flow"
+    purpose: "Image generation tool used to create the dressed character image."
+    url: "https://flow.google/"
+    affiliate: false
+  - name: "CapCut"
+    purpose: "Video editing tool used for final assembly."
+    url: "https://www.capcut.com/"
+    affiliate: false
 prompt: |-
   You are an expert content strategist and editor. Turn my rough idea into polished, useful content without making it sound generic, robotic, or over-written.
 
@@ -79,12 +87,29 @@ prompt: |-
 videoEmbedUrl: "https://www.youtube.com/embed/eRTtU1znZI4"
 originalVideoUrl: "https://www.youtube.com/watch?v=eRTtU1znZI4"
 steps:
-  - title: "Prepare the rough idea"
-    tool: "Skill Foundary AI"
-    input: "Rough topic or idea\nTarget audience\nDesired tone"
-    process: "Organize the rough idea into a clear content direction with a defined audience, purpose, and tone."
-    output: "A clear, structured content direction ready for drafting."
-    next: "Use this structured direction as the input for Step 2."
+  - title: "Create the dressed character image"
+    tool: "Google Flow"
+    toolPurpose: "IMAGE GENERATION"
+    inputs:
+      - type: "image"
+        label: "Character reference"
+        role: "Primary identity reference"
+        value: ""
+        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85"
+      - type: "image"
+        label: "Dress reference"
+        role: "Clothing / outfit reference"
+        value: ""
+        src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=85"
+    settings:
+      - label: "MODEL"
+        value: "Nano Banana Pro"
+      - label: "ASPECT RATIO"
+        value: "9:16"
+    process: "Use the uploaded character image as the primary identity reference. Preserve the character’s facial identity, facial structure, hairstyle, skin tone, and overall appearance. Use the uploaded dress image as the clothing reference and replace the character’s current outfit with the referenced dress. Keep the character’s identity and proportions consistent. Create a polished vertical 9:16 image with natural lighting, realistic fabric details, and a clean cinematic presentation."
+    output: "Dressed character image"
+    next: "Use this generated character image as the reference for the first video clip."
+    description: ""
   - title: "Generate the polished draft"
     tool: "Skill Foundary AI"
     input: "Structured content direction from Step 1\nKey details to preserve"
