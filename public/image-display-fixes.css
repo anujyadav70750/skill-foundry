@@ -30,13 +30,25 @@
   display: none !important;
 }
 
-/* Guide CTA keeps its original button appearance, but is instruction-only. */
+/* Guide CTA keeps its original button shape, but is a muted instruction only. */
 .resource-page .quick-actions {
   margin-top: 18px;
 }
 .resource-page .quick-actions .button-primary {
   pointer-events: none !important;
   cursor: default !important;
+  background: #0c1829 !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: none !important;
+}
+.resource-page .quick-actions .button-primary:hover,
+.resource-page .quick-actions .button-primary:focus-visible {
+  background: #0c1829 !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+  transform: none !important;
+  outline: none !important;
 }
 
 /* Prompt toolbar: only Copy and Expand are controls; Full Prompt is a label. */
