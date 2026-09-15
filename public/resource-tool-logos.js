@@ -1,10 +1,6 @@
 (() => {
   const localFallback = '/skill-foundry-resource-icon.svg';
 
-  const normalizeOrigin = (url) => {
-    try { return new URL(url, window.location.href).origin; } catch { return ''; }
-  };
-
   const websiteFallback = (url) => {
     try {
       const target = new URL(url, window.location.href);
@@ -26,37 +22,36 @@
   });
 
   const resolveLogo = async (url) => {
-    let apiLogo = '';
+    // The worker is the canonical resolver because it can inspect the site's own
+    // HTML and declared icon. Do not replace that result with a different favicon
+    // merely because another candidate has larger pixel dimensions.
     try {
       const response = await fetch(`/api/tool-logo?url=${encodeURIComponent(url)}`, { credentials: 'same-origin', cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
-        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) apiLogo = data.logoUrl;
+        if (data.logoUrl && !data.logoUrl.endsWith('/skill-foundry-resource-icon.svg')) return data.logoUrl;
       }
     } catch {}
 
+    // Only use direct site candidates when the canonical resolver is unavailable.
     try {
       const target = new URL(url, window.location.href);
       const candidates = [
-        apiLogo,
         `${target.origin}/favicon.svg`,
         `${target.origin}/favicon.png`,
         `${target.origin}/favicon.ico`,
         `${target.origin}/apple-touch-icon.png`
-      ].filter((src, index, list) => src && list.indexOf(src) === index);
-
-      const results = await Promise.all(candidates.map(imageQuality));
-      const valid = results.filter((result) => result.width > 0 && result.height > 0);
-      if (valid.length) {
-        valid.sort((a, b) => (b.width * b.height) - (a.width * a.height));
-        return valid[0].src;
+      ];
+      for (const candidate of candidates) {
+        const result = await imageQuality(candidate);
+        if (result.width > 0 && result.height > 0) return result.src;
       }
     } catch {}
 
-    return apiLogo || websiteFallback(url);
+    return websiteFallback(url);
   };
 
-  const mountToolLogos = async () => {
+  const mountToolLogos = () => {
     const section = document.querySelector('.tools-section');
     if (!section) return;
 
@@ -69,19 +64,16 @@
     list.classList.add('tool-logo-grid');
     const cards = [...list.querySelectorAll('.tool-card')];
 
-    // Resolve each tool before mounting its visible logo. This prevents a temporary
-    // Google-favicon logo from being replaced by a different logo after the request completes.
-    const resolvedCards = await Promise.all(cards.map(async (card) => {
+    cards.forEach((card) => {
       const name = card.querySelector('h3')?.textContent?.trim() || 'Tool';
       const purpose = card.querySelector('p')?.textContent?.trim() || '';
       const link = card.querySelector('.tool-link');
       const href = link?.href;
-      if (!href) return null;
-      const logo = await resolveLogo(href);
-      return { card, name, purpose, href, logo };
-    }));
+      if (!href) return;
 
-    resolvedCards.filter(Boolean).forEach(({ card, name, purpose, href, logo }) => {
+      // Replace the card immediately so the Tools section never disappears while
+      // logo resolution is happening. The temporary source is the site's origin,
+      // not Google's favicon service; it is only used if the canonical resolver fails.
       const anchor = document.createElement('a');
       anchor.className = 'tool-logo-link';
       anchor.href = href;
@@ -94,7 +86,9 @@
 
       const image = document.createElement('img');
       image.className = 'tool-logo-image';
-      image.src = logo || websiteFallback(href);
+      image.src = (() => {
+        try { return `${new URL(href, window.location.href).origin}/favicon.svg`; } catch { return localFallback; }
+      })();
       image.alt = `${name} logo`;
       image.width = 56;
       image.height = 56;
@@ -107,6 +101,10 @@
 
       anchor.appendChild(image);
       card.replaceWith(anchor);
+
+      resolveLogo(href).then((src) => {
+        if (src) image.src = src;
+      }).catch(() => {});
     });
 
     section.querySelector('.affiliate-disclosure')?.remove();
