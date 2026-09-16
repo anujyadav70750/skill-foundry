@@ -101,7 +101,7 @@ const outputVisual = (step, index) => {
   const next = workflowSteps[index + 1];
   const linked = next?.inputs?.find((input) => input?.src && (input.type === type || !type));
   if (linked?.src) return { type: linked.type || type, src: linked.src, previewSrc: '', label: raw || linked.label || 'Step output' };
-  const previewSrc = index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '';
+  const previewSrc = step.outputPreviewSrc || (index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '');
   return { type, src: '', previewSrc, label: step.outputLabel || raw || 'Output produced by this step' };
 };
 
