@@ -1,0 +1,63 @@
+name: Universal logo resolver fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply universal logo fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          astro = Path('src/pages/resources/[slug].astro')
+          text = astro.read_text()
+
+          old_tools = """const rawTools = [\n  { name: data.tool, purpose: 'Primary tool/model used for this resource.', url: data.toolUrl, affiliate: data.toolAffiliate },\n  ...data.toolsUsed\n].filter((tool) => tool.name?.trim());"""
+          new_tools = """const stepTools = data.steps.map((step) => {\n  const name = String(step.tool || '').trim();\n  if (!name) return null;\n  const existing = data.toolsUsed.find((tool) => tool.name.trim().toLowerCase() === name.toLowerCase());\n  return existing || { name, purpose: String(step.toolPurpose || '').trim(), url: '', affiliate: false };\n}).filter(Boolean);\nconst rawTools = [\n  { name: data.tool, purpose: 'Primary tool/model used for this resource.', url: data.toolUrl, affiliate: data.toolAffiliate },\n  ...data.toolsUsed,\n  ...stepTools\n].filter((tool) => tool.name?.trim());"""
+          if old_tools in text:
+              text = text.replace(old_tools, new_tools, 1)
+
+          old_logo = "const toolLogo = (tool) => tool?.url ? `/api/tool-logo-image?url=${encodeURIComponent(tool.url)}` : '/skill-foundry-resource-icon.svg';"
+          new_logo = "const toolLogo = (tool) => tool?.url ? `/api/tool-logo-image?url=${encodeURIComponent(tool.url)}&v=20260916-3` : '/skill-foundry-resource-icon.svg';"
+          if old_logo in text:
+              text = text.replace(old_logo, new_logo, 1)
+
+          old_meta = "toolMeta: toolForStep(step.tool)"
+          new_meta = "toolMeta: toolForStep(step.tool) || toolForStep(step.tool?.trim() || data.tool)"
+          if old_meta in text:
+              text = text.replace(old_meta, new_meta, 1)
+
+          astro.write_text(text)
+
+          worker = Path('src/worker.js')
+          text = worker.read_text()
+
+          old_score = "if (type.includes('svg') || href.endsWith('.svg')) score += 100000; if (rel.includes('icon')) score += 10000; if (rel.includes('apple-touch-icon')) score += 5000; if (rel.includes('mask-icon')) score += 4000;"
+          new_score = "if (rel.includes('manifest-icon')) score += 90000; if (rel.includes('apple-touch-icon')) score += 80000; if (rel.includes('icon') && type.includes('svg')) score += 70000; if (rel.includes('icon')) score += 40000; if (rel.includes('mask-icon')) score += 10000; if (type.includes('svg') || href.endsWith('.svg')) score += 5000;"
+          if old_score in text:
+              text = text.replace(old_score, new_score, 1)
+
+          old_cache = "headers.set('Cache-Control', 'public, max-age=604800, immutable');"
+          new_cache = "headers.set('Cache-Control', 'public, max-age=3600');"
+          if old_cache in text:
+              text = text.replace(old_cache, new_cache, 1)
+
+          worker.write_text(text)
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pages/resources/[slug].astro src/worker.js
+          git diff --cached --quiet || git commit -m "fix: make workflow logos universal and cache-safe"
+          git push
