@@ -76,9 +76,14 @@ const tools = workflowSteps
   .filter(Boolean)
   .filter((tool, index, list) => list.findIndex((candidate) => candidate.name.trim().toLowerCase() === tool.name.trim().toLowerCase()) === index);
 
-const toolLogo = (tool) => tool?.url
-  ? `/api/tool-logo-image?url=${encodeURIComponent(tool.url)}&v=20260916-4`
-  : '/skill-foundry-resource-icon.svg';
+const toolLogo = (tool) => {
+  try {
+    const host = new URL(tool?.url || '').hostname;
+    return host ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128` : '/skill-foundry-resource-icon.svg';
+  } catch {
+    return '/skill-foundry-resource-icon.svg';
+  }
+};
 
 const mediaTypeFromUrl = (src) => {
   const value = String(src || '').toLowerCase();
