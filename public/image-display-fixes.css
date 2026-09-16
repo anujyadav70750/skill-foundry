@@ -115,6 +115,9 @@
 /* Prompt toolbar: only Copy and Expand are controls; Full Prompt is a label. */
 .prompt-shell {
   position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: #050b13;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -122,14 +125,17 @@
 }
 .prompt-toolbar {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: minmax(0,auto) minmax(0,1fr) minmax(68px,auto);
   align-items: stretch;
+  width: 100%;
+  min-width: 0;
   min-height: 48px;
   border-bottom: 1px solid var(--line);
   background: #050b13;
+  box-sizing: border-box;
 }
 .prompt-control {
-  min-width: 82px;
+  min-width: 0;
   padding: 0 16px;
   border: 0;
   background: #0d1b2d;
@@ -137,6 +143,8 @@
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 .prompt-control:hover,
 .prompt-control:focus-visible {
@@ -147,6 +155,7 @@
 .prompt-label {
   display: grid;
   place-items: center;
+  min-width: 0;
   padding: 0 14px;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
@@ -158,14 +167,23 @@
   text-transform: uppercase;
   cursor: default;
   user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .prompt-shell pre {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   margin: 0;
   padding: 22px 22px 24px;
   max-height: 360px;
   overflow: auto;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  word-break: break-word;
   color: #dce8f4;
   font: 14px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace;
 }
@@ -183,6 +201,7 @@
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .prompt-download:hover,
 .prompt-download:focus-visible {
@@ -190,10 +209,68 @@
   color: var(--accent);
   outline: none;
 }
+
+/* Mobile workflow: the card itself stays inside the viewport; only input resources may slide horizontally. */
+.resource-page .workflow-section,
+.resource-page .workflow-list,
+.resource-page .workflow-card,
+.resource-page .workflow-body,
+.resource-page .workflow-prompt,
+.resource-page .workflow-prompt-head,
+.resource-page .workflow-prompt pre,
+.resource-page .workflow-output {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+.resource-page .workflow-list {
+  width: 100%;
+}
+.resource-page .workflow-card {
+  width: 100%;
+}
+.resource-page .workflow-body {
+  width: 100%;
+  overflow: visible;
+}
+.resource-page .workflow-prompt {
+  width: 100%;
+  overflow: hidden;
+}
+.resource-page .workflow-prompt-head {
+  width: 100%;
+  grid-template-columns: 56px minmax(0,1fr) 66px;
+  overflow: hidden;
+}
+.resource-page .workflow-prompt-head button,
+.resource-page .workflow-prompt-head span {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.resource-page .workflow-prompt pre {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.resource-page .workflow-input-rail {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.resource-page .workflow-input {
+  min-width: 0;
+}
+
 @media (max-width: 600px) {
-  .prompt-control { min-width: 68px; padding-inline: 10px; }
+  .prompt-control { min-width: 0; padding-inline: 10px; }
   .prompt-label { padding-inline: 10px; }
   .prompt-shell pre { padding: 18px 14px 20px; font-size: 13px; }
+  .resource-page .workflow-prompt-head { grid-template-columns: 56px minmax(0,1fr) 66px; }
+  .resource-page .workflow-prompt-head button { padding-inline: 8px; font-size: 10px; }
   .resource-page .quick-actions .button-primary::before {
     padding: 0 58px;
     font-size: 13px;
