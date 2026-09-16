@@ -28,7 +28,8 @@ const workflowStep = z.object({
   outputType: z.enum(['image','video','audio','text','document']).optional(),
   outputLabel: z.string().optional(),
   outputDescription: z.string().optional(),
-  outputSrc: z.string().optional()
+  outputSrc: z.string().optional(),
+  outputPreviewSrc: z.string().optional()
 });
 
 const resourceTool = z.object({
