@@ -1,0 +1,42 @@
+name: Resource page final fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Apply final resource fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          base = Path('src/layouts/BaseLayout.astro')
+          text = base.read_text()
+          text = text.replace('href="/workflow-fixes.css"', 'href="/workflow-fixes.css?v=20260916-final"', 1)
+          text = text.replace('src="/workflow-fixes.js"', 'src="/workflow-fixes.js?v=20260916-final"', 1)
+          base.write_text(text)
+
+          # The universal logo workflow was only a temporary patch layer.
+          temporary = Path('.github/workflows/universal-logo-fix.yml')
+          if temporary.exists():
+              temporary.unlink()
+
+          current = Path('.github/workflows/resource-fix-final.yml')
+          current.unlink()
+          PY
+
+      - name: Commit final fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "fix: finalize resource page asset loading"
+          git push
