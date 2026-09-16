@@ -35,10 +35,10 @@
 
   const makeOutputPlaceholder = (label, description) => {
     const el = document.createElement('div');
-    el.className = 'output-preview-placeholder';
-    el.innerHTML = `<span>OUTPUT PREVIEW</span><strong></strong><small></small>`;
-    el.querySelector('strong').textContent = label || 'Output from this step';
-    el.querySelector('small').textContent = description || 'Preview media has not been provided for this step.';
+    el.className = 'media-frame media-frame-nonvisual output-preview-placeholder';
+    el.innerHTML = `<div class="nonvisual-content"><div class="nonvisual-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span class="nonvisual-badge">OUTPUT</span><strong class="nonvisual-title"></strong><small class="nonvisual-desc"></small></div>`;
+    el.querySelector('.nonvisual-title').textContent = label || 'Output from this step';
+    el.querySelector('.nonvisual-desc').textContent = description || 'Produced by this step';
     return el;
   };
 
@@ -54,6 +54,8 @@
       if (!outputCard) return;
 
       const outputFrame = outputCard.querySelector('.media-frame');
+      if (outputFrame?.classList.contains('media-frame-nonvisual')) return;
+
       const outputMedia = outputFrame?.querySelector('.media-main');
       const outputSrc = outputMedia?.getAttribute('src');
 
@@ -64,7 +66,7 @@
       }
 
       const outputText = outputCard.querySelector('.output-text');
-      if (outputText && !outputCard.querySelector('.output-preview-placeholder')) {
+      if (outputText && !outputCard.querySelector('.media-frame')) {
         const label = outputCard.querySelector('.media-caption strong')?.textContent?.trim() || outputText.textContent.trim();
         const description = outputCard.querySelector('.media-caption small')?.textContent?.trim();
         outputText.replaceWith(makeOutputPlaceholder(label, description));
@@ -72,8 +74,8 @@
     });
 
     const finalPlaceholder = document.querySelector('.final-result-placeholder');
-    if (finalPlaceholder) {
-      finalPlaceholder.innerHTML = '<span>FINAL OUTPUT PREVIEW</span><strong></strong><small>Final media preview has not been provided for this resource.</small>';
+    if (finalPlaceholder && !finalPlaceholder.querySelector('.final-placeholder-icon')) {
+      finalPlaceholder.innerHTML = '<div class="final-placeholder-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div><strong></strong><span>Completed output from the full workflow sequence.</span>';
       finalPlaceholder.querySelector('strong').textContent = finalPlaceholder.closest('.workflow-final-result')?.querySelector('h3')?.textContent?.trim() || 'Final result';
     }
   };
@@ -101,7 +103,15 @@
     modal.querySelector('[data-close-prompt]')?.addEventListener('click', closeModal);
     modal.querySelector('.prompt-modal-backdrop')?.addEventListener('click', closeModal);
     modal.querySelector('[data-modal-copy]')?.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(pre.textContent?.trim() || ''); } catch {}
+      try {
+        await navigator.clipboard.writeText(pre.textContent?.trim() || '');
+        const btn = modal.querySelector('[data-modal-copy]');
+        if (btn) {
+          const old = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = old; }, 1400);
+        }
+      } catch {}
     });
     modal.querySelector('[data-modal-download]')?.addEventListener('click', () => downloadPdf(pre.textContent || ''));
 
