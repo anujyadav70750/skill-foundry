@@ -1,0 +1,78 @@
+/* Tools & Resources: restore the approved logo-only horizontal slider. */
+.resource-page .tools-section .tools-list {
+  display: flex !important;
+  gap: 18px !important;
+  width: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 2px 2px 10px !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+}
+.resource-page .tools-section .tools-list::-webkit-scrollbar { display: none; }
+.resource-page .tools-section .tool-card {
+  position: relative !important;
+  display: block !important;
+  flex: 0 0 82px !important;
+  width: 82px !important;
+  height: 82px !important;
+  min-height: 82px !important;
+  padding: 0 !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  overflow: hidden !important;
+  scroll-snap-align: start !important;
+}
+.resource-page .tools-section .tool-card-main,
+.resource-page .tools-section .tool-identity {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+.resource-page .tools-section .tool-identity > div,
+.resource-page .tools-section .affiliate-badge,
+.resource-page .tools-section .tool-link {
+  display: none !important;
+}
+.resource-page .tools-section .tool-logo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  box-sizing: border-box !important;
+  padding: 10px !important;
+  border: 0 !important;
+  border-radius: 17px !important;
+  object-fit: contain !important;
+  background: rgba(16,34,56,.32) !important;
+}
+.resource-page .tools-section .tool-card:has(.tool-link)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  cursor: pointer;
+}
+.resource-page .tools-section .tool-card:has(.tool-link) .tool-link {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 10 !important;
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  color: transparent !important;
+  font-size: 0 !important;
+  background: transparent !important;
+}
+.resource-page .tools-section .affiliate-disclosure { display: none !important; }
+@media (max-width: 768px) {
+  .resource-page .tools-section .tools-list { gap: 16px !important; }
+  .resource-page .tools-section .tool-card { flex-basis: 76px !important; width: 76px !important; height: 76px !important; min-height: 76px !important; }
+  .resource-page .tools-section .tool-logo { padding: 8px !important; }
+}
