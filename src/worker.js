@@ -167,7 +167,7 @@ async function fetchToolLogoImage(request) {
   }
 }
 
-const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel="stylesheet" href="/image-display-fixes.css?v=20260916-5">', { html: true }); } }).transform(response);
+const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel="stylesheet" href="/image-display-fixes.css?v=20260916-6">', { html: true }); } }).transform(response);
 
 export default {
   async fetch(request, env) {
