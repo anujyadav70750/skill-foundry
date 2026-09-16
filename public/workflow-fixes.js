@@ -26,6 +26,12 @@
     });
   };
 
+  const fixGuideCue = () => {
+    document.querySelectorAll('.resource-page .guide-cue svg path').forEach((path) => {
+      path.setAttribute('d', 'M6 7l6 6 6-6M6 13l6 6 6-6');
+    });
+  };
+
   const makeOutputPlaceholder = (label, description) => {
     const el = document.createElement('div');
     el.className = 'output-preview-placeholder';
@@ -118,6 +124,7 @@
 
   const init = () => {
     replaceFlowLogos();
+    fixGuideCue();
     replaceExpandHandlers();
     fixOutputPreviews();
   };
