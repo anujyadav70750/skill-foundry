@@ -1,0 +1,118 @@
+name: Apply approved resource page improvements
+
+on:
+  push:
+    paths:
+      - '.github/workflows/resource-page-polish.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply resource page improvements
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          page = Path('src/pages/resources/[slug].astro')
+          text = page.read_text()
+
+          # Universal optional per-tool logo support.
+          old = """const toolLogo = (tool) => {\n  try {\n    const host = new URL(tool?.url || '').hostname;\n    return host ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128` : '/skill-foundry-resource-icon.svg';\n  } catch {\n    return '/skill-foundry-resource-icon.svg';\n  }\n};"""
+          new = """const toolLogo = (tool) => {\n  if (tool?.logo) return tool.logo;\n  try {\n    const host = new URL(tool?.url || '').hostname;\n    return host ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128` : '/skill-foundry-resource-icon.svg';\n  } catch {\n    return '/skill-foundry-resource-icon.svg';\n  }\n};"""
+          if old in text:
+              text = text.replace(old, new)
+
+          # Clean square publisher mark while preserving the existing author/name/date/tick structure.
+          text = text.replace('<img class="publisher-avatar" src="/favicon.svg" alt="" width="40" height="40" />', '<div class="publisher-avatar" aria-hidden="true">SF</div>')
+
+          # Explicit downward double chevrons.
+          text = text.replace('<svg viewBox="0 0 24 24"><path d="M4 6.5 12 14l8-7.5M4 11.5l8 7.5 8-7.5"/></svg>', '<svg viewBox="0 0 24 24"><path d="M6 7l6 6 6-6M6 13l6 6 6-6"/></svg>')
+
+          # Never infer a step output from the next step's input. Outputs must be explicit or show a clear unavailable-preview state.
+          old_output = """  const next = workflowSteps[index + 1];\n  const linked = next?.inputs?.find((input) => input?.src && (input.type === type || !type));\n  if (linked?.src) return { type: linked.type || type, src: linked.src, previewSrc: '', label: raw || linked.label || 'Step output' };\n  const previewSrc = step.outputPreviewSrc || (index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '');\n  return { type, src: '', previewSrc, label: step.outputLabel || raw || 'Output produced by this step' };"""
+          new_output = """  const previewSrc = step.outputPreviewSrc || (index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '');\n  return { type, src: '', previewSrc, label: step.outputLabel || raw || 'Output produced by this step' };"""
+          if old_output in text:
+              text = text.replace(old_output, new_output)
+
+          # Make missing output media look intentional rather than like a broken/empty card.
+          old_render = """{output.src || output.previewSrc ? <div class=\"media-frame\" style={output.src || output.previewSrc ? ('--media-image: url(\\\"' + (output.src || output.previewSrc) + '\\")') : ''}>\n                  {output.type === 'video' && output.src && isRealVideo(output.src) ? <video class=\"media-main\" src={output.src} muted playsinline controls preload=\"metadata\"/> : <><img class=\"media-backdrop\" src={output.src || output.previewSrc} alt=\"\" aria-hidden=\"true\"/><img class=\"media-main\" src={output.src || output.previewSrc} alt={output.label} loading=\"lazy\"/>{output.type === 'video' && <span class=\"media-play\" aria-hidden=\"true\">▶</span>}</>}\n                </div> : <div class=\"output-text\">{output.label}</div>}\n                <div class=\"media-caption\"><strong>{output.label}</strong>{step.output && <small>Output from this step</small>}</div>"""
+          new_render = """{output.src || output.previewSrc ? <div class=\"media-frame\" style={output.src || output.previewSrc ? ('--media-image: url(\\\"' + (output.src || output.previewSrc) + '\\")') : ''}>\n                  {output.type === 'video' && output.src && isRealVideo(output.src) ? <video class=\"media-main\" src={output.src} muted playsinline controls preload=\"metadata\"/> : <><img class=\"media-backdrop\" src={output.src || output.previewSrc} alt=\"\" aria-hidden=\"true\"/><img class=\"media-main\" src={output.src || output.previewSrc} alt={output.label} loading=\"lazy\"/>{output.type === 'video' && <span class=\"media-play\" aria-hidden=\"true\">▶</span>}</>}\n                </div> : <div class=\"output-preview-placeholder\"><span>OUTPUT PREVIEW</span><strong>{output.label}</strong><small>Preview media has not been provided for this step.</small></div>}\n                <div class=\"media-caption\"><strong>{output.label}</strong>{step.outputDescription && <small>{step.outputDescription}</small>}</div>"""
+          if old_render in text:
+              text = text.replace(old_render, new_render)
+
+          old_final = """{!media && <div class=\"final-result-placeholder\">Final output is produced by the completed workflow.</div>}<p>Complete output after all workflow steps.</p>"""
+          new_final = """{!media && <div class=\"final-result-placeholder\"><span>FINAL OUTPUT PREVIEW</span><strong>{finalOutput.label}</strong><small>Final media preview has not been provided for this resource.</small></div>}<p>Complete output after all workflow steps.</p>"""
+          if old_final in text:
+              text = text.replace(old_final, new_final)
+
+          # Replace the modal interaction block with a fixed-size, internally scrollable modal and body lock.
+          start = """      expand?.addEventListener('click', () => {"""
+          end = """      download?.addEventListener('click', () => makePdf(pre?.textContent || '', 'skill-foundry-prompt'));"""
+          s = text.find(start)
+          e = text.find(end, s)
+          if s != -1 and e != -1:
+              replacement = """      expand?.addEventListener('click', () => {\n        const existing = document.querySelector('[data-prompt-modal]');\n        if (existing) existing.remove();\n        const modal = document.createElement('div');\n        modal.setAttribute('data-prompt-modal','');\n        modal.innerHTML = '<div class=\"prompt-modal-backdrop\"></div><div class=\"prompt-modal-dialog\" role=\"dialog\" aria-modal=\"true\" aria-label=\"Expanded prompt\"><div class=\"prompt-modal-head\"><span>FULL PROMPT</span><button type=\"button\" data-close-prompt>Close</button></div><pre>' + String(pre?.textContent || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><div class=\"prompt-modal-actions\"><button type=\"button\" data-modal-copy>Copy</button><button type=\"button\" data-modal-download>Download PDF</button></div></div>';\n        document.body.appendChild(modal);\n        document.body.dataset.promptModalOpen = 'true';\n        document.body.style.overflow = 'hidden';\n        const closeModal = () => {\n          modal.remove();\n          delete document.body.dataset.promptModalOpen;\n          document.body.style.overflow = '';\n        };\n        const close = modal.querySelector('[data-close-prompt]');\n        close?.addEventListener('click', closeModal);\n        modal.querySelector('.prompt-modal-backdrop')?.addEventListener('click', closeModal);\n        modal.querySelector('[data-modal-copy]')?.addEventListener('click', async () => { try { await navigator.clipboard.writeText(pre?.textContent?.trim() || ''); } catch {} });\n        modal.querySelector('[data-modal-download]')?.addEventListener('click', () => makePdf(pre?.textContent || '', 'skill-foundry-prompt'));\n        document.addEventListener('keydown', function onKey(event) { if (event.key === 'Escape') { closeModal(); document.removeEventListener('keydown', onKey); } }, { once: true });\n        close?.focus();\n      });\n"""
+              text = text[:s] + replacement + text[e + len(end):]
+
+          # Final scoped CSS overrides: consistent prompt dimensions, tool sizing, author mark, chevrons, and placeholders.
+          marker = "  </style>\n</BaseLayout>"
+          css = r'''    /* Approved resource-page refinements */
+    .publisher-avatar{display:grid;place-items:center;width:40px;height:40px;flex:0 0 40px;border:1px solid rgba(0,229,255,.32);border-radius:12px;background:#07111f;color:#3dd6d0;font:800 13px/1 Arial,Helvetica,sans-serif;letter-spacing:-.5px}
+    .guide-cue svg{width:20px;height:20px;fill:none;stroke:#0891b2;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;opacity:.7;transform:none}
+    .tool-card{padding:0!important}.tool-card .tool-logo{width:100%!important;height:100%!important;object-fit:contain}
+    .workflow-tool-logo{width:76px!important;height:76px!important;flex:0 0 76px!important;border-radius:14px!important}
+    .workflow-tool-logo img{width:100%!important;height:100%!important;object-fit:contain}
+    .workflow-prompt{height:216px;display:grid;grid-template-rows:48px minmax(0,1fr) 50px}
+    .workflow-prompt pre{height:auto!important;max-height:none!important;min-height:0;overflow:auto}
+    .output-preview-placeholder,.final-result-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:0;height:100%;padding:20px;text-align:center;background:linear-gradient(180deg,#0b1528,#081120);color:#64748b}
+    .output-preview-placeholder span,.final-result-placeholder span{font:700 9px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em;color:#4b6b87}
+    .output-preview-placeholder strong,.final-result-placeholder strong{font-size:12px;color:#d5dfeb}
+    .output-preview-placeholder small,.final-result-placeholder small{max-width:190px;font-size:10px;line-height:1.45;color:#64748b}
+    .final-result-placeholder{min-height:220px;border-radius:14px}
+    [data-prompt-modal] .prompt-modal-dialog{width:min(920px,calc(100vw - 24px))!important;height:min(760px,calc(100dvh - 24px))!important;max-height:calc(100dvh - 24px)!important;min-height:0!important;grid-template-rows:auto minmax(0,1fr) auto!important}
+    [data-prompt-modal] .prompt-modal-dialog pre{min-height:0!important;height:auto!important;max-height:none!important;overflow:auto!important}
+    [data-prompt-modal] .prompt-modal-actions{min-height:58px}
+    @media(max-width:768px){.workflow-tool-logo{width:76px!important;height:76px!important;flex-basis:76px!important}.workflow-prompt{height:220px}.workflow-prompt pre{font-size:12px;line-height:1.65}.workflow-prompt-head button{padding:0 15px}.workflow-prompt-head span{font-size:10px}.output-preview-placeholder small{max-width:170px}[data-prompt-modal]{padding:10px!important}[data-prompt-modal] .prompt-modal-dialog{width:100%!important;height:min(78dvh,760px)!important;max-height:calc(100dvh - 20px)!important;border-radius:16px!important}[data-prompt-modal] .prompt-modal-dialog pre{padding:18px!important;font-size:13px;line-height:1.7}}
+'''
+          if marker in text and 'Approved resource-page refinements' not in text:
+              text = text.replace(marker, css + marker)
+
+          page.write_text(text)
+
+          config = Path('src/content/config.ts')
+          c = config.read_text()
+          c_old = "  affiliate: z.boolean().default(false)\n});"
+          c_new = "  affiliate: z.boolean().default(false),\n  logo: z.string().optional()\n});"
+          if c_old in c and 'logo: z.string().optional()' not in c:
+              c = c.replace(c_old, c_new)
+              config.write_text(c)
+
+          resource = Path('src/content/resources/testing-1.md')
+          r = resource.read_text()
+          flow_old = '''  - name: "Google Flow"\n    purpose: "Image and video generation used to create the character image and three vertical clips."\n    url: "https://flow.google/"\n    affiliate: false'''
+          flow_new = '''  - name: "Google Flow"\n    purpose: "Image and video generation used to create the character image and three vertical clips."\n    url: "https://flow.google/"\n    logo: "/google-flow-icon.svg"\n    affiliate: false'''
+          if flow_old in r and 'logo: "/google-flow-icon.svg"' not in r:
+              r = r.replace(flow_old, flow_new)
+              resource.write_text(r)
+
+          icon = Path('public/google-flow-icon.svg')
+          if not icon.exists():
+              icon.write_text('''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Google Flow"><rect width="128" height="128" rx="28" fill="#050505"/><text x="64" y="75" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="31" font-weight="500" fill="#fff">Flow</text></svg>\n''')
+          PY
+
+          if git diff --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/pages/resources/'[slug].astro' src/content/config.ts src/content/resources/testing-1.md public/google-flow-icon.svg
+          git commit -m "fix: polish resource workflow interactions and outputs [skip resource polish]"
+          git push
