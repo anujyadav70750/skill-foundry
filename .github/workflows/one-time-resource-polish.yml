@@ -1,0 +1,59 @@
+name: One-time resource polish
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Apply resource presentation fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          md = Path('src/content/resources/testing-1.md')
+          text = md.read_text()
+          text = text.replace('heroImage: "/images/1000069054-input-16x9-1788985501045.jpg"', 'heroImage: "/images/1000068513-hero-16x9-1788985443598.jpg"')
+          md.write_text(text)
+
+          page = Path('src/pages/resources/[slug].astro')
+          text = page.read_text()
+
+          old_hero = '''    <div class="container content-wide resource-hero-media"><img class="hero-image" src={heroImage} alt={imageAlt}/></div>\n\n    <div class="container narrow article-layout resource-content">'''
+          new_hero = '''    <div class="container content-wide resource-hero-media"><img class="hero-image" src={heroImage} alt={imageAlt}/></div>\n\n    <div class="container narrow resource-hero-description"><section class="resource-description"><p class="lead">{data.description}</p></section></div>\n\n    <div class="container narrow article-layout resource-content">'''
+          if old_hero in text:
+              text = text.replace(old_hero, new_hero, 1)
+
+          text = text.replace('''\n      <section class="resource-description"><p class="lead">{data.description}</p></section>\n\n      {data.whatItDoes &&''', '''\n      {data.whatItDoes &&''', 1)
+
+          old_chevron = '''<svg viewBox="0 0 24 24"><path d="M2.5 4.5l8 7.5-8 7.5h4.5l8-7.5-8-7.5H2.5zm9 0l8 7.5-8 7.5H24l-8-7.5 8-7.5h-4.5z"/></svg>'''
+          new_chevron = '''<svg viewBox="0 0 24 24"><path d="M4 6.5 12 14l8-7.5M4 11.5l8 7.5 8-7.5"/></svg>'''
+          text = text.replace(old_chevron, new_chevron)
+
+          style_marker = '''  <style>\n'''
+          overrides = '''  <style>\n    /* Resource polish overrides */\n    .resource-intro h1{font-size:clamp(38px,4.2vw,58px);line-height:1.04;letter-spacing:-.035em;max-width:1000px}\n    .publisher-identity{margin-top:22px}\n    .resource-hero-description{margin-top:0}.resource-hero-description .resource-description{padding:22px 0 4px}.resource-hero-description .resource-description .lead{max-width:900px}\n    .guide-cue svg{transform:none;fill:#0891b2;opacity:.7;width:20px;height:20px}\n    .tool-card .tool-logo{width:72px;height:72px;object-fit:contain}.workflow-tool-logo{width:76px;height:76px;display:flex;align-items:center;justify-content:center}.workflow-tool-logo img{width:100%;height:100%;object-fit:contain}\n    [data-prompt-modal]{position:fixed!important;inset:0!important;z-index:9999!important;display:grid!important;place-items:center!important;padding:20px!important}\n    [data-prompt-modal] .prompt-modal-backdrop{position:absolute;inset:0;background:rgba(2,6,12,.84);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}\n    [data-prompt-modal] .prompt-modal-dialog{position:relative;z-index:1;width:min(920px,calc(100vw - 28px));height:min(760px,calc(100vh - 36px));max-height:calc(100vh - 36px);display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden;border:1px solid rgba(0,229,255,.22);border-radius:20px;background:#09111e;box-shadow:0 30px 90px rgba(0,0,0,.55)}\n    [data-prompt-modal] .prompt-modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:#111d33;border-bottom:1px solid rgba(255,255,255,.1);color:#d5dfeb;font:700 12px/1.2 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.14em}\n    [data-prompt-modal] .prompt-modal-head button,[data-prompt-modal] .prompt-modal-actions button{appearance:none;border:1px solid rgba(255,255,255,.1);background:#15223a;color:#e2e8f0;border-radius:9px;padding:9px 14px;font-weight:700;cursor:pointer}\n    [data-prompt-modal] .prompt-modal-head button:hover,[data-prompt-modal] .prompt-modal-actions button:hover{border-color:rgba(0,229,255,.45);color:#67e8f9}\n    [data-prompt-modal] .prompt-modal-dialog pre{min-height:0;margin:0;overflow:auto;padding:24px;white-space:pre-wrap;word-break:break-word;color:#d5dfeb;background:#050b15;font:500 14px/1.75 ui-monospace,SFMono-Regular,Menlo,monospace;user-select:text}\n    [data-prompt-modal] .prompt-modal-actions{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;background:#111d33;border-top:1px solid rgba(255,255,255,.1)}\n    @media (max-width:640px){.resource-intro h1{font-size:clamp(36px,10vw,48px)}.publisher-identity{margin-top:20px}[data-prompt-modal]{padding:10px!important}[data-prompt-modal] .prompt-modal-dialog{width:100%;height:min(82vh,720px);max-height:82vh;border-radius:16px}[data-prompt-modal] .prompt-modal-dialog pre{padding:18px;font-size:13px;line-height:1.7}[data-prompt-modal] .prompt-modal-head{padding:13px 15px}[data-prompt-modal] .prompt-modal-actions{padding:11px 15px}}\n'''
+          if '/* Resource polish overrides */' not in text:
+              text = text.replace(style_marker, overrides + style_marker, 1)
+
+          page.write_text(text)
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/content/resources/testing-1.md 'src/pages/resources/[slug].astro'
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "fix: polish resource hero title description and prompt viewer"
+          git push
