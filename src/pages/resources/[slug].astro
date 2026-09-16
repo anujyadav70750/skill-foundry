@@ -96,12 +96,13 @@ const outputVisual = (step, index) => {
     /audio/i.test(raw) ? 'audio' :
     /document|pdf/i.test(raw) ? 'document' : 'text'
   );
-  if (step.outputSrc) return { type, src: step.outputSrc, label: step.outputLabel || raw || 'Output from this step' };
-  if (/^https?:\/\//i.test(raw)) return { type: mediaTypeFromUrl(raw), src: raw, label: raw };
+  if (step.outputSrc) return { type, src: step.outputSrc, previewSrc: '', label: step.outputLabel || raw || 'Output from this step' };
+  if (/^https?:\/\//i.test(raw)) return { type: mediaTypeFromUrl(raw), src: raw, previewSrc: '', label: raw };
   const next = workflowSteps[index + 1];
   const linked = next?.inputs?.find((input) => input?.src && (input.type === type || !type));
-  if (linked?.src) return { type: linked.type || type, src: linked.src, label: raw || linked.label || 'Step output' };
-  return { type, src: '', label: step.outputLabel || raw || 'Output produced by this step' };
+  if (linked?.src) return { type: linked.type || type, src: linked.src, previewSrc: '', label: raw || linked.label || 'Step output' };
+  const previewSrc = index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '';
+  return { type, src: '', previewSrc, label: step.outputLabel || raw || 'Output produced by this step' };
 };
 
 const isRealVideo = (src) => mediaTypeFromUrl(src) === 'video';
@@ -175,7 +176,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         {workflowSteps.map((step,index) => {
           const output = outputVisual(step, index);
           const actionText = String(step.process || '').trim();
-          const isInstructionStep = step.toolPurpose.toLowerCase().includes('editing') || (!actionText && String(step.description || '').trim());
+          const isInstructionStep = step.actionType === 'instructions' || (!step.actionType && (step.toolPurpose.toLowerCase().includes('editing') || (!actionText && String(step.description || '').trim())));
           return <>
             <article class="workflow-card" data-step={index + 1}>
               <div class="workflow-step-head"><span class="workflow-number">{String(index + 1).padStart(2,'0')}</span><div><span class="workflow-label">STEP {String(index + 1).padStart(2,'0')}</span><h3>{step.title}</h3></div></div>
@@ -209,8 +210,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
               <div class="workflow-section-block"><div class="workflow-block-heading"><span class="workflow-block-title">YOU GET</span><span class="workflow-block-help">What this step produces</span></div><article class={`workflow-media-card output-card ${output.type ? `output-${output.type}` : ''}`}>
                 {output.type && <span class="media-type">{output.type.toUpperCase()}</span>}
-                {output.src ? <div class="media-frame">
-                  {output.type === 'video' && isRealVideo(output.src) ? <video class="media-main" src={output.src} muted playsinline controls preload="metadata"/> : <><img class="media-backdrop" src={output.src} alt="" aria-hidden="true"/><img class="media-main" src={output.src} alt={output.label} loading="lazy"/>{output.type === 'video' && <span class="media-play" aria-hidden="true">▶</span>}</>}
+                {output.src || output.previewSrc ? <div class="media-frame" style={output.src || output.previewSrc ? ('--media-image: url("' + (output.src || output.previewSrc) + '")') : ''}>
+                  {output.type === 'video' && output.src && isRealVideo(output.src) ? <video class="media-main" src={output.src} muted playsinline controls preload="metadata"/> : <><img class="media-backdrop" src={output.src || output.previewSrc} alt="" aria-hidden="true"/><img class="media-main" src={output.src || output.previewSrc} alt={output.label} loading="lazy"/>{output.type === 'video' && <span class="media-play" aria-hidden="true">▶</span>}</>}
                 </div> : <div class="output-text">{output.label}</div>}
                 <div class="media-caption"><strong>{output.label}</strong>{step.output && <small>Output from this step</small>}</div>
               </article></div>
@@ -220,7 +221,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           </>;
         })}
       </div>
-      {workflowSteps.length > 0 && (() => { const finalOutput = outputVisual(workflowSteps[workflowSteps.length - 1], workflowSteps.length - 1); return <div class="workflow-final-result"><div class="workflow-final-label">FINAL RESULT</div><h3>{finalOutput.label}</h3><div class="final-result-type">{finalOutput.type ? finalOutput.type.toUpperCase() : 'RESULT'}</div>{finalOutput.src && finalOutput.type === 'image' && <div class="final-result-media"><img src={finalOutput.src} alt={finalOutput.label} loading="lazy"/></div>}{finalOutput.src && finalOutput.type === 'video' && <div class="final-result-media"><video src={finalOutput.src} muted playsinline controls preload="metadata"></video></div>}{!finalOutput.src && <div class="final-result-placeholder">Final output is produced by the completed workflow.</div>}<p>Complete output after all workflow steps.</p></div>; })()}
+      {workflowSteps.length > 0 && (() => { const finalOutput = outputVisual(workflowSteps[workflowSteps.length - 1], workflowSteps.length - 1); const media = finalOutput.src || finalOutput.previewSrc; return <div class="workflow-final-result"><div class="workflow-final-label">FINAL RESULT</div><h3>{finalOutput.label}</h3><div class="final-result-type">{finalOutput.type ? finalOutput.type.toUpperCase() : 'RESULT'}</div>{media && <div class="final-result-media">{finalOutput.type === 'video' && finalOutput.src && isRealVideo(finalOutput.src) ? <video src={finalOutput.src} muted playsinline controls preload="metadata"></video> : <><img src={media} alt={finalOutput.label} loading="lazy"/>{finalOutput.type === 'video' && <span class="final-result-play" aria-hidden="true">▶</span>}</>}</div>}{!media && <div class="final-result-placeholder">Final output is produced by the completed workflow.</div>}<p>Complete output after all workflow steps.</p></div>; })()}
       </section>}
 
       {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
@@ -258,7 +259,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       copy?.addEventListener('click', async () => {
         try { await navigator.clipboard.writeText(pre?.textContent?.trim() || ''); const old = copy.textContent; copy.textContent = 'Copied'; setTimeout(() => copy.textContent = old, 1200); } catch {}
       });
-      expand?.addEventListener('click', () => box.classList.toggle('is-expanded'));
+      expand?.addEventListener('click', () => {
+        const existing = document.querySelector('[data-prompt-modal]');
+        if (existing) existing.remove();
+        const modal = document.createElement('div');
+        modal.setAttribute('data-prompt-modal','');
+        modal.innerHTML = '<div class="prompt-modal-backdrop"></div><div class="prompt-modal-dialog" role="dialog" aria-modal="true" aria-label="Expanded prompt"><div class="prompt-modal-head"><span>FULL PROMPT</span><button type="button" data-close-prompt>Close</button></div><pre>' + String(pre?.textContent || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</pre><div class="prompt-modal-actions"><button type="button" data-modal-copy>Copy</button><button type="button" data-modal-download>Download PDF</button></div></div>';
+        document.body.appendChild(modal);
+        const close = modal.querySelector('[data-close-prompt]');
+        close?.addEventListener('click', () => modal.remove());
+        modal.querySelector('.prompt-modal-backdrop')?.addEventListener('click', () => modal.remove());
+        modal.querySelector('[data-modal-copy]')?.addEventListener('click', async () => { try { await navigator.clipboard.writeText(pre?.textContent?.trim() || ''); } catch {} });
+        modal.querySelector('[data-modal-download]')?.addEventListener('click', () => makePdf(pre?.textContent || '', 'skill-foundry-prompt'));
+        close?.focus();
+      });
       download?.addEventListener('click', () => makePdf(pre?.textContent || '', 'skill-foundry-prompt'));
     });
   </script>
