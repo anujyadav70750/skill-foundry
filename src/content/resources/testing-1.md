@@ -140,6 +140,7 @@ steps:
     outputType: "video"
     outputLabel: "Final edited vertical video"
     outputDescription: "Final video produced after all clips are assembled."
+    outputPreviewSrc: "/images/1000069056-result-16x9-1788985389269.jpg"
     tool: "CapCut"
     toolPurpose: "VIDEO EDITING"
     input: "[[SF_INPUTS]]{\"toolPurpose\":\"VIDEO EDITING\",\"inputs\":[{\"type\":\"video\",\"label\":\"Video Clip 01\",\"role\":\"First sequence\",\"value\":\"\",\"src\":\"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=85\"},{\"type\":\"video\",\"label\":\"Video Clip 02\",\"role\":\"Second sequence\",\"value\":\"\",\"src\":\"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85\"},{\"type\":\"video\",\"label\":\"Video Clip 03\",\"role\":\"Third sequence\",\"value\":\"\",\"src\":\"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85\"}],\"settings\":[{\"label\":\"FORMAT\",\"value\":\"9:16\"},{\"label\":\"EDIT\",\"value\":\"Trim + arrange + transitions\"},{\"label\":\"OUTPUT\",\"value\":\"Final vertical video\"}]}"
