@@ -73,7 +73,7 @@ const workflowSteps = data.steps.map((step) => {
     toolPurpose: step.toolPurpose?.trim() || legacy.toolPurpose || toolForStep(step.tool)?.purpose?.trim() || '',
     inputs: step.inputs?.length ? step.inputs : legacy.inputs,
     settings: step.settings?.length ? step.settings : legacy.settings,
-    toolMeta: toolForStep(step.tool) || toolForStep(step.tool?.trim() || data.tool)
+    toolMeta: toolForStep(step.tool) || toolForStep(step.tool?.trim() || data.tool) || toolForStep(step.tool?.trim() || data.tool)
   };
 });
 ---
