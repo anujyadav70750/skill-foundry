@@ -14,13 +14,20 @@ const slug = resourceSlug(resource);
 const resultImages = resourceResultImages(resource);
 const inputImages = data.inputImages.length > 0 ? data.inputImages : (data.inputImage ? [data.inputImage] : []);
 const hasResults = inputImages.length > 0 || resultImages.length > 0;
+const stepTools = data.steps.map((step) => {
+  const name = String(step.tool || '').trim();
+  if (!name) return null;
+  const existing = data.toolsUsed.find((tool) => tool.name.trim().toLowerCase() === name.toLowerCase());
+  return existing || { name, purpose: String(step.toolPurpose || '').trim(), url: '', affiliate: false };
+}).filter(Boolean);
 const rawTools = [
   { name: data.tool, purpose: 'Primary tool/model used for this resource.', url: data.toolUrl, affiliate: data.toolAffiliate },
-  ...data.toolsUsed
+  ...data.toolsUsed,
+  ...stepTools
 ].filter((tool) => tool.name?.trim());
 const tools = rawTools.filter((tool, index, list) => list.findIndex((candidate) => candidate.name.trim().toLowerCase() === tool.name.trim().toLowerCase()) === index);
 const toolForStep = (name) => tools.find((tool) => tool.name.trim().toLowerCase() === String(name || '').trim().toLowerCase());
-const toolLogo = (tool) => tool?.url ? `/api/tool-logo-image?url=${encodeURIComponent(tool.url)}` : '/skill-foundry-resource-icon.svg';
+const toolLogo = (tool) => tool?.url ? `/api/tool-logo-image?url=${encodeURIComponent(tool.url)}&v=20260916-3` : '/skill-foundry-resource-icon.svg';
 const allResources = await getCollection('resources');
 const related = (data.relatedResources.length > 0
   ? data.relatedResources.flatMap((relatedSlug) => {
@@ -66,7 +73,7 @@ const workflowSteps = data.steps.map((step) => {
     toolPurpose: step.toolPurpose?.trim() || legacy.toolPurpose || toolForStep(step.tool)?.purpose?.trim() || '',
     inputs: step.inputs?.length ? step.inputs : legacy.inputs,
     settings: step.settings?.length ? step.settings : legacy.settings,
-    toolMeta: toolForStep(step.tool)
+    toolMeta: toolForStep(step.tool) || toolForStep(step.tool?.trim() || data.tool)
   };
 });
 ---
