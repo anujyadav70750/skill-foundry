@@ -31,16 +31,41 @@ const parseLegacy = (value) => {
 
 const findTool = (name) => data.toolsUsed.find((tool) => tool.name.trim().toLowerCase() === String(name || '').trim().toLowerCase());
 
+const inferActionType = (step) => {
+  if (step.actionType) return step.actionType;
+  const process = String(step.process || '');
+  if (/^\s*(import|arrange|trim|combine|merge|export|upload|download|organize)/i.test(process)) return 'instructions';
+  return 'prompt';
+};
+const inferOutputType = (step) => {
+  if (step.outputType) return step.outputType;
+  const value = String(step.output || '').toLowerCase();
+  if (value.includes('video')) return 'video';
+  if (value.includes('image')) return 'image';
+  if (value.includes('audio')) return 'audio';
+  if (value.includes('document') || value.includes('pdf')) return 'document';
+  return 'text';
+};
 const workflowSteps = data.steps.map((step) => {
   const legacy = parseLegacy(step.input);
   const toolName = String(step.tool || data.tool || '').trim();
   const toolMeta = findTool(toolName);
+  const actionType = inferActionType(step);
+  const outputType = inferOutputType(step);
   return {
     ...step,
     tool: toolName,
     toolPurpose: String(step.toolPurpose || legacy.toolPurpose || toolMeta?.purpose || '').trim(),
     inputs: step.inputs?.length ? step.inputs : legacy.inputs,
-    settings: step.settings?.length ? step.settings : legacy.settings,
+    settings: (step.settings?.length ? step.settings : legacy.settings).filter((setting) => String(setting?.label || '').trim().toLowerCase() !== 'output'),
+    actionType,
+    outputType,
+    outputLabel: String(step.outputLabel || step.output || 'Output from this step').trim(),
+    outputDescription: String(step.outputDescription || 'Output from this step').trim(),
+    outputSrc: String(step.outputSrc || '').trim(),
+    instructionItems: actionType === 'instructions'
+      ? String(step.process || step.description || '').split(/\n+/).map((item) => item.trim()).filter(Boolean)
+      : [],
     toolMeta
   };
 });
@@ -65,13 +90,18 @@ const mediaTypeFromUrl = (src) => {
 
 const outputVisual = (step, index) => {
   const raw = String(step.output || '').trim();
-  const last = index === workflowSteps.length - 1;
-  if (last && resultImages.length > 0) return { type: 'image', src: resultImages[0], label: raw || 'Final result' };
+  const type = step.outputType || mediaTypeFromUrl(String(step.outputSrc || '')) || (
+    /video/i.test(raw) ? 'video' :
+    /image/i.test(raw) ? 'image' :
+    /audio/i.test(raw) ? 'audio' :
+    /document|pdf/i.test(raw) ? 'document' : 'text'
+  );
+  if (step.outputSrc) return { type, src: step.outputSrc, label: step.outputLabel || raw || 'Output from this step' };
   if (/^https?:\/\//i.test(raw)) return { type: mediaTypeFromUrl(raw), src: raw, label: raw };
   const next = workflowSteps[index + 1];
-  const linked = next?.inputs?.find((input) => input?.src);
-  if (linked?.src) return { type: linked.type || mediaTypeFromUrl(linked.src), src: linked.src, label: raw || linked.label || 'Step output' };
-  return { type: '', src: '', label: raw || 'Output produced by this step' };
+  const linked = next?.inputs?.find((input) => input?.src && (input.type === type || !type));
+  if (linked?.src) return { type: linked.type || type, src: linked.src, label: raw || linked.label || 'Step output' };
+  return { type, src: '', label: step.outputLabel || raw || 'Output produced by this step' };
 };
 
 const isRealVideo = (src) => mediaTypeFromUrl(src) === 'video';
@@ -190,7 +220,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           </>;
         })}
       </div>
-      <div class="workflow-final-result"><div class="workflow-final-label">FINAL RESULT</div><h3>{workflowSteps[workflowSteps.length - 1]?.output || 'Final result'}</h3>{resultImages[0] && <div class="final-result-media"><img src={resultImages[0]} alt={`${imageAlt} final result`} loading="lazy"/></div>}<p>Complete output after all workflow steps.</p></div>
+      {workflowSteps.length > 0 && (() => { const finalOutput = outputVisual(workflowSteps[workflowSteps.length - 1], workflowSteps.length - 1); return <div class="workflow-final-result"><div class="workflow-final-label">FINAL RESULT</div><h3>{finalOutput.label}</h3><div class="final-result-type">{finalOutput.type ? finalOutput.type.toUpperCase() : 'RESULT'}</div>{finalOutput.src && finalOutput.type === 'image' && <div class="final-result-media"><img src={finalOutput.src} alt={finalOutput.label} loading="lazy"/></div>}{finalOutput.src && finalOutput.type === 'video' && <div class="final-result-media"><video src={finalOutput.src} muted playsinline controls preload="metadata"></video></div>}{!finalOutput.src && <div class="final-result-placeholder">Final output is produced by the completed workflow.</div>}<p>Complete output after all workflow steps.</p></div>; })()}
       </section>}
 
       {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
