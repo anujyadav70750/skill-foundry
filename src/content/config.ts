@@ -23,7 +23,12 @@ const workflowStep = z.object({
   process: z.string().default(''),
   output: z.string().default(''),
   next: z.string().default(''),
-  description: z.string().default('')
+  description: z.string().default(''),
+  actionType: z.enum(['prompt','instructions']).optional(),
+  outputType: z.enum(['image','video','audio','text','document']).optional(),
+  outputLabel: z.string().optional(),
+  outputDescription: z.string().optional(),
+  outputSrc: z.string().optional()
 });
 
 const resourceTool = z.object({
