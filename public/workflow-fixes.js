@@ -27,8 +27,9 @@
   };
 
   const fixGuideCue = () => {
-    document.querySelectorAll('.resource-page .guide-cue svg path').forEach((path) => {
-      path.setAttribute('d', 'M6 7l6 6 6-6M6 13l6 6 6-6');
+    document.querySelectorAll('.resource-page .guide-cue svg').forEach((svg) => {
+      svg.style.transform = 'none';
+      svg.querySelector('path')?.setAttribute('d', 'M6 7l6 6 6-6M6 13l6 6 6-6');
     });
   };
 
