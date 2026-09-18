@@ -3443,5 +3443,27 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+
+    /* ==========================================================================
+       FINAL BLUEPRINT REFERENCE COLOUR OVERRIDE — must remain last.
+       Ensures later desktop/mobile sizing rules cannot override the reference colours.
+       ========================================================================== */
+    .testing-1-theme .blueprint-workflow-container {
+      background: #FFFFFF !important;
+      border: 2px solid #64748B !important;
+    }
+
+    .testing-1-theme .blueprint-header-capsule {
+      background: #F8FAFC !important;
+      border: 2px solid #64748B !important;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .testing-1-theme .blueprint-capsule-label,
+    .testing-1-theme .blueprint-capsule-title {
+      color: #172554 !important;
+    }
+
+
   </style>
 </BaseLayout>
