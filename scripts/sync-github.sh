@@ -16,7 +16,36 @@ if [ -z "$GITHUB_TOKEN" ]; then
   exit 1
 fi
 
-echo "Authenticating and pushing to https://github.com/${REPO_OWNER}/${REPO_NAME}.git on branch ${BRANCH}..."
-git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git"
-git push origin "${BRANCH}"
+REMOTE_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_OWNER}/${REPO_NAME}.git"
+
+if [ ! -d ".git" ]; then
+  echo "Initializing git repository..."
+  git init
+  git config user.name "Anuj Yadav"
+  git config user.email "anujyadav70750@gmail.com"
+  git remote add origin "$REMOTE_URL"
+  git fetch origin "$BRANCH"
+  git reset --mixed origin/"$BRANCH"
+  git branch -M "$BRANCH"
+else
+  git config user.name "Anuj Yadav"
+  git config user.email "anujyadav70750@gmail.com"
+  git remote set-url origin "$REMOTE_URL"
+  git fetch origin "$BRANCH"
+  git reset --mixed origin/"$BRANCH"
+fi
+
+echo "Staging files..."
+git add -A
+
+if git diff-index --quiet HEAD 2>/dev/null; then
+  echo "No changes to commit."
+else
+  echo "Committing updates..."
+  git commit -m "Refine blueprint workflow visual structure and vertical alignment"
+fi
+
+echo "Pushing to GitHub..."
+git push origin "$BRANCH"
 echo "Push successful!"
+
