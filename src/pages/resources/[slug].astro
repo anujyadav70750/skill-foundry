@@ -3203,6 +3203,101 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
 
     /* ==========================================================================
+       DESKTOP BLUEPRINT CORRECTION — scoped to testing-1 desktop only.
+       Mirrors the approved mobile visual language, adapted to desktop scale.
+       ========================================================================== */
+    @media (min-width: 641px) {
+      .testing-1-theme .blueprint-workflow-container {
+        margin-top: 64px !important;
+        background: #FFFFFF !important;
+        border: 2px solid #6B214F !important;
+        border-radius: 22px !important;
+        padding: 38px 30px 30px !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-header-capsule {
+        width: max-content !important;
+        max-width: calc(100% - 48px) !important;
+        padding: 10px 28px !important;
+        border-radius: 14px !important;
+        background: #6B214F !important;
+        border: 2px solid #6B214F !important;
+        box-shadow: 0 6px 18px rgba(107, 33, 79, 0.16) !important;
+        box-sizing: border-box !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-label {
+        color: #FFFFFF !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-title {
+        color: #FFFFFF !important;
+        font-size: 15px !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
+
+      .testing-1-theme .blueprint-top-arrow {
+        display: none !important;
+      }
+
+      .testing-1-theme .blueprint-step-container {
+        margin-top: 34px !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-blue {
+        background: #EFF6FF !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-green {
+        background: #ECFDF5 !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-orange {
+        background: #FFF7ED !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-cyan {
+        background: #ECFEFF !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-purple {
+        background: #F5F3FF !important;
+      }
+
+      .testing-1-theme .blueprint-subnode {
+        background: #FFFFFF !important;
+      }
+
+      .testing-1-theme .blueprint-sub-arrow {
+        padding: 6px 0 !important;
+        color: var(--step-accent, #0284C7) !important;
+        opacity: 1 !important;
+      }
+      .testing-1-theme .blueprint-sub-arrow svg {
+        width: 18px !important;
+        height: 30px !important;
+        stroke-width: 3 !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-container {
+        width: calc(100% - 96px) !important;
+        max-width: 580px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .testing-1-theme .blueprint-step-transition {
+        margin: 14px 0 !important;
+      }
+
+      .testing-1-theme .blueprint-workflow-stream,
+      .testing-1-theme .blueprint-step-wrapper {
+        width: 100% !important;
+      }
+    }
+
+    /* ==========================================================================
        MOBILE BLUEPRINT CORRECTION — scoped to testing-1 mobile only.
        Desktop/base layout intentionally remains unchanged.
        ========================================================================== */
