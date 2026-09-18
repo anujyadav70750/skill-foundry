@@ -3445,9 +3445,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
 
     /* ==========================================================================
-       FINAL BLUEPRINT REFERENCE COLOUR OVERRIDE — must remain last.
-       Ensures later desktop/mobile sizing rules cannot override the reference colours.
+       FINAL BLUEPRINT REFERENCE COLOUR + BRIGHT ACCENT OVERRIDE — must remain last.
+       Matches the supplied reference image's brighter, more saturated accent palette.
+       Structure, content, data, images, prompts and functionality remain unchanged.
        ========================================================================== */
+
+    /* Neutral outer Blueprint frame */
     .testing-1-theme .blueprint-workflow-container {
       background: #FFFFFF !important;
       border: 2px solid #64748B !important;
@@ -3461,6 +3464,80 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     .testing-1-theme .blueprint-capsule-label,
     .testing-1-theme .blueprint-capsule-title {
+      color: #172554 !important;
+    }
+
+    /* Bright reference-style Step 01 blue */
+    .testing-1-theme .blueprint-step-container.step-theme-blue {
+      border-color: #0078FE !important;
+      --step-accent: #0078FE !important;
+      --step-accent-dark: #0078FE !important;
+      --step-accent-text: #005FE0 !important;
+      --step-subnode-border: rgba(0, 120, 254, 0.30) !important;
+      --step-subnode-border-light: #8CC7FF !important;
+    }
+
+    /* Bright reference-style Step 02 green */
+    .testing-1-theme .blueprint-step-container.step-theme-green {
+      border-color: #00B263 !important;
+      --step-accent: #00B263 !important;
+      --step-accent-dark: #00B263 !important;
+      --step-accent-text: #009653 !important;
+      --step-subnode-border: rgba(0, 178, 99, 0.30) !important;
+      --step-subnode-border-light: #8BE2BC !important;
+    }
+
+    /* Bright reference-style Step 03 orange */
+    .testing-1-theme .blueprint-step-container.step-theme-orange {
+      border-color: #FF9800 !important;
+      --step-accent: #FF9800 !important;
+      --step-accent-dark: #FF9800 !important;
+      --step-accent-text: #E77F00 !important;
+      --step-subnode-border: rgba(255, 152, 0, 0.30) !important;
+      --step-subnode-border-light: #FFD18A !important;
+    }
+
+    /* Bright reference-style Step 04 cyan */
+    .testing-1-theme .blueprint-step-container.step-theme-cyan {
+      border-color: #00B8E6 !important;
+      --step-accent: #00B8E6 !important;
+      --step-accent-dark: #00B8E6 !important;
+      --step-accent-text: #0099C4 !important;
+      --step-subnode-border: rgba(0, 184, 230, 0.30) !important;
+      --step-subnode-border-light: #8BDFF0 !important;
+    }
+
+    /* Bright reference-style Step 05 purple */
+    .testing-1-theme .blueprint-step-container.step-theme-purple {
+      border-color: #7C4DFF !important;
+      --step-accent: #7C4DFF !important;
+      --step-accent-dark: #7C4DFF !important;
+      --step-accent-text: #6A35E8 !important;
+      --step-subnode-border: rgba(124, 77, 255, 0.30) !important;
+      --step-subnode-border-light: #C5B3FF !important;
+    }
+
+    /* Make every Step capsule, numbered badge, section heading and internal connector
+       use the same brighter accent as its Step. */
+    .testing-1-theme .blueprint-step-capsule,
+    .testing-1-theme .blueprint-node-badge {
+      background: var(--step-accent) !important;
+      border-color: var(--step-accent) !important;
+    }
+
+    .testing-1-theme .blueprint-node-title {
+      color: var(--step-accent-text) !important;
+    }
+
+    .testing-1-theme .blueprint-sub-arrow {
+      color: var(--step-accent) !important;
+    }
+
+    .testing-1-theme .blueprint-step-container.step-theme-blue .blueprint-step-title,
+    .testing-1-theme .blueprint-step-container.step-theme-green .blueprint-step-title,
+    .testing-1-theme .blueprint-step-container.step-theme-orange .blueprint-step-title,
+    .testing-1-theme .blueprint-step-container.step-theme-cyan .blueprint-step-title,
+    .testing-1-theme .blueprint-step-container.step-theme-purple .blueprint-step-title {
       color: #172554 !important;
     }
 
