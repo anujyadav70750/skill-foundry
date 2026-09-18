@@ -1,5 +1,6 @@
 (() => {
   const FLOW_ICON = '/google-flow-icon.svg';
+  const CAPCUT_ICON = '/capcut-icon.svg';
 
   const downloadPdf = (text, name = 'skill-foundry-prompt') => {
     const clean = (s) => String(s).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
@@ -21,8 +22,11 @@
   };
 
   const replaceFlowLogos = () => {
-    document.querySelectorAll('a[href*="flow.google"] img[alt$=" logo"]').forEach((img) => {
+    document.querySelectorAll('a[href*="flow.google"] img, img[alt*="Flow"]').forEach((img) => {
       if (img.getAttribute('src') !== FLOW_ICON) img.setAttribute('src', FLOW_ICON);
+    });
+    document.querySelectorAll('a[href*="capcut.com"] img, img[alt*="CapCut"]').forEach((img) => {
+      if (img.getAttribute('src') !== CAPCUT_ICON) img.setAttribute('src', CAPCUT_ICON);
     });
   };
 

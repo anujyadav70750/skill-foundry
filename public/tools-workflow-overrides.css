@@ -42,11 +42,11 @@
   max-width: none !important;
   max-height: none !important;
   box-sizing: border-box !important;
-  padding: 10px !important;
+  padding: 0 !important;
   border: 0 !important;
-  border-radius: 17px !important;
-  object-fit: contain !important;
-  background: rgba(16,34,56,.32) !important;
+  border-radius: 0 !important;
+  object-fit: cover !important;
+  background: transparent !important;
 }
 .resource-page .tools-section .tool-card:has(.tool-link)::after {
   content: "";
@@ -74,5 +74,5 @@
 @media (max-width: 768px) {
   .resource-page .tools-section .tools-list { gap: 16px !important; }
   .resource-page .tools-section .tool-card { flex-basis: 76px !important; width: 76px !important; height: 76px !important; min-height: 76px !important; }
-  .resource-page .tools-section .tool-logo { padding: 8px !important; }
+  .resource-page .tools-section .tool-logo { padding: 0 !important; }
 }
