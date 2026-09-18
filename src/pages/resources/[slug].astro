@@ -3203,6 +3203,48 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
 
     /* ==========================================================================
+       BLUEPRINT REFERENCE COLOUR CORRECTION — mobile + desktop.
+       Structure and content remain unchanged.
+       ========================================================================== */
+    .testing-1-theme .blueprint-workflow-container {
+      background: #FFFFFF !important;
+      border-color: #64748B !important;
+    }
+
+    .testing-1-theme .blueprint-header-capsule {
+      background: #F8FAFC !important;
+      border-color: #64748B !important;
+      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    .testing-1-theme .blueprint-capsule-label,
+    .testing-1-theme .blueprint-capsule-title {
+      color: #172554 !important;
+    }
+
+    .testing-1-theme .blueprint-top-arrow {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-workflow-container {
+        background: #FFFFFF !important;
+        border-color: #64748B !important;
+      }
+
+      .testing-1-theme .blueprint-header-capsule {
+        background: #F8FAFC !important;
+        border-color: #64748B !important;
+        box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-label,
+      .testing-1-theme .blueprint-capsule-title {
+        color: #172554 !important;
+      }
+    }
+
+    /* ==========================================================================
        DESKTOP BLUEPRINT CORRECTION — scoped to testing-1 desktop only.
        Mirrors the approved mobile visual language, adapted to desktop scale.
        ========================================================================== */
