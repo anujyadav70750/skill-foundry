@@ -495,13 +495,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             <span class="blueprint-capsule-title">{data.title}</span>
           </div>
 
-          <div class="blueprint-flow-arrow blueprint-top-arrow" aria-hidden="true">
-            <svg class="blueprint-arrow-icon" viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="2" x2="12" y2="20"></line>
-              <polyline points="6 14 12 20 18 14"></polyline>
-            </svg>
-          </div>
-
           <div class="blueprint-workflow-stream">
             {workflowSteps.map((step, index) => {
               const output = outputVisual(step, index);
@@ -3205,6 +3198,112 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
       }
 
+    }
+
+
+
+    /* ==========================================================================
+       MOBILE BLUEPRINT CORRECTION — scoped to testing-1 mobile only.
+       Desktop/base layout intentionally remains unchanged.
+       ========================================================================== */
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-workflow-container {
+        /* Professional breathing room after the Results Workflow intro. */
+        margin-top: 56px !important;
+        /* Neutral outer surface; only the Blueprint frame uses brinjal. */
+        background: #FFFFFF !important;
+        border: 2px solid #6B214F !important;
+        border-radius: 18px !important;
+        padding: 30px 12px 22px !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-header-capsule {
+        /* Wide, shallow rounded rectangle — not a pill/oval. */
+        width: max-content !important;
+        max-width: calc(100% - 24px) !important;
+        padding: 8px 20px !important;
+        border-radius: 13px !important;
+        background: #6B214F !important;
+        border: 2px solid #6B214F !important;
+        box-shadow: 0 5px 16px rgba(107, 33, 79, 0.16) !important;
+        box-sizing: border-box !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-label {
+        color: #FFFFFF !important;
+        font-size: 10.5px !important;
+        line-height: 1.2 !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-title {
+        color: #FFFFFF !important;
+        font-size: 13.5px !important;
+        line-height: 1.25 !important;
+        white-space: nowrap !important;
+      }
+
+      /* The Blueprint is a title, not a workflow node. */
+      .testing-1-theme .blueprint-top-arrow {
+        display: none !important;
+      }
+
+      /* Keep Step 01/02/etc. capsules attached to their own borders. */
+      .testing-1-theme .blueprint-step-container {
+        margin-top: 30px !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-blue {
+        background: #EFF6FF !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-green {
+        background: #ECFDF5 !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-orange {
+        background: #FFF7ED !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-cyan {
+        background: #ECFEFF !important;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-purple {
+        background: #F5F3FF !important;
+      }
+
+      /* Preserve the existing individual 1/2/3/4 card backgrounds. */
+      .testing-1-theme .blueprint-subnode {
+        background: #FFFFFF !important;
+      }
+
+      /* Strong, clean connectors between the four existing sub-sections. */
+      .testing-1-theme .blueprint-sub-arrow {
+        padding: 4px 0 !important;
+        color: var(--step-accent, #0284C7) !important;
+        opacity: 1 !important;
+      }
+      .testing-1-theme .blueprint-sub-arrow svg {
+        width: 18px !important;
+        height: 28px !important;
+        stroke-width: 3 !important;
+      }
+
+      /* Instruction is intentionally narrower than its Step container. */
+      .testing-1-theme .blueprint-instruction-container {
+        width: calc(100% - 28px) !important;
+        max-width: none !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .testing-1-theme .blueprint-step-transition {
+        margin: 10px 0 !important;
+      }
+
+      /* Preserve readable mobile scale; never solve layout by shrinking the page. */
+      .testing-1-theme .blueprint-workflow-stream,
+      .testing-1-theme .blueprint-step-wrapper {
+        width: 100% !important;
+      }
     }
 
   </style>
