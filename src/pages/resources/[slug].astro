@@ -4107,5 +4107,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* Match Tools & Resources logo tiles to the Blueprint tool-logo size. */
+    .testing-1-theme .tools-list .tool-card {
+      flex: 0 0 64px !important;
+      width: 64px !important;
+      height: 64px !important;
+      border-radius: 12px !important;
+    }
+
+    @media (max-width: 768px) {
+      .testing-1-theme .tools-list .tool-card {
+        flex-basis: 58px !important;
+        width: 58px !important;
+        height: 58px !important;
+        border-radius: 11px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
