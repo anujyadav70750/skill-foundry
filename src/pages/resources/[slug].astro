@@ -3790,14 +3790,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       height: 64px !important;
       flex: 0 0 64px !important;
       margin: 0 !important;
-      padding: 4px !important;
+      padding: 0 !important;
       box-sizing: border-box !important;
       border-radius: 12px !important;
+      overflow: hidden !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .blueprint-tool-link {
+      display: block !important;
       width: 100% !important;
       height: 100% !important;
+      border-radius: inherit !important;
+      overflow: hidden !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .tool-logo-img,
@@ -3806,8 +3810,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       height: 100% !important;
       max-width: none !important;
       max-height: none !important;
-      object-fit: contain !important;
+      object-fit: cover !important;
+      object-position: center !important;
       display: block !important;
+      border-radius: inherit !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
@@ -3900,6 +3906,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       gap: 6px !important;
       height: 28px !important;
       min-height: 28px !important;
+      width: max-content !important;
+      min-width: max-content !important;
       box-sizing: border-box !important;
       flex: 0 0 auto !important;
       white-space: nowrap !important;
@@ -3947,8 +3955,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         width: 58px !important;
         height: 58px !important;
         flex-basis: 58px !important;
-        padding: 3px !important;
+        padding: 0 !important;
         border-radius: 11px !important;
+        overflow: hidden !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
@@ -3985,6 +3994,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
         height: 26px !important;
         min-height: 26px !important;
+        width: max-content !important;
+        min-width: max-content !important;
         padding: 0 7px !important;
         gap: 4px !important;
         border-radius: 7px !important;
