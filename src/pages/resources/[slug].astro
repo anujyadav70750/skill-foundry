@@ -4184,5 +4184,61 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24)) !important;
     }
 
+    /* EXACT BLUEPRINT LOGO BEHAVIOUR: square tile + square filled logo. */
+    .testing-1-theme .tools-list .tool-card {
+      width: 64px !important;
+      height: 64px !important;
+      min-width: 64px !important;
+      min-height: 64px !important;
+      max-width: 64px !important;
+      max-height: 64px !important;
+      flex: 0 0 64px !important;
+      aspect-ratio: 1 / 1 !important;
+      padding: 0 !important;
+      box-sizing: border-box !important;
+      border-radius: 12px !important;
+      overflow: hidden !important;
+    }
+
+    .testing-1-theme .tools-list .tool-card .tool-logo {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      min-width: 100% !important;
+      min-height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border-radius: 12px !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .tools-list .tool-card {
+        width: 58px !important;
+        height: 58px !important;
+        min-width: 58px !important;
+        min-height: 58px !important;
+        max-width: 58px !important;
+        max-height: 58px !important;
+        flex-basis: 58px !important;
+        border-radius: 11px !important;
+      }
+
+      .testing-1-theme .tools-list .tool-card .tool-logo {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 100% !important;
+        min-height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        border-radius: 11px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
