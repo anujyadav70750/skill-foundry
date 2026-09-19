@@ -4124,5 +4124,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL: Tools & Resources uses the same visual logo tile scale as Blueprint on mobile. */
+    .testing-1-theme .tools-list .tool-card {
+      flex: 0 0 64px !important;
+      width: 64px !important;
+      height: 64px !important;
+      padding: 0 !important;
+      border-radius: 12px !important;
+      box-sizing: border-box !important;
+    }
+
+    .testing-1-theme .tools-list .tool-card .tool-logo {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      max-height: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      object-fit: cover !important;
+      object-position: center !important;
+      display: block !important;
+      border-radius: inherit !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .tools-list .tool-card {
+        flex-basis: 58px !important;
+        width: 58px !important;
+        height: 58px !important;
+        border-radius: 11px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
