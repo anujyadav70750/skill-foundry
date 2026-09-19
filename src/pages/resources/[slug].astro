@@ -397,17 +397,30 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: #FF6600 !important;
       }
       body:has(.testing-1-theme) .site-footer {
-        background: #F8FAFC !important;
-        border-top: 1px solid #E8EAEF !important;
-        color: #64748B !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-brand span:last-child,
-      body:has(.testing-1-theme) .site-footer .footer-links strong {
-        color: #0F172A !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-bottom {
-        border-top-color: #E2E8F0 !important;
+        background: #0A100E !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
         color: #94A3B8 !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
+        color: #FFFFFF !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item {
+        color: #CBD5E1 !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-nav a {
+        color: #FFFFFF !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
+        color: #FF6600 !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-legal a {
+        color: #94A3B8 !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
+        color: #FF6600 !important;
+      }
+      body:has(.testing-1-theme) .site-footer .footer-copyright {
+        color: #64748B !important;
       }
     </style>
   <div class={isTesting1 ? "testing-1-theme" : ""}>
@@ -471,13 +484,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       {data.whatItDoes && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{data.whatItDoes}</p></section>}
 
-      {tools.length > 0 && <section class="resource-section tools-section"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Every app and AI tool used throughout this resource.</p></div></div><div class="tools-list">{tools.map((tool) => <a class="tool-card" href={tool.url || '#'} target={tool.url ? '_blank' : undefined} rel={tool.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${tool.name}`}><img class="tool-logo" src={toolLogo(tool)} alt={`${tool.name} logo`} width="72" height="72" loading="lazy"/></a>)}</div></section>}
+      {tools.length > 0 && <section class="resource-section tools-section" id="tools"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Every app and AI tool used throughout this resource.</p></div></div><div class="tools-list">{tools.map((tool) => <a class="tool-card" href={tool.url || '#'} target={tool.url ? '_blank' : undefined} rel={tool.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${tool.name}`} title={tool.name}><img class="tool-logo" src={toolLogo(tool)} alt={`${tool.name} logo`} width="64" height="64" loading="lazy"/></a>)}</div></section>}
 
       {workflowSteps.length > 0 && <section class="resource-section workflow-section blueprint-workflow-section" id="workflow">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">RESULTS WORKFLOW</p>
-            <h2>From input to result</h2>
+            <p class="eyebrow">WORKFLOW BLUEPRINT</p>
+            <h2>From input to final result</h2>
             <p class="section-subcopy">Follow the creation sequence from the starting resources to the final result.</p>
           </div>
         </div>
@@ -1008,28 +1021,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     .tool-card {
       position: relative;
-      display: grid;
-      place-items: center;
-      flex: 0 0 76px;
-      width: 76px;
-      height: 76px;
-      padding: 0;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      min-width: 64px;
+      min-height: 64px;
+      padding: 8px;
+      border: 1px solid #1E293B;
+      border-radius: 14px;
+      background: #070C14;
       overflow: hidden;
       scroll-snap-align: start;
       box-sizing: border-box;
-      transition: border-color 0.15s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .tool-card:hover {
-      border-color: rgba(var(--accent-rgb), 0.4);
+      border-color: #38BDF8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
     }
-    .tool-logo {
+    .tool-card .tool-logo {
       display: block;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
     }
 
     /* Workflow Cards */
@@ -1407,8 +1429,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .workflow-prompt {
       display: flex;
       flex-direction: column;
-      aspect-ratio: 1 / 1;
       width: 100%;
+      max-height: 240px;
       border: 1px solid var(--line);
       border-radius: 14px;
       background: #070B12;
@@ -1473,19 +1495,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       background: rgba(0, 0, 0, 0.2);
     }
     .workflow-prompt pre {
-      flex: 1 1 0;
-      min-height: 0;
+      flex: 1 1 auto;
+      min-height: 48px;
+      max-height: 148px;
       width: 100%;
       aspect-ratio: auto;
       height: auto;
-      max-height: none;
       overflow-y: auto;
       overflow-x: hidden;
       margin: 0;
-      padding: 18px 16px;
+      padding: 14px 16px;
       background: #06090F;
       color: #DCE8F4;
-      font: 13px/1.65 var(--font-mono);
+      font: 13px/1.6 var(--font-mono);
       white-space: pre-wrap;
       word-break: break-word;
       overflow-wrap: anywhere;
@@ -1865,6 +1887,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       background: #EEF4F9;
       color: #0F172A;
       padding-top: 0 !important;
+      padding-bottom: 0 !important;
     }
     .testing-1-theme .resource-intro {
       padding-top: 32px;
@@ -2121,6 +2144,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     .testing-1-theme .article-layout {
       margin-top: 36px;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
     }
     .testing-1-theme .resource-content {
       gap: 36px;
@@ -2145,16 +2170,35 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       border: none !important;
       box-shadow: none;
       padding: 0 !important;
-      margin-top: 8px !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
     }
     .testing-1-theme .section-heading {
       margin-bottom: 12px;
     }
     .testing-1-theme .section-heading .eyebrow {
       margin-bottom: 6px;
-      background: rgba(255, 102, 0, 0.08);
-      border: 1px solid rgba(255, 102, 0, 0.22);
-      color: #EA580C;
+      background: transparent;
+      border: none;
+      color: #64748B;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0;
+      border-radius: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .testing-1-theme .section-heading .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #EA580C;
+      opacity: 0.85;
     }
     .testing-1-theme .section-heading h2 {
       color: #0F172A;
@@ -2212,26 +2256,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       transform: translateY(2px) !important;
     }
     .testing-1-theme .tools-list .tool-card {
-      background: #FFFFFF;
-      border: 1px solid #E8EAEF;
-      border-radius: 14px;
-      padding: 0 !important;
+      width: 64px !important;
+      height: 64px !important;
+      min-width: 64px !important;
+      min-height: 64px !important;
+      padding: 8px !important;
+      border: 1px solid #1E293B !important;
+      border-radius: 14px !important;
+      background: #070C14 !important;
       overflow: hidden !important;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
     }
     .testing-1-theme .tools-list .tool-card .tool-logo {
       width: 100% !important;
       height: 100% !important;
+      max-width: 100% !important;
+      max-height: 100% !important;
       padding: 0 !important;
       margin: 0 !important;
-      border-radius: 0 !important;
-      object-fit: cover !important;
+      border-radius: 6px !important;
+      object-fit: contain !important;
+      display: block !important;
     }
     .testing-1-theme .tools-list .tool-card:hover {
-      border-color: #FF6600;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255, 102, 0, 0.15);
+      border-color: #38BDF8 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2) !important;
     }
     .testing-1-theme .workflow-tool-logo {
       padding: 0 !important;
@@ -2546,39 +2601,63 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       box-shadow: none;
       padding: 0 4px !important;
       margin-top: 0 !important;
+      margin-bottom: 0 !important;
     }
     .testing-1-theme .tips-list {
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
       border-radius: 16px;
-      padding: 16px 22px;
+      padding: 20px 24px 20px 44px;
       box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+      margin: 0;
+      box-sizing: border-box;
     }
     .testing-1-theme .tips-list li {
       color: #334155;
       font-size: 15px;
       line-height: 1.6;
       border-bottom: 1px solid #F1F5F9;
-      padding: 12px 0;
+      padding: 12px 0 12px 6px;
+    }
+    .testing-1-theme .tips-list li:first-child {
+      padding-top: 4px;
     }
     .testing-1-theme .tips-list li:last-child {
       border-bottom: none;
+      padding-bottom: 4px;
     }
     .testing-1-theme .tips-list li::before {
       background: #FF6600;
     }
     .testing-1-theme .tags {
-      margin-top: 8px;
+      margin-top: 0;
+      margin-bottom: 0;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       gap: 8px;
+      width: 100%;
+      max-width: 100%;
+      padding: 2px 2px 6px;
+      box-sizing: border-box;
+    }
+    .testing-1-theme .tags::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
     }
     .testing-1-theme .tags a {
+      flex: 0 0 auto;
+      white-space: nowrap;
       background: #FFFFFF;
       border: 1px solid #E2E8F0;
       color: #475569;
       border-radius: 9999px;
-      padding: 6px 14px;
+      padding: 7px 16px;
       font-size: 12px;
       font-weight: 600;
       transition: all 0.15s ease;
@@ -2601,9 +2680,27 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       letter-spacing: -0.025em;
     }
     .testing-1-theme .related-section .section-heading .eyebrow {
-      background: rgba(255, 102, 0, 0.08);
-      border: 1px solid rgba(255, 102, 0, 0.22);
-      color: #EA580C;
+      background: transparent;
+      border: none;
+      color: #64748B;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0;
+      border-radius: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .testing-1-theme .related-section .section-heading .eyebrow::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #EA580C;
+      opacity: 0.85;
     }
     .testing-1-theme .related-section .section-heading a {
       color: #EA580C;
@@ -2641,7 +2738,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     .testing-1-theme .resource-cta {
       background: #EEF4F9;
-      padding: 20px 0 64px;
+      padding: 36px 0 !important;
+      margin: 0 !important;
     }
     .testing-1-theme .resource-cta .cta-card {
       background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
@@ -2689,7 +2787,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     /* Mobile spacing refinements */
     @media (max-width: 640px) {
       .testing-1-theme .resource-page {
-        padding: 0 0 48px !important;
+        padding: 0 !important;
       }
       .testing-1-theme .resource-hero-unified-section {
         padding-top: 86px !important;
@@ -2725,7 +2823,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border-radius: 0;
       }
       .testing-1-theme .tips-list {
-        padding: 12px 16px;
+        padding: 16px 18px 16px 36px;
         border-radius: 14px;
       }
       .testing-1-theme .guide-cue {
@@ -2738,24 +2836,34 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
       .testing-1-theme .related-section,
       .testing-1-theme .resource-cta {
-        padding: 32px 0;
+        padding: 24px 0 !important;
+        margin: 0 !important;
       }
       .testing-1-theme .resource-cta .cta-card {
         padding: 24px 20px;
       }
-      /* ==========================================================================
-         UNIFIED CONNECTED BLUEPRINT WORKFLOW STYLES (DATA-FLOW REDESIGN)
-         ========================================================================== */
+    }
+
+    /* ==========================================================================
+       UNIFIED CONNECTED BLUEPRINT WORKFLOW STYLES (DATA-FLOW REDESIGN)
+       ========================================================================== */
+    @media (min-width: 820px) {
+      .resource-page .article-layout.resource-content,
+      .testing-1-theme .article-layout.resource-content {
+        width: min(1080px, calc(100% - 48px));
+        max-width: 1080px;
+      }
+    }
       .blueprint-workflow-section {
         width: 100%;
       }
       .blueprint-workflow-container {
-        margin: 50px auto 40px;
+        margin: 20px auto 0;
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
-        max-width: 860px;
+        max-width: 1080px;
         box-sizing: border-box;
         padding: 44px 24px 36px;
         border-radius: 24px;
@@ -2825,7 +2933,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
       .blueprint-step-container {
         width: 100%;
-        max-width: 780px;
+        max-width: 100%;
         border-radius: 20px;
         padding: 34px 22px 24px;
         box-sizing: border-box;

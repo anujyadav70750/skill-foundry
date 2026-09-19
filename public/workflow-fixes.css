@@ -63,10 +63,25 @@ body:has(.testing-1-theme) .site-header {
 }
 body:has(.testing-1-theme) {
   padding-top: 0 !important;
+  scroll-padding-top: 80px !important;
 }
 @media (max-width: 700px) {
   body:has(.testing-1-theme) {
     padding-top: 0 !important;
+    scroll-padding-top: 68px !important;
+  }
+}
+
+.resource-page .resource-section,
+.resource-page .blueprint-workflow-section,
+.resource-page [id] {
+  scroll-margin-top: 84px !important;
+}
+@media (max-width: 700px) {
+  .resource-page .resource-section,
+  .resource-page .blueprint-workflow-section,
+  .resource-page [id] {
+    scroll-margin-top: 72px !important;
   }
 }
 
@@ -97,14 +112,56 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 /* Guide cue: clean downward double-chevrons on both sides. */
 .resource-page .guide-cue svg{fill:none!important;stroke:rgba(245,158,11,.85)!important;stroke-width:2.2!important;stroke-linecap:round!important;stroke-linejoin:round!important;opacity:.9!important;transform:none!important}
 
-/* Tool logos: cover the entire square box edge-to-edge with no padding or margin */
-.resource-page .tool-card,
+/* Tool logos: square logo buttons matching blueprint step tool buttons */
+.resource-page .tools-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+.resource-page .tools-list .tool-card {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
+  padding: 8px !important;
+  border: 1px solid #1E293B !important;
+  border-radius: 14px !important;
+  background: #070C14 !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+.resource-page .tools-list .tool-card:hover {
+  border-color: #38BDF8 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2) !important;
+}
+.resource-page .tools-list .tool-card img,
+.resource-page .tools-list .tool-card .tool-logo {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 6px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
 .resource-page .workflow-tool-logo {
   padding: 0 !important;
   overflow: hidden !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  min-height: 64px !important;
 }
-.resource-page .tool-card img,
-.resource-page .tools-section .tool-logo,
 .resource-page .workflow-tool-logo img {
   width: 100% !important;
   height: 100% !important;
@@ -117,12 +174,6 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   border: 0 !important;
   border-radius: 0 !important;
   object-fit: cover !important;
-}
-.resource-page .workflow-tool-logo {
-  width: 64px !important;
-  height: 64px !important;
-  min-width: 64px !important;
-  min-height: 64px !important;
 }
 
 /* Connector remains outside cards and visually separate. */
@@ -151,12 +202,12 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   .resource-page .workflow-tool-logo{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;max-width:58px!important;max-height:58px!important}
 }
 
-/* Prompt box: Entire box is square (1:1), prompt text pre is rectangular, and buttons match uploaded structure */
+/* Prompt box: Compact vertical footprint proportional to content with full scrollable text */
 .resource-page .workflow-prompt {
   display: flex !important;
   flex-direction: column !important;
-  aspect-ratio: 1 / 1 !important;
   width: 100% !important;
+  max-height: 250px !important;
   border: 1px solid #1E293B !important;
   border-radius: 14px !important;
   overflow: hidden !important;
@@ -242,20 +293,20 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 }
 .resource-page .workflow-prompt pre,
 .resource-page [data-step-prompt] {
-  flex: 1 1 0 !important;
-  min-height: 0 !important;
+  flex: 1 1 auto !important;
+  min-height: 48px !important;
+  max-height: 150px !important;
   aspect-ratio: auto !important;
   width: 100% !important;
   height: auto !important;
-  max-height: none !important;
   overflow-y: auto !important;
   overflow-x: hidden !important;
   color: #F1F5F9 !important;
   background: #06090F !important;
   font-family: 'JetBrains Mono', monospace !important;
   font-size: 13px !important;
-  line-height: 1.65 !important;
-  padding: 18px 16px !important;
+  line-height: 1.6 !important;
+  padding: 14px 16px !important;
   margin: 0 !important;
   box-sizing: border-box !important;
   white-space: pre-wrap !important;
@@ -289,19 +340,30 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   user-select: none !important;
 }
 
+@media (min-width: 820px) {
+  .resource-page .article-layout.resource-content,
+  body:has(.testing-1-theme) .article-layout.resource-content,
+  .testing-1-theme .article-layout.resource-content {
+    width: min(1080px, calc(100% - 48px)) !important;
+    max-width: 1080px !important;
+  }
+}
+
 /* ==========================================================================
    UNIFIED CONNECTED BLUEPRINT WORKFLOW STYLES (DATA-FLOW REDESIGN)
    ========================================================================== */
 .blueprint-workflow-section {
   width: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
 }
 .blueprint-workflow-container {
-  margin: 50px auto 40px !important;
+  margin: 20px auto 0 !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
   width: 100% !important;
-  max-width: 860px !important;
+  max-width: 1080px !important;
   box-sizing: border-box !important;
   padding: 44px 24px 36px !important;
   border-radius: 24px !important;
@@ -309,6 +371,197 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   background: rgba(13, 21, 34, 0.7) !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35) !important;
   position: relative !important;
+}
+
+/* Ensure equal gap between all sections on the resource page */
+.resource-page .resource-section,
+.testing-1-theme .resource-section,
+.resource-page .resource-section.workflow-section,
+.testing-1-theme .resource-section.workflow-section,
+.resource-page .tips-section,
+.testing-1-theme .tips-section,
+.resource-page .tutorial-section,
+.testing-1-theme .tutorial-section {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Tips for better results card & bullet dot indentation */
+.resource-page .tips-list,
+.testing-1-theme .tips-list {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  padding: 20px 24px 20px 44px !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03) !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.resource-page .tips-list li,
+.testing-1-theme .tips-list li {
+  color: #334155 !important;
+  font-size: 15px !important;
+  line-height: 1.6 !important;
+  border-bottom: 1px solid #F1F5F9 !important;
+  padding: 12px 0 12px 6px !important;
+}
+
+.resource-page .tips-list li:first-child,
+.testing-1-theme .tips-list li:first-child {
+  padding-top: 4px !important;
+}
+
+.resource-page .tips-list li:last-child,
+.testing-1-theme .tips-list li:last-child {
+  border-bottom: none !important;
+  padding-bottom: 4px !important;
+}
+
+@media (max-width: 640px) {
+  .resource-page .tips-list,
+  .testing-1-theme .tips-list {
+    padding: 16px 18px 16px 36px !important;
+    border-radius: 14px !important;
+  }
+  .resource-page .tips-list li,
+  .testing-1-theme .tips-list li {
+    font-size: 14px !important;
+    padding: 10px 0 10px 4px !important;
+  }
+}
+
+/* Hashtags in a single horizontal row with smooth scroll */
+.resource-page .tags,
+.testing-1-theme .tags {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 2px 2px 6px !important;
+  box-sizing: border-box !important;
+}
+
+.resource-page .tags::-webkit-scrollbar,
+.testing-1-theme .tags::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.resource-page .tags a,
+.testing-1-theme .tags a {
+  flex: 0 0 auto !important;
+  white-space: nowrap !important;
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #475569 !important;
+  border-radius: 9999px !important;
+  padding: 7px 16px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  transition: all 0.15s ease !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
+}
+
+.resource-page .tags a:hover,
+.testing-1-theme .tags a:hover {
+  background: #FFF7ED !important;
+  border-color: #FDBA74 !important;
+  color: #EA580C !important;
+}
+
+/* Equalize lower section spacing (Tips -> Hashtags -> Orange Box -> Footer) */
+.resource-page,
+.testing-1-theme .resource-page {
+  padding-bottom: 0 !important;
+}
+
+.resource-page .article-layout,
+.testing-1-theme .article-layout {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.resource-page .resource-cta,
+.testing-1-theme .resource-cta {
+  padding: 36px 0 !important;
+  margin: 0 !important;
+}
+
+/* Dark foundation footer styles */
+.site-footer,
+body:has(.testing-1-theme) .site-footer,
+body:has(.resource-page) .site-footer,
+.resource-page ~ .site-footer,
+.testing-1-theme ~ .site-footer {
+  background: #0A100E !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #94A3B8 !important;
+  padding: 84px 0 52px !important;
+  margin-top: 0 !important;
+}
+
+.site-footer .footer-brand span.brand-name,
+body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
+  color: #FFFFFF !important;
+}
+
+.site-footer .footer-descriptors .descriptor-item,
+body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item {
+  color: #CBD5E1 !important;
+}
+
+.site-footer .footer-nav a,
+body:has(.testing-1-theme) .site-footer .footer-nav a {
+  color: #FFFFFF !important;
+}
+
+.site-footer .footer-nav a:hover,
+body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
+  color: #FF6600 !important;
+}
+
+.site-footer .footer-legal a,
+body:has(.testing-1-theme) .site-footer .footer-legal a {
+  color: #94A3B8 !important;
+}
+
+.site-footer .footer-legal a:hover,
+body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
+  color: #FF6600 !important;
+}
+
+.site-footer .footer-copyright,
+body:has(.testing-1-theme) .site-footer .footer-copyright {
+  color: #64748B !important;
+}
+
+@media (max-width: 640px) {
+  .resource-page,
+  .testing-1-theme .resource-page {
+    padding-bottom: 0 !important;
+  }
+  .resource-page .resource-cta,
+  .testing-1-theme .resource-cta {
+    padding: 24px 0 !important;
+    margin: 0 !important;
+  }
+  .site-footer,
+  body:has(.testing-1-theme) .site-footer,
+  body:has(.resource-page) .site-footer,
+  .resource-page ~ .site-footer,
+  .testing-1-theme ~ .site-footer {
+    padding: 60px 0 38px !important;
+  }
 }
 .blueprint-header-capsule {
   position: absolute !important;
@@ -371,7 +624,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 }
 .blueprint-step-container {
   width: 100% !important;
-  max-width: 780px !important;
+  max-width: 100% !important;
   border-radius: 20px !important;
   padding: 34px 22px 24px !important;
   box-sizing: border-box !important;
