@@ -4391,5 +4391,46 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL INPUT TAB GEOMETRY: card owns the full border; tab sits inside the corner
+       and draws only its bottom/right edges. */
+    .testing-1-theme .workflow-input-rail .input-card {
+      position: relative !important;
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 12px !important;
+      box-sizing: border-box !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card .media-type {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      z-index: 5 !important;
+      align-self: auto !important;
+      margin: 0 !important;
+      padding: 5px 11px !important;
+      border: 0 !important;
+      border-right: 1px solid #E2E8F0 !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+      border-radius: 12px 0 12px 0 !important;
+      background: #FFF5EE !important;
+      color: #FF6600 !important;
+      box-shadow: none !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card .media-type {
+        top: 0 !important;
+        left: 0 !important;
+        padding: 5px 10px !important;
+        border-radius: 11px 0 11px 0 !important;
+      }
+    }
+
   </style>
 </BaseLayout>
