@@ -4066,5 +4066,46 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* EXPERIMENT: 3D tool-logo tile. Reversible visual-only treatment. */
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
+      position: relative !important;
+      background: linear-gradient(145deg, #334155 0%, #111827 58%, #020617 100%) !important;
+      border: 1px solid #64748B !important;
+      box-shadow:
+        inset 0 2px 1px rgba(255,255,255,0.18),
+        inset 0 -4px 8px rgba(0,0,0,0.45),
+        0 7px 12px rgba(15,23,42,0.28) !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box::before {
+      content: "" !important;
+      position: absolute !important;
+      inset: 1px !important;
+      border-radius: inherit !important;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 38%, transparent 68%, rgba(0,0,0,0.18)) !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .blueprint-tool-link,
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
+      position: relative !important;
+      z-index: 1 !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .tool-logo-img,
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24)) !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
+        box-shadow:
+          inset 0 2px 1px rgba(255,255,255,0.18),
+          inset 0 -3px 7px rgba(0,0,0,0.42),
+          0 6px 10px rgba(15,23,42,0.24) !important;
+      }
+    }
+
   </style>
 </BaseLayout>
