@@ -36,10 +36,6 @@ export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
 }
 
 export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
-  return firstUsableImage(
-    resource.data.heroImage,
-    resource.data.thumbnail,
-    ...resourceResultImages(resource),
-    resource.data.inputImage
-  );
+  // One resource uses one primary cover image everywhere.
+  return resourceThumbnail(resource);
 }
