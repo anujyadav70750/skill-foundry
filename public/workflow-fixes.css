@@ -1481,7 +1481,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   /* Move the complete outer groups outward; dots stay attached to their text. */
   .site-footer .footer-descriptors .descriptor-item:first-child {
     justify-self: start !important;
-    transform: translateX(-23px) !important;
+    transform: translateX(-21px) !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
