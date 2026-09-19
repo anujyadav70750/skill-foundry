@@ -4432,5 +4432,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* INPUT CARD SPACING: tighten only the gap between the corner type tab and media. */
+    .testing-1-theme .workflow-input-rail .input-card .media-frame {
+      margin-top: 18px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card .media-frame {
+        margin-top: 18px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
