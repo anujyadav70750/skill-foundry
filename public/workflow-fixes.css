@@ -1386,9 +1386,9 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 10px !important;
-    letter-spacing: .055em !important;
-    gap: 5px !important;
+    font-size: 9px !important;
+    letter-spacing: .045em !important;
+    gap: 4px !important;
     line-height: 1.35 !important;
     white-space: nowrap !important;
   }
