@@ -1447,23 +1447,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
 }
 
 
-/* Final mobile descriptor alignment: use the full footer width so the outer points visually track the section edges. */
-@media (max-width: 640px) {
-  .site-footer .footer-descriptors {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
-  }
-  .site-footer .footer-descriptors .descriptor-item:first-child {
-    justify-content: flex-start !important;
-  }
-  .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
-    justify-content: center !important;
-  }
-  .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
-    justify-content: flex-end !important;
-  }
-}
-
-/* Final mobile footer descriptor alignment: dots track the CTA card edges. */
+/* Final mobile footer descriptor alignment: outer bullets track the CTA card edges without collapsing descriptor spacing. */
 @media (max-width: 640px) {
   .site-footer .footer-container {
     padding-left: 0 !important;
@@ -1471,20 +1455,18 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-descriptors {
-    position: relative !important;
     width: calc(100% - 40px) !important;
     max-width: none !important;
     min-height: 18px !important;
     margin: 0 auto !important;
     padding: 0 !important;
     display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
     align-items: center !important;
     gap: 0 !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item {
-    position: relative !important;
     width: 100% !important;
     min-width: 0 !important;
     display: flex !important;
@@ -1501,6 +1483,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
+    width: auto !important;
     justify-content: center !important;
   }
 
@@ -1508,26 +1491,10 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     justify-content: flex-end !important;
   }
 
-  /* The bullet itself is the alignment point: left bullet on the left CTA edge,
-     right bullet on the right CTA edge. */
-  .site-footer .footer-descriptors .descriptor-item:first-child .descriptor-dot {
-    flex: 0 0 auto !important;
-  }
-
-  .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
-    padding-right: 0 !important;
-  }
-
+  /* Keep the third bullet in normal flow, but place it after its text so
+     the bullet itself reaches the exact right edge of the descriptor rail. */
   .site-footer .footer-descriptors .descriptor-item:nth-child(3) .descriptor-dot {
-    position: absolute !important;
-    right: 0 !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    margin: 0 !important;
-  }
-
-  .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
-    padding-right: 13px !important;
-    box-sizing: border-box !important;
+    order: 1 !important;
+    flex: 0 0 auto !important;
   }
 }
