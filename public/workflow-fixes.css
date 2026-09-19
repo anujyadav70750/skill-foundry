@@ -1478,16 +1478,20 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     white-space: nowrap !important;
   }
 
+  /* Move the complete outer groups outward; dots stay attached to their text. */
   .site-footer .footer-descriptors .descriptor-item:first-child {
     justify-self: start !important;
+    transform: translateX(-16px) !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
     justify-self: center !important;
+    transform: none !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
     justify-self: end !important;
+    transform: translateX(30px) !important;
   }
 
   .site-footer .footer-descriptors .descriptor-dot {
