@@ -4250,5 +4250,41 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       filter: none !important;
     }
 
+    /* INPUT TYPE LABEL ONLY: attach the existing type badge to the card corner.
+       Card structure, image size, title, description and spacing remain unchanged. */
+    .testing-1-theme .workflow-input-rail .input-card {
+      position: relative !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card .media-type {
+      position: absolute !important;
+      top: -1px !important;
+      left: -1px !important;
+      z-index: 5 !important;
+      align-self: auto !important;
+      margin: 0 !important;
+      padding: 5px 11px !important;
+      border-radius: 12px 0 10px 0 !important;
+      box-sizing: border-box !important;
+      background: #FFF5EE !important;
+      color: #FF6600 !important;
+      border: 1px solid #FFD8C2 !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card .media-frame {
+      margin-top: 28px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card .media-type {
+        padding: 5px 10px !important;
+        border-radius: 11px 0 9px 0 !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .input-card .media-frame {
+        margin-top: 28px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
