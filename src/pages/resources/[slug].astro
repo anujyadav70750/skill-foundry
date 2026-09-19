@@ -4358,5 +4358,38 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL INPUT CORNER TAB: keep the card border complete; tab only has bottom/right borders. */
+    .testing-1-theme .workflow-input-rail .input-card::before {
+      display: none !important;
+      content: none !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card .media-type {
+      top: -1px !important;
+      left: -1px !important;
+      z-index: 5 !important;
+      margin: 0 !important;
+      padding: 5px 11px !important;
+      border-top: 0 !important;
+      border-left: 0 !important;
+      border-right: 1px solid #E2E8F0 !important;
+      border-bottom: 1px solid #E2E8F0 !important;
+      border-radius: 12px 0 12px 0 !important;
+      background: #FFF5EE !important;
+      box-shadow: none !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card {
+      border: 1px solid #E2E8F0 !important;
+      border-radius: 12px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card .media-type {
+        padding: 5px 10px !important;
+        border-radius: 11px 0 11px 0 !important;
+      }
+    }
+
   </style>
 </BaseLayout>
