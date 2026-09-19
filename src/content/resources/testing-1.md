@@ -15,7 +15,7 @@ inputImages: ["/images/1000069054-input-16x9-1788985501045.jpg"]
 inputImageRatios: ["original"]
 resultImages: []
 resultImageRatios: []
-imageAlt: "Character reference used in the AI video workflow"
+imageAlt: "AI character video workflow cover image"
 intro: "Start with the character and clothing references, then work through the resource in order: create the dressed character, generate three connected vertical clips, and assemble the final video."
 whatItDoes: "This workflow keeps character identity, outfit, framing, and visual continuity consistent across an image-generation step, three video-generation steps, and a final editing step."
 toolsUsed:
