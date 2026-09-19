@@ -4608,5 +4608,164 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+
+    /* PHASE 1 HERO REVIEW: premium hero surface and stronger visual hierarchy.
+       Visual-only: existing content, links, media and functionality are unchanged. */
+    .testing-1-theme .resource-hero-unified-section {
+      position: relative !important;
+      isolation: isolate !important;
+      overflow: hidden !important;
+      background:
+        radial-gradient(circle at 86% 18%, rgba(147, 197, 253, 0.20) 0, rgba(147, 197, 253, 0.08) 18%, transparent 38%),
+        radial-gradient(circle at 12% 42%, rgba(219, 234, 254, 0.52) 0, rgba(219, 234, 254, 0.18) 24%, transparent 46%),
+        linear-gradient(180deg, #F8FBFF 0%, #F3F8FD 52%, #ECF4FA 100%) !important;
+      border-bottom: 1px solid #C9D9E7 !important;
+      box-shadow: 0 16px 34px -14px rgba(30, 64, 175, 0.12) !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section::before {
+      content: "" !important;
+      position: absolute !important;
+      width: 300px !important;
+      height: 300px !important;
+      top: 34px !important;
+      right: -120px !important;
+      border-radius: 50% !important;
+      border: 1px solid rgba(96, 165, 250, 0.12) !important;
+      box-shadow:
+        0 0 0 28px rgba(96, 165, 250, 0.035),
+        0 0 0 56px rgba(96, 165, 250, 0.025) !important;
+      pointer-events: none !important;
+      z-index: 0 !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section::after {
+      content: "" !important;
+      position: absolute !important;
+      width: 180px !important;
+      height: 180px !important;
+      left: -90px !important;
+      bottom: 30px !important;
+      border-radius: 50% !important;
+      background: radial-gradient(circle, rgba(191, 219, 254, 0.18) 0%, rgba(191, 219, 254, 0.05) 48%, transparent 72%) !important;
+      pointer-events: none !important;
+      z-index: 0 !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section > * {
+      position: relative !important;
+      z-index: 1 !important;
+    }
+
+    .testing-1-theme .hero-unified-header {
+      padding-top: 10px !important;
+      padding-bottom: 0 !important;
+    }
+
+    .testing-1-theme .hero-unified-header .breadcrumbs {
+      margin-bottom: 11px !important;
+    }
+
+    .testing-1-theme .hero-unified-header .eyebrow {
+      margin-bottom: 13px !important;
+      box-shadow: 0 4px 12px -8px rgba(234, 88, 12, 0.30) !important;
+    }
+
+    .testing-1-theme .hero-unified-header h1 {
+      max-width: 900px !important;
+      font-size: clamp(30px, 4vw, 44px) !important;
+      line-height: 1.12 !important;
+      letter-spacing: -0.035em !important;
+      margin-bottom: 14px !important;
+    }
+
+    .testing-1-theme .hero-unified-header .publisher-identity {
+      margin-bottom: 0 !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
+      margin-top: 20px !important;
+      margin-bottom: 15px !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section .hero-image {
+      border: 1px solid #D7E4F0 !important;
+      box-shadow:
+        0 18px 40px -14px rgba(15, 23, 42, 0.18),
+        0 3px 10px rgba(15, 23, 42, 0.05) !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section .resource-hero-description {
+      margin-top: 0 !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section .resource-description {
+      padding: 1px 0 3px !important;
+    }
+
+    .testing-1-theme .resource-hero-unified-section .resource-description .lead {
+      max-width: 900px !important;
+      color: #334E68 !important;
+      font-size: 1.08rem !important;
+      line-height: 1.62 !important;
+      letter-spacing: -0.005em !important;
+    }
+
+    @media (max-width: 600px) {
+      .testing-1-theme .resource-hero-unified-section {
+        background:
+          radial-gradient(circle at 92% 15%, rgba(147, 197, 253, 0.17) 0, rgba(147, 197, 253, 0.06) 22%, transparent 44%),
+          linear-gradient(180deg, #F8FBFF 0%, #F2F7FC 58%, #ECF4FA 100%) !important;
+        box-shadow: 0 12px 28px -14px rgba(30, 64, 175, 0.12) !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section::before {
+        width: 190px !important;
+        height: 190px !important;
+        top: 38px !important;
+        right: -95px !important;
+      }
+
+      .testing-1-theme .hero-unified-header {
+        padding-top: 2px !important;
+      }
+
+      .testing-1-theme .hero-unified-header .breadcrumbs {
+        margin-bottom: 8px !important;
+      }
+
+      .testing-1-theme .hero-unified-header .eyebrow {
+        margin-bottom: 10px !important;
+      }
+
+      .testing-1-theme .hero-unified-header h1 {
+        max-width: none !important;
+        font-size: 27px !important;
+        line-height: 1.16 !important;
+        letter-spacing: -0.03em !important;
+        margin-bottom: 11px !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
+        margin-top: 15px !important;
+        margin-bottom: 12px !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .hero-image {
+        box-shadow:
+          0 14px 30px -14px rgba(15, 23, 42, 0.18),
+          0 2px 8px rgba(15, 23, 42, 0.05) !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .resource-description {
+        padding: 1px 0 2px !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .resource-description .lead {
+        font-size: 0.99rem !important;
+        line-height: 1.58 !important;
+      }
+    }
+
   </style>
 </BaseLayout>
