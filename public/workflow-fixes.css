@@ -1462,3 +1462,46 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     justify-content: flex-end !important;
   }
 }
+
+/* Final mobile footer descriptor alignment: match the descriptor row to the CTA card width. */
+@media (max-width: 640px) {
+  .site-footer .footer-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .site-footer .footer-descriptors {
+    width: calc(100% - 36px) !important;
+    max-width: none !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    gap: 0 !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-item {
+    width: auto !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 9px !important;
+    letter-spacing: .045em !important;
+    gap: 4px !important;
+    line-height: 1.35 !important;
+    white-space: nowrap !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-item:first-child {
+    justify-content: flex-start !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
+    justify-content: center !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
+    justify-content: flex-end !important;
+  }
+}
