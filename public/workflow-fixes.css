@@ -910,3 +910,30 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
 
 
 
+
+
+/* TESTING-1 MOBILE PROMPT COMPACT RECTANGLE — prompt box only. */
+@media (max-width: 640px) {
+  .testing-1-theme .workflow-prompt {
+    aspect-ratio: 1.3 / 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Keep the existing Copy / FULL PROMPT / Expand separators and controls unchanged. */
+  .testing-1-theme .workflow-prompt-head {
+    border-bottom: 1px solid #1E293B !important;
+  }
+
+  .testing-1-theme .workflow-prompt pre,
+  .testing-1-theme .workflow-prompt [data-step-prompt] {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    min-height: 0 !important;
+  }
+
+  .testing-1-theme .workflow-download,
+  .testing-1-theme .workflow-prompt [data-download-step] {
+    border-top: 1px solid #1E293B !important;
+  }
+}
