@@ -3675,5 +3675,96 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL MOBILE PROMPT VISUAL HIERARCHY */
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-prompt {
+        background: #0B111D !important;
+        border: 1px solid #263449 !important;
+        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
+      }
+
+      /* Copy / FULL PROMPT / Expand stay one continuous attached bar. */
+      .testing-1-theme .workflow-prompt-head {
+        background: #0D1726 !important;
+        border-bottom: 1px solid #263449 !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-copy-step],
+      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
+        background: linear-gradient(180deg, #1A4674 0%, #123454 100%) !important;
+        color: #F8FAFC !important;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.12),
+          inset 0 -1px 0 rgba(0,0,0,0.28) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-copy-step]:hover,
+      .testing-1-theme .workflow-prompt-head button[data-expand-step]:hover {
+        background: linear-gradient(180deg, #215A91 0%, #17456E 100%) !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-copy-step]:active,
+      .testing-1-theme .workflow-prompt-head button[data-expand-step]:active {
+        background: #102E4B !important;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
+      }
+
+      /* Keep the existing separator lines exactly between the three cells. */
+      .testing-1-theme .workflow-prompt-head button[data-copy-step] {
+        border-right: 1px solid #334155 !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
+        border-left: 1px solid #334155 !important;
+      }
+
+      /* FULL PROMPT remains a title, visually distinct from the buttons. */
+      .testing-1-theme .workflow-prompt-head span {
+        background: #0A1321 !important;
+        color: #A8B8CA !important;
+        font-size: 10.5px !important;
+        letter-spacing: 0.14em !important;
+      }
+
+      /* Main prompt content: clean dark reading surface, still scrollable. */
+      .testing-1-theme .workflow-prompt pre {
+        background: #050A11 !important;
+        color: #F1F5F9 !important;
+        padding: 16px 15px !important;
+        line-height: 1.62 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        scrollbar-color: #3B82F6 #101923 !important;
+        box-shadow:
+          inset 0 5px 14px rgba(0,0,0,0.18),
+          inset 0 -5px 14px rgba(0,0,0,0.14) !important;
+      }
+
+      /* Download PDF remains attached as a distinct secondary action. */
+      .testing-1-theme .workflow-prompt .workflow-download,
+      .testing-1-theme .workflow-prompt [data-download-step] {
+        background: linear-gradient(180deg, #174B7A 0%, #10385D 100%) !important;
+        color: #E5F2FF !important;
+        border-top: 1px solid #2F5273 !important;
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.10),
+          inset 0 -1px 0 rgba(0,0,0,0.22) !important;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.22);
+      }
+
+      .testing-1-theme .workflow-prompt .workflow-download:hover,
+      .testing-1-theme .workflow-prompt [data-download-step]:hover {
+        background: linear-gradient(180deg, #1E5E95 0%, #16486F 100%) !important;
+        color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .workflow-prompt .workflow-download:active,
+      .testing-1-theme .workflow-prompt [data-download-step]:active {
+        background: #10304E !important;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
+      }
+    }
+
   </style>
 </BaseLayout>
