@@ -669,13 +669,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                               </div>
                             )}
                             {step.settings.length > 0 && (
-                              <div class="blueprint-settings-grid">
-                                {step.settings.map((setting) => (
-                                  <div class="blueprint-setting-chip">
-                                    <span class="setting-label">{setting.label}</span>
-                                    <span class="setting-val">{setting.value}</span>
-                                  </div>
-                                ))}
+                              <div class="blueprint-settings-row">
+                                <span class="blueprint-settings-icon" aria-hidden="true">⚙</span>
+                                <div class="blueprint-settings-grid">
+                                  {step.settings.map((setting) => (
+                                    <div class="blueprint-setting-chip">
+                                      <span class="setting-label">{setting.label}</span>
+                                      <span class="setting-val">{setting.value}</span>
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             )}
                           </div>
@@ -3770,7 +3773,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     /* ==========================================================================
        AI TOOL / SETTINGS — MINIMAL COMPACT BLUEPRINT NODE
        Preserve all existing information/functionality; reduce vertical space.
-       Purpose stays fixed above a single horizontally scrollable settings row.
+       Purpose stays fixed above a compact settings row; only settings values scroll.
        ========================================================================== */
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tools-layout {
       display: flex !important;
@@ -3813,42 +3816,49 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       white-space: nowrap !important;
     }
 
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+    /* Fixed settings indicator + independently scrollable settings rail. */
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-row {
       display: flex !important;
-      flex-wrap: nowrap !important;
       align-items: center !important;
-      gap: 6px !important;
+      gap: 5px !important;
       width: 100% !important;
       min-width: 0 !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      padding: 1px 1px 3px !important;
-      margin: 0 !important;
-      scrollbar-width: thin !important;
-      scrollbar-color: #CBD5E1 transparent !important;
-      overscroll-behavior-x: contain !important;
-      -webkit-overflow-scrolling: touch !important;
+      flex: 0 0 auto !important;
     }
 
-    /* Fixed visual marker for the settings row; not an interactive control. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::before {
-      content: "⚙" !important;
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-icon {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
       width: 24px !important;
       height: 24px !important;
       flex: 0 0 24px !important;
-      position: sticky !important;
-      left: 0 !important;
-      z-index: 2 !important;
-      border: 1px solid #D7E2EE !important;
+      border: 1px solid #9CC7FF !important;
       border-radius: 7px !important;
-      background: #F1F5F9 !important;
-      color: #315A86 !important;
-      font-size: 14px !important;
+      background: #EAF4FF !important;
+      color: #1D63D8 !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
       line-height: 1 !important;
       box-sizing: border-box !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+      display: flex !important;
+      flex: 1 1 auto !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      gap: 5px !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      padding: 1px 1px 3px !important;
+      margin: 0 !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #9CC7FF transparent !important;
+      overscroll-behavior-x: contain !important;
+      -webkit-overflow-scrolling: touch !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
@@ -3860,14 +3870,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar-thumb {
-      background: #CBD5E1 !important;
+      background: #9CC7FF !important;
       border-radius: 999px !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
       flex: 0 0 auto !important;
       white-space: nowrap !important;
       margin: 0 !important;
+      padding: 5px 8px !important;
+      border-radius: 8px !important;
+      background: #FFFFFF !important;
+      border: 1px solid #D7E2EE !important;
+      font-size: 11px !important;
+    }
+
+    /* Setting label and value are deliberately different colours for quick scanning. */
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
+      color: #58718D !important;
+      font-weight: 800 !important;
+      font-size: 9.5px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.04em !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
+      color: #173B68 !important;
+      font-weight: 800 !important;
+      font-size: 11px !important;
     }
 
     @media (max-width: 640px) {
@@ -3896,18 +3929,25 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 10px !important;
       }
 
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-row {
         gap: 5px !important;
-        padding-bottom: 4px !important;
-        scrollbar-width: none !important;
       }
 
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::before {
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-icon {
         width: 22px !important;
         height: 22px !important;
         flex-basis: 22px !important;
         border-radius: 6px !important;
+        background: #E7F2FF !important;
+        border-color: #8CC7FF !important;
+        color: #1558C0 !important;
         font-size: 13px !important;
+      }
+
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+        gap: 4px !important;
+        padding-bottom: 4px !important;
+        scrollbar-width: none !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
@@ -3915,18 +3955,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-        padding: 4px 7px !important;
+        padding: 4px 6px !important;
         gap: 4px !important;
         border-radius: 7px !important;
-        font-size: 10.5px !important;
+        font-size: 10px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
-        font-size: 9px !important;
+        font-size: 8.5px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-        font-size: 10.5px !important;
+        font-size: 10px !important;
       }
     }
 
