@@ -4597,5 +4597,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* RESULT NODE: tighten only the heading/description → image gap. */
+    .testing-1-theme .blueprint-subnode.node-result .blueprint-subnode-header {
+      margin-bottom: 6px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-subnode.node-result .blueprint-subnode-header {
+        margin-bottom: 6px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
