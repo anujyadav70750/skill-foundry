@@ -4496,5 +4496,46 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* ASYMMETRIC INSTRUCTION CONNECTORS:
+       top arrow sits centered in the Result → Instruction space;
+       bottom connector is pulled closer to the next Step. */
+    .testing-1-theme .blueprint-step-transition {
+      gap: 0 !important;
+      margin: 4px 0 !important;
+    }
+
+    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
+      margin-bottom: 10px !important;
+    }
+
+    .testing-1-theme .blueprint-step-transition > .blueprint-instruction-container {
+      margin: 0 auto !important;
+    }
+
+    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+      margin-top: 0 !important;
+      margin-bottom: -4px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-transition {
+        gap: 0 !important;
+        margin: 4px 0 !important;
+      }
+
+      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
+        margin-bottom: 10px !important;
+      }
+
+      .testing-1-theme .blueprint-step-transition > .blueprint-instruction-container {
+        margin: 0 auto !important;
+      }
+
+      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+        margin-top: 0 !important;
+        margin-bottom: -4px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
