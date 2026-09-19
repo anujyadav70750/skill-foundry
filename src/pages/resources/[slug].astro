@@ -4301,5 +4301,35 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       border-right-color: #E2E8F0 !important;
     }
 
+    /* Make the input type label truly replace the card's top border segment. */
+    .testing-1-theme .workflow-input-rail .input-card .media-type {
+      top: -1px !important;
+      left: -1px !important;
+      border-color: #E2E8F0 !important;
+      border-bottom-color: #FFF5EE !important;
+      border-right-color: #E2E8F0 !important;
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 12px !important;
+      box-shadow: none !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card::before {
+      content: "" !important;
+      position: absolute !important;
+      top: -1px !important;
+      left: 0 !important;
+      width: 196px !important;
+      height: 2px !important;
+      background: #FFFFFF !important;
+      z-index: 4 !important;
+      pointer-events: none !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card::before {
+        width: 186px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
