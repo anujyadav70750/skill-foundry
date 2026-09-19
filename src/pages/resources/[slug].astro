@@ -4571,5 +4571,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL BOTTOM ARROW POSITION: place it midway between Instruction bottom and next Step heading. */
+    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+      transform: translateY(16px) !important;
+      margin-bottom: -6px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+        transform: translateY(16px) !important;
+        margin-bottom: -6px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
