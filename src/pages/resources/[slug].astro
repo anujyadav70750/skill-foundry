@@ -4331,5 +4331,32 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* Restore the card top border; only the label-covered segment is masked. */
+    .testing-1-theme .workflow-input-rail .input-card::before {
+      content: "" !important;
+      position: absolute !important;
+      top: -1px !important;
+      left: 0 !important;
+      right: 0 !important;
+      width: auto !important;
+      height: 2px !important;
+      background: #E2E8F0 !important;
+      z-index: 4 !important;
+      pointer-events: none !important;
+    }
+
+    .testing-1-theme .workflow-input-rail .input-card .media-type {
+      z-index: 5 !important;
+      border-color: #E2E8F0 !important;
+      border-bottom-color: #FFF5EE !important;
+      background: #FFF5EE !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail .input-card::before {
+        width: auto !important;
+      }
+    }
+
   </style>
 </BaseLayout>
