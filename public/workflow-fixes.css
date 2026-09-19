@@ -1445,3 +1445,20 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     color: #B6C0CB !important;
   }
 }
+
+
+/* Final mobile descriptor alignment: use the full footer width so the outer points visually track the section edges. */
+@media (max-width: 640px) {
+  .site-footer .footer-descriptors {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+  }
+  .site-footer .footer-descriptors .descriptor-item:first-child {
+    justify-content: flex-start !important;
+  }
+  .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
+    justify-content: center !important;
+  }
+  .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
+    justify-content: flex-end !important;
+  }
+}
