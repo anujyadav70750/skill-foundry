@@ -4240,5 +4240,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* Tools & Resources: remove the extra outer halo/shadow; keep the logo itself unchanged. */
+    .testing-1-theme .tools-list .tool-card {
+      box-shadow: none !important;
+      filter: none !important;
+    }
+
+    .testing-1-theme .tools-list .tool-card .tool-logo {
+      filter: none !important;
+    }
+
   </style>
 </BaseLayout>
