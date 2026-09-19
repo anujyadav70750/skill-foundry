@@ -4558,5 +4558,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* Final bottom connector adjustment: move only the lower arrow slightly upward. */
+    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+      transform: translateY(2px) !important;
+      margin-bottom: -6px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+        transform: translateY(2px) !important;
+        margin-bottom: -6px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
