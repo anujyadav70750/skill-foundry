@@ -1491,10 +1491,9 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     justify-content: flex-end !important;
   }
 
-  /* Keep the third bullet in normal flow, but place it after its text so
-     the bullet itself reaches the exact right edge of the descriptor rail. */
+  /* Keep every descriptor in the same visual pattern: bullet first, text second. */
   .site-footer .footer-descriptors .descriptor-item:nth-child(3) .descriptor-dot {
-    order: 1 !important;
+    order: 0 !important;
     flex: 0 0 auto !important;
   }
 }
