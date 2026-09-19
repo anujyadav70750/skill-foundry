@@ -1447,7 +1447,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
 }
 
 
-/* Final mobile footer descriptor alignment: outer bullets track the CTA card edges without collapsing descriptor spacing. */
+/* Final mobile footer descriptor alignment: outer groups track the CTA card edges. */
 @media (max-width: 640px) {
   .site-footer .footer-container {
     padding-left: 0 !important;
@@ -1461,15 +1461,15 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     margin: 0 auto !important;
     padding: 0 !important;
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+    grid-template-columns: 1fr auto 1fr !important;
     align-items: center !important;
     gap: 0 !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item {
-    width: 100% !important;
+    width: auto !important;
     min-width: 0 !important;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     font-size: 9px !important;
     letter-spacing: .045em !important;
@@ -1479,21 +1479,22 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-descriptors .descriptor-item:first-child {
-    justify-content: flex-start !important;
+    justify-self: start !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(2) {
-    width: auto !important;
-    justify-content: center !important;
+    justify-self: center !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item:nth-child(3) {
-    justify-content: flex-end !important;
+    justify-self: end !important;
   }
 
-  /* Keep every descriptor in the same visual pattern: bullet first, text second. */
-  .site-footer .footer-descriptors .descriptor-item:nth-child(3) .descriptor-dot {
+  .site-footer .footer-descriptors .descriptor-dot {
     order: 0 !important;
+    position: static !important;
+    transform: none !important;
+    margin: 0 !important;
     flex: 0 0 auto !important;
   }
 }
