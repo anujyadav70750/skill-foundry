@@ -3817,7 +3817,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: flex !important;
       flex-wrap: nowrap !important;
       align-items: center !important;
-      gap: 8px !important;
+      gap: 6px !important;
       width: 100% !important;
       min-width: 0 !important;
       overflow-x: auto !important;
@@ -3828,6 +3828,24 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       scrollbar-color: #CBD5E1 transparent !important;
       overscroll-behavior-x: contain !important;
       -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Fixed visual marker for the settings row; not an interactive control. */
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::before {
+      content: "⚙" !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 24px !important;
+      height: 24px !important;
+      flex: 0 0 24px !important;
+      border: 1px solid #D7E2EE !important;
+      border-radius: 7px !important;
+      background: #F1F5F9 !important;
+      color: #315A86 !important;
+      font-size: 14px !important;
+      line-height: 1 !important;
+      box-sizing: border-box !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
@@ -3876,9 +3894,17 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
-        gap: 6px !important;
+        gap: 5px !important;
         padding-bottom: 4px !important;
         scrollbar-width: none !important;
+      }
+
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::before {
+        width: 22px !important;
+        height: 22px !important;
+        flex-basis: 22px !important;
+        border-radius: 6px !important;
+        font-size: 13px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
@@ -3886,17 +3912,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-        padding: 5px 9px !important;
-        border-radius: 8px !important;
-        font-size: 11px !important;
+        padding: 4px 7px !important;
+        gap: 4px !important;
+        border-radius: 7px !important;
+        font-size: 10.5px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
-        font-size: 9.5px !important;
+        font-size: 9px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-        font-size: 11px !important;
+        font-size: 10.5px !important;
       }
     }
 
