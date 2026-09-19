@@ -752,64 +752,113 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 body:has(.testing-1-theme) .blueprint-workflow-container,
 .testing-1-theme .blueprint-workflow-container {
   background: #FFFFFF !important;
-  border: 2px solid #CBD5E1 !important;
+  border: 2px solid #312C51 !important;
   box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
 }
 body:has(.testing-1-theme) .blueprint-header-capsule,
 .testing-1-theme .blueprint-header-capsule {
   background: #FFFFFF !important;
-  border: 2px solid #94A3B8 !important;
+  border: 2px solid #312C51 !important;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
 }
 body:has(.testing-1-theme) .blueprint-capsule-label,
 .testing-1-theme .blueprint-capsule-label {
-  color: #0284C7 !important;
+  color: #EA580C !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-capsule-title,
 .testing-1-theme .blueprint-capsule-title {
   color: #0F172A !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-top-arrow,
 .testing-1-theme .blueprint-top-arrow {
-  color: #0284C7 !important;
+  color: #EA580C !important;
 }
 body:has(.testing-1-theme) .blueprint-step-container,
 .testing-1-theme .blueprint-step-container {
   background: #FFFFFF !important;
   box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
 }
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-blue,
+.testing-1-theme .blueprint-step-container.step-theme-blue {
+  border-color: #0284C7 !important;
+  --step-accent: #0284C7;
+  --step-accent-dark: #0369A1;
+  --step-accent-text: #0369A1;
+  --step-subnode-border-light: #93C5FD;
+}
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-green,
+.testing-1-theme .blueprint-step-container.step-theme-green {
+  border-color: #059669 !important;
+  --step-accent: #059669;
+  --step-accent-dark: #047857;
+  --step-accent-text: #047857;
+  --step-subnode-border-light: #86EFAC;
+}
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-orange,
+.testing-1-theme .blueprint-step-container.step-theme-orange {
+  border-color: #EA580C !important;
+  --step-accent: #EA580C;
+  --step-accent-dark: #C2410C;
+  --step-accent-text: #C2410C;
+  --step-subnode-border-light: #FDBA74;
+}
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-cyan,
+.testing-1-theme .blueprint-step-container.step-theme-cyan {
+  border-color: #0891B2 !important;
+  --step-accent: #0891B2;
+  --step-accent-dark: #0E7490;
+  --step-accent-text: #0E7490;
+  --step-subnode-border-light: #A5F3FC;
+}
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-purple,
+.testing-1-theme .blueprint-step-container.step-theme-purple {
+  border-color: #7C3AED !important;
+  --step-accent: #7C3AED;
+  --step-accent-dark: #6D28D9;
+  --step-accent-text: #6D28D9;
+  --step-subnode-border-light: #DDD6FE;
+}
+body:has(.testing-1-theme) .blueprint-step-capsule,
+.testing-1-theme .blueprint-step-capsule {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+}
 body:has(.testing-1-theme) .blueprint-step-title,
 .testing-1-theme .blueprint-step-title {
   color: #0F172A !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-subnode,
 .testing-1-theme .blueprint-subnode {
   background: #FFFFFF !important;
-  border: 1.5px solid var(--step-subnode-border-light, #93C5FD) !important;
+  border: 1.5px solid var(--step-subnode-border-light, #CBD5E1) !important;
   box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
 }
 body:has(.testing-1-theme) .blueprint-node-title,
 .testing-1-theme .blueprint-node-title {
-  color: var(--step-accent-text, #0284C7) !important;
+  color: var(--step-accent-text, #0F172A) !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-node-subtitle,
 .testing-1-theme .blueprint-node-subtitle {
-  color: #64748B !important;
+  color: #475569 !important;
 }
 body:has(.testing-1-theme) .blueprint-tool-logo-box,
 .testing-1-theme .blueprint-tool-logo-box {
-  background: #F1F5F9 !important;
+  background: #F8FAFC !important;
   border-color: #E2E8F0 !important;
 }
 body:has(.testing-1-theme) .blueprint-purpose-pill,
 .testing-1-theme .blueprint-purpose-pill {
-  background: #FEF3C7 !important;
-  color: #D97706 !important;
-  border-color: #FCD34D !important;
+  background: #FFF7ED !important;
+  color: #EA580C !important;
+  border: 1px solid #FFEDD5 !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-setting-chip,
 .testing-1-theme .blueprint-setting-chip {
-  background: #FFFFFF !important;
+  background: #F8FAFC !important;
   border-color: #E2E8F0 !important;
 }
 body:has(.testing-1-theme) .blueprint-setting-chip .setting-label,
@@ -832,6 +881,7 @@ body:has(.testing-1-theme) .blueprint-result-meta-info,
 body:has(.testing-1-theme) .blueprint-result-label,
 .testing-1-theme .blueprint-result-label {
   color: #0F172A !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-result-desc,
 .testing-1-theme .blueprint-result-desc {
@@ -839,8 +889,8 @@ body:has(.testing-1-theme) .blueprint-result-desc,
 }
 body:has(.testing-1-theme) .blueprint-subnode.node-result.is-final-result-node,
 .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%) !important;
-  border: 1.5px solid #A78BFA !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%) !important;
+  border: 1.5px solid #C4B5FD !important;
 }
 body:has(.testing-1-theme) .blueprint-flow-arrow,
 .testing-1-theme .blueprint-flow-arrow {
@@ -848,24 +898,27 @@ body:has(.testing-1-theme) .blueprint-flow-arrow,
 }
 body:has(.testing-1-theme) .blueprint-instruction-container,
 .testing-1-theme .blueprint-instruction-container {
-  background: #F1F5F9 !important;
-  border: 1.5px solid #94A3B8 !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-capsule,
 .testing-1-theme .blueprint-instruction-capsule {
-  background: #475569 !important;
-  border: 1.5px solid #475569 !important;
+  background: #334155 !important;
+  border: 1.5px solid #334155 !important;
   color: #FFFFFF !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-badge,
 .testing-1-theme .blueprint-instruction-badge {
-  background: #64748B !important;
+  background: #334155 !important;
   color: #FFFFFF !important;
+  font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-text,
 .testing-1-theme .blueprint-instruction-text {
-  color: #1E293B !important;
+  color: #0F172A !important;
+  font-weight: 600 !important;
 }
 
 @media (max-width: 640px) {

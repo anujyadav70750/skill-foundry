@@ -1856,13 +1856,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
        Applies only to resource testing-1 page
        ------------------------------------------------------------- */
     .testing-1-theme {
-      background: #FFFFFF;
+      background: #EEF4F9;
       color: #0F172A;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.6;
     }
     .testing-1-theme .resource-page {
-      background: #FFFFFF;
+      background: #EEF4F9;
       color: #0F172A;
       padding-top: 0 !important;
     }
@@ -2120,45 +2120,54 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
     .testing-1-theme .article-layout {
-      margin-top: 18px;
+      margin-top: 36px;
     }
     .testing-1-theme .resource-content {
-      gap: 20px;
+      gap: 36px;
     }
     .testing-1-theme .resource-section {
-      background: #FFFFFF;
-      border: 1px solid #E8EAEF;
-      border-radius: 16px;
-      padding: 24px 28px !important;
-      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0 4px !important;
+      box-shadow: none;
       margin-top: 0 !important;
-      border-top: 1px solid #E8EAEF !important;
+      border-top: none !important;
+    }
+    .testing-1-theme .resource-section.intro-section,
+    .testing-1-theme .resource-section.tools-section {
+      background: transparent;
+      border: none;
+      box-shadow: none;
     }
     .testing-1-theme .resource-section.workflow-section {
       background: transparent;
       border: none !important;
       box-shadow: none;
       padding: 0 !important;
-      margin-top: 0 !important;
+      margin-top: 8px !important;
     }
     .testing-1-theme .section-heading {
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .testing-1-theme .section-heading .eyebrow {
       margin-bottom: 6px;
+      background: rgba(255, 102, 0, 0.08);
+      border: 1px solid rgba(255, 102, 0, 0.22);
+      color: #EA580C;
     }
     .testing-1-theme .section-heading h2 {
       color: #0F172A;
-      font-size: 1.6rem;
+      font-size: 1.65rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
+      letter-spacing: -0.025em;
+      line-height: 1.25;
     }
     .testing-1-theme .section-subcopy,
     .testing-1-theme .section-lead {
-      color: #475569;
-      font-size: 1rem;
-      line-height: 1.6;
+      color: #334155;
+      font-size: 1.05rem;
+      line-height: 1.68;
     }
     .testing-1-theme .guide-cue {
       background: #EEF4F9;
@@ -2476,16 +2485,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     .testing-1-theme .workflow-final-result {
       background: #FFFFFF;
-      border: 1px solid #E8EAEF;
+      border: 1.5px solid #E2E8F0;
       border-radius: 16px;
-      box-shadow: 0 10px 28px -6px rgba(255, 102, 0, 0.1), 0 4px 14px -2px rgba(15, 23, 42, 0.04);
+      box-shadow: 0 10px 28px -6px rgba(234, 88, 12, 0.08), 0 4px 14px -2px rgba(15, 23, 42, 0.04);
       padding: 24px 28px;
       margin-top: 14px;
     }
     .testing-1-theme .workflow-final-badge {
-      background: #FFF5EE;
-      border: 1px solid #FFD8BE;
-      color: #FF6600;
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      color: #EA580C;
       font-weight: 800;
       letter-spacing: 0.08em;
     }
@@ -2493,26 +2502,76 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       color: #0F172A;
       font-weight: 800;
     }
-    .testing-1-theme .tips-section {
-      background: #FFFFFF;
-      border: 1px solid #E8EAEF;
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-dialog {
+      border: 1.5px solid #334155;
       border-radius: 16px;
-      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
-      padding: 24px 28px !important;
+      box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.5);
+    }
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-head {
+      background: #0F172A;
+      border-bottom: 1px solid #1E293B;
+    }
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head span,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-head span {
+      color: #F8FAFC;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-actions {
+      background: #0F172A;
+      border-top: 1px solid #1E293B;
+    }
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions button,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-actions button {
+      background: #1E293B;
+      color: #F8FAFC;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+    body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions button:hover,
+    .testing-1-theme [data-prompt-modal] .prompt-modal-actions button:hover {
+      background: #EA580C;
+      border-color: #EA580C;
+      color: #FFFFFF;
+    }
+    .testing-1-theme .tips-section {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 0 4px !important;
       margin-top: 0 !important;
+    }
+    .testing-1-theme .tips-list {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px 22px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
     }
     .testing-1-theme .tips-list li {
       color: #334155;
       font-size: 15px;
       line-height: 1.6;
       border-bottom: 1px solid #F1F5F9;
-      padding: 10px 0;
+      padding: 12px 0;
+    }
+    .testing-1-theme .tips-list li:last-child {
+      border-bottom: none;
     }
     .testing-1-theme .tips-list li::before {
       background: #FF6600;
     }
     .testing-1-theme .tags {
-      margin-top: 0;
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
     .testing-1-theme .tags a {
       background: #FFFFFF;
@@ -2523,41 +2582,104 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       font-size: 12px;
       font-weight: 600;
       transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
     }
     .testing-1-theme .tags a:hover {
-      background: #FFF5EE;
-      border-color: #FF6600;
-      color: #FF6600;
+      background: #FFF7ED;
+      border-color: #FDBA74;
+      color: #EA580C;
     }
-    .testing-1-theme .related-section,
+    .testing-1-theme .related-section {
+      background: #EEF4F9;
+      border-top: 1px solid #E2E8F0;
+      padding: 56px 0 36px;
+    }
+    .testing-1-theme .related-section .section-heading h2 {
+      color: #0F172A;
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+    .testing-1-theme .related-section .section-heading .eyebrow {
+      background: rgba(255, 102, 0, 0.08);
+      border: 1px solid rgba(255, 102, 0, 0.22);
+      color: #EA580C;
+    }
+    .testing-1-theme .related-section .section-heading a {
+      color: #EA580C;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .testing-1-theme .related-section .resource-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .testing-1-theme .related-section .resource-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+      border-color: #CBD5E1;
+    }
+    .testing-1-theme .related-section .resource-card h3 {
+      color: #0F172A;
+      font-weight: 800;
+    }
+    .testing-1-theme .related-section .resource-card p {
+      color: #475569;
+    }
+    .testing-1-theme .related-section .resource-card .tag {
+      background: #FFF7ED;
+      color: #EA580C;
+      border: 1px solid #FFEDD5;
+      font-weight: 700;
+    }
+    .testing-1-theme .related-section .resource-card .card-link {
+      color: #EA580C;
+      font-weight: 700;
+    }
     .testing-1-theme .resource-cta {
-      padding: 44px 0;
+      background: #EEF4F9;
+      padding: 20px 0 64px;
     }
     .testing-1-theme .resource-cta .cta-card {
-      background: linear-gradient(135deg, #FF6600 0%, #FF7700 100%);
-      border-radius: 16px;
+      background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
+      border-radius: 20px;
       color: #FFFFFF;
-      box-shadow: 0 16px 36px -6px rgba(255, 102, 0, 0.35);
+      box-shadow: 0 16px 36px -6px rgba(234, 88, 12, 0.35);
       border: none;
-      padding: 36px;
+      padding: 40px;
     }
     .testing-1-theme .resource-cta .cta-card h2,
     .testing-1-theme .resource-cta .cta-card p,
     .testing-1-theme .resource-cta .cta-card .eyebrow {
       color: #FFFFFF !important;
     }
+    .testing-1-theme .resource-cta .cta-card h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+    }
+    .testing-1-theme .resource-cta .cta-card p {
+      color: rgba(255, 255, 255, 0.92) !important;
+      font-size: 1.05rem;
+    }
     .testing-1-theme .resource-cta .cta-card .cta-eyebrow {
-      background: #FFFFFF !important;
-      border-color: rgba(255, 255, 255, 0.92) !important;
-      color: #F97316 !important;
+      background: rgba(255, 255, 255, 0.18) !important;
+      border: 1px solid rgba(255, 255, 255, 0.35) !important;
+      color: #FFFFFF !important;
+      font-weight: 800;
     }
     .testing-1-theme .resource-cta .cta-card .button {
       background: #FFFFFF !important;
-      color: #FF6600 !important;
+      color: #EA580C !important;
       font-weight: 800 !important;
       border-radius: 9999px !important;
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      transition: transform 0.2s ease;
+      padding: 12px 28px;
+      font-size: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
     .testing-1-theme .resource-cta .cta-card .button:hover {
       transform: translateY(-2px);
@@ -2574,17 +2696,17 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         padding-bottom: 22px !important;
       }
       .testing-1-theme .article-layout {
-        margin-top: 20px;
+        margin-top: 24px;
       }
       .testing-1-theme .resource-content {
-        gap: 16px;
+        gap: 24px;
       }
       .testing-1-theme .resource-section {
-        padding: 18px 16px !important;
-        border-radius: 14px;
+        padding: 0 4px !important;
+        border-radius: 0;
       }
       .testing-1-theme .section-heading {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
       .testing-1-theme .section-heading h2 {
         font-size: 1.35rem;
@@ -2599,7 +2721,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         margin-top: 10px;
       }
       .testing-1-theme .tips-section {
-        padding: 18px 16px !important;
+        padding: 0 4px !important;
+        border-radius: 0;
+      }
+      .testing-1-theme .tips-list {
+        padding: 12px 16px;
         border-radius: 14px;
       }
       .testing-1-theme .guide-cue {
@@ -3079,52 +3205,95 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* TESTING-1 THEME BLUEPRINT OVERRIDES */
       .testing-1-theme .blueprint-workflow-container {
         background: #FFFFFF !important;
-        border: 2px solid #334155 !important;
+        border: 2px solid #312C51 !important;
         box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
       }
       .testing-1-theme .blueprint-header-capsule {
         background: #FFFFFF !important;
-        border: 2px solid #94A3B8 !important;
+        border: 2px solid #312C51 !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
       }
       .testing-1-theme .blueprint-capsule-label {
-        color: #0284C7 !important;
+        color: #EA580C !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-capsule-title {
         color: #0F172A !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-top-arrow {
-        color: #0284C7 !important;
+        color: #EA580C !important;
       }
       .testing-1-theme .blueprint-step-container {
         background: #FFFFFF !important;
         box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
       }
+      .testing-1-theme .blueprint-step-container.step-theme-blue {
+        border-color: #0284C7 !important;
+        --step-accent: #0284C7;
+        --step-accent-dark: #0369A1;
+        --step-accent-text: #0369A1;
+        --step-subnode-border-light: #93C5FD;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-green {
+        border-color: #059669 !important;
+        --step-accent: #059669;
+        --step-accent-dark: #047857;
+        --step-accent-text: #047857;
+        --step-subnode-border-light: #86EFAC;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-orange {
+        border-color: #EA580C !important;
+        --step-accent: #EA580C;
+        --step-accent-dark: #C2410C;
+        --step-accent-text: #C2410C;
+        --step-subnode-border-light: #FDBA74;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-cyan {
+        border-color: #0891B2 !important;
+        --step-accent: #0891B2;
+        --step-accent-dark: #0E7490;
+        --step-accent-text: #0E7490;
+        --step-subnode-border-light: #A5F3FC;
+      }
+      .testing-1-theme .blueprint-step-container.step-theme-purple {
+        border-color: #7C3AED !important;
+        --step-accent: #7C3AED;
+        --step-accent-dark: #6D28D9;
+        --step-accent-text: #6D28D9;
+        --step-subnode-border-light: #DDD6FE;
+      }
+      .testing-1-theme .blueprint-step-capsule {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+      }
       .testing-1-theme .blueprint-step-title {
         color: #0F172A !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-subnode {
         background: #FFFFFF !important;
-        border: 1.5px solid var(--step-subnode-border-light, #93C5FD) !important;
+        border: 1.5px solid var(--step-subnode-border-light, #CBD5E1) !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
       }
       .testing-1-theme .blueprint-node-title {
-        color: var(--step-accent-text, #0284C7) !important;
+        color: var(--step-accent-text, #0F172A) !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-node-subtitle {
-        color: #64748B !important;
+        color: #475569 !important;
       }
       .testing-1-theme .blueprint-tool-logo-box {
-        background: #F1F5F9 !important;
+        background: #F8FAFC !important;
         border-color: #E2E8F0 !important;
       }
       .testing-1-theme .blueprint-purpose-pill {
-        background: #FEF3C7 !important;
-        color: #D97706 !important;
-        border-color: #FCD34D !important;
+        background: #FFF7ED !important;
+        color: #EA580C !important;
+        border: 1px solid #FFEDD5 !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-setting-chip {
-        background: #FFFFFF !important;
+        background: #F8FAFC !important;
         border-color: #E2E8F0 !important;
       }
       .testing-1-theme .blueprint-setting-chip .setting-label {
@@ -3142,33 +3311,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
       .testing-1-theme .blueprint-result-label {
         color: #0F172A !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-result-desc {
         color: #475569 !important;
       }
       .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
-        background: linear-gradient(180deg, #FFFFFF 0%, #F5F3FF 100%) !important;
-        border: 1.5px solid #A78BFA !important;
+        background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%) !important;
+        border: 1.5px solid #C4B5FD !important;
       }
       .testing-1-theme .blueprint-flow-arrow {
         color: #64748B !important;
       }
       .testing-1-theme .blueprint-instruction-container {
-        background: #F1F5F9 !important;
-        border: 1.5px solid #94A3B8 !important;
+        background: #F8FAFC !important;
+        border: 1.5px solid #CBD5E1 !important;
         box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
       }
       .testing-1-theme .blueprint-instruction-capsule {
-        background: #475569 !important;
-        border: 1.5px solid #475569 !important;
+        background: #334155 !important;
+        border: 1.5px solid #334155 !important;
         color: #FFFFFF !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-instruction-badge {
-        background: #64748B !important;
+        background: #334155 !important;
         color: #FFFFFF !important;
+        font-weight: 800 !important;
       }
       .testing-1-theme .blueprint-instruction-text {
-        color: #1E293B !important;
+        color: #0F172A !important;
+        font-weight: 600 !important;
       }
 
       @media (max-width: 640px) {
