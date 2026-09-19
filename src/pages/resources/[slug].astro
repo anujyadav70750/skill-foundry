@@ -3444,6 +3444,43 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
 
 
+
+    /* MOBILE INPUTS: fit two references cleanly; keep horizontal scroll for 3+ items. */
+    @media (max-width: 640px) {
+      .testing-1-theme .workflow-input-rail {
+        gap: 10px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .workflow-media-card {
+        flex: 0 0 calc((100% - 10px) / 2) !important;
+        width: calc((100% - 10px) / 2) !important;
+        min-width: calc((100% - 10px) / 2) !important;
+        padding: 10px !important;
+        border-radius: 14px !important;
+      }
+
+      .testing-1-theme .workflow-input-rail:has(.input-card:nth-child(3)) .workflow-media-card {
+        flex: 0 0 196px !important;
+        width: 196px !important;
+        min-width: 196px !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .media-frame {
+        margin: 8px 0 7px !important;
+        border-radius: 9px !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .media-caption strong {
+        font-size: 11.5px !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .media-caption small {
+        font-size: 9.5px !important;
+      }
+    }
+
     /* ==========================================================================
        FINAL BLUEPRINT REFERENCE COLOUR + BRIGHT ACCENT OVERRIDE — must remain last.
        Matches the supplied reference image's brighter, more saturated accent palette.
