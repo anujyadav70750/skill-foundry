@@ -804,7 +804,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   </article>
 
   {related.length > 0 && <section class="section section-muted related-section"><div class="container"><div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div><div class="resource-grid">{related.map((item)=>{const relatedSlug=resourceSlug(item);return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)}/><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>})}</div></div></section>}
-  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><p class="eyebrow">SKILL FOUNDRY</p><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
+  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><p class="eyebrow cta-eyebrow">SKILL FOUNDRY</p><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
   </div>
 
   <script>
@@ -864,6 +864,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   </script>
 
   <style>
+    .testing-1-theme .cta-eyebrow {
+      background: #FFFFFF;
+      color: #F97316;
+      border-color: rgba(255,255,255,0.9);
+    }
     /* Resource Header & Content Layout */
     .resource-page {
       color: var(--text);
