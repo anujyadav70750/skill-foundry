@@ -4584,5 +4584,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL BOTTOM CONNECTOR: move the lower arrow upward to balance the gap. */
+    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+      transform: translateY(8px) !important;
+      margin-bottom: -6px !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
+        transform: translateY(8px) !important;
+        margin-bottom: -6px !important;
+      }
+    }
+
   </style>
 </BaseLayout>
