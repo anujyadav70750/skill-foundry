@@ -4475,5 +4475,26 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       padding-top: 4px !important;
     }
 
+    /* TIGHTEN RESULT → INSTRUCTION → NEXT STEP connectors only. */
+    .testing-1-theme .blueprint-step-transition {
+      gap: 2px !important;
+      margin: 6px 0 !important;
+    }
+
+    .testing-1-theme .blueprint-instruction-container {
+      margin: 8px auto !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-transition {
+        gap: 2px !important;
+        margin: 6px 0 !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-container {
+        margin: 8px auto !important;
+      }
+    }
+
   </style>
 </BaseLayout>
