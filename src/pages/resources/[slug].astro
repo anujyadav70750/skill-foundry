@@ -4011,5 +4011,60 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL SETTINGS CHIP FIX: content-sized boxes + identical label/value typography. */
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+      display: grid !important;
+      grid-auto-flow: column !important;
+      grid-auto-columns: max-content !important;
+      grid-template-columns: none !important;
+      align-items: center !important;
+      justify-content: start !important;
+      flex: 1 1 auto !important;
+      width: 0 !important;
+      min-width: 0 !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      gap: 5px !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
+      width: max-content !important;
+      min-width: 0 !important;
+      max-width: max-content !important;
+      justify-self: start !important;
+      flex: none !important;
+      height: 28px !important;
+      min-height: 28px !important;
+      padding: 0 9px !important;
+      box-sizing: border-box !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label,
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
+      font-size: 11px !important;
+      line-height: 1 !important;
+      font-family: inherit !important;
+      white-space: nowrap !important;
+    }
+
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
+        gap: 4px !important;
+      }
+
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
+        height: 26px !important;
+        min-height: 26px !important;
+        padding: 0 7px !important;
+        border-radius: 7px !important;
+      }
+
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label,
+      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
+        font-size: 10px !important;
+        line-height: 1 !important;
+      }
+    }
+
   </style>
 </BaseLayout>
