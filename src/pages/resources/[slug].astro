@@ -4156,5 +4156,33 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
 
+    /* FINAL: Tools & Resources uses the same 3D tile treatment as Blueprint. */
+    .testing-1-theme .tools-list .tool-card {
+      position: relative !important;
+      background: linear-gradient(145deg, #334155 0%, #111827 58%, #020617 100%) !important;
+      border: 1px solid #64748B !important;
+      box-shadow:
+        inset 0 2px 1px rgba(255,255,255,0.18),
+        inset 0 -4px 8px rgba(0,0,0,0.45),
+        0 7px 12px rgba(15,23,42,0.28) !important;
+      overflow: hidden !important;
+    }
+
+    .testing-1-theme .tools-list .tool-card::before {
+      content: "" !important;
+      position: absolute !important;
+      inset: 1px !important;
+      border-radius: inherit !important;
+      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 38%, transparent 68%, rgba(0,0,0,0.18)) !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+    }
+
+    .testing-1-theme .tools-list .tool-card .tool-logo {
+      position: relative !important;
+      z-index: 1 !important;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24)) !important;
+    }
+
   </style>
 </BaseLayout>
