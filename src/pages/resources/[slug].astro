@@ -3772,8 +3772,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     /* ==========================================================================
        AI TOOL / SETTINGS — MINIMAL COMPACT BLUEPRINT NODE
-       Preserve all existing information/functionality; reduce vertical space.
-       Purpose stays fixed above a compact settings row; only settings values scroll.
+       Final visual polish: compact, aligned, readable, and mobile-safe.
+       Existing information/functionality remain unchanged.
        ========================================================================== */
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tools-layout {
       display: flex !important;
@@ -3784,12 +3784,30 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       min-width: 0 !important;
     }
 
+    /* Tool logo tile: fixed square with a larger, cleaner logo fill. */
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
       width: 64px !important;
       height: 64px !important;
       flex: 0 0 64px !important;
       margin: 0 !important;
+      padding: 4px !important;
       box-sizing: border-box !important;
+      border-radius: 12px !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .blueprint-tool-link {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .tool-logo-img,
+    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: none !important;
+      max-height: none !important;
+      object-fit: contain !important;
+      display: block !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
@@ -3797,7 +3815,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       flex-direction: column !important;
       align-items: flex-start !important;
       justify-content: flex-start !important;
-      gap: 7px !important;
+      gap: 5px !important;
       flex: 1 1 auto !important;
       min-width: 0 !important;
       width: 0 !important;
@@ -3830,15 +3848,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 24px !important;
-      height: 24px !important;
-      flex: 0 0 24px !important;
-      border: 1px solid #9CC7FF !important;
-      border-radius: 7px !important;
-      background: #EAF4FF !important;
-      color: #1D63D8 !important;
-      font-size: 15px !important;
-      font-weight: 800 !important;
+      width: 28px !important;
+      height: 28px !important;
+      flex: 0 0 28px !important;
+      border: 1px solid #8CC7FF !important;
+      border-radius: 8px !important;
+      background: #E7F2FF !important;
+      color: #1558C0 !important;
+      font-size: 16px !important;
+      font-weight: 900 !important;
       line-height: 1 !important;
       box-sizing: border-box !important;
     }
@@ -3874,33 +3892,46 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       border-radius: 999px !important;
     }
 
+    /* Every setting tile has the same height as the fixed settings icon. */
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
       display: inline-flex !important;
       align-items: center !important;
-      gap: 5px !important;
+      justify-content: flex-start !important;
+      gap: 6px !important;
+      height: 28px !important;
+      min-height: 28px !important;
+      box-sizing: border-box !important;
       flex: 0 0 auto !important;
       white-space: nowrap !important;
       margin: 0 !important;
-      padding: 5px 8px !important;
+      padding: 0 9px !important;
       border-radius: 8px !important;
       background: #FFFFFF !important;
       border: 1px solid #D7E2EE !important;
       font-size: 11px !important;
     }
 
-    /* Setting label and value are deliberately different colours for quick scanning. */
+    /* Keep label + value on one centered line with distinct colours. */
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
+      display: inline !important;
+      flex: 0 0 auto !important;
       color: #58718D !important;
       font-weight: 800 !important;
       font-size: 9.5px !important;
+      line-height: 1 !important;
       text-transform: uppercase !important;
       letter-spacing: 0.04em !important;
+      white-space: nowrap !important;
     }
 
     .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
+      display: inline !important;
+      flex: 0 0 auto !important;
       color: #173B68 !important;
       font-weight: 800 !important;
       font-size: 11px !important;
+      line-height: 1 !important;
+      white-space: nowrap !important;
     }
 
     @media (max-width: 640px) {
@@ -3916,12 +3947,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         width: 58px !important;
         height: 58px !important;
         flex-basis: 58px !important;
-        padding: 7px !important;
+        padding: 3px !important;
         border-radius: 11px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
-        gap: 6px !important;
+        gap: 5px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-purpose-pill {
@@ -3934,19 +3965,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-icon {
-        width: 22px !important;
-        height: 22px !important;
-        flex-basis: 22px !important;
-        border-radius: 6px !important;
-        background: #E7F2FF !important;
-        border-color: #8CC7FF !important;
-        color: #1558C0 !important;
-        font-size: 13px !important;
+        width: 26px !important;
+        height: 26px !important;
+        flex-basis: 26px !important;
+        border-radius: 7px !important;
+        font-size: 14px !important;
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
         gap: 4px !important;
-        padding-bottom: 4px !important;
+        padding-bottom: 3px !important;
         scrollbar-width: none !important;
       }
 
@@ -3955,7 +3983,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-        padding: 4px 6px !important;
+        height: 26px !important;
+        min-height: 26px !important;
+        padding: 0 7px !important;
         gap: 4px !important;
         border-radius: 7px !important;
         font-size: 10px !important;
