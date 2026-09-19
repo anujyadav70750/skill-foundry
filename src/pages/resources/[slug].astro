@@ -798,7 +798,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
 
-      {data.tips.length > 0 && <section class="resource-section tips-section"><div class="section-heading"><div><p class="eyebrow">CUSTOMIZE</p><h2>Tips for better results</h2></div></div><ul class="tips-list">{data.tips.map((tip)=><li>{tip}</li>)}</ul></section>}
+      {data.tips.length > 0 && <section class="resource-section tips-section"><div class="section-heading"><div><p class="eyebrow">BETTER RESULTS</p><h2>Tips for better results</h2></div></div><ul class="tips-list">{data.tips.map((tip)=><li>{tip}</li>)}</ul></section>}
       {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag)=><a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}
     </div>
   </article>
