@@ -474,11 +474,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     )}
 
     <div class="container narrow article-layout resource-content">
-      <a href={data.intro ? "#intro" : "#workflow"} class="guide-cue" aria-label="Follow the step-by-step workflow blueprint below">
-        <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
-        <span class="guide-cue-text">START HERE • FOLLOW THE WORKFLOW IN ORDER</span>
-        <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
-      </a>
+      <div class="resource-transition-bridge">
+        <div class="transition-track-line" aria-hidden="true"></div>
+        <a href={data.intro ? "#intro" : "#workflow"} class="guide-cue" aria-label="Follow the step-by-step workflow blueprint below">
+          <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
+          <span class="guide-cue-text">START HERE • FOLLOW THE WORKFLOW IN ORDER</span>
+          <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
+        </a>
+        <div class="transition-indicator-stem" aria-hidden="true"></div>
+      </div>
 
       {data.intro && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Start here</h2></div></div><p class="section-lead">{data.intro}</p></section>}
 
@@ -2213,16 +2217,40 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       font-size: 1.05rem;
       line-height: 1.68;
     }
+    .testing-1-theme .resource-transition-bridge {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 12px auto 6px;
+      z-index: 2;
+    }
+    .testing-1-theme .transition-track-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.4) 15%, rgba(203, 213, 225, 0.75) 50%, rgba(203, 213, 225, 0.4) 85%, transparent 100%);
+      z-index: 1;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
     .testing-1-theme .guide-cue {
-      background: #EEF4F9;
-      background: linear-gradient(180deg, #F1F6FB 0%, #E8F0F7 100%);
-      border: 1px solid #D0DFEC;
+      position: relative;
+      z-index: 2;
+      background: #FFFFFF;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1px solid #CBD5E1;
       border-radius: 9999px;
-      color: #334155;
+      color: #0F172A;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 11.5px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
       padding: 10px 24px;
       text-decoration: none;
       cursor: pointer;
@@ -2232,16 +2260,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       gap: 12px;
       width: fit-content;
       max-width: min(560px, calc(100% - 32px));
-      margin: 4px auto 6px;
-      box-shadow: 0 2px 8px -2px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      margin: 0 auto;
+      box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04), inset 0 1px 0 #FFFFFF;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .testing-1-theme .guide-cue:hover {
-      background: #E4EFF8;
-      border-color: #BACEE0;
+      background: #FFFFFF;
+      border-color: #94A3B8;
       color: #0F172A;
       transform: translateY(-2px);
-      box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
+      box-shadow: 0 8px 22px -4px rgba(2, 132, 199, 0.14), 0 2px 6px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF;
     }
     .testing-1-theme .guide-cue svg {
       stroke: #0284C7;
@@ -2254,6 +2282,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .testing-1-theme .guide-cue:hover svg {
       stroke: #0369A1;
       transform: translateY(2px) !important;
+    }
+    .testing-1-theme .transition-indicator-stem {
+      width: 1.5px;
+      height: 12px;
+      background: linear-gradient(180deg, #CBD5E1 0%, rgba(203, 213, 225, 0) 100%);
+      margin-top: 5px;
+      border-radius: 1px;
     }
     .testing-1-theme .tools-list .tool-card {
       width: 64px !important;

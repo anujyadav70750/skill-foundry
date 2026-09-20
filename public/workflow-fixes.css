@@ -109,8 +109,84 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 .resource-page .workflow-input-rail{overscroll-behavior-x:contain!important}
 .resource-page .workflow-media-card{flex:0 0 196px!important;width:196px!important}
 
-/* Guide cue: clean downward double-chevrons on both sides. */
-.resource-page .guide-cue svg{fill:none!important;stroke:rgba(245,158,11,.85)!important;stroke-width:2.2!important;stroke-linecap:round!important;stroke-linejoin:round!important;opacity:.9!important;transform:none!important}
+/* Guide cue & transition bridge: intentional instructional connection between hero and content */
+.resource-page .resource-transition-bridge {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 10px auto 6px !important;
+  z-index: 2 !important;
+}
+.resource-page .transition-track-line {
+  position: absolute !important;
+  top: 50% !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 1px !important;
+  background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.4) 15%, rgba(203, 213, 225, 0.7) 50%, rgba(203, 213, 225, 0.4) 85%, transparent 100%) !important;
+  z-index: 1 !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+}
+.resource-page .guide-cue {
+  position: relative !important;
+  z-index: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  padding: 10px 22px !important;
+  background: #FFFFFF !important;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04), inset 0 1px 0 #FFFFFF !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+.resource-page .guide-cue:hover {
+  background: #FFFFFF !important;
+  border-color: #94A3B8 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px -4px rgba(2, 132, 199, 0.14), 0 2px 6px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF !important;
+}
+.resource-page .guide-cue span,
+.resource-page .guide-cue .guide-cue-text {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  color: #0F172A !important;
+  text-transform: uppercase !important;
+  line-height: 1.2 !important;
+}
+.resource-page .guide-cue svg {
+  width: 14px !important;
+  height: 14px !important;
+  fill: none !important;
+  stroke: #0284C7 !important;
+  stroke-width: 2.2 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+  opacity: 1 !important;
+  transform: none !important;
+  transition: transform 0.2s ease, stroke 0.2s ease !important;
+}
+.resource-page .guide-cue:hover svg {
+  stroke: #0369A1 !important;
+  transform: translateY(2px) !important;
+}
+.resource-page .transition-indicator-stem {
+  width: 1.5px !important;
+  height: 12px !important;
+  background: linear-gradient(180deg, #CBD5E1 0%, rgba(203, 213, 225, 0) 100%) !important;
+  margin-top: 5px !important;
+  border-radius: 1px !important;
+}
 
 /* Tool logos: square logo buttons matching blueprint step tool buttons */
 .resource-page .tools-list {
