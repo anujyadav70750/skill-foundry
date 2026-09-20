@@ -1578,13 +1578,19 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     margin: 0 auto !important;
   }
 
+  .site-footer .footer-descriptors {
+    max-width: 1040px !important;
+    margin: 0 auto !important;
+  }
+
   .site-footer .footer-descriptors .descriptor-item {
-    font-size: 12px !important;
-    letter-spacing: .10em !important;
+    font-size: 13px !important;
+    letter-spacing: .12em !important;
+    gap: 9px !important;
   }
 
   .site-footer .footer-descriptors .descriptor-dot {
-    font-size: 12px !important;
+    font-size: 13px !important;
   }
 
   .site-footer .footer-divider-top {
