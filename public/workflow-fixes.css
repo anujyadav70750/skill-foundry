@@ -1632,19 +1632,19 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     font-size: 14px !important;
     line-height: 1.35 !important;
     font-weight: 500 !important;
-    color: #E2E8F0 !important;
+    color: #F1F5F9 !important;
   }
 
   .site-footer .legal-separator {
     font-size: 14px !important;
-    color: #B6C0CB !important;
+    color: #CBD5E1 !important;
   }
 
   .site-footer .footer-copyright {
     margin-top: 22px !important;
     font-size: 13.5px !important;
     line-height: 1.45 !important;
-    color: #CBD5E1 !important;
+    color: #E2E8F0 !important;
   }
 }
 
