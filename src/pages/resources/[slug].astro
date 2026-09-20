@@ -4900,6 +4900,28 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
 
 
+    /* Desktop hero alignment: match the title/author/description left edge to the wide cover.
+       Mobile layout remains unchanged. */
+    @media (min-width: 769px) {
+      .testing-1-theme .resource-hero-unified-section .hero-unified-header,
+      .testing-1-theme .resource-hero-unified-section .resource-hero-description {
+        width: min(1080px, calc(100% - 48px)) !important;
+        max-width: 1080px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .hero-unified-header {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .resource-hero-description {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+
     /* PHASE 1 HERO REVIEW: premium hero surface and stronger visual hierarchy.
        Visual-only: existing content, links, media and functionality are unchanged. */
     .testing-1-theme .resource-hero-unified-section {
