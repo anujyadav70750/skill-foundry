@@ -1656,7 +1656,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   body:has(.resource-page) .site-footer,
   .resource-page ~ .site-footer,
   .testing-1-theme ~ .site-footer {
-    padding: 68px 0 48px !important;
+    padding: 72px 0 56px !important;
   }
 
   .site-footer .footer-container {
@@ -1665,19 +1665,19 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-brand-wrap {
-    margin-bottom: 28px !important;
+    margin-bottom: 32px !important;
   }
 
   .site-footer .footer-brand-wrap .brand-mark {
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
+    width: 50px !important;
+    height: 50px !important;
+    min-width: 50px !important;
     border-radius: 13px !important;
     font-size: 16px !important;
   }
 
   .site-footer .footer-brand-wrap .brand-name {
-    font-size: 23px !important;
+    font-size: 24px !important;
     letter-spacing: .11em !important;
   }
 
@@ -1686,66 +1686,67 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     max-width: none !important;
     margin: 0 auto !important;
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr) !important;
     align-items: center !important;
-    gap: 12px !important;
+    gap: 14px !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item {
     width: 100% !important;
     min-width: 0 !important;
     justify-content: center !important;
-    font-size: 11px !important;
-    letter-spacing: .07em !important;
+    font-size: 11.5px !important;
+    letter-spacing: .075em !important;
     gap: 7px !important;
     white-space: nowrap !important;
   }
 
   .site-footer .footer-descriptors .descriptor-dot {
-    font-size: 11px !important;
+    font-size: 11.5px !important;
   }
 
   .site-footer .footer-divider-top {
-    margin: 34px auto 36px !important;
+    margin: 40px auto 44px !important;
   }
 
   .site-footer .footer-nav {
-    gap: 0 32px !important;
+    gap: 0 36px !important;
   }
 
   .site-footer .footer-nav a {
-    font-size: 16px !important;
+    font-size: 16.5px !important;
     line-height: 1.35 !important;
   }
 
   .site-footer .footer-platforms {
-    margin-top: 34px !important;
+    margin-top: 42px !important;
   }
 
   .site-footer .footer-platform-list {
-    gap: 12px !important;
+    gap: 13px !important;
   }
 
   .site-footer .footer-platform-btn {
-    width: 46px !important;
-    height: 46px !important;
-    min-width: 46px !important;
-    min-height: 46px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
     border-radius: 11px !important;
   }
 
   .site-footer .footer-platform-btn svg {
-    width: 20px !important;
-    height: 20px !important;
+    width: 21px !important;
+    height: 21px !important;
   }
 
   .site-footer .footer-legal {
-    margin-top: 38px !important;
-    gap: 14px !important;
+    margin-top: 44px !important;
+    gap: 15px !important;
   }
 
   .site-footer .footer-legal a {
     font-size: 13px !important;
+    line-height: 1.35 !important;
   }
 
   .site-footer .legal-separator {
@@ -1753,7 +1754,9 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-copyright {
-    margin-top: 18px !important;
+    margin-top: 22px !important;
     font-size: 13px !important;
+    line-height: 1.45 !important;
   }
 }
+
