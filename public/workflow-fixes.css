@@ -1759,19 +1759,19 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   .site-footer .footer-legal a {
     font-size: 13px !important;
     line-height: 1.35 !important;
-    color: #B8C1CC !important;
+    color: #D3D9E0 !important;
   }
 
   .site-footer .legal-separator {
     font-size: 13px !important;
-    color: #8F9AA7 !important;
+    color: #A8B1BC !important;
   }
 
   .site-footer .footer-copyright {
     margin-top: 22px !important;
     font-size: 13px !important;
     line-height: 1.45 !important;
-    color: #9DA8B5 !important;
+    color: #B9C2CC !important;
   }
 }
 
