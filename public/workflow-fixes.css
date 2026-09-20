@@ -1574,19 +1574,15 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-descriptors {
-    max-width: 940px !important;
-    margin: 0 auto !important;
-  }
-
-  .site-footer .footer-descriptors {
-    max-width: 1040px !important;
+    width: 900px !important;
+    max-width: calc(100% - 48px) !important;
     margin: 0 auto !important;
   }
 
   .site-footer .footer-descriptors .descriptor-item {
     font-size: 13px !important;
-    letter-spacing: .12em !important;
-    gap: 9px !important;
+    letter-spacing: .09em !important;
+    gap: 8px !important;
   }
 
   .site-footer .footer-descriptors .descriptor-dot {
@@ -1594,11 +1590,11 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-divider-top {
-    margin: 38px auto 42px !important;
+    margin: 38px auto 44px !important;
   }
 
   .site-footer .footer-nav {
-    gap: 0 54px !important;
+    gap: 0 72px !important;
   }
 
   .site-footer .footer-nav a {
@@ -1628,25 +1624,29 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 
   .site-footer .footer-legal {
-    margin-top: 42px !important;
+    margin-top: 44px !important;
     gap: 16px !important;
   }
 
   .site-footer .footer-legal a {
     font-size: 13px !important;
     line-height: 1.35 !important;
+    color: #B8C1CC !important;
   }
 
   .site-footer .legal-separator {
     font-size: 13px !important;
+    color: #8F9AA7 !important;
   }
 
   .site-footer .footer-copyright {
-    margin-top: 20px !important;
+    margin-top: 22px !important;
     font-size: 13px !important;
     line-height: 1.45 !important;
+    color: #9DA8B5 !important;
   }
 }
+
 
 
 /* Narrow desktop / phone Desktop Mode footer refinement. */
