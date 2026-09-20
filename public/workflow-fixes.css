@@ -1544,3 +1544,95 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   }
 }
 
+
+
+/* Desktop footer refinement — mobile footer remains untouched. */
+@media (min-width: 641px) {
+  .site-footer,
+  body:has(.testing-1-theme) .site-footer,
+  body:has(.resource-page) .site-footer,
+  .resource-page ~ .site-footer,
+  .testing-1-theme ~ .site-footer {
+    padding: 64px 0 44px !important;
+  }
+
+  .site-footer .footer-brand-wrap {
+    margin-bottom: 24px !important;
+  }
+
+  .site-footer .footer-brand-wrap .brand-mark {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 13px !important;
+    font-size: 16px !important;
+  }
+
+  .site-footer .footer-brand-wrap .brand-name {
+    font-size: 24px !important;
+    letter-spacing: .12em !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-item {
+    font-size: 12px !important;
+    letter-spacing: .10em !important;
+  }
+
+  .site-footer .footer-descriptors .descriptor-dot {
+    font-size: 12px !important;
+  }
+
+  .site-footer .footer-divider-top {
+    margin: 28px auto 30px !important;
+  }
+
+  .site-footer .footer-nav {
+    gap: 0 32px !important;
+  }
+
+  .site-footer .footer-nav a {
+    font-size: 17px !important;
+    line-height: 1.3 !important;
+  }
+
+  .site-footer .footer-platforms {
+    margin-top: 30px !important;
+  }
+
+  .site-footer .footer-platform-list {
+    gap: 12px !important;
+  }
+
+  .site-footer .footer-platform-btn {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    border-radius: 10px !important;
+  }
+
+  .site-footer .footer-platform-btn svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  .site-footer .footer-legal {
+    margin-top: 36px !important;
+    gap: 12px !important;
+  }
+
+  .site-footer .footer-legal a {
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+  }
+
+  .site-footer .legal-separator {
+    font-size: 13px !important;
+  }
+
+  .site-footer .footer-copyright {
+    margin-top: 16px !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+  }
+}
