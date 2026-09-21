@@ -477,14 +477,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       <div class="resource-transition-bridge">
         <div class="transition-track-line" aria-hidden="true"></div>
         <a href={data.intro ? "#intro" : "#workflow"} class="guide-cue" aria-label="Follow the step-by-step workflow blueprint below">
-          <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
-          <span class="guide-cue-text">START HERE • FOLLOW THE WORKFLOW IN ORDER</span>
-          <svg class="guide-cue-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 6L8 10.5L12.5 6"/></svg>
+          <svg class="guide-cue-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg>
+          <span class="guide-cue-text">FOLLOW THE STEP-BY-STEP GUIDE BELOW</span>
+          <svg class="guide-cue-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 6 5 5 5-5"/><path d="m7 13 5 5 5-5"/></svg>
         </a>
-        <div class="transition-indicator-stem" aria-hidden="true"></div>
       </div>
 
-      {data.intro && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Start here</h2></div></div><p class="section-lead">{data.intro}</p></section>}
+      {data.intro && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Before you begin</h2></div></div><p class="section-lead">{data.intro}</p></section>}
 
       {data.whatItDoes && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{data.whatItDoes}</p></section>}
 
@@ -821,7 +820,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   </article>
 
   {related.length > 0 && <section class="section section-muted related-section"><div class="container"><div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div><div class="resource-grid">{related.map((item)=>{const relatedSlug=resourceSlug(item);return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)}/><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>})}</div></div></section>}
-  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><p class="eyebrow cta-eyebrow">SKILL FOUNDRY</p><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
+  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><h2>Build the skill, then make it your own.</h2><p>Explore more practical AI resources and keep building with prompts, workflows and tutorials.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
   </div>
 
   <script>
@@ -846,6 +845,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       const copy = box.querySelector('[data-copy-step]');
       const expand = box.querySelector('[data-expand-step]');
       const download = box.querySelector('[data-download-step]');
+
+      const syncWidth = () => {
+        if (copy && expand) {
+          const w = expand.getBoundingClientRect().width;
+          if (w > 0) {
+            copy.style.width = w + 'px';
+            copy.style.minWidth = w + 'px';
+          }
+        }
+      };
+      syncWidth();
+      window.addEventListener('resize', syncWidth);
+
       copy?.addEventListener('click', async () => {
         try {
           await navigator.clipboard.writeText(pre?.textContent?.trim() || '');
@@ -881,11 +893,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   </script>
 
   <style>
-    .testing-1-theme .cta-eyebrow {
-      background: #FFFFFF;
-      color: #F97316;
-      border-color: rgba(255,255,255,0.9);
-    }
     /* Resource Header & Content Layout */
     .resource-page {
       color: var(--text);
@@ -2168,6 +2175,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       background: transparent;
       border: none;
       box-shadow: none;
+      padding: 0 4px !important;
+      margin: 0 !important;
+    }
+    .testing-1-theme .tools-list {
+      padding: 0 !important;
+      margin: 0 !important;
     }
     .testing-1-theme .resource-section.workflow-section {
       background: transparent;
@@ -2224,7 +2237,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       align-items: center;
       justify-content: center;
       width: 100%;
-      margin: 12px auto 6px;
+      margin: 4px auto 0;
       z-index: 2;
     }
     .testing-1-theme .transition-track-line {
@@ -2233,7 +2246,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       left: 0;
       right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.4) 15%, rgba(203, 213, 225, 0.75) 50%, rgba(203, 213, 225, 0.4) 85%, transparent 100%);
+      background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.35) 15%, rgba(203, 213, 225, 0.65) 50%, rgba(203, 213, 225, 0.35) 85%, transparent 100%);
       z-index: 1;
       transform: translateY(-50%);
       pointer-events: none;
@@ -2247,48 +2260,45 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       border-radius: 9999px;
       color: #0F172A;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.11em;
       text-transform: uppercase;
-      padding: 10px 24px;
+      padding: 13px 44px;
+      width: min(520px, calc(100% - 48px));
       text-decoration: none;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      width: fit-content;
+      gap: 16px;
       max-width: min(560px, calc(100% - 32px));
       margin: 0 auto;
-      box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04), inset 0 1px 0 #FFFFFF;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .testing-1-theme .guide-cue:hover {
       background: #FFFFFF;
       border-color: #94A3B8;
       color: #0F172A;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px -4px rgba(2, 132, 199, 0.14), 0 2px 6px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF;
+      transform: translateY(-1.5px);
+      box-shadow: 0 6px 16px -3px rgba(2, 132, 199, 0.12), 0 2px 4px -1px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF;
     }
     .testing-1-theme .guide-cue svg {
       stroke: #0284C7;
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       flex-shrink: 0;
       transform: none !important;
       transition: transform 0.2s ease, stroke 0.2s ease;
     }
     .testing-1-theme .guide-cue:hover svg {
       stroke: #0369A1;
-      transform: translateY(2px) !important;
+      transform: translateY(1.5px) !important;
     }
     .testing-1-theme .transition-indicator-stem {
-      width: 1.5px;
-      height: 12px;
-      background: linear-gradient(180deg, #CBD5E1 0%, rgba(203, 213, 225, 0) 100%);
-      margin-top: 5px;
-      border-radius: 1px;
+      display: none !important;
     }
     .testing-1-theme .tools-list .tool-card {
       width: 64px !important;
@@ -2428,26 +2438,26 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       color: #64748B;
     }
     .testing-1-theme .workflow-prompt {
-      background: #0B0F17;
-      border: 1px solid #1E293B;
+      background: #0B111D !important;
+      border: 1px solid #263449 !important;
       border-radius: 14px;
       aspect-ratio: 1 / 1;
       width: 100%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
     }
     .testing-1-theme .workflow-prompt-head {
-      border-bottom: 1px solid #1E293B;
-      background: #111A29;
+      border-bottom: 1px solid #263449 !important;
+      background: #0D1726 !important;
       height: 46px;
       min-height: 46px;
       max-height: 46px;
       padding: 0;
       margin: 0;
       display: grid;
-      grid-template-columns: minmax(78px, 92px) 1fr minmax(78px, 92px);
+      grid-template-columns: auto 1fr auto !important;
       width: 100%;
       box-sizing: border-box;
     }
@@ -2458,24 +2468,29 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       justify-content: center !important;
       height: 100% !important;
       width: 100% !important;
-      padding: 0 12px !important;
+      padding: 0 11px !important;
       margin: 0 !important;
       border: 0 !important;
-      background: transparent !important;
-      color: #E2E8F0 !important;
+      background: linear-gradient(180deg, #1A4674 0%, #123454 100%) !important;
+      color: #F8FAFC !important;
       font-size: 13px !important;
       font-weight: 700 !important;
       cursor: pointer !important;
-      box-shadow: none !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.28) !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
       border-radius: 0 !important;
-      transition: background 0.15s ease, color 0.15s ease !important;
+      white-space: nowrap !important;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
       user-select: none !important;
     }
     .testing-1-theme [data-copy-step] {
-      border-right: 1px solid #1E293B !important;
+      border-right: 1px solid #334155 !important;
+      min-width: 72px !important;
     }
     .testing-1-theme [data-expand-step] {
-      border-left: 1px solid #1E293B !important;
+      border-left: 1px solid #334155 !important;
     }
     .testing-1-theme .workflow-prompt-head span {
       display: flex !important;
@@ -2483,25 +2498,26 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       justify-content: center !important;
       height: 100% !important;
       width: 100% !important;
-      padding: 0 8px !important;
-      color: #8F9EB4 !important;
-      font: 700 11px/1 'JetBrains Mono', monospace !important;
-      letter-spacing: 0.12em !important;
+      min-width: 0 !important;
+      padding: 0 6px !important;
+      background: #0A1321 !important;
+      color: #A8B8CA !important;
+      font: 700 13px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.08em !important;
       text-align: center !important;
+      white-space: nowrap !important;
       user-select: none !important;
     }
     .testing-1-theme [data-copy-step]:hover,
-    .testing-1-theme [data-expand-step]:hover,
-    .testing-1-theme .workflow-download:hover {
-      background: #19253A !important;
+    .testing-1-theme [data-expand-step]:hover {
+      background: linear-gradient(180deg, #215A91 0%, #17456E 100%) !important;
       color: #FFFFFF !important;
       transform: none !important;
-      box-shadow: none !important;
     }
     .testing-1-theme [data-copy-step]:active,
-    .testing-1-theme [data-expand-step]:active,
-    .testing-1-theme .workflow-download:active {
-      background: #0E1624 !important;
+    .testing-1-theme [data-expand-step]:active {
+      background: #102E4B !important;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
       transform: none !important;
     }
     .testing-1-theme [data-step-prompt] {
@@ -2513,8 +2529,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       max-height: none !important;
       overflow-y: auto !important;
       overflow-x: hidden !important;
-      color: #F1F5F9;
-      background: #06090F;
+      color: #F1F5F9 !important;
+      background: #050A11 !important;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       line-height: 1.65;
@@ -2525,7 +2541,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       word-break: break-word;
       overflow-wrap: anywhere;
       scrollbar-width: thin;
-      scrollbar-color: #334155 #06090F;
+      scrollbar-color: #3B82F6 #101923 !important;
+      box-shadow:
+        inset 0 5px 14px rgba(0,0,0,0.18),
+        inset 0 -5px 14px rgba(0,0,0,0.14) !important;
     }
     .testing-1-theme .workflow-download {
       display: flex !important;
@@ -2538,16 +2557,29 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       margin: 0 !important;
       padding: 0 16px !important;
       border: 0 !important;
-      border-top: 1px solid #1E293B !important;
+      border-top: 1px solid #2F5273 !important;
       border-radius: 0 !important;
-      background: #111A29 !important;
-      color: #CBD5E1 !important;
+      background: linear-gradient(180deg, #174B7A 0%, #10385D 100%) !important;
+      color: #E5F2FF !important;
       font-size: 13px !important;
       font-weight: 700 !important;
       cursor: pointer !important;
-      box-shadow: none !important;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.10),
+        inset 0 -1px 0 rgba(0,0,0,0.22) !important;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.22);
       transition: background 0.15s ease, color 0.15s ease !important;
       user-select: none !important;
+    }
+    .testing-1-theme .workflow-download:hover {
+      background: linear-gradient(180deg, #1E5E95 0%, #16486F 100%) !important;
+      color: #FFFFFF !important;
+      transform: none !important;
+    }
+    .testing-1-theme .workflow-download:active {
+      background: #10304E !important;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
+      transform: none !important;
     }
     .testing-1-theme .workflow-next-connector {
       padding: 6px 0;
@@ -2793,16 +2825,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       font-size: 1.85rem;
       font-weight: 800;
       letter-spacing: -0.025em;
+      margin: 0 !important;
+      line-height: 1.25;
     }
     .testing-1-theme .resource-cta .cta-card p {
       color: rgba(255, 255, 255, 0.92) !important;
       font-size: 1.05rem;
-    }
-    .testing-1-theme .resource-cta .cta-card .cta-eyebrow {
-      background: rgba(255, 255, 255, 0.18) !important;
-      border: 1px solid rgba(255, 255, 255, 0.35) !important;
-      color: #FFFFFF !important;
-      font-weight: 800;
+      margin: 10px 0 0 !important;
+      line-height: 1.5;
     }
     .testing-1-theme .resource-cta .cta-card .button {
       background: #FFFFFF !important;
@@ -2862,12 +2892,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border-radius: 14px;
       }
       .testing-1-theme .guide-cue {
-        padding: 8px 16px;
-        font-size: 10px;
-        gap: 8px;
-        letter-spacing: 0.05em;
-        width: fit-content;
-        max-width: 100%;
+        min-width: 0;
+        width: 82%;
+        max-width: 360px;
+        padding: 8.5px 14px;
+        font-size: 9.5px;
+        gap: 7px;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+        text-align: center;
+      }
+      .testing-1-theme .guide-cue span {
+        white-space: nowrap;
+      }
+      .testing-1-theme .guide-cue svg {
+        width: 11px;
+        height: 11px;
       }
       .testing-1-theme .related-section,
       .testing-1-theme .resource-cta {
@@ -4042,6 +4082,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* Keep the existing separator lines exactly between the three cells. */
       .testing-1-theme .workflow-prompt-head button[data-copy-step] {
         border-right: 1px solid #334155 !important;
+        min-width: 72px !important;
       }
 
       .testing-1-theme .workflow-prompt-head button[data-expand-step] {
@@ -4052,8 +4093,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .workflow-prompt-head span {
         background: #0A1321 !important;
         color: #A8B8CA !important;
-        font-size: 10.5px !important;
-        letter-spacing: 0.14em !important;
+        font-size: 13px !important;
+        letter-spacing: 0.08em !important;
       }
 
       /* Main prompt content: clean dark reading surface, still scrollable. */

@@ -109,7 +109,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 .resource-page .workflow-input-rail{overscroll-behavior-x:contain!important}
 .resource-page .workflow-media-card{flex:0 0 196px!important;width:196px!important}
 
-/* Guide cue & transition bridge: intentional instructional connection between hero and content */
+/* Guide cue & transition bridge: compact, refined instructional connection between hero and content */
 .resource-page .resource-transition-bridge {
   position: relative !important;
   display: flex !important;
@@ -117,7 +117,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   align-items: center !important;
   justify-content: center !important;
   width: 100% !important;
-  margin: 10px auto 6px !important;
+  margin: 4px auto 0 !important;
   z-index: 2 !important;
 }
 .resource-page .transition-track-line {
@@ -126,7 +126,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   left: 0 !important;
   right: 0 !important;
   height: 1px !important;
-  background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.4) 15%, rgba(203, 213, 225, 0.7) 50%, rgba(203, 213, 225, 0.4) 85%, transparent 100%) !important;
+  background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.35) 15%, rgba(203, 213, 225, 0.65) 50%, rgba(203, 213, 225, 0.35) 85%, transparent 100%) !important;
   z-index: 1 !important;
   transform: translateY(-50%) !important;
   pointer-events: none !important;
@@ -137,36 +137,41 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
-  padding: 10px 22px !important;
+  gap: 16px !important;
+  padding: 13px 44px !important;
+  width: min(520px, calc(100% - 48px)) !important;
+  max-width: min(560px, calc(100% - 32px)) !important;
   background: #FFFFFF !important;
   background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%) !important;
   border: 1px solid #CBD5E1 !important;
   border-radius: 9999px !important;
-  box-shadow: 0 4px 14px -2px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04), inset 0 1px 0 #FFFFFF !important;
+  box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF !important;
   text-decoration: none !important;
   cursor: pointer !important;
+  white-space: nowrap !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 .resource-page .guide-cue:hover {
   background: #FFFFFF !important;
   border-color: #94A3B8 !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 22px -4px rgba(2, 132, 199, 0.14), 0 2px 6px -1px rgba(15, 23, 42, 0.06), inset 0 1px 0 #FFFFFF !important;
+  transform: translateY(-1.5px) !important;
+  box-shadow: 0 6px 16px -3px rgba(2, 132, 199, 0.12), 0 2px 4px -1px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF !important;
 }
 .resource-page .guide-cue span,
 .resource-page .guide-cue .guide-cue-text {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 11.5px !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: 0.11em !important;
   color: #0F172A !important;
   text-transform: uppercase !important;
-  line-height: 1.2 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
 }
 .resource-page .guide-cue svg {
-  width: 14px !important;
-  height: 14px !important;
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
   fill: none !important;
   stroke: #0284C7 !important;
   stroke-width: 2.2 !important;
@@ -178,14 +183,31 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 }
 .resource-page .guide-cue:hover svg {
   stroke: #0369A1 !important;
-  transform: translateY(2px) !important;
+  transform: translateY(1.5px) !important;
 }
 .resource-page .transition-indicator-stem {
-  width: 1.5px !important;
-  height: 12px !important;
-  background: linear-gradient(180deg, #CBD5E1 0%, rgba(203, 213, 225, 0) 100%) !important;
-  margin-top: 5px !important;
-  border-radius: 1px !important;
+  display: none !important;
+}
+@media (max-width: 560px) {
+  .resource-page .guide-cue {
+    min-width: 0 !important;
+    width: 82% !important;
+    max-width: 360px !important;
+    padding: 8.5px 14px !important;
+    gap: 7px !important;
+    white-space: nowrap !important;
+  }
+  .resource-page .guide-cue span,
+  .resource-page .guide-cue .guide-cue-text {
+    font-size: 9.5px !important;
+    letter-spacing: 0.06em !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+  .resource-page .guide-cue svg {
+    width: 11px !important;
+    height: 11px !important;
+  }
 }
 
 /* Tool logos: square logo buttons matching blueprint step tool buttons */
@@ -194,6 +216,8 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   flex-wrap: wrap !important;
   gap: 12px !important;
   align-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 .resource-page .tools-list .tool-card {
   width: 64px !important;
@@ -284,23 +308,23 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   flex-direction: column !important;
   width: 100% !important;
   max-height: 250px !important;
-  border: 1px solid #1E293B !important;
+  border: 1px solid #263449 !important;
   border-radius: 14px !important;
   overflow: hidden !important;
   background: #0B111D !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
 }
 .resource-page .workflow-prompt-head {
   display: grid !important;
-  grid-template-columns: minmax(78px, 92px) 1fr minmax(78px, 92px) !important;
+  grid-template-columns: auto 1fr auto !important;
   height: 46px !important;
   min-height: 46px !important;
   max-height: 46px !important;
   width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
-  border-bottom: 1px solid #1E293B !important;
-  background: #111A29 !important;
+  border-bottom: 1px solid #263449 !important;
+  background: #0D1726 !important;
   box-sizing: border-box !important;
 }
 .resource-page [data-copy-step],
@@ -310,26 +334,31 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   justify-content: center !important;
   height: 100% !important;
   width: 100% !important;
-  padding: 0 12px !important;
+  padding: 0 11px !important;
   margin: 0 !important;
   border: 0 !important;
-  background: transparent !important;
-  color: #E2E8F0 !important;
+  background: linear-gradient(180deg, #1A4674 0%, #123454 100%) !important;
+  color: #F8FAFC !important;
   font-family: inherit !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   line-height: 1 !important;
   cursor: pointer !important;
-  box-shadow: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    inset 0 -1px 0 rgba(0,0,0,0.28) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
   border-radius: 0 !important;
-  transition: background 0.15s ease, color 0.15s ease !important;
+  white-space: nowrap !important;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
   user-select: none !important;
 }
 .resource-page [data-copy-step] {
-  border-right: 1px solid #1E293B !important;
+  border-right: 1px solid #334155 !important;
+  min-width: 72px !important;
 }
 .resource-page [data-expand-step] {
-  border-left: 1px solid #1E293B !important;
+  border-left: 1px solid #334155 !important;
 }
 .resource-page .workflow-prompt-head span {
   display: flex !important;
@@ -337,27 +366,26 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   justify-content: center !important;
   height: 100% !important;
   width: 100% !important;
-  padding: 0 8px !important;
-  color: #8F9EB4 !important;
-  font: 700 11px/1 'JetBrains Mono', monospace !important;
-  letter-spacing: 0.12em !important;
+  min-width: 0 !important;
+  padding: 0 6px !important;
+  background: #0A1321 !important;
+  color: #A8B8CA !important;
+  font: 700 13px/1 'JetBrains Mono', monospace !important;
+  letter-spacing: 0.08em !important;
   text-align: center !important;
+  white-space: nowrap !important;
   user-select: none !important;
 }
 .resource-page [data-copy-step]:hover,
-.resource-page [data-expand-step]:hover,
-.resource-page .workflow-download:hover,
-.resource-page [data-download-step]:hover {
-  background: #19253A !important;
+.resource-page [data-expand-step]:hover {
+  background: linear-gradient(180deg, #215A91 0%, #17456E 100%) !important;
   color: #FFFFFF !important;
   transform: none !important;
-  box-shadow: none !important;
 }
 .resource-page [data-copy-step]:active,
-.resource-page [data-expand-step]:active,
-.resource-page .workflow-download:active,
-.resource-page [data-download-step]:active {
-  background: #0E1624 !important;
+.resource-page [data-expand-step]:active {
+  background: #102E4B !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
   transform: none !important;
 }
 .resource-page [data-copy-step]:focus-visible,
@@ -378,7 +406,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   overflow-y: auto !important;
   overflow-x: hidden !important;
   color: #F1F5F9 !important;
-  background: #06090F !important;
+  background: #050A11 !important;
   font-family: 'JetBrains Mono', monospace !important;
   font-size: 13px !important;
   line-height: 1.6 !important;
@@ -389,7 +417,10 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   word-break: break-word !important;
   overflow-wrap: anywhere !important;
   scrollbar-width: thin !important;
-  scrollbar-color: #334155 #06090F !important;
+  scrollbar-color: #3B82F6 #101923 !important;
+  box-shadow:
+    inset 0 5px 14px rgba(0,0,0,0.18),
+    inset 0 -5px 14px rgba(0,0,0,0.14) !important;
 }
 .resource-page .workflow-download,
 .resource-page [data-download-step] {
@@ -403,17 +434,30 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   margin: 0 !important;
   padding: 0 16px !important;
   border: 0 !important;
-  border-top: 1px solid #1E293B !important;
+  border-top: 1px solid #2F5273 !important;
   border-radius: 0 !important;
-  background: #111A29 !important;
-  color: #CBD5E1 !important;
+  background: linear-gradient(180deg, #174B7A 0%, #10385D 100%) !important;
+  color: #E5F2FF !important;
   font-family: inherit !important;
   font-size: 13px !important;
   font-weight: 700 !important;
   cursor: pointer !important;
-  box-shadow: none !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.10),
+    inset 0 -1px 0 rgba(0,0,0,0.22) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.22);
   transition: background 0.15s ease, color 0.15s ease !important;
   user-select: none !important;
+}
+.resource-page .workflow-download:hover,
+.resource-page [data-download-step]:hover {
+  background: linear-gradient(180deg, #1E5E95 0%, #16486F 100%) !important;
+  color: #FFFFFF !important;
+}
+.resource-page .workflow-download:active,
+.resource-page [data-download-step]:active {
+  background: #10304E !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
 }
 
 @media (min-width: 820px) {

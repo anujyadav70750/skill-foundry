@@ -42,7 +42,7 @@ if git diff-index --quiet HEAD 2>/dev/null; then
   echo "No changes to commit."
 else
   echo "Committing updates..."
-  git commit -m "Refine blueprint workflow visual structure and vertical alignment"
+  git commit -m "Refine blueprint prompt control bar typography and button width alignment"
 fi
 
 echo "Pushing to GitHub..."
