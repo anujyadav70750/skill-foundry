@@ -219,210 +219,845 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 <BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
   <style is:global>
+    @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Playfair+Display:ital,wght@0,400..800;1,400..800&display=swap');
+
     body:has(.testing-1-theme) {
-        background: #EEF4F9 !important;
-        color: #0F172A !important;
+      background-color: #060911 !important;
+      background-image:
+        radial-gradient(ellipse 85% 50% at 50% -10%, rgba(28, 75, 145, 0.35) 0%, rgba(13, 27, 52, 0.15) 50%, transparent 80%),
+        radial-gradient(circle at 50% 55%, rgba(20, 50, 95, 0.1) 0%, transparent 65%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
+      background-size: 100% auto, 100% auto, 40px 40px, 40px 40px !important;
+      color: #CBD5E1 !important;
+      padding-top: 0 !important;
+      min-height: 100vh !important;
+    }
+    @media (max-width: 700px) {
+      body:has(.testing-1-theme) {
         padding-top: 0 !important;
       }
-      @media (max-width: 700px) {
-        body:has(.testing-1-theme) {
-          padding-top: 0 !important;
-        }
-      }
+    }
+    body:has(.testing-1-theme) .site-header {
+      position: fixed !important;
+      top: 16px !important;
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      width: min(calc(100% - 36px), 1160px) !important;
+      border-radius: 9999px !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      background: rgba(8, 14, 24, 0.88) !important;
+      backdrop-filter: blur(20px) !important;
+      -webkit-backdrop-filter: blur(20px) !important;
+      box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.5), 0 0 30px rgba(28, 75, 145, 0.15) !important;
+      z-index: 1000 !important;
+      overflow: visible !important;
+    }
+    @media (max-width: 700px) {
       body:has(.testing-1-theme) .site-header {
-        position: fixed !important;
-        top: 16px !important;
+        top: 8px !important;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
-        width: min(calc(100% - 36px), 1160px) !important;
+        width: min(calc(100% - 20px), 520px) !important;
         border-radius: 9999px !important;
+        background: rgba(6, 11, 19, 0.94) !important;
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        background: rgba(11, 17, 26, 0.95) !important;
-        backdrop-filter: blur(16px) !important;
-        -webkit-backdrop-filter: blur(16px) !important;
-        box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-        z-index: 1000 !important;
-        overflow: visible !important;
+        box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
       }
-      @media (max-width: 700px) {
-        body:has(.testing-1-theme) .site-header {
-          top: 8px !important;
-          left: 50% !important;
-          right: auto !important;
-          transform: translateX(-50%) !important;
-          width: min(calc(100% - 20px), 520px) !important;
-          border-radius: 9999px !important;
-          background: rgba(8, 12, 20, 0.96) !important;
-          backdrop-filter: blur(20px) !important;
-          -webkit-backdrop-filter: blur(20px) !important;
-          border: 1px solid rgba(255, 255, 255, 0.12) !important;
-          box-shadow: 0 10px 28px -4px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
-        }
-      }
+    }
+    body:has(.testing-1-theme) .site-header .nav-wrap {
+      min-height: 62px !important;
+      padding: 0 20px !important;
+      gap: 16px !important;
+    }
+    @media (max-width: 700px) {
       body:has(.testing-1-theme) .site-header .nav-wrap {
-        min-height: 62px !important;
-        padding: 0 20px !important;
-        gap: 16px !important;
+        min-height: 42px !important;
+        height: 42px !important;
+        padding: 0 6px 0 10px !important;
+        gap: 8px !important;
       }
-      @media (max-width: 700px) {
-        body:has(.testing-1-theme) .site-header .nav-wrap {
-          min-height: 42px !important;
-          height: 42px !important;
-          padding: 0 6px 0 10px !important;
-          gap: 8px !important;
-        }
+    }
+    body:has(.testing-1-theme) .site-header .brand span:last-child {
+      color: #FFFFFF !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.12em !important;
+    }
+    @media (max-width: 700px) {
+      body:has(.testing-1-theme) .site-header .brand {
+        font-size: 10px !important;
+        gap: 6px !important;
+        flex-shrink: 0 !important;
       }
       body:has(.testing-1-theme) .site-header .brand span:last-child {
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.12em !important;
-      }
-      @media (max-width: 700px) {
-        body:has(.testing-1-theme) .site-header .brand {
-          font-size: 10px !important;
-          gap: 6px !important;
-          flex-shrink: 0 !important;
-        }
-        body:has(.testing-1-theme) .site-header .brand span:last-child {
-          font-size: 9.5px !important;
-          letter-spacing: 0.06em !important;
-          line-height: 1.1 !important;
-        }
-        body:has(.testing-1-theme) .site-header .brand-mark {
-          width: 26px !important;
-          height: 26px !important;
-          min-width: 26px !important;
-          border-radius: 8px !important;
-          font-size: 9.5px !important;
-        }
+        font-size: 9.5px !important;
+        letter-spacing: 0.06em !important;
+        line-height: 1.1 !important;
       }
       body:has(.testing-1-theme) .site-header .brand-mark {
-        background: rgba(255, 102, 0, 0.15) !important;
-        border-color: rgba(255, 102, 0, 0.55) !important;
-        color: #FF6600 !important;
-        font-weight: 800 !important;
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        border-radius: 8px !important;
+        font-size: 9.5px !important;
       }
+    }
+    body:has(.testing-1-theme) .site-header .brand-mark {
+      background: rgba(255, 102, 0, 0.15) !important;
+      border-color: rgba(255, 102, 0, 0.55) !important;
+      color: #FF6600 !important;
+      font-weight: 800 !important;
+    }
+    body:has(.testing-1-theme) .site-header .header-search-form {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #94A3B8 !important;
+      border-radius: 9999px !important;
+    }
+    @media (max-width: 700px) {
       body:has(.testing-1-theme) .site-header .header-search-form {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border: 1px solid rgba(255, 255, 255, 0.14) !important;
-        color: #94A3B8 !important;
-        border-radius: 9999px !important;
-      }
-      @media (max-width: 700px) {
-        body:has(.testing-1-theme) .site-header .header-search-form {
-          flex: 1 1 auto !important;
-          min-width: 0 !important;
-          width: auto !important;
-          max-width: 220px !important;
-          min-height: 30px !important;
-          height: 30px !important;
-          padding: 0 3px 0 10px !important;
-          gap: 4px !important;
-        }
-        body:has(.testing-1-theme) .site-header .header-search-form input {
-          font-size: 11.5px !important;
-        }
-        body:has(.testing-1-theme) .site-header .header-search-form input::placeholder {
-          font-size: 11px !important;
-        }
-        body:has(.testing-1-theme) .site-header .header-search-submit {
-          width: 24px !important;
-          height: 24px !important;
-          min-width: 24px !important;
-          background: transparent !important;
-          border: none !important;
-        }
-        body:has(.testing-1-theme) .site-header .header-search-submit .search-svg {
-          width: 13px !important;
-          height: 13px !important;
-        }
-        body:has(.testing-1-theme) .site-header .nav-actions {
-          gap: 6px !important;
-          flex: 1 1 auto !important;
-          justify-content: flex-end !important;
-          min-width: 0 !important;
-        }
-        body:has(.testing-1-theme) .site-header .menu-toggle {
-          width: 30px !important;
-          height: 30px !important;
-          min-width: 30px !important;
-          gap: 3px !important;
-        }
-        body:has(.testing-1-theme) .site-header .menu-toggle span {
-          width: 12px !important;
-          height: 1.5px !important;
-        }
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        width: auto !important;
+        max-width: 220px !important;
+        min-height: 30px !important;
+        height: 30px !important;
+        padding: 0 3px 0 10px !important;
+        gap: 4px !important;
       }
       body:has(.testing-1-theme) .site-header .header-search-form input {
-        color: #FFFFFF !important;
+        font-size: 11.5px !important;
       }
       body:has(.testing-1-theme) .site-header .header-search-form input::placeholder {
-        color: #94A3B8 !important;
+        font-size: 11px !important;
       }
       body:has(.testing-1-theme) .site-header .header-search-submit {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border-color: rgba(255, 255, 255, 0.14) !important;
-        color: #E2E8F0 !important;
-        border-radius: 9999px !important;
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+        background: transparent !important;
+        border: none !important;
       }
-      body:has(.testing-1-theme) .site-header .header-search-submit:hover {
-        background: rgba(255, 102, 0, 0.2) !important;
-        border-color: #FF6600 !important;
-        color: #FF6600 !important;
+      body:has(.testing-1-theme) .site-header .header-search-submit .search-svg {
+        width: 13px !important;
+        height: 13px !important;
+      }
+      body:has(.testing-1-theme) .site-header .nav-actions {
+        gap: 6px !important;
+        flex: 1 1 auto !important;
+        justify-content: flex-end !important;
+        min-width: 0 !important;
       }
       body:has(.testing-1-theme) .site-header .menu-toggle {
-        background: rgba(255, 255, 255, 0.08) !important;
-        border-color: rgba(255, 255, 255, 0.14) !important;
-        border-radius: 9999px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        gap: 3px !important;
       }
       body:has(.testing-1-theme) .site-header .menu-toggle span {
-        background: #E2E8F0 !important;
+        width: 12px !important;
+        height: 1.5px !important;
       }
-      body:has(.testing-1-theme) .site-header .menu-toggle:hover span,
-      body:has(.testing-1-theme) .site-header .menu-toggle[aria-expanded="true"] span {
-        background: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-header .header-search-form input {
+      color: #FFFFFF !important;
+    }
+    body:has(.testing-1-theme) .site-header .header-search-form input::placeholder {
+      color: #94A3B8 !important;
+    }
+    body:has(.testing-1-theme) .site-header .header-search-submit {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.14) !important;
+      color: #E2E8F0 !important;
+      border-radius: 9999px !important;
+    }
+    body:has(.testing-1-theme) .site-header .header-search-submit:hover {
+      background: rgba(255, 102, 0, 0.2) !important;
+      border-color: #FF6600 !important;
+      color: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-header .menu-toggle {
+      background: rgba(255, 255, 255, 0.08) !important;
+      border-color: rgba(255, 255, 255, 0.14) !important;
+      border-radius: 9999px !important;
+    }
+    body:has(.testing-1-theme) .site-header .menu-toggle span {
+      background: #E2E8F0 !important;
+    }
+    body:has(.testing-1-theme) .site-header .menu-toggle:hover span,
+    body:has(.testing-1-theme) .site-header .menu-toggle[aria-expanded="true"] span {
+      background: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-menu {
+      background: rgba(10, 16, 26, 0.98) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6) !important;
+      border-radius: 16px !important;
+    }
+    body:has(.testing-1-theme) .site-menu a {
+      color: #CBD5E1 !important;
+    }
+    body:has(.testing-1-theme) .site-menu a:hover {
+      background: rgba(255, 102, 0, 0.12) !important;
+      color: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-footer {
+      background: #04070D !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      color: #94A3B8 !important;
+      padding: 84px 0 52px !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
+      color: #FFFFFF !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item {
+      color: #CBD5E1 !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-nav a {
+      color: #FFFFFF !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
+      color: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-legal a {
+      color: #94A3B8 !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
+      color: #FF6600 !important;
+    }
+    body:has(.testing-1-theme) .site-footer .footer-copyright {
+      color: #64748B !important;
+    }
+
+    /* ==========================================================================
+       TESTING-1 EDITORIAL LUXURY SYSTEM (AWESMOS INSPIRATION)
+       ========================================================================== */
+    .testing-1-theme .resource-page {
+      color: #CBD5E1 !important;
+    }
+
+    /* 1. HERO SECTION */
+    .testing-1-theme .resource-hero-unified-section {
+      position: relative !important;
+      padding-top: 108px !important;
+      padding-bottom: 28px !important;
+      background: transparent !important;
+      border-bottom: none !important;
+      box-shadow: none !important;
+    }
+    @media (max-width: 700px) {
+      .testing-1-theme .resource-hero-unified-section {
+        padding-top: 76px !important;
+        padding-bottom: 18px !important;
       }
-      body:has(.testing-1-theme) .site-menu {
-        background: rgba(13, 21, 32, 0.98) !important;
-        border-color: #1E293B !important;
-        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+    }
+    .testing-1-theme .hero-unified-header {
+      text-align: center !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .testing-1-theme .hero-unified-header .breadcrumbs {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      color: #94A3B8 !important;
+      font-size: 13px !important;
+      margin-bottom: 14px !important;
+    }
+    .testing-1-theme .hero-unified-header .breadcrumbs a {
+      color: #94A3B8 !important;
+      text-decoration: none !important;
+      transition: color 0.15s ease !important;
+    }
+    .testing-1-theme .hero-unified-header .breadcrumbs a:hover {
+      color: #F8FAFC !important;
+    }
+    .testing-1-theme .hero-unified-header .eyebrow {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      color: #94A3B8 !important;
+      border-radius: 9999px !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+      padding: 6px 16px !important;
+      margin-bottom: 18px !important;
+      backdrop-filter: blur(12px) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .testing-1-theme .hero-unified-header h1 {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(34px, 5.2vw, 56px) !important;
+      font-weight: 500 !important;
+      line-height: 1.12 !important;
+      letter-spacing: -0.025em !important;
+      color: #FFFFFF !important;
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.6) !important;
+      max-width: 900px !important;
+      margin: 0 auto 20px !important;
+      text-align: center !important;
+    }
+    .testing-1-theme .publisher-identity {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 9999px !important;
+      padding: 6px 18px 6px 6px !important;
+      backdrop-filter: blur(12px) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+      margin-bottom: 24px !important;
+    }
+    .testing-1-theme .publisher-avatar-box {
+      width: 36px !important;
+      height: 36px !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+    .testing-1-theme .publisher-name-row strong {
+      color: #FFFFFF !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+    }
+    .testing-1-theme .publisher-verification svg {
+      width: 15px !important;
+      height: 15px !important;
+      fill: #38BDF8 !important;
+    }
+    .testing-1-theme .publisher-meta {
+      color: #94A3B8 !important;
+      font-size: 11.5px !important;
+    }
+    .testing-1-theme .hero-image-wrap {
+      background: rgba(14, 22, 36, 0.6) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 24px !important;
+      padding: 10px !important;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(30, 80, 165, 0.16) !important;
+      backdrop-filter: blur(20px) !important;
+      max-width: 1080px !important;
+      margin: 0 auto 24px !important;
+      box-sizing: border-box !important;
+    }
+    .testing-1-theme .hero-image {
+      border-radius: 16px !important;
+      width: 100% !important;
+      aspect-ratio: 16/9 !important;
+      object-fit: cover !important;
+      display: block !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .testing-1-theme .resource-description .lead {
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+      font-size: 1.15rem !important;
+      line-height: 1.75 !important;
+      color: #CBD5E1 !important;
+      text-align: center !important;
+      max-width: 840px !important;
+      margin: 0 auto !important;
+    }
+
+    /* 2. TRANSITION BRIDGE / START HERE CUE */
+    .testing-1-theme .resource-transition-bridge {
+      display: flex !important;
+      justify-content: center !important;
+      margin: 16px 0 24px !important;
+    }
+    .testing-1-theme .guide-cue {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      background: rgba(14, 23, 38, 0.92) !important;
+      border: 1px solid rgba(59, 130, 246, 0.35) !important;
+      color: #F8FAFC !important;
+      border-radius: 9999px !important;
+      padding: 12px 34px !important;
+      width: min(520px, calc(100% - 48px)) !important;
+      max-width: min(540px, calc(100% - 32px)) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.12em !important;
+      text-decoration: none !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 24px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+      transition: all 0.2s ease !important;
+    }
+    .testing-1-theme .guide-cue:hover {
+      transform: translateY(-2px) !important;
+      border-color: rgba(59, 130, 246, 0.6) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 32px rgba(59, 130, 246, 0.35) !important;
+    }
+    .testing-1-theme .guide-cue-icon {
+      color: #38BDF8 !important;
+    }
+
+    /* 3. SECTION WRAPPERS (INTRODUCTION, AT A GLANCE, TOOLS & RESOURCES) */
+    .testing-1-theme .resource-section {
+      background: linear-gradient(180deg, rgba(16, 26, 44, 0.7) 0%, rgba(9, 15, 27, 0.85) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 24px !important;
+      padding: 36px 40px !important;
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      backdrop-filter: blur(16px) !important;
+      margin-bottom: 24px !important;
+      box-sizing: border-box !important;
+    }
+    @media (max-width: 640px) {
+      .testing-1-theme .resource-section {
+        padding: 24px 20px !important;
+        border-radius: 20px !important;
+      }
+    }
+    .testing-1-theme .resource-section .section-heading {
+      margin-bottom: 0 !important;
+    }
+    .testing-1-theme .section-heading .eyebrow {
+      display: inline-flex !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #94A3B8 !important;
+      border-radius: 9999px !important;
+      font-size: 10.5px !important;
+      font-weight: 700 !important;
+      letter-spacing: 0.14em !important;
+      text-transform: uppercase !important;
+      padding: 4px 14px !important;
+      margin-bottom: 16px !important;
+    }
+    .testing-1-theme .section-heading h2 {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(26px, 3.5vw, 36px) !important;
+      font-weight: 500 !important;
+      line-height: 1.2 !important;
+      letter-spacing: -0.02em !important;
+      color: #FFFFFF !important;
+      margin: 0 0 12px !important;
+    }
+    .testing-1-theme .section-lead,
+    .testing-1-theme .section-subcopy {
+      color: #CBD5E1 !important;
+      font-size: 16px !important;
+      line-height: 1.75 !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+    .testing-1-theme .tools-list {
+      display: flex !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      margin-top: 24px !important;
+    }
+    .testing-1-theme .tips-list {
+      margin-top: 22px !important;
+    }
+    .testing-1-theme .video-frame {
+      margin-top: 24px !important;
+    }
+    .testing-1-theme .blueprint-workflow-container {
+      margin-top: 24px !important;
+    }
+    @media (max-width: 640px) {
+      .testing-1-theme .section-heading .eyebrow {
+        margin-bottom: 14px !important;
+      }
+      .testing-1-theme .section-heading h2 {
+        margin: 0 0 10px !important;
+      }
+      .testing-1-theme .tools-list,
+      .testing-1-theme .video-frame,
+      .testing-1-theme .blueprint-workflow-container {
+        margin-top: 20px !important;
+      }
+      .testing-1-theme .tips-list {
+        margin-top: 18px !important;
+      }
+    }
+    .testing-1-theme .tool-card {
+      width: 76px !important;
+      height: 76px !important;
+      border-radius: 20px !important;
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .testing-1-theme .tool-card:hover {
+      transform: translateY(-4px) scale(1.05) !important;
+      border-color: rgba(255, 102, 0, 0.55) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 102, 0, 0.25) !important;
+    }
+    .testing-1-theme .tool-logo {
+      width: 46px !important;
+      height: 46px !important;
+      object-fit: contain !important;
+      border-radius: 12px !important;
+    }
+
+    /* 4. WORKFLOW BLUEPRINT (CORE CENTERPIECE) */
+    .testing-1-theme .blueprint-workflow-container {
+      background: linear-gradient(180deg, rgba(13, 21, 37, 0.92) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
+      border: 1px solid rgba(59, 130, 246, 0.25) !important;
+      border-radius: 28px !important;
+      padding: 48px 28px 40px !important;
+      box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), 0 0 60px rgba(59, 130, 246, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+      backdrop-filter: blur(20px) !important;
+      position: relative !important;
+      width: 100% !important;
+      max-width: 1080px !important;
+      margin: 20px auto 0 !important;
+      box-sizing: border-box !important;
+    }
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-workflow-container {
+        padding: 36px 14px 28px !important;
+        border-radius: 22px !important;
+      }
+    }
+    .testing-1-theme .blueprint-header-capsule {
+      position: absolute !important;
+      top: -18px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      background: #0B1320 !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      border-radius: 9999px !important;
+      padding: 6px 18px !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), 0 0 24px rgba(59, 130, 246, 0.2) !important;
+      white-space: nowrap !important;
+      z-index: 10 !important;
+    }
+    .testing-1-theme .blueprint-capsule-label {
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      color: #38BDF8 !important;
+      font-size: 11px !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.14em !important;
+    }
+    .testing-1-theme .blueprint-capsule-title {
+      color: #F8FAFC !important;
+      font-size: 12px !important;
+      font-weight: 600 !important;
+    }
+    .testing-1-theme .blueprint-step-container {
+      background: linear-gradient(180deg, rgba(15, 24, 42, 0.85) 0%, rgba(10, 16, 28, 0.95) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.09) !important;
+      border-radius: 24px !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      padding: 36px 24px 28px !important;
+      position: relative !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      margin-bottom: 24px !important;
+    }
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-step-container {
+        padding: 30px 14px 20px !important;
+        border-radius: 18px !important;
+      }
+    }
+    /* Step accent themes */
+    .testing-1-theme .blueprint-step-container.step-theme-blue {
+      border-color: rgba(59, 130, 246, 0.35) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(59, 130, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .testing-1-theme .blueprint-step-container.step-theme-green {
+      border-color: rgba(16, 185, 129, 0.35) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .testing-1-theme .blueprint-step-container.step-theme-orange {
+      border-color: rgba(249, 115, 22, 0.35) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(249, 115, 22, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .testing-1-theme .blueprint-step-container.step-theme-cyan {
+      border-color: rgba(6, 182, 212, 0.35) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+    .testing-1-theme .blueprint-step-container.step-theme-purple {
+      border-color: rgba(168, 85, 247, 0.4) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 40px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+    }
+    .testing-1-theme .blueprint-step-capsule {
+      position: absolute !important;
+      top: -14px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background: #0D1626 !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      color: #FFFFFF !important;
+      font: 800 11px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.14em !important;
+      padding: 6px 16px !important;
+      border-radius: 9999px !important;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45) !important;
+      z-index: 5 !important;
+    }
+    .testing-1-theme .blueprint-step-title {
+      color: #FFFFFF !important;
+      font-size: 20px !important;
+      font-weight: 700 !important;
+      text-align: center !important;
+      margin: 8px 0 22px !important;
+      letter-spacing: -0.015em !important;
+    }
+    /* Subnodes */
+    .testing-1-theme .blueprint-subnode {
+      background: rgba(10, 16, 28, 0.7) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 18px !important;
+      padding: 18px 20px !important;
+      margin-bottom: 16px !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    @media (max-width: 640px) {
+      .testing-1-theme .blueprint-subnode {
+        padding: 14px 12px !important;
         border-radius: 16px !important;
       }
-      body:has(.testing-1-theme) .site-menu a {
-        color: #CBD5E1 !important;
+    }
+    .testing-1-theme .blueprint-subnode-header {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin-bottom: 14px !important;
+    }
+    .testing-1-theme .blueprint-node-badge {
+      width: 26px !important;
+      height: 26px !important;
+      border-radius: 50% !important;
+      background: rgba(59, 130, 246, 0.15) !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      color: #38BDF8 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font: 800 12px/1 'JetBrains Mono', monospace !important;
+      flex-shrink: 0 !important;
+    }
+    .testing-1-theme .blueprint-node-title {
+      color: #FFFFFF !important;
+      font: 700 12px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.12em !important;
+      text-transform: uppercase !important;
+    }
+    .testing-1-theme .blueprint-node-subtitle {
+      color: #94A3B8 !important;
+      font-size: 12px !important;
+      margin-left: 8px !important;
+    }
+    .testing-1-theme .blueprint-setting-chip {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 10px !important;
+      padding: 8px 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+    }
+    .testing-1-theme .setting-label {
+      color: #94A3B8 !important;
+      font: 700 10px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.1em !important;
+    }
+    .testing-1-theme .setting-val {
+      color: #F8FAFC !important;
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+    }
+    .testing-1-theme .blueprint-sub-arrow {
+      display: flex !important;
+      justify-content: center !important;
+      color: #38BDF8 !important;
+      margin: 10px 0 !important;
+    }
+    .testing-1-theme .blueprint-step-transition {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 10px !important;
+      margin: 8px 0 24px !important;
+      width: 100% !important;
+    }
+    .testing-1-theme .blueprint-instruction-container {
+      position: relative !important;
+      background: linear-gradient(180deg, rgba(17, 26, 42, 0.92) 0%, rgba(10, 17, 29, 0.98) 100%) !important;
+      border: 1px solid rgba(59, 130, 246, 0.3) !important;
+      border-radius: 18px !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      padding: 22px 24px 18px !important;
+      width: 100% !important;
+      max-width: 760px !important;
+      box-sizing: border-box !important;
+    }
+    .testing-1-theme .blueprint-instruction-capsule {
+      position: absolute !important;
+      top: -12px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      background: #0C1628 !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      color: #38BDF8 !important;
+      font: 800 10.5px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.14em !important;
+      padding: 4px 14px !important;
+      border-radius: 9999px !important;
+    }
+    .testing-1-theme .blueprint-instruction-body {
+      display: flex !important;
+      align-items: flex-start !important;
+      gap: 12px !important;
+    }
+    .testing-1-theme .blueprint-instruction-badge {
+      width: 22px !important;
+      height: 22px !important;
+      border-radius: 50% !important;
+      background: rgba(59, 130, 246, 0.2) !important;
+      color: #38BDF8 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font: 800 11px/1 'JetBrains Mono', monospace !important;
+      flex-shrink: 0 !important;
+      margin-top: 2px !important;
+    }
+    .testing-1-theme .blueprint-instruction-text {
+      color: #E2E8F0 !important;
+      font-size: 14.5px !important;
+      line-height: 1.6 !important;
+    }
+
+    /* 5. TIPS SECTION */
+    .testing-1-theme .tips-list {
+      background: linear-gradient(180deg, rgba(16, 26, 44, 0.7) 0%, rgba(9, 15, 27, 0.85) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 22px !important;
+      padding: 24px 28px 24px 44px !important;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5) !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .testing-1-theme .tips-list li {
+      color: #CBD5E1 !important;
+      font-size: 15px !important;
+      line-height: 1.7 !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+      padding: 14px 0 14px 6px !important;
+    }
+    .testing-1-theme .tips-list li:last-child {
+      border-bottom: none !important;
+    }
+
+    /* 6. TAGS */
+    .testing-1-theme .tags {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      gap: 10px !important;
+      padding: 4px 0 12px !important;
+      scrollbar-width: none !important;
+    }
+    .testing-1-theme .tags a {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #CBD5E1 !important;
+      border-radius: 9999px !important;
+      padding: 8px 18px !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      white-space: nowrap !important;
+      transition: all 0.2s ease !important;
+    }
+    .testing-1-theme .tags a:hover {
+      background: rgba(255, 102, 0, 0.15) !important;
+      border-color: rgba(255, 102, 0, 0.5) !important;
+      color: #FF8833 !important;
+      box-shadow: 0 0 18px rgba(255, 102, 0, 0.25) !important;
+    }
+
+    /* 7. CTA CARD */
+    .testing-1-theme .resource-cta {
+      padding: 36px 0 !important;
+      margin: 0 !important;
+    }
+    .testing-1-theme .cta-card {
+      background: radial-gradient(ellipse 90% 80% at 50% -20%, rgba(255, 102, 0, 0.25) 0%, rgba(13, 21, 35, 0.95) 70%) !important;
+      border: 1px solid rgba(255, 102, 0, 0.35) !important;
+      border-radius: 28px !important;
+      padding: 48px 36px !important;
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 60px rgba(255, 102, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 28px !important;
+      box-sizing: border-box !important;
+    }
+    @media (max-width: 768px) {
+      .testing-1-theme .cta-card {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 36px 24px !important;
       }
-      body:has(.testing-1-theme) .site-menu a:hover {
-        background: rgba(255, 102, 0, 0.12) !important;
-        color: #FF6600 !important;
-      }
-      body:has(.testing-1-theme) .site-footer {
-        background: #0A100E !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-        color: #94A3B8 !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
-        color: #FFFFFF !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item {
-        color: #CBD5E1 !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-nav a {
-        color: #FFFFFF !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
-        color: #FF6600 !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-legal a {
-        color: #94A3B8 !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
-        color: #FF6600 !important;
-      }
-      body:has(.testing-1-theme) .site-footer .footer-copyright {
-        color: #64748B !important;
-      }
-    </style>
+    }
+    .testing-1-theme .cta-card h2 {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(28px, 4vw, 42px) !important;
+      color: #FFFFFF !important;
+      font-weight: 500 !important;
+      line-height: 1.18 !important;
+      letter-spacing: -0.02em !important;
+      margin: 0 0 10px !important;
+    }
+    .testing-1-theme .cta-card p {
+      color: #CBD5E1 !important;
+      font-size: 16px !important;
+      line-height: 1.6 !important;
+      margin: 0 !important;
+      max-width: 600px !important;
+    }
+    .testing-1-theme .cta-card .button-primary {
+      background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      border-radius: 9999px !important;
+      padding: 14px 28px !important;
+      font-weight: 700 !important;
+      font-size: 15px !important;
+      box-shadow: 0 8px 24px rgba(234, 85, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+      white-space: nowrap !important;
+      text-decoration: none !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      transition: all 0.2s ease !important;
+    }
+    .testing-1-theme .cta-card .button-primary:hover {
+      transform: translateY(-2px) scale(1.02) !important;
+      box-shadow: 0 12px 30px rgba(234, 85, 0, 0.5), 0 0 24px rgba(255, 102, 0, 0.4) !important;
+    }
+  </style>
   <div class={isTesting1 ? "testing-1-theme" : ""}>
     <article class="resource-page">
     {isTesting1 ? (
@@ -1884,422 +2519,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
     }
   
-    /* -------------------------------------------------------------
-       TESTING-1 DEDICATED MODERN ORANGE THEME
-       Applies only to resource testing-1 page
-       ------------------------------------------------------------- */
-    .testing-1-theme {
-      background: #EEF4F9;
-      color: #0F172A;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      line-height: 1.6;
-    }
-    .testing-1-theme .resource-page {
-      background: #EEF4F9;
-      color: #0F172A;
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-    }
-    .testing-1-theme .resource-intro {
-      padding-top: 32px;
-      padding-bottom: 8px;
-    }
-    .testing-1-theme .breadcrumbs a {
-      color: #64748B;
-      font-size: 13px;
-      transition: color 0.15s ease;
-    }
-    .testing-1-theme .breadcrumbs a:hover {
-      color: #FF6600;
-    }
-    .testing-1-theme .breadcrumbs span {
-      color: #94A3B8;
-      font-size: 13px;
-    }
-    .testing-1-theme .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 9999px;
-      background: #FFF5EE;
-      border: 1px solid #FFD8BE;
-      color: #FF6600;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .testing-1-theme .resource-intro h1 {
-      color: #0F172A;
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.12;
-      margin-bottom: 20px;
-    }
-    .testing-1-theme .publisher-identity {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 14px;
-      box-shadow: none;
-      margin-top: 18px;
-      margin-bottom: 4px;
-    }
-    .testing-1-theme .publisher-identity::before {
-      content: none !important;
-      display: none !important;
-    }
-    .testing-1-theme .publisher-avatar-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 11px;
-      border: 1.5px solid rgba(61, 214, 208, 0.45);
-      background: #07111F;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-    .testing-1-theme .publisher-avatar {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 9px;
-      object-fit: cover;
-      display: block;
-    }
-    .testing-1-theme .publisher-details {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 3px;
-    }
-    .testing-1-theme .publisher-name-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      line-height: 1.2;
-    }
-    .testing-1-theme .publisher-details strong {
-      color: #0F172A;
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .testing-1-theme .publisher-verification {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      vertical-align: middle;
-      line-height: 1;
-    }
-    .testing-1-theme .publisher-verification svg {
-      width: 17px;
-      height: 17px;
-      display: block;
-    }
-    .testing-1-theme .publisher-verification svg circle {
-      fill: #00D4E5;
-    }
-    .testing-1-theme .publisher-verification svg path {
-      fill: none;
-      stroke: #FFFFFF;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .testing-1-theme .publisher-meta {
-      color: #64748B;
-      font-size: 13px;
-      font-weight: 500;
-      line-height: 1.3;
-    }
-    /* Unified hero section touching top, left, and right page boundaries directly, with light foggy blue fill and curved bottom edges below the thumbnail description */
-    .testing-1-theme .resource-hero-unified-section {
-      width: 100%;
-      background: #EEF4F9;
-      margin: 0;
-      padding-top: 108px;
-      padding-bottom: 34px;
-      border-bottom-left-radius: 36px;
-      border-bottom-right-radius: 36px;
-      border-bottom: 1px solid #D2DFEB;
-      box-shadow: 0 12px 28px -6px rgba(15, 23, 42, 0.05);
-    }
-    .testing-1-theme .hero-unified-header {
-      padding-top: 8px;
-      padding-bottom: 0;
-    }
-    .testing-1-theme .hero-unified-header .breadcrumbs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-    .testing-1-theme .hero-unified-header .breadcrumbs a {
-      color: #64748B;
-      font-size: 13px;
-      transition: color 0.15s ease;
-    }
-    .testing-1-theme .hero-unified-header .breadcrumbs a:hover {
-      color: #FF6600;
-    }
-    .testing-1-theme .hero-unified-header .breadcrumbs span {
-      color: #94A3B8;
-      font-size: 13px;
-    }
-    .testing-1-theme .hero-unified-header .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      background: #FFF5EE;
-      border: 1px solid #FFD8BE;
-      color: #FF6600;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-    .testing-1-theme .hero-unified-header h1 {
-      color: #0F172A;
-      font-size: clamp(26px, 3.8vw, 40px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.16;
-      margin: 0 0 12px;
-    }
-    .testing-1-theme .hero-unified-header .publisher-identity {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: none;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
-    .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
-      margin-top: 14px;
-      margin-bottom: 12px;
-    }
-    .testing-1-theme .resource-hero-unified-section .hero-image {
-      width: 100%;
-      display: block;
-      border-radius: 18px;
-      border: 1px solid #E2E8F0;
-      box-shadow: 0 10px 28px -4px rgba(15, 23, 42, 0.08);
-      max-height: 560px;
-      object-fit: cover;
-    }
-    .testing-1-theme .resource-hero-unified-section .resource-hero-description {
-      margin-top: 0;
-    }
-    .testing-1-theme .resource-hero-unified-section .resource-description {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-      box-shadow: none;
-      margin-top: 0;
-    }
-    .testing-1-theme .resource-hero-unified-section .resource-description .lead {
-      color: #334155;
-      font-size: 1.08rem;
-      line-height: 1.58;
-      margin: 0;
-    }
-    @media (max-width: 600px) {
-      .testing-1-theme .resource-hero-unified-section {
-        padding-top: 86px;
-        padding-bottom: 24px;
-        border-bottom-left-radius: 24px;
-        border-bottom-right-radius: 24px;
-        border-bottom: 1px solid #D2DFEB;
-      }
-      .testing-1-theme .hero-unified-header {
-        padding: 0;
-      }
-      .testing-1-theme .hero-unified-header .breadcrumbs {
-        margin-bottom: 6px;
-      }
-      .testing-1-theme .hero-unified-header .eyebrow {
-        margin-bottom: 8px;
-      }
-      .testing-1-theme .hero-unified-header h1 {
-        font-size: 23px;
-        margin-bottom: 10px;
-      }
-      .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
-        margin-top: 10px;
-        margin-bottom: 10px;
-      }
-      .testing-1-theme .resource-hero-unified-section .hero-image {
-        border-radius: 13px;
-      }
-      .testing-1-theme .resource-hero-unified-section .resource-description .lead {
-        font-size: 0.98rem;
-        line-height: 1.52;
-      }
-    }
-    .testing-1-theme .article-layout {
-      margin-top: 36px;
-      margin-bottom: 0 !important;
-      padding-bottom: 0 !important;
-    }
-    .testing-1-theme .resource-content {
-      gap: 36px;
-    }
-    .testing-1-theme .resource-section {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0 4px !important;
-      box-shadow: none;
-      margin-top: 0 !important;
-      border-top: none !important;
-    }
-    .testing-1-theme .resource-section.intro-section,
-    .testing-1-theme .resource-section.tools-section {
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0 4px !important;
-      margin: 0 !important;
-    }
-    .testing-1-theme .tools-list {
-      padding: 0 !important;
-      margin: 0 !important;
-    }
-    .testing-1-theme .resource-section.workflow-section {
-      background: transparent;
-      border: none !important;
-      box-shadow: none;
-      padding: 0 !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-    .testing-1-theme .section-heading {
-      margin-bottom: 12px;
-    }
-    .testing-1-theme .section-heading .eyebrow {
-      margin-bottom: 6px;
-      background: transparent;
-      border: none;
-      color: #64748B;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0;
-      border-radius: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .testing-1-theme .section-heading .eyebrow::before {
-      content: "";
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #EA580C;
-      opacity: 0.85;
-    }
-    .testing-1-theme .section-heading h2 {
-      color: #0F172A;
-      font-size: 1.65rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      line-height: 1.25;
-    }
-    .testing-1-theme .section-subcopy,
-    .testing-1-theme .section-lead {
-      color: #334155;
-      font-size: 1.05rem;
-      line-height: 1.68;
-    }
-    .testing-1-theme .resource-transition-bridge {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      margin: 4px auto 0;
-      z-index: 2;
-    }
-    .testing-1-theme .transition-track-line {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent 0%, rgba(203, 213, 225, 0.35) 15%, rgba(203, 213, 225, 0.65) 50%, rgba(203, 213, 225, 0.35) 85%, transparent 100%);
-      z-index: 1;
-      transform: translateY(-50%);
-      pointer-events: none;
-    }
-    .testing-1-theme .guide-cue {
-      position: relative;
-      z-index: 2;
-      background: #FFFFFF;
-      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
-      border: 1px solid #CBD5E1;
-      border-radius: 9999px;
-      color: #0F172A;
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      padding: 13px 44px;
-      width: min(520px, calc(100% - 48px));
-      text-decoration: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      max-width: min(560px, calc(100% - 32px));
-      margin: 0 auto;
-      white-space: nowrap;
-      box-shadow: 0 2px 8px -1px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.03), inset 0 1px 0 #FFFFFF;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .testing-1-theme .guide-cue:hover {
-      background: #FFFFFF;
-      border-color: #94A3B8;
-      color: #0F172A;
-      transform: translateY(-1.5px);
-      box-shadow: 0 6px 16px -3px rgba(2, 132, 199, 0.12), 0 2px 4px -1px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF;
-    }
-    .testing-1-theme .guide-cue svg {
-      stroke: #0284C7;
-      width: 13px;
-      height: 13px;
-      flex-shrink: 0;
-      transform: none !important;
-      transition: transform 0.2s ease, stroke 0.2s ease;
-    }
-    .testing-1-theme .guide-cue:hover svg {
-      stroke: #0369A1;
-      transform: translateY(1.5px) !important;
-    }
-    .testing-1-theme .transition-indicator-stem {
-      display: none !important;
-    }
     .testing-1-theme .tools-list .tool-card {
       width: 64px !important;
       height: 64px !important;
@@ -2332,297 +2551,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       border-color: #38BDF8 !important;
       transform: translateY(-2px) !important;
       box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2) !important;
-    }
-    .testing-1-theme .workflow-tool-logo {
-      padding: 0 !important;
-      overflow: hidden !important;
-      border: 1px solid #E8EAEF;
-      border-radius: 14px;
-      background: transparent;
-    }
-    .testing-1-theme .workflow-tool-logo img {
-      width: 100% !important;
-      height: 100% !important;
-      min-width: 100% !important;
-      min-height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      border-radius: 0 !important;
-      object-fit: cover !important;
-    }
-    .testing-1-theme .workflow-card {
-      background: #FFFFFF;
-      border: 1px solid #E8EAEF;
-      border-radius: 16px;
-      box-shadow: 0 6px 20px -4px rgba(15, 23, 42, 0.04);
-      padding: 24px 28px;
-      margin-bottom: 0;
-    }
-    .testing-1-theme .workflow-number {
-      background: linear-gradient(135deg, #FF6600 0%, #FF7700 100%);
-      color: #FFFFFF;
-      box-shadow: 0 4px 12px rgba(255, 102, 0, 0.35);
-      font-weight: 800;
-    }
-    .testing-1-theme .workflow-label {
-      color: #FF6600;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-    .testing-1-theme .workflow-step-head h3 {
-      color: #0F172A;
-      font-weight: 800;
-    }
-    .testing-1-theme .workflow-tool-block .workflow-mini-label,
-    .testing-1-theme .workflow-settings-block .workflow-mini-label {
-      color: #64748B;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-    .testing-1-theme .workflow-tool-row {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 12px;
-      padding: 10px 14px;
-    }
-    .testing-1-theme .workflow-tool-purpose {
-      background: #FFF5EE;
-      border: 1px solid #FFD8BE;
-      color: #FF6600;
-      font-weight: 700;
-      border-radius: 6px;
-      padding: 4px 10px;
-    }
-    .testing-1-theme .workflow-setting {
-      background: #FFFFFF;
-      border: 1px solid #CBD5E1;
-      border-radius: 6px;
-      color: #0F172A;
-      padding: 4px 10px;
-    }
-    .testing-1-theme .workflow-setting b {
-      color: #64748B;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
-    .testing-1-theme .workflow-block-title {
-      color: #0F172A;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-    .testing-1-theme .workflow-block-help {
-      color: #64748B;
-    }
-    .testing-1-theme .workflow-media-card {
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-    .testing-1-theme .workflow-media-card:hover {
-      border-color: #FF6600;
-      transform: translateY(-2px);
-    }
-    .testing-1-theme .workflow-media-card .media-type {
-      background: #FFF5EE;
-      color: #FF6600;
-      font-weight: 700;
-    }
-    .testing-1-theme .media-caption strong {
-      color: #0F172A;
-    }
-    .testing-1-theme .media-caption small {
-      color: #64748B;
-    }
-    .testing-1-theme .workflow-prompt {
-      background: #0B111D !important;
-      border: 1px solid #263449 !important;
-      border-radius: 14px;
-      aspect-ratio: 1 / 1;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
-    }
-    .testing-1-theme .workflow-prompt-head {
-      border-bottom: 1px solid #263449 !important;
-      background: #0D1726 !important;
-      height: 46px;
-      min-height: 46px;
-      max-height: 46px;
-      padding: 0;
-      margin: 0;
-      display: grid;
-      grid-template-columns: auto 1fr auto !important;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .testing-1-theme [data-copy-step],
-    .testing-1-theme [data-expand-step] {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      height: 100% !important;
-      width: 100% !important;
-      padding: 0 11px !important;
-      margin: 0 !important;
-      border: 0 !important;
-      background: linear-gradient(180deg, #1A4674 0%, #123454 100%) !important;
-      color: #F8FAFC !important;
-      font-size: 13px !important;
-      font-weight: 700 !important;
-      cursor: pointer !important;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.12),
-        inset 0 -1px 0 rgba(0,0,0,0.28) !important;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-      border-radius: 0 !important;
-      white-space: nowrap !important;
-      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
-      user-select: none !important;
-    }
-    .testing-1-theme [data-copy-step] {
-      border-right: 1px solid #334155 !important;
-      min-width: 72px !important;
-    }
-    .testing-1-theme [data-expand-step] {
-      border-left: 1px solid #334155 !important;
-    }
-    .testing-1-theme .workflow-prompt-head span {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      height: 100% !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      padding: 0 6px !important;
-      background: #0A1321 !important;
-      color: #A8B8CA !important;
-      font: 700 13px/1 'JetBrains Mono', monospace !important;
-      letter-spacing: 0.08em !important;
-      text-align: center !important;
-      white-space: nowrap !important;
-      user-select: none !important;
-    }
-    .testing-1-theme [data-copy-step]:hover,
-    .testing-1-theme [data-expand-step]:hover {
-      background: linear-gradient(180deg, #215A91 0%, #17456E 100%) !important;
-      color: #FFFFFF !important;
-      transform: none !important;
-    }
-    .testing-1-theme [data-copy-step]:active,
-    .testing-1-theme [data-expand-step]:active {
-      background: #102E4B !important;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
-      transform: none !important;
-    }
-    .testing-1-theme [data-step-prompt] {
-      flex: 1 1 0 !important;
-      min-height: 0 !important;
-      aspect-ratio: auto !important;
-      width: 100% !important;
-      height: auto !important;
-      max-height: none !important;
-      overflow-y: auto !important;
-      overflow-x: hidden !important;
-      color: #F1F5F9 !important;
-      background: #050A11 !important;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      line-height: 1.65;
-      padding: 18px 16px;
-      margin: 0;
-      box-sizing: border-box;
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-wrap: anywhere;
-      scrollbar-width: thin;
-      scrollbar-color: #3B82F6 #101923 !important;
-      box-shadow:
-        inset 0 5px 14px rgba(0,0,0,0.18),
-        inset 0 -5px 14px rgba(0,0,0,0.14) !important;
-    }
-    .testing-1-theme .workflow-download {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      height: 46px !important;
-      min-height: 46px !important;
-      max-height: 46px !important;
-      width: 100% !important;
-      margin: 0 !important;
-      padding: 0 16px !important;
-      border: 0 !important;
-      border-top: 1px solid #2F5273 !important;
-      border-radius: 0 !important;
-      background: linear-gradient(180deg, #174B7A 0%, #10385D 100%) !important;
-      color: #E5F2FF !important;
-      font-size: 13px !important;
-      font-weight: 700 !important;
-      cursor: pointer !important;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.10),
-        inset 0 -1px 0 rgba(0,0,0,0.22) !important;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.22);
-      transition: background 0.15s ease, color 0.15s ease !important;
-      user-select: none !important;
-    }
-    .testing-1-theme .workflow-download:hover {
-      background: linear-gradient(180deg, #1E5E95 0%, #16486F 100%) !important;
-      color: #FFFFFF !important;
-      transform: none !important;
-    }
-    .testing-1-theme .workflow-download:active {
-      background: #10304E !important;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
-      transform: none !important;
-    }
-    .testing-1-theme .workflow-next-connector {
-      padding: 6px 0;
-    }
-    .testing-1-theme .workflow-next-connector .connector-line {
-      background: #CBD5E1;
-      height: 12px;
-    }
-    .testing-1-theme .workflow-next-connector .connector-cue {
-      background: #FFFFFF;
-      border: 1px solid #E8EAEF;
-      border-radius: 9999px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
-    }
-    .testing-1-theme .connector-cue span {
-      color: #FF6600;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-    .testing-1-theme .connector-cue p {
-      color: #334155;
-    }
-    .testing-1-theme .connector-cue svg {
-      stroke: #FF6600;
-    }
-    .testing-1-theme .workflow-final-result {
-      background: #FFFFFF;
-      border: 1.5px solid #E2E8F0;
-      border-radius: 16px;
-      box-shadow: 0 10px 28px -6px rgba(234, 88, 12, 0.08), 0 4px 14px -2px rgba(15, 23, 42, 0.04);
-      padding: 24px 28px;
-      margin-top: 14px;
-    }
-    .testing-1-theme .workflow-final-badge {
-      background: #FFF7ED;
-      border: 1px solid #FFEDD5;
-      color: #EA580C;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-    }
-    .testing-1-theme .workflow-final-result h3 {
-      color: #0F172A;
-      font-weight: 800;
     }
     body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog,
     .testing-1-theme [data-prompt-modal] .prompt-modal-dialog {
@@ -2660,263 +2588,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       background: #EA580C;
       border-color: #EA580C;
       color: #FFFFFF;
-    }
-    .testing-1-theme .tips-section {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      box-shadow: none;
-      padding: 0 4px !important;
-      margin-top: 0 !important;
-      margin-bottom: 0 !important;
-    }
-    .testing-1-theme .tips-list {
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      border-radius: 16px;
-      padding: 20px 24px 20px 44px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-      margin: 0;
-      box-sizing: border-box;
-    }
-    .testing-1-theme .tips-list li {
-      color: #334155;
-      font-size: 15px;
-      line-height: 1.6;
-      border-bottom: 1px solid #F1F5F9;
-      padding: 12px 0 12px 6px;
-    }
-    .testing-1-theme .tips-list li:first-child {
-      padding-top: 4px;
-    }
-    .testing-1-theme .tips-list li:last-child {
-      border-bottom: none;
-      padding-bottom: 4px;
-    }
-    .testing-1-theme .tips-list li::before {
-      background: #FF6600;
-    }
-    .testing-1-theme .tags {
-      margin-top: 0;
-      margin-bottom: 0;
-      display: flex;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      gap: 8px;
-      width: 100%;
-      max-width: 100%;
-      padding: 2px 2px 6px;
-      box-sizing: border-box;
-    }
-    .testing-1-theme .tags::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
-    }
-    .testing-1-theme .tags a {
-      flex: 0 0 auto;
-      white-space: nowrap;
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      color: #475569;
-      border-radius: 9999px;
-      padding: 7px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.15s ease;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
-    }
-    .testing-1-theme .tags a:hover {
-      background: #FFF7ED;
-      border-color: #FDBA74;
-      color: #EA580C;
-    }
-    .testing-1-theme .related-section {
-      background: #EEF4F9;
-      border-top: 1px solid #E2E8F0;
-      padding: 56px 0 36px;
-    }
-    .testing-1-theme .related-section .section-heading h2 {
-      color: #0F172A;
-      font-size: 1.65rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-    }
-    .testing-1-theme .related-section .section-heading .eyebrow {
-      background: transparent;
-      border: none;
-      color: #64748B;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0;
-      border-radius: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .testing-1-theme .related-section .section-heading .eyebrow::before {
-      content: "";
-      display: inline-block;
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #EA580C;
-      opacity: 0.85;
-    }
-    .testing-1-theme .related-section .section-heading a {
-      color: #EA580C;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .testing-1-theme .related-section .resource-card {
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      border-radius: 16px;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-    .testing-1-theme .related-section .resource-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-      border-color: #CBD5E1;
-    }
-    .testing-1-theme .related-section .resource-card h3 {
-      color: #0F172A;
-      font-weight: 800;
-    }
-    .testing-1-theme .related-section .resource-card p {
-      color: #475569;
-    }
-    .testing-1-theme .related-section .resource-card .tag {
-      background: #FFF7ED;
-      color: #EA580C;
-      border: 1px solid #FFEDD5;
-      font-weight: 700;
-    }
-    .testing-1-theme .related-section .resource-card .card-link {
-      color: #EA580C;
-      font-weight: 700;
-    }
-    .testing-1-theme .resource-cta {
-      background: #EEF4F9;
-      padding: 36px 0 !important;
-      margin: 0 !important;
-    }
-    .testing-1-theme .resource-cta .cta-card {
-      background: linear-gradient(135deg, #FF6600 0%, #EA580C 100%);
-      border-radius: 20px;
-      color: #FFFFFF;
-      box-shadow: 0 16px 36px -6px rgba(234, 88, 12, 0.35);
-      border: none;
-      padding: 40px;
-    }
-    .testing-1-theme .resource-cta .cta-card h2,
-    .testing-1-theme .resource-cta .cta-card p,
-    .testing-1-theme .resource-cta .cta-card .eyebrow {
-      color: #FFFFFF !important;
-    }
-    .testing-1-theme .resource-cta .cta-card h2 {
-      font-size: 1.85rem;
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      margin: 0 !important;
-      line-height: 1.25;
-    }
-    .testing-1-theme .resource-cta .cta-card p {
-      color: rgba(255, 255, 255, 0.92) !important;
-      font-size: 1.05rem;
-      margin: 10px 0 0 !important;
-      line-height: 1.5;
-    }
-    .testing-1-theme .resource-cta .cta-card .button {
-      background: #FFFFFF !important;
-      color: #EA580C !important;
-      font-weight: 800 !important;
-      border-radius: 9999px !important;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-      padding: 12px 28px;
-      font-size: 14px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .testing-1-theme .resource-cta .cta-card .button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Mobile spacing refinements */
-    @media (max-width: 640px) {
-      .testing-1-theme .resource-page {
-        padding: 0 !important;
-      }
-      .testing-1-theme .resource-hero-unified-section {
-        padding-top: 86px !important;
-        padding-bottom: 22px !important;
-      }
-      .testing-1-theme .article-layout {
-        margin-top: 24px;
-      }
-      .testing-1-theme .resource-content {
-        gap: 24px;
-      }
-      .testing-1-theme .resource-section {
-        padding: 0 4px !important;
-        border-radius: 0;
-      }
-      .testing-1-theme .section-heading {
-        margin-bottom: 8px;
-      }
-      .testing-1-theme .section-heading h2 {
-        font-size: 1.35rem;
-      }
-      .testing-1-theme .workflow-card {
-        padding: 18px 16px;
-        border-radius: 14px;
-      }
-      .testing-1-theme .workflow-final-result {
-        padding: 18px 16px;
-        border-radius: 14px;
-        margin-top: 10px;
-      }
-      .testing-1-theme .tips-section {
-        padding: 0 4px !important;
-        border-radius: 0;
-      }
-      .testing-1-theme .tips-list {
-        padding: 16px 18px 16px 36px;
-        border-radius: 14px;
-      }
-      .testing-1-theme .guide-cue {
-        min-width: 0;
-        width: 82%;
-        max-width: 360px;
-        padding: 8.5px 14px;
-        font-size: 9.5px;
-        gap: 7px;
-        letter-spacing: 0.06em;
-        white-space: nowrap;
-        text-align: center;
-      }
-      .testing-1-theme .guide-cue span {
-        white-space: nowrap;
-      }
-      .testing-1-theme .guide-cue svg {
-        width: 11px;
-        height: 11px;
-      }
-      .testing-1-theme .related-section,
-      .testing-1-theme .resource-cta {
-        padding: 24px 0 !important;
-        margin: 0 !important;
-      }
-      .testing-1-theme .resource-cta .cta-card {
-        padding: 24px 20px;
-      }
     }
 
     /* ==========================================================================
@@ -3385,1776 +3056,944 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: #CBD5E1;
       }
 
-      /* TESTING-1 THEME BLUEPRINT OVERRIDES */
-      .testing-1-theme .blueprint-workflow-container {
-        background: #FFFFFF !important;
-        border: 2px solid #312C51 !important;
-        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
-      }
-      .testing-1-theme .blueprint-header-capsule {
-        background: #FFFFFF !important;
-        border: 2px solid #312C51 !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
-      }
-      .testing-1-theme .blueprint-capsule-label {
-        color: #EA580C !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-capsule-title {
-        color: #0F172A !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-top-arrow {
-        color: #EA580C !important;
-      }
-      .testing-1-theme .blueprint-step-container {
-        background: #FFFFFF !important;
-        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-blue {
-        border-color: #0284C7 !important;
-        --step-accent: #0284C7;
-        --step-accent-dark: #0369A1;
-        --step-accent-text: #0369A1;
-        --step-subnode-border-light: #93C5FD;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-green {
-        border-color: #059669 !important;
-        --step-accent: #059669;
-        --step-accent-dark: #047857;
-        --step-accent-text: #047857;
-        --step-subnode-border-light: #86EFAC;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-orange {
-        border-color: #EA580C !important;
-        --step-accent: #EA580C;
-        --step-accent-dark: #C2410C;
-        --step-accent-text: #C2410C;
-        --step-subnode-border-light: #FDBA74;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-cyan {
-        border-color: #0891B2 !important;
-        --step-accent: #0891B2;
-        --step-accent-dark: #0E7490;
-        --step-accent-text: #0E7490;
-        --step-subnode-border-light: #A5F3FC;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-purple {
-        border-color: #7C3AED !important;
-        --step-accent: #7C3AED;
-        --step-accent-dark: #6D28D9;
-        --step-accent-text: #6D28D9;
-        --step-subnode-border-light: #DDD6FE;
-      }
-      .testing-1-theme .blueprint-step-capsule {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
-      }
-      .testing-1-theme .blueprint-step-title {
-        color: #0F172A !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-subnode {
-        background: #FFFFFF !important;
-        border: 1.5px solid var(--step-subnode-border-light, #CBD5E1) !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
-      }
-      .testing-1-theme .blueprint-node-title {
-        color: var(--step-accent-text, #0F172A) !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-node-subtitle {
-        color: #475569 !important;
-      }
-      .testing-1-theme .blueprint-tool-logo-box {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
-      }
-      .testing-1-theme .blueprint-purpose-pill {
-        background: #FFF7ED !important;
-        color: #EA580C !important;
-        border: 1px solid #FFEDD5 !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-setting-chip {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
-      }
-      .testing-1-theme .blueprint-setting-chip .setting-label {
-        color: #64748B !important;
-      }
-      .testing-1-theme .blueprint-setting-chip .setting-val {
-        color: #0F172A !important;
-      }
-      .testing-1-theme .blueprint-result-media-center .media-frame {
-        background: #F8FAFC !important;
-        border-color: #E2E8F0 !important;
-      }
-      .testing-1-theme .blueprint-result-meta-info {
-        border-top-color: #E2E8F0 !important;
-      }
-      .testing-1-theme .blueprint-result-label {
-        color: #0F172A !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-result-desc {
-        color: #475569 !important;
-      }
-      .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
-        background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%) !important;
-        border: 1.5px solid #C4B5FD !important;
-      }
-      .testing-1-theme .blueprint-flow-arrow {
-        color: #64748B !important;
-      }
-      .testing-1-theme .blueprint-instruction-container {
-        background: #F8FAFC !important;
-        border: 1.5px solid #CBD5E1 !important;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
-      }
-      .testing-1-theme .blueprint-instruction-capsule {
-        background: #334155 !important;
-        border: 1.5px solid #334155 !important;
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-instruction-badge {
-        background: #334155 !important;
-        color: #FFFFFF !important;
-        font-weight: 800 !important;
-      }
-      .testing-1-theme .blueprint-instruction-text {
-        color: #0F172A !important;
-        font-weight: 600 !important;
-      }
-
-      @media (max-width: 640px) {
-        .blueprint-workflow-container {
-          padding: 28px 12px 20px !important;
-          border-radius: 18px !important;
-          margin-top: 40px !important;
-        }
-        .blueprint-header-capsule {
-          font-size: 13px !important;
-          padding: 6px 16px !important;
-        }
-        .blueprint-capsule-title {
-          font-size: 13.5px !important;
-        }
-        .blueprint-step-container {
-          padding: 24px 12px 16px !important;
-          border-radius: 16px !important;
-        }
-        .blueprint-step-capsule {
-          font-size: 11.5px !important;
-          padding: 5px 16px !important;
-        }
-        .blueprint-step-title {
-          font-size: 17px !important;
-        }
-        .blueprint-subnode {
-          padding: 14px 12px !important;
-        }
-        .blueprint-instruction-container {
-          padding: 20px 14px 14px !important;
-          border-radius: 14px !important;
-        }
-        .blueprint-instruction-capsule {
-          font-size: 10.5px !important;
-          padding: 4px 14px !important;
-        }
-        .blueprint-instruction-text {
-          font-size: 12.5px !important;
-        }
-      }
-
-    }
-
-
-
-    /* ==========================================================================
-       BLUEPRINT REFERENCE COLOUR CORRECTION — mobile + desktop.
-       Structure and content remain unchanged.
-       ========================================================================== */
-    .testing-1-theme .blueprint-workflow-container {
-      background: #FFFFFF !important;
-      border-color: #334155 !important;
-    }
-
-    .testing-1-theme .blueprint-header-capsule {
-      background: #F8FAFC !important;
-      border-color: #334155 !important;
-      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
-    }
-
-    .testing-1-theme .blueprint-capsule-label,
-    .testing-1-theme .blueprint-capsule-title {
-      color: #172554 !important;
-    }
-
-    .testing-1-theme .blueprint-top-arrow {
-      display: none !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-workflow-container {
-        background: #FFFFFF !important;
-        border-color: #334155 !important;
-      }
-
-      .testing-1-theme .blueprint-header-capsule {
-        background: #F8FAFC !important;
-        border-color: #334155 !important;
-        box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
-      }
-
-      .testing-1-theme .blueprint-capsule-label,
-      .testing-1-theme .blueprint-capsule-title {
-        color: #172554 !important;
-      }
-    }
-
-    /* ==========================================================================
-       DESKTOP BLUEPRINT CORRECTION — scoped to testing-1 desktop only.
-       Mirrors the approved mobile visual language, adapted to desktop scale.
-       ========================================================================== */
-    @media (min-width: 641px) {
-      .testing-1-theme .blueprint-workflow-container {
-        margin-top: 64px !important;
-        background: #FFFFFF !important;
-        border: 2px solid #334155 !important;
-        border-radius: 22px !important;
-        padding: 38px 30px 30px !important;
-        overflow: visible !important;
-      }
-
-      .testing-1-theme .blueprint-header-capsule {
-        width: max-content !important;
-        max-width: calc(100% - 48px) !important;
-        padding: 10px 28px !important;
-        border-radius: 14px !important;
-        background: #6B214F !important;
-        border: 2px solid #334155 !important;
-        box-shadow: 0 6px 18px rgba(107, 33, 79, 0.16) !important;
-        box-sizing: border-box !important;
-      }
-
-      .testing-1-theme .blueprint-capsule-label {
-        color: #FFFFFF !important;
-        font-size: 11px !important;
-        line-height: 1.2 !important;
-      }
-
-      .testing-1-theme .blueprint-capsule-title {
-        color: #FFFFFF !important;
-        font-size: 15px !important;
-        line-height: 1.25 !important;
-        white-space: nowrap !important;
-      }
-
-      .testing-1-theme .blueprint-top-arrow {
-        display: none !important;
-      }
-
-      .testing-1-theme .blueprint-step-container {
-        margin-top: 34px !important;
-        overflow: visible !important;
-      }
-
-      .testing-1-theme .blueprint-step-container.step-theme-blue {
-        background: #EFF6FF !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-green {
-        background: #ECFDF5 !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-orange {
-        background: #FFF7ED !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-cyan {
-        background: #ECFEFF !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-purple {
-        background: #F5F3FF !important;
-      }
-
-      .testing-1-theme .blueprint-subnode {
-        background: #FFFFFF !important;
-      }
-
-      .testing-1-theme .blueprint-sub-arrow {
-        padding: 6px 0 !important;
-        color: var(--step-accent, #0284C7) !important;
-        opacity: 1 !important;
-      }
-      .testing-1-theme .blueprint-sub-arrow svg {
-        width: 18px !important;
-        height: 30px !important;
-        stroke-width: 3 !important;
-      }
-
-      .testing-1-theme .blueprint-instruction-container {
-        width: calc(100% - 96px) !important;
-        max-width: 580px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition {
-        margin: 14px 0 !important;
-      }
-
-      .testing-1-theme .blueprint-workflow-stream,
-      .testing-1-theme .blueprint-step-wrapper {
-        width: 100% !important;
-      }
-    }
-
-    /* ==========================================================================
-       MOBILE BLUEPRINT CORRECTION — scoped to testing-1 mobile only.
-       Desktop/base layout intentionally remains unchanged.
-       ========================================================================== */
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-workflow-container {
-        /* Professional breathing room after the Results Workflow intro. */
-        margin-top: 56px !important;
-        /* Neutral outer surface; only the Blueprint frame uses brinjal. */
-        background: #FFFFFF !important;
-        border: 2px solid #334155 !important;
-        border-radius: 18px !important;
-        padding: 30px 12px 22px !important;
-        overflow: visible !important;
-      }
-
-      .testing-1-theme .blueprint-header-capsule {
-        /* Wide, shallow rounded rectangle — not a pill/oval. */
-        width: max-content !important;
-        max-width: calc(100% - 24px) !important;
-        padding: 8px 20px !important;
-        border-radius: 13px !important;
-        background: #6B214F !important;
-        border: 2px solid #334155 !important;
-        box-shadow: 0 5px 16px rgba(107, 33, 79, 0.16) !important;
-        box-sizing: border-box !important;
-      }
-
-      .testing-1-theme .blueprint-capsule-label {
-        color: #FFFFFF !important;
-        font-size: 10.5px !important;
-        line-height: 1.2 !important;
-      }
-
-      .testing-1-theme .blueprint-capsule-title {
-        color: #FFFFFF !important;
-        font-size: 13.5px !important;
-        line-height: 1.25 !important;
-        white-space: nowrap !important;
-      }
-
-      /* The Blueprint is a title, not a workflow node. */
-      .testing-1-theme .blueprint-top-arrow {
-        display: none !important;
-      }
-
-      /* Keep Step 01/02/etc. capsules attached to their own borders. */
-      .testing-1-theme .blueprint-step-container {
-        margin-top: 30px !important;
-        overflow: visible !important;
-      }
-
-      .testing-1-theme .blueprint-step-container.step-theme-blue {
-        background: #EFF6FF !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-green {
-        background: #ECFDF5 !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-orange {
-        background: #FFF7ED !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-cyan {
-        background: #ECFEFF !important;
-      }
-      .testing-1-theme .blueprint-step-container.step-theme-purple {
-        background: #F5F3FF !important;
-      }
-
-      /* Preserve the existing individual 1/2/3/4 card backgrounds. */
-      .testing-1-theme .blueprint-subnode {
-        background: #FFFFFF !important;
-      }
-
-      /* Strong, clean connectors between the four existing sub-sections. */
-      .testing-1-theme .blueprint-sub-arrow {
-        padding: 4px 0 !important;
-        color: var(--step-accent, #0284C7) !important;
-        opacity: 1 !important;
-      }
-      .testing-1-theme .blueprint-sub-arrow svg {
-        width: 18px !important;
-        height: 28px !important;
-        stroke-width: 3 !important;
-      }
-
-      /* Instruction is intentionally narrower than its Step container. */
-      .testing-1-theme .blueprint-instruction-container {
-        width: calc(100% - 28px) !important;
-        max-width: none !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition {
-        margin: 10px 0 !important;
-      }
-
-      /* Preserve readable mobile scale; never solve layout by shrinking the page. */
-      .testing-1-theme .blueprint-workflow-stream,
-      .testing-1-theme .blueprint-step-wrapper {
-        width: 100% !important;
-      }
-    }
-
-
-
-    /* MOBILE INPUTS: fit two references cleanly; keep horizontal scroll for 3+ items. */
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail {
-        gap: 10px !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-      }
-
-      .testing-1-theme .workflow-input-rail .workflow-media-card {
-        flex: 0 0 calc((100% - 10px) / 2) !important;
-        width: calc((100% - 10px) / 2) !important;
-        min-width: calc((100% - 10px) / 2) !important;
-        padding: 10px !important;
-        border-radius: 14px !important;
-      }
-
-      .testing-1-theme .workflow-input-rail:has(.input-card:nth-child(3)) .workflow-media-card {
-        flex: 0 0 196px !important;
-        width: 196px !important;
-        min-width: 196px !important;
-      }
-
-      .testing-1-theme .workflow-input-rail .media-frame {
-        margin: 8px 0 7px !important;
-        border-radius: 9px !important;
-      }
-
-      .testing-1-theme .workflow-input-rail .media-caption strong {
-        font-size: 11.5px !important;
-      }
-
-      .testing-1-theme .workflow-input-rail .media-caption small {
-        font-size: 9.5px !important;
-      }
-    }
-
-    /* ==========================================================================
-       FINAL BLUEPRINT REFERENCE COLOUR + BRIGHT ACCENT OVERRIDE — must remain last.
-       Matches the supplied reference image's brighter, more saturated accent palette.
-       Structure, content, data, images, prompts and functionality remain unchanged.
-       ========================================================================== */
-
-    /* Neutral outer Blueprint frame */
-    .testing-1-theme .blueprint-workflow-container {
-      background: #E2E8F0 !important;
-      border: 2px solid #334155 !important;
-    }
-
-    .testing-1-theme .blueprint-header-capsule {
-      background: #F8FAFC !important;
-      border: 2px solid #64748B !important;
-      box-shadow: 0 5px 16px rgba(15, 23, 42, 0.08) !important;
-    }
-
-    .testing-1-theme .blueprint-capsule-label,
-    .testing-1-theme .blueprint-capsule-title {
-      color: #172554 !important;
-    }
-
-    /* Bright reference-style Step 01 blue */
-    .testing-1-theme .blueprint-step-container.step-theme-blue {
-      border-color: #0078FE !important;
-      --step-accent: #0078FE !important;
-      --step-accent-dark: #0078FE !important;
-      --step-accent-text: #005FE0 !important;
-      --step-subnode-border: rgba(0, 120, 254, 0.30) !important;
-      --step-subnode-border-light: #8CC7FF !important;
-    }
-
-    /* Bright reference-style Step 02 green */
-    .testing-1-theme .blueprint-step-container.step-theme-green {
-      border-color: #00B263 !important;
-      --step-accent: #00B263 !important;
-      --step-accent-dark: #00B263 !important;
-      --step-accent-text: #009653 !important;
-      --step-subnode-border: rgba(0, 178, 99, 0.30) !important;
-      --step-subnode-border-light: #8BE2BC !important;
-    }
-
-    /* Bright reference-style Step 03 orange */
-    .testing-1-theme .blueprint-step-container.step-theme-orange {
-      border-color: #FF9800 !important;
-      --step-accent: #FF9800 !important;
-      --step-accent-dark: #FF9800 !important;
-      --step-accent-text: #E77F00 !important;
-      --step-subnode-border: rgba(255, 152, 0, 0.30) !important;
-      --step-subnode-border-light: #FFD18A !important;
-    }
-
-    /* Bright reference-style Step 04 rose */
-    .testing-1-theme .blueprint-step-container.step-theme-cyan {
-      background: #ECFEFF !important;
-      border-color: #0B8F9C !important;
-      --step-accent: #0B8F9C !important;
-      --step-accent-dark: #0B8F9C !important;
-      --step-accent-text: #087783 !important;
-      --step-subnode-border: rgba(11, 143, 156, 0.30) !important;
-      --step-subnode-border-light: #8DD5DA !important;
-    }
-
-    /* Bright reference-style Step 05 purple */
-    .testing-1-theme .blueprint-step-container.step-theme-purple {
-      border-color: #7C4DFF !important;
-      --step-accent: #7C4DFF !important;
-      --step-accent-dark: #7C4DFF !important;
-      --step-accent-text: #6A35E8 !important;
-      --step-subnode-border: rgba(124, 77, 255, 0.30) !important;
-      --step-subnode-border-light: #C5B3FF !important;
-    }
-
-    /* Make every Step capsule, numbered badge, section heading and internal connector
-       use the same brighter accent as its Step. */
-    .testing-1-theme .blueprint-step-capsule,
-    .testing-1-theme .blueprint-node-badge {
-      background: var(--step-accent) !important;
-      border-color: var(--step-accent) !important;
-    }
-
-    .testing-1-theme .blueprint-node-title {
-      color: var(--step-accent-text) !important;
-    }
-
-    .testing-1-theme .blueprint-sub-arrow {
-      color: var(--step-accent) !important;
-    }
-
-    .testing-1-theme .blueprint-step-container.step-theme-blue .blueprint-step-title,
-    .testing-1-theme .blueprint-step-container.step-theme-green .blueprint-step-title,
-    .testing-1-theme .blueprint-step-container.step-theme-orange .blueprint-step-title,
-    .testing-1-theme .blueprint-step-container.step-theme-cyan .blueprint-step-title,
-    .testing-1-theme .blueprint-step-container.step-theme-purple .blueprint-step-title {
-      color: #172554 !important;
-    }
-
-    /* FINAL MOBILE PROMPT ATTACHED-CONTROL POLISH */
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-prompt {
-        aspect-ratio: 1.3 / 1 !important;
-        background: #0B111D !important;
-        border: 1px solid #263449 !important;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
-        overflow: hidden !important;
-      }
-
-      /* One continuous attached top bar: Copy | FULL PROMPT | Expand. */
-      .testing-1-theme .workflow-prompt-head {
-        height: 50px !important;
-        min-height: 50px !important;
-        max-height: 50px !important;
-        padding: 0 !important;
-        gap: 0 !important;
-        background: #111A29 !important;
-        border-bottom: 1px solid #263449 !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button {
-        height: 100% !important;
-        width: 100% !important;
-        margin: 0 !important;
-        border-radius: 0 !important;
-        border-top: 0 !important;
-        border-bottom: 0 !important;
-        background: linear-gradient(180deg, #163B63 0%, #102B49 100%) !important;
-        color: #F8FAFC !important;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(0,0,0,0.20) !important;
-      }
-
-      /* Preserve the existing separator lines exactly between the three cells. */
-      .testing-1-theme .workflow-prompt-head button[data-copy-step] {
-        border-right: 1px solid #263449 !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
-        border-left: 1px solid #263449 !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button:hover {
-        background: linear-gradient(180deg, #1D4D7E 0%, #153B61 100%) !important;
-        color: #FFFFFF !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button:active {
-        background: #0E2742 !important;
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.35) !important;
-      }
-
-      /* FULL PROMPT stays a title, not a button. */
-      .testing-1-theme .workflow-prompt-head span {
-        background: #0E1725 !important;
-        color: #9DB0C8 !important;
-        font-size: 10.5px !important;
-        letter-spacing: 0.13em !important;
-      }
-
-      /* Rectangular, attached, scrollable prompt content surface. */
-      .testing-1-theme .workflow-prompt pre {
-        min-height: 0 !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        background: #050A11 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        color: #F1F5F9 !important;
-        padding: 16px 15px !important;
-        line-height: 1.62 !important;
-        box-shadow: inset 0 4px 12px rgba(0,0,0,0.18), inset 0 -4px 12px rgba(0,0,0,0.14) !important;
-      }
-
-      /* One continuous attached bottom action. */
-      .testing-1-theme .workflow-prompt .workflow-download,
-      .testing-1-theme .workflow-prompt [data-download-step] {
-        height: 46px !important;
-        min-height: 46px !important;
-        max-height: 46px !important;
-        margin: 0 !important;
-        border: 0 !important;
-        border-top: 1px solid #263449 !important;
-        border-radius: 0 !important;
-        background: linear-gradient(180deg, #12395E 0%, #0D2945 100%) !important;
-        color: #DCEEFF !important;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.07) !important;
-      }
-
-      .testing-1-theme .workflow-prompt .workflow-download:hover,
-      .testing-1-theme .workflow-prompt [data-download-step]:hover {
-        background: linear-gradient(180deg, #1A4C79 0%, #123654 100%) !important;
-        color: #FFFFFF !important;
-      }
-    }
-
-    /* FINAL MOBILE PROMPT VISUAL HIERARCHY */
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-prompt {
-        background: #0B111D !important;
-        border: 1px solid #263449 !important;
-        box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
-      }
-
-      /* Copy / FULL PROMPT / Expand stay one continuous attached bar. */
-      .testing-1-theme .workflow-prompt-head {
-        background: #0D1726 !important;
-        border-bottom: 1px solid #263449 !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button[data-copy-step],
-      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
-        background: linear-gradient(180deg, #1A4674 0%, #123454 100%) !important;
-        color: #F8FAFC !important;
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.12),
-          inset 0 -1px 0 rgba(0,0,0,0.28) !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-      }
-
-      .testing-1-theme .workflow-prompt-head button[data-copy-step]:hover,
-      .testing-1-theme .workflow-prompt-head button[data-expand-step]:hover {
-        background: linear-gradient(180deg, #215A91 0%, #17456E 100%) !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button[data-copy-step]:active,
-      .testing-1-theme .workflow-prompt-head button[data-expand-step]:active {
-        background: #102E4B !important;
-        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
-      }
-
-      /* Keep the existing separator lines exactly between the three cells. */
-      .testing-1-theme .workflow-prompt-head button[data-copy-step] {
-        border-right: 1px solid #334155 !important;
-        min-width: 72px !important;
-      }
-
-      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
-        border-left: 1px solid #334155 !important;
-      }
-
-      /* FULL PROMPT remains a title, visually distinct from the buttons. */
-      .testing-1-theme .workflow-prompt-head span {
-        background: #0A1321 !important;
-        color: #A8B8CA !important;
-        font-size: 13px !important;
-        letter-spacing: 0.08em !important;
-      }
-
-      /* Main prompt content: clean dark reading surface, still scrollable. */
-      .testing-1-theme .workflow-prompt pre {
-        background: #050A11 !important;
-        color: #F1F5F9 !important;
-        padding: 16px 15px !important;
-        line-height: 1.62 !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        scrollbar-color: #3B82F6 #101923 !important;
-        box-shadow:
-          inset 0 5px 14px rgba(0,0,0,0.18),
-          inset 0 -5px 14px rgba(0,0,0,0.14) !important;
-      }
-
-      /* Download PDF remains attached as a distinct secondary action. */
-      .testing-1-theme .workflow-prompt .workflow-download,
-      .testing-1-theme .workflow-prompt [data-download-step] {
-        background: linear-gradient(180deg, #174B7A 0%, #10385D 100%) !important;
-        color: #E5F2FF !important;
-        border-top: 1px solid #2F5273 !important;
-        box-shadow:
-          inset 0 1px 0 rgba(255,255,255,0.10),
-          inset 0 -1px 0 rgba(0,0,0,0.22) !important;
-        text-shadow: 0 1px 2px rgba(0,0,0,0.22);
-      }
-
-      .testing-1-theme .workflow-prompt .workflow-download:hover,
-      .testing-1-theme .workflow-prompt [data-download-step]:hover {
-        background: linear-gradient(180deg, #1E5E95 0%, #16486F 100%) !important;
-        color: #FFFFFF !important;
-      }
-
-      .testing-1-theme .workflow-prompt .workflow-download:active,
-      .testing-1-theme .workflow-prompt [data-download-step]:active {
-        background: #10304E !important;
-        box-shadow: inset 0 2px 6px rgba(0,0,0,0.35) !important;
-      }
-    }
-
-
-    /* ==========================================================================
-       AI TOOL / SETTINGS — MINIMAL COMPACT BLUEPRINT NODE
-       Final visual polish: compact, aligned, readable, and mobile-safe.
-       Existing information/functionality remain unchanged.
-       ========================================================================== */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tools-layout {
-      display: flex !important;
-      align-items: flex-start !important;
-      flex-wrap: nowrap !important;
-      gap: 14px !important;
-      width: 100% !important;
-      min-width: 0 !important;
-    }
-
-    /* Tool logo tile: fixed square with a larger, cleaner logo fill. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
-      width: 64px !important;
-      height: 64px !important;
-      flex: 0 0 64px !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      box-sizing: border-box !important;
-      border-radius: 12px !important;
-      overflow: hidden !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .blueprint-tool-link {
-      display: block !important;
-      width: 100% !important;
-      height: 100% !important;
-      border-radius: inherit !important;
-      overflow: hidden !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .tool-logo-img,
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
-      width: 100% !important;
-      height: 100% !important;
-      max-width: none !important;
-      max-height: none !important;
-      object-fit: cover !important;
-      object-position: center !important;
-      display: block !important;
-      border-radius: inherit !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
-      display: flex !important;
-      flex-direction: column !important;
-      align-items: flex-start !important;
-      justify-content: flex-start !important;
-      gap: 5px !important;
-      flex: 1 1 auto !important;
-      min-width: 0 !important;
-      width: 0 !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-purpose-row {
-      display: flex !important;
-      align-items: center !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      flex: 0 0 auto !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-purpose-pill {
-      flex: 0 0 auto !important;
-      white-space: nowrap !important;
-    }
-
-    /* Fixed settings indicator + independently scrollable settings rail. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-row {
-      display: flex !important;
-      align-items: center !important;
-      gap: 5px !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      flex: 0 0 auto !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-icon {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      width: 28px !important;
-      height: 28px !important;
-      flex: 0 0 28px !important;
-      border: 1px solid #8CC7FF !important;
-      border-radius: 8px !important;
-      background: #E7F2FF !important;
-      color: #1558C0 !important;
-      font-size: 16px !important;
-      font-weight: 900 !important;
-      line-height: 1 !important;
-      box-sizing: border-box !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
-      display: flex !important;
-      flex: 1 1 auto !important;
-      flex-wrap: nowrap !important;
-      align-items: center !important;
-      gap: 5px !important;
-      width: 0 !important;
-      min-width: 0 !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      padding: 1px 1px 3px !important;
-      margin: 0 !important;
-      scrollbar-width: thin !important;
-      scrollbar-color: #9CC7FF transparent !important;
-      overscroll-behavior-x: contain !important;
-      -webkit-overflow-scrolling: touch !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
-      height: 4px !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar-track {
-      background: transparent !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar-thumb {
-      background: #9CC7FF !important;
-      border-radius: 999px !important;
-    }
-
-    /* Every setting tile has the same height as the fixed settings icon. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: flex-start !important;
-      gap: 6px !important;
-      height: 28px !important;
-      min-height: 28px !important;
-      width: max-content !important;
-      min-width: max-content !important;
-      box-sizing: border-box !important;
-      flex: 0 0 auto !important;
-      white-space: nowrap !important;
-      margin: 0 !important;
-      padding: 0 9px !important;
-      border-radius: 8px !important;
-      background: #FFFFFF !important;
-      border: 1px solid #D7E2EE !important;
-      font-size: 11px !important;
-    }
-
-    /* Keep label + value on one centered line with distinct colours. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
-      display: inline !important;
-      flex: 0 0 auto !important;
-      color: #58718D !important;
-      font-weight: 800 !important;
-      font-size: 9.5px !important;
-      line-height: 1 !important;
-      text-transform: uppercase !important;
-      letter-spacing: 0.04em !important;
-      white-space: nowrap !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-      display: inline !important;
-      flex: 0 0 auto !important;
-      color: #173B68 !important;
-      font-weight: 800 !important;
-      font-size: 11px !important;
-      line-height: 1 !important;
-      white-space: nowrap !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-subnode.node-tools {
-        padding: 14px 12px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-tools-layout {
-        gap: 12px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
-        width: 58px !important;
-        height: 58px !important;
-        flex-basis: 58px !important;
-        padding: 0 !important;
-        border-radius: 11px !important;
-        overflow: hidden !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-details {
-        gap: 5px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-purpose-pill {
-        padding: 4px 10px !important;
-        font-size: 10px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-row {
-        gap: 5px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-icon {
-        width: 26px !important;
-        height: 26px !important;
-        flex-basis: 26px !important;
-        border-radius: 7px !important;
-        font-size: 14px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
-        gap: 4px !important;
-        padding-bottom: 3px !important;
-        scrollbar-width: none !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid::-webkit-scrollbar {
-        display: none !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-        height: 26px !important;
-        min-height: 26px !important;
-        width: max-content !important;
-        min-width: max-content !important;
-        padding: 0 7px !important;
-        gap: 4px !important;
-        border-radius: 7px !important;
-        font-size: 10px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label {
-        font-size: 8.5px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-        font-size: 10px !important;
-      }
-    }
-
-    /* FINAL SETTINGS CHIP FIX: content-sized boxes + identical label/value typography. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
-      display: grid !important;
-      grid-auto-flow: column !important;
-      grid-auto-columns: max-content !important;
-      grid-template-columns: none !important;
-      align-items: center !important;
-      justify-content: start !important;
-      flex: 1 1 auto !important;
-      width: 0 !important;
-      min-width: 0 !important;
-      overflow-x: auto !important;
-      overflow-y: hidden !important;
-      gap: 5px !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-      width: max-content !important;
-      min-width: 0 !important;
-      max-width: max-content !important;
-      justify-self: start !important;
-      flex: none !important;
-      height: 28px !important;
-      min-height: 28px !important;
-      padding: 0 9px !important;
-      box-sizing: border-box !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label,
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-      font-size: 11px !important;
-      line-height: 1 !important;
-      font-family: inherit !important;
-      white-space: nowrap !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-settings-grid {
-        gap: 4px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip {
-        height: 26px !important;
-        min-height: 26px !important;
-        padding: 0 7px !important;
-        border-radius: 7px !important;
-      }
-
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-label,
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-setting-chip .setting-val {
-        font-size: 10px !important;
-        line-height: 1 !important;
-      }
-    }
-
-    /* EXPERIMENT: 3D tool-logo tile. Reversible visual-only treatment. */
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
-      position: relative !important;
-      background: linear-gradient(145deg, #334155 0%, #111827 58%, #020617 100%) !important;
-      border: 1px solid #64748B !important;
-      box-shadow:
-        inset 0 2px 1px rgba(255,255,255,0.18),
-        inset 0 -4px 8px rgba(0,0,0,0.45),
-        0 7px 12px rgba(15,23,42,0.28) !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box::before {
-      content: "" !important;
-      position: absolute !important;
-      inset: 1px !important;
-      border-radius: inherit !important;
-      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 38%, transparent 68%, rgba(0,0,0,0.18)) !important;
-      pointer-events: none !important;
-      z-index: 2 !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .blueprint-tool-link,
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
-      position: relative !important;
-      z-index: 1 !important;
-    }
-
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box .tool-logo-img,
-    .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box img {
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24)) !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-subnode.node-tools .blueprint-tool-logo-box {
-        box-shadow:
-          inset 0 2px 1px rgba(255,255,255,0.18),
-          inset 0 -3px 7px rgba(0,0,0,0.42),
-          0 6px 10px rgba(15,23,42,0.24) !important;
-      }
-    }
-
-    /* Match Tools & Resources logo tiles to the Blueprint tool-logo size. */
-    .testing-1-theme .tools-list .tool-card {
-      flex: 0 0 64px !important;
-      width: 64px !important;
-      height: 64px !important;
-      border-radius: 12px !important;
-    }
-
-    @media (max-width: 768px) {
-      .testing-1-theme .tools-list .tool-card {
-        flex-basis: 58px !important;
-        width: 58px !important;
-        height: 58px !important;
-        border-radius: 11px !important;
-      }
-    }
-
-    /* FINAL: Tools & Resources uses the same visual logo tile scale as Blueprint on mobile. */
-    .testing-1-theme .tools-list .tool-card {
-      flex: 0 0 64px !important;
-      width: 64px !important;
-      height: 64px !important;
-      padding: 0 !important;
-      border-radius: 12px !important;
-      box-sizing: border-box !important;
-    }
-
-    .testing-1-theme .tools-list .tool-card .tool-logo {
-      width: 100% !important;
-      height: 100% !important;
-      max-width: none !important;
-      max-height: none !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      object-fit: cover !important;
-      object-position: center !important;
-      display: block !important;
-      border-radius: inherit !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .tools-list .tool-card {
-        flex-basis: 58px !important;
-        width: 58px !important;
-        height: 58px !important;
-        border-radius: 11px !important;
-      }
-    }
-
-    /* FINAL: Tools & Resources uses the same 3D tile treatment as Blueprint. */
-    .testing-1-theme .tools-list .tool-card {
-      position: relative !important;
-      background: linear-gradient(145deg, #334155 0%, #111827 58%, #020617 100%) !important;
-      border: 1px solid #64748B !important;
-      box-shadow:
-        inset 0 2px 1px rgba(255,255,255,0.18),
-        inset 0 -4px 8px rgba(0,0,0,0.45),
-        0 7px 12px rgba(15,23,42,0.28) !important;
-      overflow: hidden !important;
-    }
-
-    .testing-1-theme .tools-list .tool-card::before {
-      content: "" !important;
-      position: absolute !important;
-      inset: 1px !important;
-      border-radius: inherit !important;
-      background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 38%, transparent 68%, rgba(0,0,0,0.18)) !important;
-      pointer-events: none !important;
-      z-index: 2 !important;
-    }
-
-    .testing-1-theme .tools-list .tool-card .tool-logo {
-      position: relative !important;
-      z-index: 1 !important;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.24)) !important;
-    }
-
-    /* EXACT BLUEPRINT LOGO BEHAVIOUR: square tile + square filled logo. */
-    .testing-1-theme .tools-list .tool-card {
-      width: 64px !important;
-      height: 64px !important;
-      min-width: 64px !important;
-      min-height: 64px !important;
-      max-width: 64px !important;
-      max-height: 64px !important;
-      flex: 0 0 64px !important;
-      aspect-ratio: 1 / 1 !important;
-      padding: 0 !important;
-      box-sizing: border-box !important;
-      border-radius: 12px !important;
-      overflow: hidden !important;
-    }
-
-    .testing-1-theme .tools-list .tool-card .tool-logo {
-      display: block !important;
-      width: 100% !important;
-      height: 100% !important;
-      min-width: 100% !important;
-      min-height: 100% !important;
-      max-width: 100% !important;
-      max-height: 100% !important;
-      aspect-ratio: 1 / 1 !important;
-      object-fit: cover !important;
-      object-position: center !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      border-radius: 12px !important;
-      box-sizing: border-box !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .tools-list .tool-card {
-        width: 58px !important;
-        height: 58px !important;
-        min-width: 58px !important;
-        min-height: 58px !important;
-        max-width: 58px !important;
-        max-height: 58px !important;
-        flex-basis: 58px !important;
-        border-radius: 11px !important;
-      }
-
-      .testing-1-theme .tools-list .tool-card .tool-logo {
-        width: 100% !important;
-        height: 100% !important;
-        min-width: 100% !important;
-        min-height: 100% !important;
-        max-width: 100% !important;
-        max-height: 100% !important;
-        border-radius: 11px !important;
-      }
-    }
-
-    /* Tools & Resources: remove the extra outer halo/shadow; keep the logo itself unchanged. */
-    .testing-1-theme .tools-list .tool-card {
-      box-shadow: none !important;
-      filter: none !important;
-    }
-
-    .testing-1-theme .tools-list .tool-card .tool-logo {
-      filter: none !important;
-    }
-
-    /* INPUT TYPE LABEL ONLY: attach the existing type badge to the card corner.
-       Card structure, image size, title, description and spacing remain unchanged. */
-    .testing-1-theme .workflow-input-rail .input-card {
-      position: relative !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      position: absolute !important;
-      top: -1px !important;
-      left: -1px !important;
-      z-index: 5 !important;
-      align-self: auto !important;
-      margin: 0 !important;
-      padding: 5px 11px !important;
-      border-radius: 12px 0 10px 0 !important;
-      box-sizing: border-box !important;
-      background: #FFF5EE !important;
-      color: #FF6600 !important;
-      border: 1px solid #FFD8C2 !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card .media-frame {
-      margin-top: 28px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card .media-type {
-        padding: 5px 10px !important;
-        border-radius: 11px 0 9px 0 !important;
-      }
-
-      .testing-1-theme .workflow-input-rail .input-card .media-frame {
-        margin-top: 28px !important;
-      }
-    }
-
-    /* Refine input type corner label to merge with the existing card border. */
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      border-color: #8CC7FF !important;
-      border-bottom-color: #FFFFFF !important;
-      border-right-color: #8CC7FF !important;
-      box-shadow: none !important;
-    }
-
-    /* Match input type label border to the individual input card border. */
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      border-color: #E2E8F0 !important;
-      border-bottom-color: #FFFFFF !important;
-      border-right-color: #E2E8F0 !important;
-    }
-
-    /* Make the input type label truly replace the card's top border segment. */
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      top: -1px !important;
-      left: -1px !important;
-      border-color: #E2E8F0 !important;
-      border-bottom-color: #FFF5EE !important;
-      border-right-color: #E2E8F0 !important;
-      border-bottom-left-radius: 0 !important;
-      border-bottom-right-radius: 12px !important;
-      box-shadow: none !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card::before {
-      content: "" !important;
-      position: absolute !important;
-      top: -1px !important;
-      left: 0 !important;
-      width: 196px !important;
-      height: 2px !important;
-      background: #FFFFFF !important;
-      z-index: 4 !important;
-      pointer-events: none !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card::before {
-        width: 186px !important;
-      }
-    }
-
-    /* Restore the card top border; only the label-covered segment is masked. */
-    .testing-1-theme .workflow-input-rail .input-card::before {
-      content: "" !important;
-      position: absolute !important;
-      top: -1px !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: auto !important;
-      height: 2px !important;
-      background: #E2E8F0 !important;
-      z-index: 4 !important;
-      pointer-events: none !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      z-index: 5 !important;
-      border-color: #E2E8F0 !important;
-      border-bottom-color: #FFF5EE !important;
-      background: #FFF5EE !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card::before {
-        width: auto !important;
-      }
-    }
-
-    /* FINAL INPUT CORNER TAB: keep the card border complete; tab only has bottom/right borders. */
-    .testing-1-theme .workflow-input-rail .input-card::before {
-      display: none !important;
-      content: none !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      top: -1px !important;
-      left: -1px !important;
-      z-index: 5 !important;
-      margin: 0 !important;
-      padding: 5px 11px !important;
-      border-top: 0 !important;
-      border-left: 0 !important;
-      border-right: 1px solid #E2E8F0 !important;
-      border-bottom: 1px solid #E2E8F0 !important;
-      border-radius: 12px 0 12px 0 !important;
-      background: #FFF5EE !important;
-      box-shadow: none !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card {
-      border: 1px solid #E2E8F0 !important;
-      border-radius: 12px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card .media-type {
-        padding: 5px 10px !important;
-        border-radius: 11px 0 11px 0 !important;
-      }
-    }
-
-    /* FINAL INPUT TAB GEOMETRY: card owns the full border; tab sits inside the corner
-       and draws only its bottom/right edges. */
-    .testing-1-theme .workflow-input-rail .input-card {
-      position: relative !important;
-      border: 1px solid #E2E8F0 !important;
-      border-radius: 12px !important;
-      box-sizing: border-box !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card::before {
-      display: none !important;
-      content: none !important;
-    }
-
-    .testing-1-theme .workflow-input-rail .input-card .media-type {
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      z-index: 5 !important;
-      align-self: auto !important;
-      margin: 0 !important;
-      padding: 5px 11px !important;
-      border: 0 !important;
-      border-right: 1px solid #E2E8F0 !important;
-      border-bottom: 1px solid #E2E8F0 !important;
-      border-radius: 12px 0 12px 0 !important;
-      background: #FFF5EE !important;
-      color: #FF6600 !important;
-      box-shadow: none !important;
-      box-sizing: border-box !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card .media-type {
-        top: 0 !important;
-        left: 0 !important;
-        padding: 5px 10px !important;
-        border-radius: 11px 0 11px 0 !important;
-      }
-    }
-
-    /* INPUT CARD SPACING: tighten only the gap between the corner type tab and media. */
-    .testing-1-theme .workflow-input-rail .input-card .media-frame {
-      margin-top: 18px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .workflow-input-rail .input-card .media-frame {
-        margin-top: 18px !important;
-      }
-    }
-
-    /* RESULT CARD SPACING: tighten only the image-to-divider/meta gap. */
-    .testing-1-theme .blueprint-result-body {
-      gap: 8px !important;
-    }
-
-    .testing-1-theme .blueprint-result-meta-info {
-      padding-top: 8px !important;
-    }
-
-    /* RESULT CARD SPACING — stronger compact pass. */
-    .testing-1-theme .blueprint-result-body {
-      gap: 4px !important;
-    }
-
-    .testing-1-theme .blueprint-result-meta-info {
-      padding-top: 4px !important;
-    }
-
-    .testing-1-theme .blueprint-result-label {
-      margin: 0 !important;
-    }
-
-    .testing-1-theme .blueprint-result-desc {
-      margin-top: 2px !important;
-    }
-
-    /* RESULT CARD: pull metadata closer to the image without changing image size. */
-    .testing-1-theme .blueprint-result-meta-info {
-      margin-top: -6px !important;
-      padding-top: 4px !important;
-    }
-
-    /* TIGHTEN RESULT → INSTRUCTION → NEXT STEP connectors only. */
-    .testing-1-theme .blueprint-step-transition {
-      gap: 2px !important;
-      margin: 6px 0 !important;
-    }
-
-    .testing-1-theme .blueprint-instruction-container {
-      margin: 8px auto !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition {
-        gap: 2px !important;
-        margin: 6px 0 !important;
-      }
-
-      .testing-1-theme .blueprint-instruction-container {
-        margin: 8px auto !important;
-      }
-    }
-
-    /* ASYMMETRIC INSTRUCTION CONNECTORS:
-       top arrow sits centered in the Result → Instruction space;
-       bottom connector is pulled closer to the next Step. */
-    .testing-1-theme .blueprint-step-transition {
-      gap: 0 !important;
-      margin: 4px 0 !important;
-    }
-
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
-      margin-bottom: 10px !important;
-    }
-
-    .testing-1-theme .blueprint-step-transition > .blueprint-instruction-container {
-      margin: 0 auto !important;
-    }
-
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-      margin-top: 0 !important;
-      margin-bottom: -4px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition {
-        gap: 0 !important;
-        margin: 4px 0 !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
-        margin-bottom: 10px !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition > .blueprint-instruction-container {
-        margin: 0 auto !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-        margin-top: 0 !important;
-        margin-bottom: -4px !important;
-      }
-    }
-
-    /* FINAL CONNECTOR POSITIONING: center each arrow within its adjacent gap. */
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
-      transform: translateY(-8px) !important;
-    }
-
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-      transform: translateY(8px) !important;
-      margin-bottom: -12px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:first-child {
-        transform: translateY(-8px) !important;
-      }
-
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-        transform: translateY(8px) !important;
-        margin-bottom: -12px !important;
-      }
-    }
-
-    /* Final bottom connector adjustment: move only the lower arrow slightly upward. */
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-      transform: translateY(2px) !important;
-      margin-bottom: -6px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-        transform: translateY(2px) !important;
-        margin-bottom: -6px !important;
-      }
-    }
-
-    /* FINAL BOTTOM ARROW POSITION: place it midway between Instruction bottom and next Step heading. */
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-      transform: translateY(16px) !important;
-      margin-bottom: -6px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-        transform: translateY(16px) !important;
-        margin-bottom: -6px !important;
-      }
-    }
-
-    /* FINAL BOTTOM CONNECTOR: move the lower arrow upward to balance the gap. */
-    .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-      transform: translateY(8px) !important;
-      margin-bottom: -6px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-step-transition > .blueprint-flow-arrow:last-child {
-        transform: translateY(8px) !important;
-        margin-bottom: -6px !important;
-      }
-    }
-
-    /* RESULT NODE: tighten only the heading/description → image gap. */
-    .testing-1-theme .blueprint-subnode.node-result .blueprint-subnode-header {
-      margin-bottom: 6px !important;
-    }
-
-    @media (max-width: 640px) {
-      .testing-1-theme .blueprint-subnode.node-result .blueprint-subnode-header {
-        margin-bottom: 6px !important;
-      }
-    }
-
-
-    /* Desktop hero alignment: match the title/author/description left edge to the wide cover.
-       Mobile layout remains unchanged. */
-    @media (min-width: 769px) {
-      .testing-1-theme .resource-hero-unified-section .hero-unified-header,
-      .testing-1-theme .resource-hero-unified-section .resource-hero-description {
-        width: min(1080px, calc(100% - 48px)) !important;
-        max-width: 1080px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-      }
-
-      .testing-1-theme .resource-hero-unified-section .hero-unified-header {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-      }
-
-      .testing-1-theme .resource-hero-unified-section .resource-hero-description {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-      }
-    }
-
-    /* PHASE 1 HERO REVIEW: premium hero surface and stronger visual hierarchy.
-       Visual-only: existing content, links, media and functionality are unchanged. */
-    .testing-1-theme .resource-hero-unified-section {
-      position: relative !important;
-      isolation: isolate !important;
-      overflow: hidden !important;
-      background:
-        radial-gradient(circle at 86% 18%, rgba(147, 197, 253, 0.20) 0, rgba(147, 197, 253, 0.08) 18%, transparent 38%),
-        radial-gradient(circle at 12% 42%, rgba(219, 234, 254, 0.52) 0, rgba(219, 234, 254, 0.18) 24%, transparent 46%),
-        linear-gradient(180deg, #F8FBFF 0%, #F3F8FD 52%, #ECF4FA 100%) !important;
-      border-bottom: 1px solid #C9D9E7 !important;
-      box-shadow: 0 16px 34px -14px rgba(30, 64, 175, 0.12) !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section::before {
-      content: "" !important;
-      position: absolute !important;
-      width: 300px !important;
-      height: 300px !important;
-      top: 34px !important;
-      right: -120px !important;
-      border-radius: 50% !important;
-      border: 1px solid rgba(96, 165, 250, 0.12) !important;
-      box-shadow:
-        0 0 0 28px rgba(96, 165, 250, 0.035),
-        0 0 0 56px rgba(96, 165, 250, 0.025) !important;
-      pointer-events: none !important;
-      z-index: 0 !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section::after {
-      content: "" !important;
-      position: absolute !important;
-      width: 180px !important;
-      height: 180px !important;
-      left: -90px !important;
-      bottom: 30px !important;
-      border-radius: 50% !important;
-      background: radial-gradient(circle, rgba(191, 219, 254, 0.18) 0%, rgba(191, 219, 254, 0.05) 48%, transparent 72%) !important;
-      pointer-events: none !important;
-      z-index: 0 !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section > * {
-      position: relative !important;
-      z-index: 1 !important;
-    }
-
-    .testing-1-theme .hero-unified-header {
-      padding-top: 10px !important;
-      padding-bottom: 0 !important;
-    }
-
-    .testing-1-theme .hero-unified-header .breadcrumbs {
-      margin-bottom: 11px !important;
-    }
-
-    .testing-1-theme .hero-unified-header .eyebrow {
-      margin-bottom: 13px !important;
-      box-shadow: 0 4px 12px -8px rgba(234, 88, 12, 0.30) !important;
-    }
-
-    .testing-1-theme .hero-unified-header h1 {
-      max-width: 900px !important;
-      font-size: clamp(30px, 4vw, 44px) !important;
-      line-height: 1.12 !important;
-      letter-spacing: -0.035em !important;
-      margin-bottom: 14px !important;
-    }
-
-    .testing-1-theme .hero-unified-header .publisher-identity {
-      margin-bottom: 0 !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
-      margin-top: 20px !important;
-      margin-bottom: 15px !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section .hero-image {
-      border: 1px solid #D7E4F0 !important;
-      box-shadow:
-        0 18px 40px -14px rgba(15, 23, 42, 0.18),
-        0 3px 10px rgba(15, 23, 42, 0.05) !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section .resource-hero-description {
-      margin-top: 0 !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section .resource-description {
-      padding: 1px 0 3px !important;
-    }
-
-    .testing-1-theme .resource-hero-unified-section .resource-description .lead {
-      max-width: 900px !important;
-      color: #334E68 !important;
-      font-size: 1.08rem !important;
-      line-height: 1.62 !important;
-      letter-spacing: -0.005em !important;
-    }
-
-    @media (max-width: 600px) {
+      /* ==========================================================================
+         TESTING-1 EDITORIAL LUXURY SYSTEM (SECOND PASS: FULL UNIFIED DARK THEME)
+         ========================================================================== */
+
+      /* 1. HERO — DARK EDITORIAL SYSTEM */
       .testing-1-theme .resource-hero-unified-section {
+        position: relative !important;
+        isolation: isolate !important;
+        overflow: hidden !important;
         background:
-          radial-gradient(circle at 92% 15%, rgba(147, 197, 253, 0.17) 0, rgba(147, 197, 253, 0.06) 22%, transparent 44%),
-          linear-gradient(180deg, #F8FBFF 0%, #F2F7FC 58%, #ECF4FA 100%) !important;
-        box-shadow: 0 12px 28px -14px rgba(30, 64, 175, 0.12) !important;
+          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.16) 0%, rgba(6, 182, 212, 0.06) 40%, transparent 75%),
+          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(180deg, #070B14 0%, #0A101D 60%, #070B14 100%) !important;
+        background-size: 100% 100%, 36px 36px, 36px 36px, 100% 100% !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8) !important;
+        padding-top: 18px !important;
+        padding-bottom: 28px !important;
       }
 
       .testing-1-theme .resource-hero-unified-section::before {
-        width: 190px !important;
-        height: 190px !important;
-        top: 38px !important;
-        right: -95px !important;
+        content: "" !important;
+        position: absolute !important;
+        width: 480px !important;
+        height: 480px !important;
+        top: -120px !important;
+        right: -160px !important;
+        border-radius: 50% !important;
+        background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(6, 182, 212, 0.02) 45%, transparent 70%) !important;
+        pointer-events: none !important;
+        z-index: 0 !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section::after {
+        content: "" !important;
+        position: absolute !important;
+        width: 320px !important;
+        height: 320px !important;
+        bottom: -60px !important;
+        left: -120px !important;
+        border-radius: 50% !important;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.06) 0%, transparent 65%) !important;
+        pointer-events: none !important;
+        z-index: 0 !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section > * {
+        position: relative !important;
+        z-index: 1 !important;
       }
 
       .testing-1-theme .hero-unified-header {
-        padding-top: 2px !important;
+        padding-top: 8px !important;
+        padding-bottom: 0 !important;
+        text-align: center !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
       }
 
       .testing-1-theme .hero-unified-header .breadcrumbs {
-        margin-bottom: 8px !important;
+        margin-bottom: 14px !important;
+        color: #94A3B8 !important;
+        font-size: 13px !important;
+      }
+
+      .testing-1-theme .hero-unified-header .breadcrumbs a {
+        color: #94A3B8 !important;
+        transition: color 0.15s ease !important;
+      }
+
+      .testing-1-theme .hero-unified-header .breadcrumbs a:hover {
+        color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .hero-unified-header .breadcrumbs span {
+        color: rgba(255, 255, 255, 0.2) !important;
       }
 
       .testing-1-theme .hero-unified-header .eyebrow {
-        margin-bottom: 10px !important;
+        margin-bottom: 16px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 5px 16px !important;
+        border-radius: 9999px !important;
+        background: rgba(56, 189, 248, 0.08) !important;
+        border: 1px solid rgba(56, 189, 248, 0.28) !important;
+        color: #38BDF8 !important;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.12) !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
       }
 
       .testing-1-theme .hero-unified-header h1 {
-        max-width: none !important;
-        font-size: 27px !important;
-        line-height: 1.16 !important;
-        letter-spacing: -0.03em !important;
-        margin-bottom: 11px !important;
+        max-width: 920px !important;
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: clamp(34px, 5.2vw, 54px) !important;
+        font-weight: 500 !important;
+        line-height: 1.12 !important;
+        letter-spacing: -0.025em !important;
+        color: #FFFFFF !important;
+        text-shadow: 0 4px 28px rgba(0, 0, 0, 0.8) !important;
+        margin-bottom: 18px !important;
       }
 
+      .testing-1-theme .hero-unified-header .publisher-identity {
+        display: inline-flex !important;
+        align-items: center !important;
+        background: rgba(14, 22, 38, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 9999px !important;
+        padding: 5px 18px 5px 6px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+        margin-bottom: 0 !important;
+      }
+
+      .testing-1-theme .publisher-avatar-box img {
+        border-radius: 50% !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+      }
+
+      .testing-1-theme .publisher-name-row strong {
+        color: #FFFFFF !important;
+        font-size: 13.5px !important;
+      }
+
+      .testing-1-theme .publisher-verification svg {
+        fill: #38BDF8 !important;
+      }
+
+      .testing-1-theme .publisher-meta {
+        color: #94A3B8 !important;
+        font-size: 11.5px !important;
+      }
+
+      /* Hero Cover Image Wrap with Layered Depth */
       .testing-1-theme .resource-hero-unified-section .hero-image-wrap {
-        margin-top: 15px !important;
-        margin-bottom: 12px !important;
+        margin-top: 24px !important;
+        margin-bottom: 20px !important;
+        display: flex !important;
+        justify-content: center !important;
       }
 
       .testing-1-theme .resource-hero-unified-section .hero-image {
+        width: 100% !important;
+        max-width: 980px !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(56, 189, 248, 0.24) !important;
+        background: #04070D !important;
         box-shadow:
-          0 14px 30px -14px rgba(15, 23, 42, 0.18),
-          0 2px 8px rgba(15, 23, 42, 0.05) !important;
+          0 28px 70px rgba(0, 0, 0, 0.85),
+          0 0 45px rgba(56, 189, 248, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+        aspect-ratio: 16 / 9 !important;
+        object-fit: cover !important;
+      }
+
+      .testing-1-theme .resource-hero-unified-section .resource-hero-description {
+        margin-top: 0 !important;
       }
 
       .testing-1-theme .resource-hero-unified-section .resource-description {
-        padding: 1px 0 2px !important;
+        padding: 4px 0 !important;
+        text-align: center !important;
       }
 
       .testing-1-theme .resource-hero-unified-section .resource-description .lead {
-        font-size: 0.99rem !important;
-        line-height: 1.58 !important;
+        max-width: 840px !important;
+        margin: 0 auto !important;
+        color: #CBD5E1 !important;
+        font-size: 1.14rem !important;
+        line-height: 1.7 !important;
+        letter-spacing: -0.005em !important;
       }
-    }
 
+      /* 5. GUIDE CUE — INTEGRATED DARK PILL */
+      .testing-1-theme .resource-transition-bridge {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100% !important;
+        margin: 24px auto 8px !important;
+        z-index: 5 !important;
+      }
+
+      .testing-1-theme .transition-track-line {
+        position: absolute !important;
+        top: 50% !important;
+        left: 0 !important;
+        right: 0 !important;
+        height: 1px !important;
+        background: linear-gradient(90deg, transparent 0%, rgba(56, 189, 248, 0.2) 25%, rgba(56, 189, 248, 0.45) 50%, rgba(56, 189, 248, 0.2) 75%, transparent 100%) !important;
+        z-index: 1 !important;
+        transform: translateY(-50%) !important;
+        pointer-events: none !important;
+      }
+
+      .testing-1-theme .guide-cue {
+        position: relative !important;
+        z-index: 2 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 12px 34px !important;
+        width: min(520px, calc(100% - 48px)) !important;
+        max-width: min(540px, calc(100% - 32px)) !important;
+        background: linear-gradient(180deg, rgba(16, 26, 44, 0.95) 0%, rgba(10, 16, 28, 0.98) 100%) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        border-radius: 9999px !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        text-decoration: none !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      }
+
+      .testing-1-theme .guide-cue:hover {
+        border-color: rgba(56, 189, 248, 0.6) !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .testing-1-theme .guide-cue span,
+      .testing-1-theme .guide-cue .guide-cue-text {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+        color: #F8FAFC !important;
+        text-transform: uppercase !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+      }
+
+      .testing-1-theme .guide-cue svg {
+        width: 13px !important;
+        height: 13px !important;
+        flex-shrink: 0 !important;
+        fill: none !important;
+        stroke: #38BDF8 !important;
+        stroke-width: 2.2 !important;
+        stroke-linecap: round !important;
+        stroke-linejoin: round !important;
+      }
+
+      @media (max-width: 640px) {
+        .testing-1-theme .guide-cue {
+          gap: 7px !important;
+          padding: 11px 20px !important;
+        }
+        .testing-1-theme .guide-cue span,
+        .testing-1-theme .guide-cue .guide-cue-text {
+          font-size: 10px !important;
+          letter-spacing: 0.09em !important;
+        }
+      }
+
+      /* 2. BLUEPRINT — COMPLETE DARK REDESIGN */
+      .testing-1-theme .blueprint-workflow-container {
+        margin-top: 48px !important;
+        background: linear-gradient(180deg, rgba(12, 19, 34, 0.96) 0%, rgba(7, 11, 20, 0.98) 100%) !important;
+        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        border-radius: 26px !important;
+        padding: 42px 28px 32px !important;
+        box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), 0 0 60px rgba(56, 189, 248, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-header-capsule {
+        width: max-content !important;
+        max-width: calc(100% - 32px) !important;
+        padding: 8px 24px !important;
+        border-radius: 9999px !important;
+        background: rgba(10, 16, 28, 0.98) !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.18) !important;
+        box-sizing: border-box !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-label {
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.14em !important;
+      }
+
+      .testing-1-theme .blueprint-capsule-title {
+        color: #F8FAFC !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+      }
+
+      .testing-1-theme .blueprint-top-arrow {
+        display: none !important;
+      }
+
+      /* Step Containers: NO MORE PASTEL BACKGROUNDS */
+      .testing-1-theme .blueprint-step-container {
+        margin-top: 36px !important;
+        margin-bottom: 8px !important;
+        background: linear-gradient(180deg, rgba(14, 22, 38, 0.92) 0%, rgba(9, 15, 26, 0.98) 100%) !important;
+        border-radius: 22px !important;
+        padding: 38px 24px 28px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-blue {
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(56, 189, 248, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        --step-accent: #38BDF8;
+        --step-accent-dark: #0284C7;
+        --step-accent-text: #7DD3FC;
+        --step-subnode-border-light: rgba(56, 189, 248, 0.2);
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-green {
+        border: 1px solid rgba(52, 211, 153, 0.35) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(52, 211, 153, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        --step-accent: #34D399;
+        --step-accent-dark: #059669;
+        --step-accent-text: #6EE7B7;
+        --step-subnode-border-light: rgba(52, 211, 153, 0.2);
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-orange {
+        border: 1px solid rgba(251, 146, 60, 0.35) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(251, 146, 60, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        --step-accent: #FB923C;
+        --step-accent-dark: #EA580C;
+        --step-accent-text: #FDBA74;
+        --step-subnode-border-light: rgba(251, 146, 60, 0.2);
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-cyan {
+        border: 1px solid rgba(34, 211, 238, 0.35) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(34, 211, 238, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        --step-accent: #22D3EE;
+        --step-accent-dark: #0891B2;
+        --step-accent-text: #67E8F9;
+        --step-subnode-border-light: rgba(34, 211, 238, 0.2);
+      }
+
+      .testing-1-theme .blueprint-step-container.step-theme-purple {
+        border: 1px solid rgba(192, 132, 252, 0.35) !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(192, 132, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        --step-accent: #C084FC;
+        --step-accent-dark: #7C3AED;
+        --step-accent-text: #D8B4FE;
+        --step-subnode-border-light: rgba(192, 132, 252, 0.2);
+      }
+
+      .testing-1-theme .blueprint-step-capsule {
+        background: rgba(10, 16, 28, 0.98) !important;
+        border: 1.5px solid var(--step-accent, #38BDF8) !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 18px rgba(56, 189, 248, 0.15) !important;
+        color: #FFFFFF !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em !important;
+        border-radius: 9999px !important;
+        padding: 6px 22px !important;
+      }
+
+      .testing-1-theme .blueprint-step-title {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: 22px !important;
+        font-weight: 500 !important;
+        color: #FFFFFF !important;
+        margin: 6px 0 22px !important;
+        text-align: center !important;
+      }
+
+      /* 3. INNER BLUEPRINT CARDS — DARK LAYERED SYSTEM */
+      .testing-1-theme .blueprint-subnode {
+        background: linear-gradient(180deg, rgba(16, 25, 42, 0.75) 0%, rgba(10, 16, 27, 0.92) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 18px !important;
+        padding: 20px 22px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+      }
+
+      .testing-1-theme .blueprint-node-badge {
+        background: rgba(56, 189, 248, 0.15) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-weight: 800 !important;
+        border-radius: 50% !important;
+      }
+
+      .testing-1-theme .blueprint-node-title {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.12em !important;
+        color: #F8FAFC !important;
+      }
+
+      .testing-1-theme .blueprint-node-subtitle {
+        color: #94A3B8 !important;
+        font-size: 12px !important;
+      }
+
+      .testing-1-theme .blueprint-sub-arrow {
+        padding: 8px 0 !important;
+        color: var(--step-accent, #38BDF8) !important;
+        opacity: 0.75 !important;
+      }
+
+      .testing-1-theme .blueprint-sub-arrow svg {
+        width: 18px !important;
+        height: 28px !important;
+        stroke-width: 2.5 !important;
+      }
+
+      /* Inner Card 1: Inputs */
+      .testing-1-theme .workflow-input-rail .input-card {
+        background: rgba(8, 13, 23, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .input-card .media-type {
+        background: rgba(56, 189, 248, 0.12) !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .input-card .media-frame {
+        background: #04070D !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 10px !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .media-caption strong {
+        color: #F8FAFC !important;
+      }
+
+      .testing-1-theme .workflow-input-rail .media-caption small {
+        color: #94A3B8 !important;
+      }
+
+      /* Inner Card 2: Prompt Box (Desktop & Mobile) */
+      .testing-1-theme .workflow-prompt {
+        background: #060A13 !important;
+        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+        overflow: hidden !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head {
+        background: rgba(14, 22, 38, 0.95) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button {
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #E2E8F0 !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        transition: background 0.15s ease, color 0.15s ease !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-copy-step] {
+        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button[data-expand-step] {
+        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button:hover {
+        background: rgba(56, 189, 248, 0.18) !important;
+        color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head span {
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em !important;
+      }
+
+      .testing-1-theme .workflow-prompt pre {
+        background: transparent !important;
+        color: #E2E8F0 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 13px !important;
+        line-height: 1.65 !important;
+        padding: 18px 20px !important;
+      }
+
+      @media (max-width: 640px) {
+        .testing-1-theme .blueprint-tools-layout {
+          min-width: 0 !important;
+          max-width: 100% !important;
+        }
+        .testing-1-theme .blueprint-tool-details {
+          min-width: 0 !important;
+          max-width: 100% !important;
+          overflow: hidden !important;
+        }
+        .testing-1-theme .blueprint-settings-row {
+          display: flex !important;
+          flex-direction: row !important;
+          align-items: center !important;
+          flex-wrap: nowrap !important;
+          gap: 8px !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          overflow-y: hidden !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+          padding-bottom: 2px !important;
+        }
+        .testing-1-theme .blueprint-settings-row::-webkit-scrollbar {
+          display: none !important;
+        }
+        .testing-1-theme .blueprint-settings-icon {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          font-size: 13px !important;
+          color: #38BDF8 !important;
+          opacity: 0.85 !important;
+          flex: 0 0 auto !important;
+          flex-shrink: 0 !important;
+          align-self: center !important;
+          line-height: 1 !important;
+          margin: 0 !important;
+        }
+        .testing-1-theme .blueprint-settings-grid {
+          display: flex !important;
+          flex-direction: row !important;
+          flex-wrap: nowrap !important;
+          gap: 8px !important;
+          align-items: center !important;
+          flex: 0 0 auto !important;
+          min-width: 0 !important;
+        }
+        .testing-1-theme .blueprint-setting-chip {
+          display: inline-flex !important;
+          flex-direction: column !important;
+          flex: 0 0 auto !important;
+          flex-shrink: 0 !important;
+          width: auto !important;
+          max-width: max-content !important;
+          white-space: nowrap !important;
+        }
+        .testing-1-theme .workflow-prompt-head {
+          height: 46px !important;
+          min-height: 46px !important;
+          max-height: 46px !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          display: grid !important;
+          grid-template-columns: 64px 1fr 72px !important;
+          background: #0D1726 !important;
+          border-bottom: 1px solid #263449 !important;
+        }
+        .testing-1-theme .workflow-prompt-head button {
+          height: 100% !important;
+          border-radius: 0 !important;
+          padding: 0 8px !important;
+          margin: 0 !important;
+        }
+        .testing-1-theme .workflow-prompt-head button[data-copy-step] {
+          border-top-left-radius: 13px !important;
+          border-right: 1px solid #263449 !important;
+        }
+        .testing-1-theme .workflow-prompt-head button[data-expand-step] {
+          border-top-right-radius: 13px !important;
+          border-left: 1px solid #263449 !important;
+        }
+        .testing-1-theme .workflow-prompt-head span {
+          background: transparent !important;
+          padding: 0 14px !important;
+        }
+      }
+
+      .testing-1-theme .workflow-download,
+      .testing-1-theme .workflow-prompt [data-download-step] {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+        color: #94A3B8 !important;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        font-weight: 700 !important;
+        transition: background 0.15s ease, color 0.15s ease !important;
+      }
+
+      .testing-1-theme .workflow-download:hover,
+      .testing-1-theme .workflow-prompt [data-download-step]:hover {
+        background: rgba(56, 189, 248, 0.12) !important;
+        color: #38BDF8 !important;
+      }
+
+      /* Inner Card 3: AI Tool / Settings */
+      .testing-1-theme .blueprint-tool-logo-box {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 14px !important;
+      }
+
+      .testing-1-theme .blueprint-purpose-pill {
+        background: rgba(56, 189, 248, 0.12) !important;
+        color: #38BDF8 !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.08em !important;
+      }
+
+      .testing-1-theme .blueprint-settings-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+      }
+
+      .testing-1-theme .blueprint-settings-icon {
+        font-size: 13px !important;
+        color: #38BDF8 !important;
+        opacity: 0.85 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-settings-grid {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+        align-items: center !important;
+      }
+
+      .testing-1-theme .blueprint-setting-chip {
+        display: inline-flex !important;
+        flex-direction: column !important;
+        gap: 2px !important;
+        padding: 6px 12px !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 8px !important;
+        width: auto !important;
+        max-width: max-content !important;
+        flex: 0 0 auto !important;
+      }
+
+      .testing-1-theme .blueprint-setting-chip .setting-label {
+        color: #8EA2BD !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 9.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        line-height: 1 !important;
+        margin-bottom: 2px !important;
+      }
+
+      .testing-1-theme .blueprint-setting-chip .setting-val {
+        color: #F8FAFC !important;
+        font-size: 12.5px !important;
+        font-weight: 600 !important;
+        line-height: 1.25 !important;
+      }
+
+      /* Inner Card 4: Result / Final Result */
+      .testing-1-theme .blueprint-result-media-center .media-frame {
+        background: #04070D !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 16px !important;
+      }
+
+      .testing-1-theme .blueprint-result-meta-info {
+        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .blueprint-result-label {
+        color: #FFFFFF !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+      }
+
+      .testing-1-theme .blueprint-result-desc {
+        color: #94A3B8 !important;
+        font-size: 13.5px !important;
+      }
+
+      .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
+        background: linear-gradient(180deg, rgba(20, 22, 42, 0.88) 0%, rgba(14, 15, 30, 0.96) 100%) !important;
+        border: 1.5px solid rgba(192, 132, 252, 0.45) !important;
+        box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6), 0 0 35px rgba(192, 132, 252, 0.15) !important;
+      }
+
+      /* Inter-Step Transitions */
+      .testing-1-theme .blueprint-flow-arrow {
+        color: #38BDF8 !important;
+        opacity: 0.8 !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-container {
+        background: linear-gradient(180deg, rgba(16, 25, 42, 0.92) 0%, rgba(10, 17, 29, 0.98) 100%) !important;
+        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-capsule {
+        background: #0B1424 !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-weight: 800 !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-badge {
+        background: rgba(56, 189, 248, 0.2) !important;
+        color: #38BDF8 !important;
+        font-weight: 800 !important;
+      }
+
+      .testing-1-theme .blueprint-instruction-text {
+        color: #E2E8F0 !important;
+        font-size: 13.5px !important;
+        font-weight: 600 !important;
+      }
+
+      /* 4. TIPS — DARK LAYERED PANEL */
+      .testing-1-theme .tips-section {
+        background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 24px !important;
+        padding: 36px 32px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .tips-section .section-heading h2 {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: 26px !important;
+        font-weight: 500 !important;
+        color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .tips-section .section-heading .eyebrow {
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+      }
+
+      .testing-1-theme .tips-list {
+        background: rgba(8, 13, 23, 0.9) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 18px !important;
+        padding: 22px 28px 22px 48px !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+      }
+
+      .testing-1-theme .tips-list li {
+        color: #CBD5E1 !important;
+        font-size: 15px !important;
+        line-height: 1.68 !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+        padding: 13px 0 13px 6px !important;
+      }
+
+      .testing-1-theme .tips-list li:first-child {
+        padding-top: 4px !important;
+      }
+
+      .testing-1-theme .tips-list li:last-child {
+        border-bottom: none !important;
+        padding-bottom: 4px !important;
+      }
+
+      /* 6. CTA — DARK LUXURY WITH ATMOSPHERIC GLOW & ORANGE ACCENTS */
+      .testing-1-theme .resource-cta .cta-card {
+        background:
+          radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 102, 0, 0.18) 0%, rgba(13, 20, 34, 0.95) 65%) !important;
+        border: 1px solid rgba(255, 102, 0, 0.32) !important;
+        border-radius: 28px !important;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 102, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        padding: 44px 38px !important;
+      }
+
+      .testing-1-theme .resource-cta .cta-card h2 {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: clamp(28px, 4vw, 38px) !important;
+        font-weight: 500 !important;
+        color: #FFFFFF !important;
+        letter-spacing: -0.02em !important;
+        margin-bottom: 10px !important;
+      }
+
+      .testing-1-theme .resource-cta .cta-card p {
+        color: #CBD5E1 !important;
+        font-size: 16px !important;
+        line-height: 1.65 !important;
+        max-width: 600px !important;
+      }
+
+      .testing-1-theme .resource-cta .cta-card .button-primary {
+        background: #FFFFFF !important;
+        color: #EA5500 !important;
+        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        font-weight: 800 !important;
+        border-radius: 9999px !important;
+        padding: 14px 32px !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 102, 0, 0.25) !important;
+        font-size: 15px !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        white-space: nowrap !important;
+      }
+
+      .testing-1-theme .resource-cta .cta-card .button-primary:hover {
+        background: #FFF7ED !important;
+        color: #C2410C !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 102, 0, 0.35) !important;
+      }
+
+      /* 7. CONSISTENCY ACROSS OTHER SECTIONS */
+      .testing-1-theme .intro-section,
+      .testing-1-theme .resource-section:not(.workflow-section):not(.tips-section) {
+        background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 24px !important;
+        padding: 36px 32px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+      }
+
+      .testing-1-theme .section-heading h2 {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: 26px !important;
+        font-weight: 500 !important;
+        color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .section-heading .eyebrow {
+        color: #38BDF8 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+      }
+
+      .testing-1-theme .section-lead,
+      .testing-1-theme .section-subcopy {
+        color: #CBD5E1 !important;
+      }
+
+      .testing-1-theme .tools-list .tool-card {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .testing-1-theme .tools-list .tool-card:hover {
+        border-color: rgba(56, 189, 248, 0.4) !important;
+        transform: translateY(-2px) !important;
+      }
+
+      .testing-1-theme .tags a {
+        background: rgba(255, 255, 255, 0.04) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #CBD5E1 !important;
+        border-radius: 9999px !important;
+        transition: all 0.15s ease !important;
+      }
+
+      .testing-1-theme .tags a:hover {
+        border-color: rgba(251, 146, 60, 0.45) !important;
+        color: #FB923C !important;
+        background: rgba(251, 146, 60, 0.08) !important;
+      }
+
+      /* Mobile Precision */
+      @media (max-width: 640px) {
+        .testing-1-theme .resource-hero-unified-section {
+          padding-top: 10px !important;
+          padding-bottom: 20px !important;
+        }
+
+        .testing-1-theme .hero-unified-header h1 {
+          font-size: 28px !important;
+          line-height: 1.18 !important;
+        }
+
+        .testing-1-theme .resource-hero-unified-section .resource-description .lead {
+          font-size: 1rem !important;
+        }
+
+        .testing-1-theme .blueprint-workflow-container {
+          padding: 32px 14px 22px !important;
+          border-radius: 20px !important;
+          margin-top: 40px !important;
+        }
+
+        .testing-1-theme .blueprint-step-container {
+          padding: 30px 14px 20px !important;
+          border-radius: 18px !important;
+        }
+
+        .testing-1-theme .blueprint-step-title {
+          font-size: 18px !important;
+        }
+
+        .testing-1-theme .blueprint-subnode {
+          padding: 16px 14px !important;
+        }
+
+        .testing-1-theme .tips-section {
+          padding: 24px 16px !important;
+        }
+
+        .testing-1-theme .tips-list {
+          padding: 16px 18px 16px 36px !important;
+        }
+
+        .testing-1-theme .resource-cta .cta-card {
+          padding: 28px 20px !important;
+          border-radius: 22px !important;
+        }
+      }
   </style>
 </BaseLayout>

@@ -110,7 +110,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 .resource-page .workflow-media-card{flex:0 0 196px!important;width:196px!important}
 
 /* Guide cue & transition bridge: compact, refined instructional connection between hero and content */
-.resource-page .resource-transition-bridge {
+body:not(:has(.testing-1-theme)) .resource-transition-bridge {
   position: relative !important;
   display: flex !important;
   flex-direction: column !important;
@@ -120,7 +120,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   margin: 4px auto 0 !important;
   z-index: 2 !important;
 }
-.resource-page .transition-track-line {
+body:not(:has(.testing-1-theme)) .transition-track-line {
   position: absolute !important;
   top: 50% !important;
   left: 0 !important;
@@ -131,7 +131,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   transform: translateY(-50%) !important;
   pointer-events: none !important;
 }
-.resource-page .guide-cue {
+body:not(:has(.testing-1-theme)) .guide-cue {
   position: relative !important;
   z-index: 2 !important;
   display: inline-flex !important;
@@ -151,14 +151,14 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   white-space: nowrap !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
-.resource-page .guide-cue:hover {
+body:not(:has(.testing-1-theme)) .guide-cue:hover {
   background: #FFFFFF !important;
   border-color: #94A3B8 !important;
   transform: translateY(-1.5px) !important;
   box-shadow: 0 6px 16px -3px rgba(2, 132, 199, 0.12), 0 2px 4px -1px rgba(15, 23, 42, 0.05), inset 0 1px 0 #FFFFFF !important;
 }
-.resource-page .guide-cue span,
-.resource-page .guide-cue .guide-cue-text {
+body:not(:has(.testing-1-theme)) .guide-cue span,
+body:not(:has(.testing-1-theme)) .guide-cue .guide-cue-text {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
@@ -168,7 +168,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   line-height: 1 !important;
   white-space: nowrap !important;
 }
-.resource-page .guide-cue svg {
+body:not(:has(.testing-1-theme)) .guide-cue svg {
   width: 13px !important;
   height: 13px !important;
   flex-shrink: 0 !important;
@@ -181,15 +181,15 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   transform: none !important;
   transition: transform 0.2s ease, stroke 0.2s ease !important;
 }
-.resource-page .guide-cue:hover svg {
+body:not(:has(.testing-1-theme)) .guide-cue:hover svg {
   stroke: #0369A1 !important;
   transform: translateY(1.5px) !important;
 }
-.resource-page .transition-indicator-stem {
+body:not(:has(.testing-1-theme)) .transition-indicator-stem {
   display: none !important;
 }
 @media (max-width: 560px) {
-  .resource-page .guide-cue {
+  body:not(:has(.testing-1-theme)) .guide-cue {
     min-width: 0 !important;
     width: 82% !important;
     max-width: 360px !important;
@@ -197,14 +197,14 @@ body:has([data-prompt-modal]){overflow:hidden!important}
     gap: 7px !important;
     white-space: nowrap !important;
   }
-  .resource-page .guide-cue span,
-  .resource-page .guide-cue .guide-cue-text {
+  body:not(:has(.testing-1-theme)) .guide-cue span,
+  body:not(:has(.testing-1-theme)) .guide-cue .guide-cue-text {
     font-size: 9.5px !important;
     letter-spacing: 0.06em !important;
     line-height: 1 !important;
     white-space: nowrap !important;
   }
-  .resource-page .guide-cue svg {
+  body:not(:has(.testing-1-theme)) .guide-cue svg {
     width: 11px !important;
     height: 11px !important;
   }
@@ -506,9 +506,76 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   margin-bottom: 0 !important;
 }
 
+/* ==========================================================================
+   UNIFIED RESOURCE SECTION TYPOGRAPHY SPACING SYSTEM
+   Capsule (eyebrow) → Title (h2) → Description (lead/subcopy) → Content
+   ========================================================================== */
+.testing-1-theme .resource-section .section-heading,
+.resource-page .resource-section .section-heading {
+  margin-bottom: 0 !important;
+}
+
+.testing-1-theme .section-heading .eyebrow,
+.resource-page .resource-section .section-heading .eyebrow {
+  margin: 0 0 16px 0 !important;
+}
+
+.testing-1-theme .section-heading h2,
+.resource-page .resource-section .section-heading h2 {
+  margin: 0 0 12px 0 !important;
+}
+
+.testing-1-theme .section-lead,
+.testing-1-theme .section-subcopy,
+.resource-page .section-lead,
+.resource-page .section-subcopy {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.testing-1-theme .tools-list,
+.resource-page .tools-list {
+  margin-top: 24px !important;
+}
+
+.testing-1-theme .tips-list,
+.resource-page .tips-list {
+  margin-top: 22px !important;
+}
+
+.testing-1-theme .video-frame,
+.resource-page .video-frame {
+  margin-top: 24px !important;
+}
+
+.testing-1-theme .blueprint-workflow-container {
+  margin-top: 24px !important;
+}
+
+@media (max-width: 640px) {
+  .testing-1-theme .section-heading .eyebrow,
+  .resource-page .resource-section .section-heading .eyebrow {
+    margin-bottom: 14px !important;
+  }
+  .testing-1-theme .section-heading h2,
+  .resource-page .resource-section .section-heading h2 {
+    margin: 0 0 10px 0 !important;
+  }
+  .testing-1-theme .tools-list,
+  .testing-1-theme .video-frame,
+  .testing-1-theme .blueprint-workflow-container,
+  .resource-page .tools-list,
+  .resource-page .video-frame {
+    margin-top: 20px !important;
+  }
+  .testing-1-theme .tips-list,
+  .resource-page .tips-list {
+    margin-top: 18px !important;
+  }
+}
+
 /* Tips for better results card & bullet dot indentation */
-.resource-page .tips-list,
-.testing-1-theme .tips-list {
+body:not(:has(.testing-1-theme)) .tips-list {
   background: #FFFFFF !important;
   border: 1px solid #E2E8F0 !important;
   border-radius: 16px !important;
@@ -518,8 +585,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   box-sizing: border-box !important;
 }
 
-.resource-page .tips-list li,
-.testing-1-theme .tips-list li {
+body:not(:has(.testing-1-theme)) .tips-list li {
   color: #334155 !important;
   font-size: 15px !important;
   line-height: 1.6 !important;
@@ -527,33 +593,28 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   padding: 12px 0 12px 6px !important;
 }
 
-.resource-page .tips-list li:first-child,
-.testing-1-theme .tips-list li:first-child {
+body:not(:has(.testing-1-theme)) .tips-list li:first-child {
   padding-top: 4px !important;
 }
 
-.resource-page .tips-list li:last-child,
-.testing-1-theme .tips-list li:last-child {
+body:not(:has(.testing-1-theme)) .tips-list li:last-child {
   border-bottom: none !important;
   padding-bottom: 4px !important;
 }
 
 @media (max-width: 640px) {
-  .resource-page .tips-list,
-  .testing-1-theme .tips-list {
+  body:not(:has(.testing-1-theme)) .tips-list {
     padding: 16px 18px 16px 36px !important;
     border-radius: 14px !important;
   }
-  .resource-page .tips-list li,
-  .testing-1-theme .tips-list li {
+  body:not(:has(.testing-1-theme)) .tips-list li {
     font-size: 14px !important;
     padding: 10px 0 10px 4px !important;
   }
 }
 
 /* Hashtags in a single horizontal row with smooth scroll */
-.resource-page .tags,
-.testing-1-theme .tags {
+body:not(:has(.testing-1-theme)) .tags {
   margin-top: 0 !important;
   margin-bottom: 0 !important;
   display: flex !important;
@@ -570,15 +631,13 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   box-sizing: border-box !important;
 }
 
-.resource-page .tags::-webkit-scrollbar,
-.testing-1-theme .tags::-webkit-scrollbar {
+body:not(:has(.testing-1-theme)) .tags::-webkit-scrollbar {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
 }
 
-.resource-page .tags a,
-.testing-1-theme .tags a {
+body:not(:has(.testing-1-theme)) .tags a {
   flex: 0 0 auto !important;
   white-space: nowrap !important;
   background: #FFFFFF !important;
@@ -592,8 +651,7 @@ body:has([data-prompt-modal]){overflow:hidden!important}
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03) !important;
 }
 
-.resource-page .tags a:hover,
-.testing-1-theme .tags a:hover {
+body:not(:has(.testing-1-theme)) .tags a:hover {
   background: #FFF7ED !important;
   border-color: #FDBA74 !important;
   color: #EA580C !important;
@@ -942,31 +1000,52 @@ body:has(.testing-1-theme) .site-footer .footer-copyright {
   color: #FBBF24 !important;
   border: 1px solid rgba(245, 158, 11, 0.35) !important;
 }
+.blueprint-settings-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-wrap: wrap !important;
+}
+.blueprint-settings-icon {
+  font-size: 13px !important;
+  color: #38BDF8 !important;
+  opacity: 0.85 !important;
+  flex-shrink: 0 !important;
+}
 .blueprint-settings-grid {
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 8px !important;
+  align-items: center !important;
 }
 .blueprint-setting-chip {
   display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  padding: 5px 10px !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  padding: 6px 12px !important;
   border-radius: 8px !important;
   background: rgba(255, 255, 255, 0.04) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   font-size: 12px !important;
+  width: auto !important;
+  max-width: max-content !important;
+  flex: 0 0 auto !important;
 }
 .blueprint-setting-chip .setting-label {
   font-weight: 700 !important;
-  color: #94A3B8 !important;
-  font-size: 10.5px !important;
+  color: #8EA2BD !important;
+  font-size: 9.5px !important;
+  font-family: 'JetBrains Mono', monospace !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
+  letter-spacing: 0.08em !important;
+  margin-bottom: 2px !important;
+  line-height: 1 !important;
 }
 .blueprint-setting-chip .setting-val {
   font-weight: 600 !important;
   color: #F8FAFC !important;
+  font-size: 12.5px !important;
+  line-height: 1.25 !important;
 }
 
 /* Result Node Layout */
@@ -1121,176 +1200,209 @@ body:has(.testing-1-theme) .site-footer .footer-copyright {
   color: #CBD5E1 !important;
 }
 
-/* TESTING-1 THEME BLUEPRINT OVERRIDES */
+/* TESTING-1 THEME BLUEPRINT OVERRIDES (AWESMOS DARK EDITORIAL SYSTEM) */
 body:has(.testing-1-theme) .blueprint-workflow-container,
 .testing-1-theme .blueprint-workflow-container {
-  background: #FFFFFF !important;
-  border: 2px solid #312C51 !important;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05) !important;
+  background: rgba(10, 16, 28, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 24px 70px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
 }
 body:has(.testing-1-theme) .blueprint-header-capsule,
 .testing-1-theme .blueprint-header-capsule {
-  background: #FFFFFF !important;
-  border: 2px solid #312C51 !important;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+  background: rgba(14, 22, 38, 0.95) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.12) !important;
 }
 body:has(.testing-1-theme) .blueprint-capsule-label,
 .testing-1-theme .blueprint-capsule-label {
-  color: #EA580C !important;
+  color: #38BDF8 !important;
   font-weight: 800 !important;
+  letter-spacing: 0.12em !important;
 }
 body:has(.testing-1-theme) .blueprint-capsule-title,
 .testing-1-theme .blueprint-capsule-title {
-  color: #0F172A !important;
-  font-weight: 800 !important;
+  color: #F8FAFC !important;
+  font-weight: 700 !important;
 }
 body:has(.testing-1-theme) .blueprint-top-arrow,
 .testing-1-theme .blueprint-top-arrow {
-  color: #EA580C !important;
+  color: #38BDF8 !important;
 }
 body:has(.testing-1-theme) .blueprint-step-container,
 .testing-1-theme .blueprint-step-container {
-  background: #FFFFFF !important;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
+  background: rgba(13, 20, 36, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5) !important;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-blue,
 .testing-1-theme .blueprint-step-container.step-theme-blue {
-  border-color: #0284C7 !important;
-  --step-accent: #0284C7;
-  --step-accent-dark: #0369A1;
-  --step-accent-text: #0369A1;
-  --step-subnode-border-light: #93C5FD;
+  border-color: rgba(56, 189, 248, 0.35) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(56, 189, 248, 0.08) !important;
+  --step-accent: #38BDF8;
+  --step-accent-dark: #0284C7;
+  --step-accent-text: #7DD3FC;
+  --step-subnode-border-light: rgba(56, 189, 248, 0.2);
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-green,
 .testing-1-theme .blueprint-step-container.step-theme-green {
-  border-color: #059669 !important;
-  --step-accent: #059669;
-  --step-accent-dark: #047857;
-  --step-accent-text: #047857;
-  --step-subnode-border-light: #86EFAC;
+  border-color: rgba(52, 211, 153, 0.35) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(52, 211, 153, 0.08) !important;
+  --step-accent: #34D399;
+  --step-accent-dark: #059669;
+  --step-accent-text: #6EE7B7;
+  --step-subnode-border-light: rgba(52, 211, 153, 0.2);
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-orange,
 .testing-1-theme .blueprint-step-container.step-theme-orange {
-  border-color: #EA580C !important;
-  --step-accent: #EA580C;
-  --step-accent-dark: #C2410C;
-  --step-accent-text: #C2410C;
-  --step-subnode-border-light: #FDBA74;
+  border-color: rgba(251, 146, 60, 0.35) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(251, 146, 60, 0.08) !important;
+  --step-accent: #FB923C;
+  --step-accent-dark: #EA580C;
+  --step-accent-text: #FDBA74;
+  --step-subnode-border-light: rgba(251, 146, 60, 0.2);
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-cyan,
 .testing-1-theme .blueprint-step-container.step-theme-cyan {
-  border-color: #0891B2 !important;
-  --step-accent: #0891B2;
-  --step-accent-dark: #0E7490;
-  --step-accent-text: #0E7490;
-  --step-subnode-border-light: #A5F3FC;
+  border-color: rgba(34, 211, 238, 0.35) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(34, 211, 238, 0.08) !important;
+  --step-accent: #22D3EE;
+  --step-accent-dark: #0891B2;
+  --step-accent-text: #67E8F9;
+  --step-subnode-border-light: rgba(34, 211, 238, 0.2);
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-purple,
 .testing-1-theme .blueprint-step-container.step-theme-purple {
-  border-color: #7C3AED !important;
-  --step-accent: #7C3AED;
-  --step-accent-dark: #6D28D9;
-  --step-accent-text: #6D28D9;
-  --step-subnode-border-light: #DDD6FE;
+  border-color: rgba(192, 132, 252, 0.35) !important;
+  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 32px rgba(192, 132, 252, 0.1) !important;
+  --step-accent: #C084FC;
+  --step-accent-dark: #7C3AED;
+  --step-accent-text: #E9D5FF;
+  --step-subnode-border-light: rgba(192, 132, 252, 0.2);
 }
 body:has(.testing-1-theme) .blueprint-step-capsule,
 .testing-1-theme .blueprint-step-capsule {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  background: rgba(10, 16, 28, 0.96) !important;
+  border: 1.5px solid var(--step-accent, #38BDF8) !important;
+  color: var(--step-accent, #38BDF8) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
 }
 body:has(.testing-1-theme) .blueprint-step-title,
 .testing-1-theme .blueprint-step-title {
-  color: #0F172A !important;
-  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.015em !important;
 }
 body:has(.testing-1-theme) .blueprint-subnode,
 .testing-1-theme .blueprint-subnode {
-  background: #FFFFFF !important;
-  border: 1.5px solid var(--step-subnode-border-light, #CBD5E1) !important;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03) !important;
+  background: rgba(8, 13, 23, 0.85) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
 }
 body:has(.testing-1-theme) .blueprint-node-title,
 .testing-1-theme .blueprint-node-title {
-  color: var(--step-accent-text, #0F172A) !important;
-  font-weight: 800 !important;
+  color: #F8FAFC !important;
+  font-weight: 700 !important;
 }
 body:has(.testing-1-theme) .blueprint-node-subtitle,
 .testing-1-theme .blueprint-node-subtitle {
-  color: #475569 !important;
+  color: #64748B !important;
 }
 body:has(.testing-1-theme) .blueprint-tool-logo-box,
 .testing-1-theme .blueprint-tool-logo-box {
-  background: #F8FAFC !important;
-  border-color: #E2E8F0 !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 body:has(.testing-1-theme) .blueprint-purpose-pill,
 .testing-1-theme .blueprint-purpose-pill {
-  background: #FFF7ED !important;
-  color: #EA580C !important;
-  border: 1px solid #FFEDD5 !important;
-  font-weight: 800 !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  color: #38BDF8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  font-weight: 700 !important;
 }
 body:has(.testing-1-theme) .blueprint-setting-chip,
 .testing-1-theme .blueprint-setting-chip {
-  background: #F8FAFC !important;
-  border-color: #E2E8F0 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  display: inline-flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  width: auto !important;
+  max-width: max-content !important;
+  flex: 0 0 auto !important;
 }
 body:has(.testing-1-theme) .blueprint-setting-chip .setting-label,
 .testing-1-theme .blueprint-setting-chip .setting-label {
-  color: #64748B !important;
+  color: #8EA2BD !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 9.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  margin-bottom: 2px !important;
 }
 body:has(.testing-1-theme) .blueprint-setting-chip .setting-val,
 .testing-1-theme .blueprint-setting-chip .setting-val {
-  color: #0F172A !important;
+  color: #F8FAFC !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
 }
 body:has(.testing-1-theme) .blueprint-result-media-center .media-frame,
 .testing-1-theme .blueprint-result-media-center .media-frame {
-  background: #F8FAFC !important;
-  border-color: #E2E8F0 !important;
+  background: #04070D !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 body:has(.testing-1-theme) .blueprint-result-meta-info,
 .testing-1-theme .blueprint-result-meta-info {
-  border-top-color: #E2E8F0 !important;
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
 }
 body:has(.testing-1-theme) .blueprint-result-label,
 .testing-1-theme .blueprint-result-label {
-  color: #0F172A !important;
-  font-weight: 800 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
 }
 body:has(.testing-1-theme) .blueprint-result-desc,
 .testing-1-theme .blueprint-result-desc {
-  color: #475569 !important;
+  color: #94A3B8 !important;
 }
 body:has(.testing-1-theme) .blueprint-subnode.node-result.is-final-result-node,
 .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
-  background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%) !important;
-  border: 1.5px solid #C4B5FD !important;
+  background: linear-gradient(180deg, rgba(16, 18, 32, 0.9) 0%, rgba(26, 16, 42, 0.9) 100%) !important;
+  border: 1.5px solid rgba(192, 132, 252, 0.4) !important;
 }
 body:has(.testing-1-theme) .blueprint-flow-arrow,
 .testing-1-theme .blueprint-flow-arrow {
-  color: #64748B !important;
+  color: rgba(56, 189, 248, 0.6) !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-container,
 .testing-1-theme .blueprint-instruction-container {
-  background: #F8FAFC !important;
-  border: 1.5px solid #CBD5E1 !important;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+  background: rgba(14, 22, 38, 0.85) !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-capsule,
 .testing-1-theme .blueprint-instruction-capsule {
-  background: #334155 !important;
-  border: 1.5px solid #334155 !important;
-  color: #FFFFFF !important;
+  background: rgba(10, 16, 28, 0.95) !important;
+  border: 1.5px solid rgba(56, 189, 248, 0.4) !important;
+  color: #38BDF8 !important;
   font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-badge,
 .testing-1-theme .blueprint-instruction-badge {
-  background: #334155 !important;
-  color: #FFFFFF !important;
+  background: rgba(56, 189, 248, 0.15) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  color: #38BDF8 !important;
   font-weight: 800 !important;
 }
 body:has(.testing-1-theme) .blueprint-instruction-text,
 .testing-1-theme .blueprint-instruction-text {
-  color: #0F172A !important;
+  color: #E2E8F0 !important;
   font-weight: 600 !important;
 }
 
@@ -1365,47 +1477,133 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
 }
 
 
-/* TESTING-1 MOBILE PROMPT VISUAL POLISH — styling only; structure/function unchanged. */
+/* TESTING-1 MOBILE PROMPT & SETTINGS VISUAL POLISH — styling only; structure/function unchanged. */
 @media (max-width: 640px) {
+  /* Mobile AI TOOL / SETTINGS horizontal control rail */
+  .testing-1-theme .blueprint-tools-layout {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .testing-1-theme .blueprint-tool-details {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .testing-1-theme .blueprint-settings-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    padding-bottom: 2px !important;
+  }
+  .testing-1-theme .blueprint-settings-row::-webkit-scrollbar {
+    display: none !important;
+  }
+  .testing-1-theme .blueprint-settings-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px !important;
+    color: #38BDF8 !important;
+    opacity: 0.85 !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    align-self: center !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+  }
+  .testing-1-theme .blueprint-settings-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+  }
+  .testing-1-theme .blueprint-setting-chip {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    width: auto !important;
+    max-width: max-content !important;
+    white-space: nowrap !important;
+  }
+
   .testing-1-theme .workflow-prompt {
     background: #0B111D !important;
     border: 1px solid #263449 !important;
     box-shadow: 0 10px 26px rgba(15, 23, 42, 0.18) !important;
   }
 
-  /* Keep Copy / FULL PROMPT / Expand attached to the same top bar and preserve separators. */
+  /* Keep Copy / FULL PROMPT / Expand attached directly to the prompt box/viewer on mobile (matching desktop) */
   .testing-1-theme .workflow-prompt-head {
-    height: 50px !important;
-    min-height: 50px !important;
-    max-height: 50px !important;
-    padding: 6px 7px !important;
+    display: grid !important;
+    grid-template-columns: 64px 1fr 72px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+    max-height: 46px !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
     gap: 0 !important;
-    background: #111A29 !important;
+    background: #0D1726 !important;
     border-bottom: 1px solid #263449 !important;
+    box-sizing: border-box !important;
   }
 
   .testing-1-theme .workflow-prompt-head span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 14px !important;
+    margin: 0 !important;
+    background: transparent !important;
     color: #8EA2BD !important;
-    font-size: 10.5px !important;
-    letter-spacing: 0.13em !important;
+    font: 700 11px/1 'JetBrains Mono', monospace !important;
+    letter-spacing: 0.12em !important;
+    text-align: center !important;
   }
 
   .testing-1-theme .workflow-prompt-head [data-copy-step],
   .testing-1-theme .workflow-prompt-head [data-expand-step] {
-    height: 36px !important;
-    border: 1px solid #31547D !important;
-    border-radius: 9px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    width: 100% !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
     background: linear-gradient(180deg, #163B63 0%, #102B49 100%) !important;
     color: #F8FAFC !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 3px 8px rgba(0,0,0,0.28) !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10) !important;
+    user-select: none !important;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
   }
 
   .testing-1-theme .workflow-prompt-head [data-copy-step] {
-    border-right: 1px solid #31547D !important;
+    border-top-left-radius: 13px !important;
+    border-right: 1px solid #263449 !important;
   }
 
   .testing-1-theme .workflow-prompt-head [data-expand-step] {
-    border-left: 1px solid #31547D !important;
+    border-top-right-radius: 13px !important;
+    border-left: 1px solid #263449 !important;
   }
 
   .testing-1-theme .workflow-prompt-head [data-copy-step]:hover,
