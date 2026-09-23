@@ -987,6 +987,32 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       box-shadow: 0 12px 30px rgba(234, 85, 0, 0.5), 0 0 24px rgba(255, 102, 0, 0.4) !important;
     }
   </style>
+  <script is:inline>
+    (() => {
+      const keepAnchor = () => window.location.hash;
+      const navigationType = () => {
+        try {
+          return performance.getEntriesByType('navigation')[0]?.type || 'navigate';
+        } catch {
+          return 'navigate';
+        }
+      };
+      const resetFreshResourcePosition = () => {
+        if (keepAnchor()) return;
+        if (navigationType() === 'back_forward') return;
+        window.scrollTo(0, 0);
+      };
+      try {
+        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      } catch {}
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', resetFreshResourcePosition, { once: true });
+      } else {
+        resetFreshResourcePosition();
+      }
+      window.addEventListener('pageshow', resetFreshResourcePosition);
+    })();
+  </script>
   <div class={isTesting1 ? "testing-1-theme" : ""}>
     <article class="resource-page">
     {isTesting1 ? (
