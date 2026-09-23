@@ -1321,6 +1321,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                               )}
                               {isVideo && (
                                 output.src && isRealVideo(output.src) ? (
+                                  <video class="media-backdrop" src={output.src} muted playsinline autoplay loop preload="metadata" aria-hidden="true" tabindex="-1" />
                                   <video class="media-main" src={output.src} muted playsinline controls preload="metadata" />
                                 ) : (
                                   <>
