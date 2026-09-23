@@ -361,3 +361,150 @@
   .testing-1-theme .publisher-verification svg{width:2.7vw!important;height:2.7vw!important;flex-basis:2.7vw!important}
   .testing-1-theme .publisher-meta{font-size:2.35vw!important}
 }
+
+/* GOOGLE-AI-STUDIO AUTHOR CAPSULE — EXACT ISOLATED REFERENCE */
+.testing-1-theme .hero-unified-header{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  text-align:center!important;
+}
+
+.testing-1-theme .hero-unified-header h1{
+  margin-bottom:18px!important;
+}
+
+.testing-1-theme .publisher-identity{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  width:fit-content!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+  background:rgba(14,22,38,.85)!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:9999px!important;
+  padding:5px 18px 5px 6px!important;
+  backdrop-filter:blur(12px)!important;
+  -webkit-backdrop-filter:blur(12px)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.45)!important;
+  margin:0!important;
+  position:relative!important;
+  text-align:left!important;
+}
+
+.testing-1-theme .publisher-identity::before{
+  content:none!important;
+  display:none!important;
+}
+
+.testing-1-theme .publisher-avatar-box{
+  width:36px!important;
+  height:36px!important;
+  flex:0 0 36px!important;
+  border-radius:50%!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.2)!important;
+  background:rgba(255,255,255,.05)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+
+.testing-1-theme .publisher-avatar-box img,
+.testing-1-theme .publisher-avatar{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  display:block!important;
+  border-radius:50%!important;
+}
+
+.testing-1-theme .publisher-details{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:2px!important;
+  min-width:0!important;
+  justify-content:center!important;
+}
+
+.testing-1-theme .publisher-name-row{
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  line-height:1.2!important;
+}
+
+.testing-1-theme .publisher-name-row strong{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif!important;
+  color:#FFFFFF!important;
+  font-size:13.5px!important;
+  font-weight:600!important;
+  letter-spacing:-.01em!important;
+  white-space:nowrap!important;
+}
+
+.testing-1-theme .publisher-verification{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  vertical-align:middle!important;
+  line-height:1!important;
+}
+
+.testing-1-theme .publisher-verification svg{
+  width:15px!important;
+  height:15px!important;
+  display:block!important;
+}
+
+.testing-1-theme .publisher-verification svg circle{
+  fill:#38BDF8!important;
+}
+
+.testing-1-theme .publisher-verification svg path{
+  fill:none!important;
+  stroke:#FFFFFF!important;
+  stroke-width:2.2!important;
+  stroke-linecap:round!important;
+  stroke-linejoin:round!important;
+}
+
+.testing-1-theme .publisher-meta{
+  font-family:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif!important;
+  color:#94A3B8!important;
+  font-size:11.5px!important;
+  line-height:1.2!important;
+  font-weight:400!important;
+  white-space:nowrap!important;
+}
+
+.testing-1-theme .hero-image-wrap{
+  margin-top:24px!important;
+}
+
+@media (max-width:768px){
+  .testing-1-theme .publisher-identity{
+    width:fit-content!important;
+    max-width:calc(100vw - 32px)!important;
+    padding:5px 18px 5px 6px!important;
+    margin:0!important;
+    gap:12px!important;
+  }
+  .testing-1-theme .publisher-avatar-box{
+    width:36px!important;
+    height:36px!important;
+    flex-basis:36px!important;
+  }
+  .testing-1-theme .publisher-name-row strong{
+    font-size:13.5px!important;
+  }
+  .testing-1-theme .publisher-verification svg{
+    width:15px!important;
+    height:15px!important;
+    flex-basis:15px!important;
+  }
+  .testing-1-theme .publisher-meta{
+    font-size:11.5px!important;
+  }
+}
