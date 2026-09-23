@@ -349,8 +349,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: inline-flex !important;
       align-items: center !important;
       gap: 12px !important;
-      width: fit-content !important;
-      max-width: 100% !important;
+      width: max-content !important;
+      max-width: calc(100vw - 32px) !important;
+      flex: 0 0 auto !important;
+      align-self: center !important;
       box-sizing: border-box !important;
       background: rgba(14, 22, 38, 0.85) !important;
       border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -440,8 +442,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     @media (max-width: 768px) {
       .testing-1-theme .publisher-identity {
-        width: fit-content !important;
+        width: max-content !important;
         max-width: calc(100vw - 32px) !important;
+        flex: 0 0 auto !important;
+        align-self: center !important;
         padding: 5px 18px 5px 6px !important;
         margin: 0 !important;
         gap: 12px !important;
