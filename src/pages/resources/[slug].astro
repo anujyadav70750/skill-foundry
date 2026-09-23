@@ -3002,8 +3002,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         background-size: 100% 100%, 36px 36px, 36px 36px, 100% 100% !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
         box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8) !important;
-        padding-top: 18px !important;
+        padding-top: 72px !important;
         padding-bottom: 28px !important;
+      }
+
+      @media (min-width: 641px) {
+        .testing-1-theme .resource-hero-unified-section {
+          padding-top: 72px !important;
+        }
       }
 
       .testing-1-theme .resource-hero-unified-section::before {
