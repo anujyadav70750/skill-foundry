@@ -95,10 +95,19 @@ const platformLinks = [
   <body>
     <header class="site-header">
       <div class="container nav-wrap">
-        <a class="brand" href="/" aria-label="Skill Foundry home"><span class="brand-mark">SF</span><span>SKILL FOUNDRY</span></a>
-        <div class="nav-actions">
-          <form class="header-search-form" action="/resources/" method="get" role="search"><label class="sr-only" for="header-resource-search">Search resources</label><input id="header-resource-search" name="q" type="search" placeholder="Search resources…" autocomplete="off" spellcheck="false" /><button class="header-search-submit" type="submit" aria-label="Search resources"><svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5 21 21"></path></svg></button></form>
-          <div class="menu-wrap"><button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open navigation menu"><span></span><span></span><span></span></button><nav class="site-menu" id="site-menu" aria-label="Main navigation" hidden><a href="/">Home</a><a href="/resources/">Resources</a><a href="/about/">About</a></nav></div>
+        <nav class="nav-left" aria-label="Primary navigation"><a href="/">Home</a><a href="/resources/">Resources</a></nav>
+        <a class="brand brand-center" href="/" aria-label="Skill Foundry home"><span class="brand-mark">SF</span><span>SKILL FOUNDRY</span></a>
+        <div class="nav-right">
+          <form class="header-search-form" action="/resources/" method="get" role="search">
+            <label class="sr-only" for="header-resource-search">Search resources</label>
+            <input id="header-resource-search" name="q" type="search" placeholder="Search resources…" autocomplete="off" spellcheck="false" />
+            <button class="header-search-submit" type="submit" aria-label="Search resources"><svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M15.5 15.5 21 21"></path></svg></button>
+          </form>
+          <a class="nav-about" href="/about/">About</a>
+          <div class="menu-wrap">
+            <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+            <nav class="site-menu" id="site-menu" aria-label="Mobile navigation" hidden><a href="/">Home</a><a href="/resources/">Resources</a><a href="/about/">About</a></nav>
+          </div>
         </div>
       </div>
     </header>
@@ -168,7 +177,54 @@ const platformLinks = [
     </style>
     <style is:global>
       .builder-page .repeat-item input:not([type="checkbox"]),.builder-page .repeat-item textarea,.builder-page .repeat-item select,.builder-page .media-control input.path-input,.builder-page .media-item input.path-input{width:100%;box-sizing:border-box;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:var(--surface);color:var(--text);font:inherit;font-size:14px;line-height:1.5;outline:none;color-scheme:dark}.builder-page .repeat-item textarea{min-height:84px;resize:vertical}.builder-page .repeat-item input::placeholder,.builder-page .repeat-item textarea::placeholder,.builder-page .media-control input::placeholder{color:var(--muted-dark);opacity:1}.builder-page .repeat-item input:focus,.builder-page .repeat-item textarea:focus,.builder-page .media-control input.path-input:focus{border-color:rgba(var(--accent-rgb),.55);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.08)}.builder-page .remove-button{position:absolute;top:10px;right:10px;display:grid;place-items:center;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important;margin:0;padding:0!important;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.035);color:var(--muted);font:inherit;font-size:18px;font-weight:500;line-height:1;cursor:pointer;appearance:none;-webkit-appearance:none}.builder-page .remove-button:hover,.builder-page .remove-button:focus-visible{border-color:rgba(255,100,100,.5);color:#ff9b9b;background:rgba(255,100,100,.07);outline:none}.builder-page .repeat-item{position:relative;padding-right:56px}.builder-page .file-button{display:flex!important;align-items:center;justify-content:center;min-height:46px;min-width:118px;box-sizing:border-box;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);color:var(--text);font-size:12px;font-weight:800;cursor:pointer}.builder-page .file-button:hover{border-color:rgba(var(--accent-rgb),.45);color:var(--accent);background:rgba(var(--accent-rgb),.08)}.builder-page .file-button input[type="file"]{display:none!important}.builder-page .upload-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch}.builder-page .media-control{min-width:0}.builder-page .image-preview{display:none;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.builder-page .image-preview.has-image{display:block}.builder-page .image-preview img{display:block;width:min(100%,420px);max-height:260px;object-fit:cover;border:1px solid var(--line);border-radius:10px}.builder-page .image-preview span{display:block;margin-top:7px;color:var(--muted);font-size:11px}.builder-page .check-inline{display:flex!important;align-items:center;gap:8px;min-height:46px}.builder-page .check-inline input[type="checkbox"]{width:17px!important;height:17px!important;min-height:17px!important;padding:0!important;accent-color:var(--accent)}@media(max-width:700px){.builder-page .repeat-item.tool,.builder-page .repeat-item.step{grid-template-columns:1fr}.builder-page .upload-row{grid-template-columns:1fr}.builder-page .file-button{min-height:44px;width:100%}.builder-page .repeat-item{padding-right:52px}.builder-page .remove-button{width:32px!important;height:32px!important}}
-    </style>
+          /* Final global header: one shared navigation capsule on every page */
+      .site-header{position:fixed !important;top:18px !important;left:0 !important;right:0 !important;width:100% !important;z-index:1000 !important;background:transparent !important;border:0 !important;box-shadow:none !important;pointer-events:none !important}
+      .site-header .nav-wrap{position:relative !important;display:grid !important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) !important;align-items:center !important;min-height:64px !important;height:64px !important;width:min(1200px,calc(100% - 48px)) !important;padding:0 28px !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:9999px !important;background:rgba(8,13,22,.94) !important;backdrop-filter:blur(18px) !important;-webkit-backdrop-filter:blur(18px) !important;box-shadow:0 14px 40px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.035) !important;pointer-events:auto !important}
+      .nav-left{display:flex !important;align-items:center !important;justify-content:flex-start !important;gap:38px !important;min-width:0 !important}
+      .nav-left a,.nav-about{color:#CBD5E1 !important;text-decoration:none !important;text-transform:uppercase !important;font-size:12px !important;font-weight:700 !important;letter-spacing:.11em !important}
+      .nav-left a:hover,.nav-left a:focus-visible,.nav-about:hover,.nav-about:focus-visible{color:#fff !important;outline:none !important}
+      .brand-center{position:relative !important;z-index:3 !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;justify-self:center !important;gap:10px !important;height:88px !important;min-height:88px !important;padding:0 24px !important;border:1px solid rgba(255,102,0,.38) !important;border-radius:16px !important;background:linear-gradient(180deg,rgba(19,27,40,.99),rgba(10,16,26,.99)) !important;box-shadow:0 16px 34px rgba(0,0,0,.48),0 0 28px rgba(255,102,0,.08) !important;color:#fff !important;text-decoration:none !important}
+      .brand-center .brand-mark{width:34px !important;height:34px !important;min-width:34px !important;border-radius:9px !important;background:#FF6600 !important;color:#fff !important;border:0 !important;font-size:11px !important}
+      .brand-center>span:last-child{font-size:13px !important;font-weight:800 !important;letter-spacing:.11em !important;color:#fff !important;white-space:nowrap !important}
+      .nav-right{display:flex !important;align-items:center !important;justify-content:flex-end !important;gap:30px !important;min-width:0 !important}
+      .header-search-form{display:flex !important;align-items:center !important;width:clamp(190px,19vw,250px) !important;height:40px !important;min-height:40px !important;padding:0 7px 0 13px !important;border:1px solid rgba(255,255,255,.13) !important;border-radius:9999px !important;background:rgba(255,255,255,.035) !important;color:#94A3B8 !important}
+      .header-search-form:focus-within{border-color:rgba(56,189,248,.55) !important;box-shadow:0 0 0 3px rgba(56,189,248,.09) !important}
+      .header-search-form input{width:100% !important;min-width:0 !important;border:0 !important;outline:0 !important;background:transparent !important;color:#fff !important;font-size:12px !important}
+      .header-search-form input::placeholder{color:#7E8CA1 !important}
+      .header-search-submit{display:grid !important;place-items:center !important;flex:0 0 auto !important;width:32px !important;height:32px !important;padding:0 !important;border:0 !important;border-radius:9999px !important;background:transparent !important;color:#94A3B8 !important;cursor:pointer !important}
+      .header-search-submit:hover,.header-search-submit:focus-visible{background:rgba(56,189,248,.10) !important;color:#38BDF8 !important;outline:none !important}
+      .search-svg{display:block !important;width:16px !important;height:16px !important;fill:none !important;stroke:currentColor !important;stroke-width:2.2 !important;stroke-linecap:round !important;stroke-linejoin:round !important}
+      .nav-about{white-space:nowrap !important}
+      .menu-wrap{position:relative !important;display:none !important}
+      .menu-toggle{display:grid !important;place-content:center !important;gap:4px !important;width:38px !important;height:38px !important;padding:0 !important;border:1px solid rgba(255,255,255,.13) !important;border-radius:9999px !important;background:rgba(255,255,255,.035) !important;cursor:pointer !important}
+      .menu-toggle span{display:block !important;width:15px !important;height:1.5px !important;border-radius:2px !important;background:#94A3B8 !important}
+      .site-menu{position:absolute !important;top:calc(100% + 10px) !important;right:0 !important;display:grid !important;min-width:180px !important;padding:7px !important;border:1px solid rgba(255,255,255,.12) !important;border-radius:14px !important;background:rgba(12,18,29,.98) !important;box-shadow:0 18px 45px rgba(0,0,0,.6) !important}
+      .site-menu[hidden]{display:none !important}
+      .site-menu a{padding:11px 13px !important;border-radius:9px !important;color:#CBD5E1 !important;font-size:13px !important;font-weight:700 !important;text-decoration:none !important}
+      .site-menu a:hover{background:rgba(56,189,248,.08) !important;color:#38BDF8 !important}
+      @media(max-width:768px){
+        .site-header{top:8px !important}
+        .site-header .nav-wrap{display:flex !important;min-height:56px !important;height:56px !important;width:min(calc(100% - 20px),520px) !important;padding:0 8px 0 10px !important;gap:8px !important}
+        .nav-left,.nav-about{display:none !important}
+        .brand-center{position:static !important;justify-content:flex-start !important;min-height:40px !important;height:40px !important;padding:0 0 0 2px !important;border:0 !important;background:transparent !important;box-shadow:none !important;flex:1 1 auto !important;min-width:0 !important}
+        .brand-center .brand-mark{width:34px !important;height:34px !important;min-width:34px !important}
+        .brand-center>span:last-child{font-size:11px !important;letter-spacing:.08em !important;overflow:hidden !important;text-overflow:ellipsis !important}
+        .nav-right{gap:7px !important;flex:0 0 auto !important}
+        .header-search-form{width:128px !important;height:36px !important;min-height:36px !important;padding-left:10px !important}
+        .header-search-form input{font-size:11px !important}
+        .header-search-form input::placeholder{font-size:10.5px !important}
+        .header-search-submit{width:28px !important;height:28px !important}
+        .menu-wrap{display:block !important}
+        .menu-toggle{width:36px !important;height:36px !important}
+      }
+      @media(max-width:390px){
+        .site-header .nav-wrap{width:calc(100% - 14px) !important;padding-left:9px !important;padding-right:7px !important}
+        .brand-center .brand-mark{width:31px !important;height:31px !important;min-width:31px !important}
+        .brand-center>span:last-child{font-size:10px !important}
+        .header-search-form{width:112px !important}
+      }
+
+</style>
     <script>
       const menuToggle=document.querySelector('#menu-toggle');const siteMenu=document.querySelector('#site-menu');const closeMenu=()=>{if(!menuToggle||!siteMenu)return;menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Open navigation menu');siteMenu.hidden=true};menuToggle?.addEventListener('click',()=>{if(!siteMenu)return;const open=menuToggle.getAttribute('aria-expanded')==='true';menuToggle.setAttribute('aria-expanded',String(!open));menuToggle.setAttribute('aria-label',open?'Open navigation menu':'Close navigation menu');siteMenu.hidden=open});document.addEventListener('click',(event)=>{if(!siteMenu||!menuToggle)return;const target=event.target;if(target instanceof Node&&!siteMenu.contains(target)&&!menuToggle.contains(target))closeMenu()});document.addEventListener('keydown',(event)=>{if(event.key==='Escape')closeMenu()});
     </script>
