@@ -295,17 +295,20 @@
 .resource-page .workflow-final-result video{display:block!important;width:100%!important;max-height:480px!important;object-fit:contain!important;background:#050911!important}
 
 
-/* TESTING-1 AUTHOR CAPSULE — match approved Google AI Studio reference */
+/* TESTING-1 AUTHOR CAPSULE — compact reference match */
 .testing-1-theme .publisher-identity{
   width:416px!important;
-  max-width:calc(100% - 40px)!important;
+  max-width:416px!important;
+  height:96px!important;
+  min-height:96px!important;
+  max-height:96px!important;
   box-sizing:border-box!important;
   display:flex!important;
   align-items:center!important;
   justify-content:flex-start!important;
-  gap:18px!important;
-  padding:10px 28px 10px 10px!important;
-  margin:0 auto 28px!important;
+  gap:14px!important;
+  padding:0 22px 0 9px!important;
+  margin:0 auto 3px!important;
   border-radius:9999px!important;
   text-align:left!important;
 }
@@ -335,42 +338,54 @@
   display:flex!important;
   flex-direction:column!important;
   justify-content:center!important;
-  gap:3px!important;
+  gap:2px!important;
 }
 .testing-1-theme .publisher-name-row{
   display:flex!important;
   align-items:center!important;
-  gap:8px!important;
+  gap:7px!important;
+  line-height:1.15!important;
 }
 .testing-1-theme .publisher-name-row strong{
-  font-size:21px!important;
+  font-size:20px!important;
   font-weight:600!important;
   white-space:nowrap!important;
 }
 .testing-1-theme .publisher-verification svg{
-  width:18px!important;
-  height:18px!important;
-  flex:0 0 18px!important;
+  width:17px!important;
+  height:17px!important;
+  flex:0 0 17px!important;
 }
 .testing-1-theme .publisher-meta{
   font-size:15px!important;
-  line-height:1.3!important;
+  line-height:1.25!important;
   white-space:nowrap!important;
+}
+/* Match the reference hero rhythm: title → author → image stays compact. */
+.testing-1-theme .hero-image-wrap{
+  margin-top:0!important;
+  margin-bottom:24px!important;
+}
+.testing-1-theme .resource-hero-description .lead{
+  margin-top:0!important;
 }
 @media (max-width:768px){
   .testing-1-theme .publisher-identity{
     width:334px!important;
-    max-width:calc(100vw - 40px)!important;
-    gap:14px!important;
-    padding:13px 20px 13px 9px!important;
-    margin:27px auto 24px!important;
+    max-width:334px!important;
+    height:77px!important;
+    min-height:77px!important;
+    max-height:77px!important;
+    gap:11px!important;
+    padding:0 18px 0 7px!important;
+    margin:0 auto 3px!important;
   }
   .testing-1-theme .publisher-avatar-box{
     flex:0 0 50px!important;
     width:50px!important;
     height:50px!important;
   }
-  .testing-1-theme .publisher-name-row strong{font-size:21px!important}
+  .testing-1-theme .publisher-name-row strong{font-size:20px!important}
   .testing-1-theme .publisher-verification svg{
     width:16px!important;
     height:16px!important;
