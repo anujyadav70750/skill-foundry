@@ -2097,3 +2097,71 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     max-height: 58px !important;
   }
 }
+
+
+/* ==========================================================================
+   DESKTOP BLUEPRINT RESULT VIEWPORT
+   Full-result presentation for mixed aspect ratios; mobile remains unchanged.
+   ========================================================================== */
+@media (min-width: 769px) {
+  .resource-page .blueprint-result-media-center {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .resource-page .blueprint-result-media-center .media-frame {
+    width: min(100%, 760px) !important;
+    max-width: 760px !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #03060B !important;
+    border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  }
+
+  /* Blurred/foggy layer fills unused space around portrait or other non-16:9 media. */
+  .resource-page .blueprint-result-media-center .media-backdrop {
+    position: absolute !important;
+    inset: -18px !important;
+    width: calc(100% + 36px) !important;
+    height: calc(100% + 36px) !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    filter: blur(20px) brightness(0.28) saturate(0.72) !important;
+    transform: scale(1.04) !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+
+  /* The actual result is never cropped: its complete original aspect ratio stays visible. */
+  .resource-page .blueprint-result-media-center .media-main {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center !important;
+    display: block !important;
+    background: transparent !important;
+  }
+
+  .resource-page .blueprint-result-media-center video.media-main {
+    object-fit: contain !important;
+    background: transparent !important;
+  }
+
+  .resource-page .blueprint-result-media-center .media-play {
+    position: absolute !important;
+    z-index: 3 !important;
+  }
+}
