@@ -329,6 +329,24 @@ const platformLinks = [
       }
       /* Homepage owns the background surface. The fixed header stays transparent around the nav
          so there is no second gradient layer or visible seam behind the search wing. */
+      /* Non-home pages: extend the first-section surface behind the fixed header/search area.
+         This keeps the top of every page visually connected to its opening section. */
+      body:not(:has(.home-page)) .site-header::before {
+        content: "";
+        position: absolute;
+        top: -18px;
+        left: 0;
+        right: 0;
+        height: 112px;
+        z-index: -1;
+        pointer-events: none;
+        background:
+          radial-gradient(ellipse 80% 70% at 50% 0%, rgba(56, 189, 248, 0.15) 0%, transparent 68%),
+          radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.08) 0%, transparent 45%),
+          #080D14;
+      }
+
+
 
       .nav-pill-container {
         pointer-events: auto;
