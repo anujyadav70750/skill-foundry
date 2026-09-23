@@ -295,7 +295,7 @@
 .resource-page .workflow-final-result video{display:block!important;width:100%!important;max-height:480px!important;object-fit:contain!important;background:#050911!important}
 
 
-/* TESTING-1 AUTHOR CAPSULE — compact reference match */
+/* TESTING-1 AUTHOR CAPSULE — viewport-scaled reference match */
 .testing-1-theme .publisher-identity{
   width:416px!important;
   max-width:416px!important;
@@ -333,63 +333,31 @@
   object-fit:cover!important;
   border-radius:50%!important;
 }
-.testing-1-theme .publisher-details{
-  min-width:0!important;
-  display:flex!important;
-  flex-direction:column!important;
-  justify-content:center!important;
-  gap:2px!important;
-}
-.testing-1-theme .publisher-name-row{
-  display:flex!important;
-  align-items:center!important;
-  gap:7px!important;
-  line-height:1.15!important;
-}
-.testing-1-theme .publisher-name-row strong{
-  font-size:20px!important;
-  font-weight:600!important;
-  white-space:nowrap!important;
-}
-.testing-1-theme .publisher-verification svg{
-  width:17px!important;
-  height:17px!important;
-  flex:0 0 17px!important;
-}
-.testing-1-theme .publisher-meta{
-  font-size:15px!important;
-  line-height:1.25!important;
-  white-space:nowrap!important;
-}
-/* Match the reference hero rhythm: title → author → image stays compact. */
-.testing-1-theme .hero-image-wrap{
-  margin-top:0!important;
-  margin-bottom:24px!important;
-}
-.testing-1-theme .resource-hero-description .lead{
-  margin-top:0!important;
-}
+.testing-1-theme .publisher-details{min-width:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:2px!important}
+.testing-1-theme .publisher-name-row{display:flex!important;align-items:center!important;gap:7px!important;line-height:1.15!important}
+.testing-1-theme .publisher-name-row strong{font-size:20px!important;font-weight:600!important;white-space:nowrap!important}
+.testing-1-theme .publisher-verification svg{width:17px!important;height:17px!important;flex:0 0 17px!important}
+.testing-1-theme .publisher-meta{font-size:15px!important;line-height:1.25!important;white-space:nowrap!important}
+.testing-1-theme .hero-image-wrap{margin-top:0!important;margin-bottom:24px!important}
+.testing-1-theme .resource-hero-description .lead{margin-top:0!important}
 @media (max-width:768px){
   .testing-1-theme .publisher-identity{
-    width:334px!important;
-    max-width:334px!important;
-    height:77px!important;
-    min-height:77px!important;
-    max-height:77px!important;
-    gap:11px!important;
-    padding:0 18px 0 7px!important;
-    margin:0 auto 3px!important;
+    width:57.8vw!important;
+    max-width:57.8vw!important;
+    height:13.35vw!important;
+    min-height:13.35vw!important;
+    max-height:13.35vw!important;
+    gap:2.0vw!important;
+    padding:0 3.1vw 0 1.25vw!important;
+    margin:0 auto 0.5vw!important;
   }
   .testing-1-theme .publisher-avatar-box{
-    flex:0 0 50px!important;
-    width:50px!important;
-    height:50px!important;
+    flex:0 0 8.05vw!important;
+    width:8.05vw!important;
+    height:8.05vw!important;
   }
-  .testing-1-theme .publisher-name-row strong{font-size:20px!important}
-  .testing-1-theme .publisher-verification svg{
-    width:16px!important;
-    height:16px!important;
-    flex-basis:16px!important;
-  }
-  .testing-1-theme .publisher-meta{font-size:15px!important}
+  .testing-1-theme .publisher-name-row{gap:1.0vw!important}
+  .testing-1-theme .publisher-name-row strong{font-size:3.35vw!important}
+  .testing-1-theme .publisher-verification svg{width:2.7vw!important;height:2.7vw!important;flex-basis:2.7vw!important}
+  .testing-1-theme .publisher-meta{font-size:2.35vw!important}
 }
