@@ -344,9 +344,16 @@ const toolLogo = (name: string) => {
      ========================================================================== */
 
   .explore-page {
-    background-color: #080D14;
+    /* Match the homepage pattern: the page surface begins at the viewport top,
+       behind the fixed navigation, while padding restores the original content position. */
+    background:
+      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.06) 0%, transparent 40%),
+      #080D14;
     color: #F8FAFC;
     min-height: 100vh;
+    padding-top: var(--header-height);
+    margin-top: calc(-1 * var(--header-height));
     padding-bottom: 60px;
   }
 
@@ -386,9 +393,8 @@ const toolLogo = (name: string) => {
   .explore-hero {
     position: relative;
     padding: clamp(48px, 6vw, 68px) 0 clamp(32px, 4vw, 44px);
-    background:
-      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.06) 0%, transparent 40%);
+    /* Background is owned by .explore-page so it continues seamlessly behind the fixed header. */
+    background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     overflow: hidden;
   }
