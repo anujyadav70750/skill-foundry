@@ -406,11 +406,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       white-space: nowrap !important;
     }
     @media (max-width: 768px) {
+      /* Match the approved Google AI Studio mobile reference: compact, centered capsule. */
       .testing-1-theme .publisher-identity {
-        width: min(100%, 520px) !important;
+        width: 334px !important;
+        max-width: calc(100vw - 40px) !important;
         gap: 14px !important;
-        padding: 9px 20px 9px 9px !important;
-        margin-bottom: 24px !important;
+        padding: 13px 20px 13px 9px !important;
+        margin: 27px auto 24px !important;
+        box-sizing: border-box !important;
       }
       .testing-1-theme .publisher-avatar-box {
         flex-basis: 50px !important;
