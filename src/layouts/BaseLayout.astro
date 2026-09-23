@@ -1408,30 +1408,16 @@ const platformLinks = [
       }
     
 
-      /* MOBILE-ONLY SF TAB LINE CONNECTION
-         Keep all existing header geometry, spacing, colors, and sizing unchanged.
-         Extend only the wing border lines so they visibly meet the center SF tab. */
+      /* MOBILE-ONLY SF TAB CONNECTION
+         Extend the EXISTING navigation wings themselves into the SF tab area.
+         No separate connector lines; preserve the existing fill and borders. */
       @media (max-width: 768px) {
-        .nav-segment-left::after,
-        .nav-segment-right::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 6px;
-          pointer-events: none;
-          z-index: 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.10);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-          box-sizing: border-box;
+        .nav-segment-left {
+          margin-right: -16px;
         }
 
-        .nav-segment-left::after {
-          right: -6px;
-        }
-
-        .nav-segment-right::before {
-          left: -6px;
+        .nav-segment-right {
+          margin-left: -16px;
         }
       }
 
