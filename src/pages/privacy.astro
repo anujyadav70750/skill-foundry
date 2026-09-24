@@ -1,30 +1,216 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Privacy Policy | Skill Foundry" description="Privacy information for visitors to Skill Foundry.">
-  <section class="page-heading">
-    <div class="container">
-      <p class="eyebrow">PRIVACY</p>
-      <h1>Privacy Policy</h1>
-      <p>This page explains the general privacy approach for the Skill Foundry website.</p>
+<BaseLayout
+  title="Privacy Policy | Skill Foundry"
+  description="This page explains how Skill Foundry handles information when you use the website and its contact features."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <button type="button" class="fixed-back-btn" id="fixed-back-btn" aria-label="Go back">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <section class="legal-hero">
+    <div class="legal-container">
+      <p class="legal-eyebrow">PRIVACY</p>
+      <h1 class="legal-title">Privacy Policy</h1>
+      <p class="legal-lead">This page explains how Skill Foundry handles information when you use the website and its contact features.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container narrow article-content">
-      <h2>Information received through the website</h2>
-      <p>Skill Foundry is currently a public resource website. The site does not currently require visitors to create an account or submit payment details.</p>
-      <p>If you use the contact form, Skill Foundry receives the name, email address, subject and message that you choose to submit. This information is used to respond to your enquiry, feedback or report and is not published on the website.</p>
-      <p>Like most websites, requests may include standard technical information handled by the hosting infrastructure, such as an IP address, browser information and request details. This information may be processed to deliver, secure and maintain the website.</p>
+  <section class="legal-body">
+    <div class="legal-container">
+      <div class="legal-content">
+        <section class="legal-section-block">
+          <h2>1. Information received through the website</h2>
+          <p>Skill Foundry is currently a public educational resource website. The site does not require user accounts, registration, or payment details.</p>
+          <p>If you choose to submit a message through the contact form, Skill Foundry receives the name, email address, subject, and message you provide. This information is used solely to respond to your enquiry, feedback, or report and is not published on the website.</p>
+          <p>Like most web services, basic technical information handled by the hosting infrastructure may include standard server log details (such as IP addresses, browser type, and request timestamps) necessary to deliver, secure, and maintain the website.</p>
+        </section>
 
-      <h2>Cookies and tracking</h2>
-      <p>The current site does not intentionally use advertising cookies or third-party tracking for personalized advertising. If analytics, forms, accounts or other data-collection features are added later, this policy will be updated to describe them.</p>
+        <section class="legal-section-block">
+          <h2>2. Cookies and tracking</h2>
+          <p>The website currently does not intentionally use advertising cookies or third-party tracking for personalized advertising. If analytics or data-collection features are added later, this policy will be updated to describe them.</p>
+        </section>
 
-      <h2>External links</h2>
-      <p>Some resources may link to third-party platforms such as video or AI tools. Those services have their own privacy policies and practices, which are outside Skill Foundry's control.</p>
+        <section class="legal-section-block">
+          <h2>3. External links</h2>
+          <p>Resources and tutorials on Skill Foundry may link to third-party platforms, AI tools, and external services. Those services have their own privacy policies and practices outside Skill Foundry's control.</p>
+        </section>
 
-      <h2>Updates</h2>
-      <p>This policy may be updated as the website changes. The version published on this page is the one that applies to the current site.</p>
+        <section class="legal-section-block legal-section-last">
+          <h2>4. Updates</h2>
+          <p>This policy may be updated when the website's data practices change, and the version published on this page applies to the current site.</p>
+        </section>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    document.getElementById('fixed-back-btn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+        window.history.back();
+      } else if (window.history.length > 1 && !document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  </script>
 </BaseLayout>
+
+<style>
+  .fixed-back-btn {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    background: rgba(13, 20, 34, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #F1F5F9;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .fixed-back-btn:hover {
+    background: rgba(20, 30, 48, 0.98);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .fixed-back-btn:active {
+    transform: translateY(0);
+    background: rgba(10, 16, 28, 0.98);
+  }
+
+  .legal-container {
+    width: min(740px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  /* 1. Hero Section */
+  .legal-hero {
+    padding: 96px 0 36px;
+    border-bottom: 1px solid var(--line, #1E293B);
+    background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 245, 158, 11), 0.08), transparent 38%);
+  }
+
+  .legal-eyebrow {
+    margin: 0 0 10px 0;
+    color: var(--accent, #F59E0B);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .legal-title {
+    margin: 0 0 16px 0;
+    color: #F8FAFC;
+    font-size: clamp(34px, 5.5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .legal-lead {
+    margin: 0;
+    max-width: 680px;
+    color: #94A3B8;
+    font-size: clamp(16px, 2.2vw, 17.5px);
+    line-height: 1.62;
+  }
+
+  /* 2. Body Narrative Section */
+  .legal-body {
+    padding: 40px 0 64px;
+  }
+
+  .legal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .legal-section-block h2 {
+    margin: 0 0 12px 0;
+    color: #F8FAFC;
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-section-block p {
+    margin: 0 0 14px 0;
+    color: #CBD5E1;
+    font-size: 15.5px;
+    line-height: 1.68;
+    max-width: 680px;
+  }
+
+  .legal-section-block p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Mobile Responsive Rhythm */
+  @media (max-width: 640px) {
+    .fixed-back-btn {
+      top: 14px;
+      left: 14px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 7px;
+    }
+
+    .legal-container {
+      width: min(740px, calc(100% - 32px));
+    }
+
+    .legal-hero {
+      padding: 76px 0 24px;
+    }
+
+    .legal-body {
+      padding: 28px 0 48px;
+    }
+
+    .legal-content {
+      gap: 24px;
+    }
+
+    .legal-title {
+      margin-bottom: 12px;
+    }
+
+    .legal-section-block h2 {
+      margin-bottom: 10px;
+    }
+
+    .legal-section-block p {
+      font-size: 15px;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+  }
+</style>

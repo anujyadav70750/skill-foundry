@@ -284,6 +284,9 @@ const platformLinks = [
         justify-content: center;
         pointer-events: none;
         padding: 0 24px;
+        transform: translateZ(0);
+        will-change: transform;
+        backface-visibility: hidden;
       }
       /* The opening section on each page owns its background surface and extends
          underneath this fixed header. No separate header background layer is used. */

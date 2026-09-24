@@ -1,31 +1,219 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Terms of Use | Skill Foundry" description="Terms of use for Skill Foundry resources and website content.">
-  <section class="page-heading">
-    <div class="container">
-      <p class="eyebrow">TERMS</p>
-      <h1>Terms of Use</h1>
-      <p>These terms describe the general use of the Skill Foundry website and its educational resources.</p>
+<BaseLayout
+  title="Terms of Use | Skill Foundry"
+  description="These terms describe the general use of the Skill Foundry website and its educational resources."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <button type="button" class="fixed-back-btn" id="fixed-back-btn" aria-label="Go back">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <section class="legal-hero">
+    <div class="legal-container">
+      <p class="legal-eyebrow">TERMS</p>
+      <h1 class="legal-title">Terms of Use</h1>
+      <p class="legal-lead">These terms describe the general use of the Skill Foundry website and its educational resources.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container narrow article-content">
-      <h2>Use of resources</h2>
-      <p>Skill Foundry provides prompts, tutorials, workflows and related educational material for practical learning and experimentation. You are responsible for how you use the resources and for reviewing the rules and policies of any third-party tool you use with them.</p>
+  <section class="legal-body">
+    <div class="legal-container">
+      <div class="legal-content">
+        <section class="legal-section-block">
+          <h2>1. Use of resources</h2>
+          <p>Skill Foundry provides prompts, tutorials, workflows, and related educational material for practical learning and experimentation. Users are responsible for how they use the resources and for reviewing the rules and policies of any third-party tool used with them.</p>
+        </section>
 
-      <h2>No guarantee of results</h2>
-      <p>AI tools can change their models, features and outputs over time. Resources are provided for educational purposes and do not guarantee a particular result, accuracy, availability or suitability for a specific project.</p>
+        <section class="legal-section-block">
+          <h2>2. No guarantee of results</h2>
+          <p>AI tools can change their models, features, availability, and outputs over time. Resources are educational and do not guarantee a particular result, accuracy, availability, or suitability for a specific project.</p>
+        </section>
 
-      <h2>Third-party services</h2>
-      <p>Links or tutorials may reference third-party websites and tools. Skill Foundry does not control those services and is not responsible for their availability, policies, content or results.</p>
+        <section class="legal-section-block">
+          <h2>3. Third-party services</h2>
+          <p>Links or tutorials may reference third-party websites and tools. Skill Foundry does not control those services and is not responsible for their availability, policies, content, or results.</p>
+        </section>
 
-      <h2>Content and availability</h2>
-      <p>Website content may be updated, replaced or removed as the library evolves. Skill Foundry aims to keep resources useful and accurate, but the website is provided on an ongoing basis without a promise that every page or feature will always be available.</p>
+        <section class="legal-section-block">
+          <h2>4. Content and availability</h2>
+          <p>Website content may be updated, replaced, or removed as the library evolves. The site is provided on an ongoing basis without promising that every page or feature will always remain available.</p>
+        </section>
 
-      <h2>Contact</h2>
-      <p>For questions, feedback, corrections or website issues, visitors can use Skill Foundry's contact form. Messages are handled for the purpose of responding to the enquiry.</p>
+        <section class="legal-section-block legal-section-last">
+          <h2>5. Contact</h2>
+          <p>Questions, feedback, corrections, or website issues can be submitted through the contact form, and messages are handled for responding to the enquiry.</p>
+        </section>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    document.getElementById('fixed-back-btn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+        window.history.back();
+      } else if (window.history.length > 1 && !document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  </script>
 </BaseLayout>
+
+<style>
+  .fixed-back-btn {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    background: rgba(13, 20, 34, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #F1F5F9;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .fixed-back-btn:hover {
+    background: rgba(20, 30, 48, 0.98);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .fixed-back-btn:active {
+    transform: translateY(0);
+    background: rgba(10, 16, 28, 0.98);
+  }
+
+  .legal-container {
+    width: min(740px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  /* 1. Hero Section */
+  .legal-hero {
+    padding: 96px 0 36px;
+    border-bottom: 1px solid var(--line, #1E293B);
+    background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 245, 158, 11), 0.08), transparent 38%);
+  }
+
+  .legal-eyebrow {
+    margin: 0 0 10px 0;
+    color: var(--accent, #F59E0B);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .legal-title {
+    margin: 0 0 16px 0;
+    color: #F8FAFC;
+    font-size: clamp(34px, 5.5vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+  }
+
+  .legal-lead {
+    margin: 0;
+    max-width: 680px;
+    color: #94A3B8;
+    font-size: clamp(16px, 2.2vw, 17.5px);
+    line-height: 1.62;
+  }
+
+  /* 2. Body Narrative Section */
+  .legal-body {
+    padding: 40px 0 64px;
+  }
+
+  .legal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .legal-section-block h2 {
+    margin: 0 0 12px 0;
+    color: #F8FAFC;
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 750;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+  }
+
+  .legal-section-block p {
+    margin: 0 0 14px 0;
+    color: #CBD5E1;
+    font-size: 15.5px;
+    line-height: 1.68;
+    max-width: 680px;
+  }
+
+  .legal-section-block p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  /* Mobile Responsive Rhythm */
+  @media (max-width: 640px) {
+    .fixed-back-btn {
+      top: 14px;
+      left: 14px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 7px;
+    }
+
+    .legal-container {
+      width: min(740px, calc(100% - 32px));
+    }
+
+    .legal-hero {
+      padding: 76px 0 24px;
+    }
+
+    .legal-body {
+      padding: 28px 0 48px;
+    }
+
+    .legal-content {
+      gap: 24px;
+    }
+
+    .legal-title {
+      margin-bottom: 12px;
+    }
+
+    .legal-section-block h2 {
+      margin-bottom: 10px;
+    }
+
+    .legal-section-block p {
+      font-size: 15px;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+  }
+</style>

@@ -34,9 +34,30 @@ body:has([data-prompt-modal]){overflow:hidden!important}
 .resource-page .workflow-media-card .media-backdrop{width:100%!important;height:100%!important;object-fit:cover!important}
 
 /* Mobile input rails: deliberate horizontal cards, no page-level horizontal overflow. */
-.resource-page{overflow-x:hidden!important}
+.resource-page{overflow-x:clip!important}
 .resource-page .workflow-input-rail{overscroll-behavior-x:contain!important}
 .resource-page .workflow-media-card{flex:0 0 196px!important;width:196px!important}
+
+/* Hardware accelerated layer compositing for seamless touch scrolling */
+.resource-page .resource-section,
+.resource-page .blueprint-workflow-container,
+.resource-page .blueprint-step-container,
+.resource-page .workflow-card,
+.resource-page .tips-section,
+.resource-page .tutorial-section,
+.resource-page .resource-cta {
+  contain: layout style;
+  isolation: isolate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.resource-page .media-backdrop {
+  transform: scale(1.18) translateZ(0) !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+  pointer-events: none !important;
+}
 
 /* Guide cue & transition bridge: compact, refined instructional connection between hero and content */
 body:not(:has(.testing-1-theme)) .resource-transition-bridge {

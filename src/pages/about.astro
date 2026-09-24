@@ -1,27 +1,248 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="About Skill Foundry | Practical AI Skills" description="Learn what Skill Foundry is and how its practical AI resources are designed.">
-  <section class="page-heading">
-    <div class="container">
-      <p class="eyebrow">ABOUT SKILL FOUNDRY</p>
-      <h1>Learn AI by building.</h1>
-      <p>Skill Foundry is a practical learning library for people who want useful AI skills, prompts and workflows without unnecessary complexity.</p>
+<BaseLayout
+  title="About Skill Foundry | Practical AI Skills"
+  description="Skill Foundry is a practical learning library for people who want useful AI skills, prompts, and workflows without unnecessary complexity."
+  hideHeader={true}
+  hideFooter={true}
+>
+  <button type="button" class="fixed-back-btn" id="fixed-back-btn" aria-label="Go back">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    <span>Back</span>
+  </button>
+
+  <section class="about-hero">
+    <div class="about-container">
+      <p class="about-eyebrow">ABOUT SKILL FOUNDRY</p>
+      <h1 class="about-title">Learn AI by building.</h1>
+      <p class="about-lead">Skill Foundry is a practical learning library for people who want useful AI skills, prompts, and workflows without unnecessary complexity.</p>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container narrow article-content">
-      <h2>What Skill Foundry is for</h2>
-      <p>AI is changing quickly. The goal here is not to collect every new tool or trend, but to turn useful ideas into practical resources that people can understand and actually use.</p>
-      <p>Each resource is designed around a simple path: discover a useful idea, understand the workflow, watch it in action, copy the prompt and adapt it to your own project.</p>
+  <section class="about-body">
+    <div class="about-container">
+      <div class="about-content">
+        <section class="about-section-block">
+          <h2>What Skill Foundry is for</h2>
+          <p>AI is moving quickly, and it can be difficult to know which tools, workflows, and ideas are actually worth learning. Skill Foundry focuses on turning useful AI knowledge into practical resources you can understand and use.</p>
+          <p>Each resource is built around a real task or outcome — so you can discover an idea, understand how it works, follow the process, and apply it to your own project.</p>
+        </section>
 
-      <h2>What you'll find here</h2>
-      <p>Expect practical prompts, AI workflows, tutorials and step-by-step learning resources across creative work, productivity, automation and other useful AI applications.</p>
+        <section class="about-section-block">
+          <h2>What you’ll find here</h2>
+          <p>Practical prompts, AI workflows, tutorials, and step-by-step resources covering creative work, productivity, automation, and other useful AI applications.</p>
+          <p>The goal is simple: give you something useful to learn, try, and build with.</p>
+        </section>
 
-      <h2>Built to grow with you</h2>
-      <p>Every resource has its own shareable URL so it can be opened directly from social media or discovered through search. The library will grow over time as new resources are published.</p>
-      <p><a class="text-link" href="/resources/">Explore the resource library →</a></p>
+        <section class="about-section-block about-section-last">
+          <h2>Built to grow with you</h2>
+          <p>Every resource has its own shareable URL, so you can open it directly, save it, or share it with someone else. As new tools, workflows, and practical ideas become useful, the library will continue to grow.</p>
+          <div class="about-cta-wrap">
+            <a class="about-cta-link" href="/resources/">
+              Explore the resource library <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>
+      </div>
     </div>
   </section>
+
+  <script is:inline>
+    document.getElementById('fixed-back-btn')?.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+        window.history.back();
+      } else if (window.history.length > 1 && !document.referrer) {
+        window.history.back();
+      } else {
+        window.location.href = '/';
+      }
+    });
+  </script>
 </BaseLayout>
+
+<style>
+  .fixed-back-btn {
+    position: fixed;
+    top: 20px;
+    left: 24px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    background: rgba(13, 20, 34, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #F1F5F9;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+    text-decoration: none;
+    user-select: none;
+  }
+
+  .fixed-back-btn:hover {
+    background: rgba(20, 30, 48, 0.98);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .fixed-back-btn:active {
+    transform: translateY(0);
+    background: rgba(10, 16, 28, 0.98);
+  }
+
+  .about-container {
+    width: min(740px, calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  /* 1. Hero Section */
+  .about-hero {
+    padding: 96px 0 36px;
+    border-bottom: 1px solid var(--line, #1E293B);
+    background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 245, 158, 11), 0.08), transparent 38%);
+  }
+
+  .about-eyebrow {
+    margin: 0 0 10px 0;
+    color: var(--accent, #F59E0B);
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .about-title {
+    margin: 0 0 16px 0;
+    color: #F8FAFC;
+    font-size: clamp(34px, 5.5vw, 54px);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  .about-lead {
+    margin: 0;
+    max-width: 680px;
+    color: #94A3B8;
+    font-size: clamp(16px, 2.2vw, 18px);
+    line-height: 1.62;
+  }
+
+  /* 2. Body Narrative Section */
+  .about-body {
+    padding: 40px 0 64px;
+  }
+
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .about-section-block h2 {
+    margin: 0 0 12px 0;
+    color: #F8FAFC;
+    font-size: clamp(21px, 3.2vw, 26px);
+    font-weight: 750;
+    line-height: 1.22;
+    letter-spacing: -0.025em;
+  }
+
+  .about-section-block p {
+    margin: 0 0 14px 0;
+    color: #CBD5E1;
+    font-size: 15.5px;
+    line-height: 1.68;
+    max-width: 680px;
+  }
+
+  .about-section-block p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .about-cta-wrap {
+    margin-top: 18px;
+  }
+
+  .about-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--accent, #F59E0B);
+    font-size: 15.5px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .about-cta-link .arrow {
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+
+  .about-cta-link:hover {
+    color: #FBBF24;
+  }
+
+  .about-cta-link:hover .arrow {
+    transform: translateX(3px);
+  }
+
+  /* Mobile Responsive Rhythm */
+  @media (max-width: 640px) {
+    .fixed-back-btn {
+      top: 14px;
+      left: 14px;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 7px;
+    }
+
+    .about-container {
+      width: min(740px, calc(100% - 32px));
+    }
+
+    .about-hero {
+      padding: 76px 0 24px;
+    }
+
+    .about-body {
+      padding: 28px 0 48px;
+    }
+
+    .about-content {
+      gap: 26px;
+    }
+
+    .about-title {
+      margin-bottom: 12px;
+    }
+
+    .about-section-block h2 {
+      margin-bottom: 10px;
+    }
+
+    .about-section-block p {
+      font-size: 15px;
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .about-cta-wrap {
+      margin-top: 14px;
+    }
+  }
+</style>

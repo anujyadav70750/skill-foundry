@@ -273,6 +273,30 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       color: #CBD5E1 !important;
     }
 
+    .testing-1-theme .resource-hero-unified-section,
+    .testing-1-theme .resource-section,
+    .testing-1-theme .blueprint-workflow-container,
+    .testing-1-theme .blueprint-step-container,
+    .testing-1-theme .tips-section,
+    .testing-1-theme .resource-cta,
+    .resource-page .resource-section,
+    .resource-page .blueprint-workflow-container,
+    .resource-page .blueprint-step-container {
+      contain: layout style;
+      isolation: isolate;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
+    .media-backdrop,
+    .testing-1-theme .media-backdrop,
+    .blueprint-result-media-center .media-backdrop {
+      transform: scale(1.18) translateZ(0) !important;
+      will-change: transform !important;
+      backface-visibility: hidden !important;
+      pointer-events: none !important;
+    }
+
     /* 1. HERO SECTION */
     .testing-1-theme .resource-hero-unified-section {
       position: relative !important;
@@ -1439,15 +1463,21 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       const syncWidth = () => {
         if (copy && expand) {
-          const w = expand.getBoundingClientRect().width;
-          if (w > 0) {
-            copy.style.width = w + 'px';
-            copy.style.minWidth = w + 'px';
-          }
+          requestAnimationFrame(() => {
+            const w = expand.getBoundingClientRect().width;
+            if (w > 0) {
+              copy.style.width = w + 'px';
+              copy.style.minWidth = w + 'px';
+            }
+          });
         }
       };
       syncWidth();
-      window.addEventListener('resize', syncWidth);
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(syncWidth, 150);
+      }, { passive: true });
 
       copy?.addEventListener('click', async () => {
         try {
