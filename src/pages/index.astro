@@ -1464,11 +1464,12 @@ const toolLogo = (name: string) => {
     transform: scale(0.97);
   }
 
+  /* Disabled Clear keeps its own muted blue identity; it must not look identical to Submit. */
   .faq-clear-btn:disabled {
-    background: rgba(20, 37, 60, 0.42);
-    border: 1px solid rgba(56, 189, 248, 0.18);
-    color: rgba(148, 211, 248, 0.58);
-    opacity: 0.85;
+    background: rgba(30, 64, 100, 0.28);
+    border: 1px solid rgba(56, 189, 248, 0.16);
+    color: rgba(125, 211, 252, 0.42);
+    opacity: 1;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
@@ -1493,11 +1494,12 @@ const toolLogo = (name: string) => {
     transform: scale(0.97);
   }
 
+  /* Disabled Submit keeps a distinct, muted version of its active cyan/blue treatment. */
   .faq-submit-btn:disabled {
-    background: linear-gradient(135deg, rgba(2, 132, 199, 0.20) 0%, rgba(3, 105, 161, 0.20) 100%);
-    border: 1.5px solid rgba(56, 189, 248, 0.3);
-    color: rgba(125, 211, 252, 0.65);
-    opacity: 0.85;
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(3, 105, 161, 0.12) 100%);
+    border: 1.5px solid rgba(56, 189, 248, 0.20);
+    color: rgba(125, 211, 252, 0.46);
+    opacity: 1;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
