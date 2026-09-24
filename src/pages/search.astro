@@ -8,6 +8,13 @@ const allResources = await getCollection('resources');
 const publishedResources = allResources
   .filter((r) => !('draft' in r.data && r.data.draft === true))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Server-side fallback computation
+const rawFrom = Astro.url.searchParams.get('from');
+let fallbackBackUrl = '/resources/';
+if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.startsWith('/search')) {
+  fallbackBackUrl = rawFrom;
+}
 ---
 
 <BaseLayout
@@ -20,7 +27,7 @@ const publishedResources = allResources
 >
   <!-- Persistent Fixed "< Back" control at top-left -->
   <aside class="search-back-fixed" aria-label="Navigation back">
-    <a href="/" class="search-back-btn" id="search-back-btn" aria-label="Back">
+    <a href={fallbackBackUrl} class="search-back-btn" id="search-back-btn" aria-label="Back">
       <svg class="search-back-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M10 13L5 8l5-5"/>
       </svg>
@@ -553,6 +560,46 @@ const publishedResources = allResources
 </style>
 
 <script>
+  // CONTEXT-AWARE BACK NAVIGATION CONTROLLER
+  const backBtn = document.getElementById('search-back-btn') as HTMLAnchorElement | null;
+  const urlParams = new URLSearchParams(window.location.search);
+  const fromParam = urlParams.get('from');
+
+  const sanitizeReturnUrl = (urlStr: string | null): string | null => {
+    if (!urlStr) return null;
+    try {
+      if (urlStr.startsWith('/') && !urlStr.startsWith('//')) {
+        const parsed = new URL(urlStr, window.location.origin);
+        if (parsed.pathname !== '/search' && parsed.pathname !== '/search/') {
+          return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+        }
+      }
+    } catch (e) {}
+    return null;
+  };
+
+  let returnTarget = sanitizeReturnUrl(fromParam);
+
+  if (!returnTarget && document.referrer) {
+    try {
+      const refUrl = new URL(document.referrer);
+      if (refUrl.origin === window.location.origin && refUrl.pathname !== '/search' && refUrl.pathname !== '/search/') {
+        returnTarget = `${refUrl.pathname}${refUrl.search}${refUrl.hash}`;
+      }
+    } catch (e) {}
+  }
+
+  // Safe fallback if opened without valid originating context
+  const finalBackUrl = returnTarget || '/resources/';
+
+  if (backBtn) {
+    backBtn.href = finalBackUrl;
+    backBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      window.location.href = finalBackUrl;
+    });
+  }
+
   // CLIENT-SIDE SEARCH CONTROLLER
   const searchInput = document.getElementById('search-page-input') as HTMLInputElement | null;
   const searchClearBtn = document.getElementById('search-clear-action-btn') as HTMLButtonElement | null;
@@ -567,7 +614,6 @@ const publishedResources = allResources
   });
 
   // Read initial query parameter from URL
-  const urlParams = new URLSearchParams(window.location.search);
   const initialQuery = urlParams.get('q') || '';
   if (searchInput && initialQuery) {
     searchInput.value = initialQuery;
