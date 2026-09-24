@@ -11,6 +11,9 @@ export interface Props {
   imageAlt?: string;
   type?: 'website' | 'article';
   robots?: string;
+  hideHeaderSearch?: boolean;
+  hideFooter?: boolean;
+  hideHeader?: boolean;
 }
 
 const siteUrl = 'https://skillfoundry.dev';
@@ -25,7 +28,10 @@ const {
   image = '/og-image.svg',
   imageAlt = 'Skill Foundry — Practical AI blueprints, workflows, and tools',
   type = 'website',
-  robots = 'index, follow'
+  robots = 'index, follow',
+  hideHeaderSearch = false,
+  hideFooter = false,
+  hideHeader = false
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : defaultTitle;
@@ -108,6 +114,33 @@ const platformLinks = [
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/workflow-fixes.css?v=20260924-prod-sync" />
     <script src="/workflow-fixes.js?v=20260916-final" defer></script>
+    <script is:inline>
+      (function() {
+        var isFaqReturn = false;
+        try {
+          if (sessionStorage.getItem('sf_back_to_faq') === 'true') {
+            isFaqReturn = true;
+          }
+        } catch (e) {}
+        if (typeof window !== 'undefined' && (window.location.hash === '#faq-submit-card' || window.location.hash === '#faq')) {
+          isFaqReturn = true;
+        }
+
+        if (isFaqReturn) {
+          document.documentElement.classList.add('jump-to-faq-pending');
+          document.documentElement.style.scrollBehavior = 'auto';
+          if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+          }
+        }
+      })();
+    </script>
+    <style is:inline>
+      html.jump-to-faq-pending body {
+        opacity: 0 !important;
+        visibility: hidden !important;
+      }
+    </style>
     <title>{fullTitle}</title>
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={siteName} />
@@ -123,195 +156,117 @@ const platformLinks = [
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     {socialImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
   </head>
-  <body>
+  <body class={hideHeader ? 'no-header' : ''}>
     <!-- GLOBAL UNIFIED NAVIGATION HEADER (TWO WINGS INTERLOCKING WITH CENTER COMPACT SF TAB) -->
-    <header class="site-header" id="global-site-header">
-      <nav class="nav-pill-container" aria-label="Main navigation">
-        <!-- LEFT WING: HOME & RESOURCES -->
-        <div class="nav-segment nav-segment-left">
-          <a class={`nav-link ${currentPath === '/' ? 'active' : ''}`} href="/">HOME</a>
-          <a class={`nav-link ${currentPath.startsWith('/resources') ? 'active' : ''}`} href="/resources/">RESOURCES</a>
-        </div>
-
-        <!-- CENTER RAISED COMPACT ROUNDED-SQUARE SF TAB -->
-        <div class="nav-zone-logo">
-          <a class="nav-logo-tab" href="/" aria-label="Skill Foundry home">
-            <span class="brand-mark">SF</span>
-          </a>
-        </div>
-
-        <!-- RIGHT WING: SEARCH & ABOUT -->
-        <div class="nav-segment nav-segment-right">
-          <div class="header-search-wrap" id="header-search-wrap">
-            <form class="header-search-box" id="header-search-form" action="/resources/" method="get" role="search">
-              <input
-                id="header-search-input"
-                class="header-search-input"
-                type="search"
-                name="q"
-                autocomplete="off"
-                spellcheck="false"
-                aria-label="Search resources"
-                aria-autocomplete="list"
-                aria-controls="header-search-dropdown"
-              />
-              <button class="header-search-submit" type="submit" aria-label="Submit search">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="11" cy="11" r="7"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </button>
-            </form>
-
-            <!-- Attached Search Dropdown -->
-            <div class="header-search-dropdown" id="header-search-dropdown" role="region" aria-label="Search suggestions" hidden>
-              <div class="dropdown-status" id="dropdown-status"></div>
-              <div class="dropdown-list" id="dropdown-list" role="listbox"></div>
-              <div class="dropdown-empty" id="dropdown-empty" hidden>
-                <p class="dropdown-empty-title">No resources found</p>
-                <p class="dropdown-empty-sub">Try searching for prompts, tools, or blueprint workflows.</p>
-              </div>
-              <div class="dropdown-footer">
-                <a href="/resources/" class="dropdown-view-all">View all published blueprints →</a>
-              </div>
-            </div>
+    {!hideHeader && (
+      <header class="site-header" id="global-site-header">
+        <nav class="nav-pill-container" aria-label="Main navigation">
+          <!-- LEFT WING: HOME & RESOURCES -->
+          <div class="nav-segment nav-segment-left">
+            <a class={`nav-link ${currentPath === '/' ? 'active' : ''}`} href="/">HOME</a>
+            <a class={`nav-link ${currentPath.startsWith('/resources') ? 'active' : ''}`} href="/resources/">RESOURCES</a>
           </div>
 
-          <a class={`nav-link ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">ABOUT</a>
-        </div>
-      </nav>
-    </header>
+          <!-- CENTER RAISED COMPACT ROUNDED-SQUARE SF TAB -->
+          <div class="nav-zone-logo">
+            <a class="nav-logo-tab" href="/" aria-label="Skill Foundry home">
+              <span class="brand-mark">SF</span>
+            </a>
+          </div>
+
+          <!-- RIGHT WING: SEARCH & ABOUT -->
+          <div class={`nav-segment nav-segment-right ${hideHeaderSearch ? 'no-search' : ''}`}>
+            {!hideHeaderSearch && (
+              <div class="header-search-wrap" id="header-search-wrap">
+                <a class="header-search-box" id="header-search-box" href="/search/" aria-label="Search resources">
+                  <span class="header-search-submit" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="7"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                  </span>
+                </a>
+              </div>
+            )}
+
+            <a class={`nav-link ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">ABOUT</a>
+          </div>
+        </nav>
+      </header>
+    )}
 
     <main><slot /></main>
-
-    <!-- MOBILE / MODAL GLOBAL SEARCH OVERLAY -->
-    <div id="global-search-modal" class="search-overlay" role="dialog" aria-modal="true" aria-labelledby="global-search-title" hidden>
-      <div class="search-backdrop" id="search-backdrop"></div>
-      <div class="search-modal-card">
-        <div class="search-header-bar">
-          <span class="sr-only" id="global-search-title">Search Skill Foundry Resources</span>
-          <div class="search-input-wrap">
-            <svg class="search-modal-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input
-              id="global-search-input"
-              class="search-modal-input"
-              type="search"
-              placeholder="Search resources, tools, prompts..."
-              autocomplete="off"
-              spellcheck="false"
-              aria-autocomplete="list"
-              aria-controls="search-results-list"
-            />
-            <button id="search-clear-btn" class="search-modal-clear" type="button" aria-label="Clear query" hidden>
-              <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor">
-                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
-              </svg>
-            </button>
-          </div>
-          <button id="search-close-btn" class="search-modal-close" type="button" aria-label="Close search">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-
-        <div class="search-modal-body" id="search-modal-body">
-          <div class="search-status-bar" id="search-status-bar" hidden></div>
-          <div class="search-results-list" id="search-results-list" role="listbox"></div>
-          
-          <div class="search-empty-state" id="search-empty-state" hidden>
-            <div class="empty-icon-wrap">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="7"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                <line x1="8" y1="8" x2="14" y2="14"></line>
-              </svg>
-            </div>
-            <p class="empty-title">No resources found</p>
-            <p class="empty-desc" id="search-empty-desc">No published blueprints or workflows match your query.</p>
-            <button class="empty-clear-btn" id="empty-clear-btn" type="button">Clear Search</button>
-          </div>
-
-          <div class="search-initial-state" id="search-initial-state">
-            <p class="search-section-label">PUBLISHED BLUEPRINTS &amp; WORKFLOWS</p>
-            <div class="search-initial-list" id="search-initial-list"></div>
-          </div>
-        </div>
-
-        <div class="search-modal-footer">
-          <a href="/resources/" class="search-all-link">View all resources in library →</a>
-        </div>
-      </div>
-    </div>
 
     <!-- EMBEDDED PUBLISHED RESOURCE SEARCH DATA -->
     <script type="application/json" id="sf-search-data" set:html={JSON.stringify(publishedSearchData)}></script>
 
     <!-- GLOBAL FOOTER -->
-    <footer class="site-footer">
-      <div class="container footer-container">
-        <!-- 1. Centered Brand -->
-        <div class="footer-brand-wrap">
-          <a class="brand footer-brand" href="/" aria-label="Skill Foundry home">
-            <span class="brand-mark">SF</span>
-            <span class="brand-name">SKILL FOUNDRY</span>
-          </a>
-        </div>
+    {!hideFooter && (
+      <footer class="site-footer">
+        <div class="container footer-container">
+          <!-- 1. Centered Brand -->
+          <div class="footer-brand-wrap">
+            <a class="brand footer-brand" href="/" aria-label="Skill Foundry home">
+              <span class="brand-mark">SF</span>
+              <span class="brand-name">SKILL FOUNDRY</span>
+            </a>
+          </div>
 
-        <!-- 2. Three Descriptor Points -->
-        <div class="footer-descriptors" aria-label="Skill Foundry Focus Areas">
-          <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> PRACTICAL SKILLS</span>
-          <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TUTORIALS &amp; WORKFLOWS</span>
-          <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TOOLS &amp; PROJECTS</span>
-        </div>
+          <!-- 2. Three Descriptor Points -->
+          <div class="footer-descriptors" aria-label="Skill Foundry Focus Areas">
+            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> PRACTICAL SKILLS</span>
+            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TUTORIALS &amp; WORKFLOWS</span>
+            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TOOLS &amp; PROJECTS</span>
+          </div>
 
-        <!-- 3. First Subtle Horizontal Divider -->
-        <div class="footer-divider footer-divider-top" role="separator"></div>
+          <!-- 3. First Subtle Horizontal Divider -->
+          <div class="footer-divider footer-divider-top" role="separator"></div>
 
-        <!-- 4. Main Navigation -->
-        <nav class="footer-nav" aria-label="Main navigation">
-          <a href="/">Home</a>
-          <a href="/resources/">Resources</a>
-          <a href="/about/">About</a>
-          <a href="/contact/">Contact</a>
-        </nav>
+          <!-- 4. Main Navigation -->
+          <nav class="footer-nav" aria-label="Main navigation">
+            <a href="/">Home</a>
+            <a href="/resources/">Resources</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+          </nav>
 
-        <!-- 5. Social Platform Icons -->
-        <div class="footer-platforms" aria-label="External platforms">
-          <div class="footer-platform-list">
-            {platformLinks.map((item) => (
-              <a
-                class="footer-platform-btn"
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Skill Foundry on ${item.name}`}
-                title={item.name}
-                set:html={item.svg}
-              />
-            ))}
+          <!-- 5. Social Platform Icons -->
+          <div class="footer-platforms" aria-label="External platforms">
+            <div class="footer-platform-list">
+              {platformLinks.map((item) => (
+                <a
+                  class="footer-platform-btn"
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Skill Foundry on ${item.name}`}
+                  title={item.name}
+                  set:html={item.svg}
+                />
+              ))}
+            </div>
+          </div>
+
+          <!-- 6. Legal Links -->
+          <nav class="footer-legal" aria-label="Legal navigation">
+            <a href="/privacy/">Privacy</a>
+            <span class="legal-separator" aria-hidden="true">|</span>
+            <a href="/terms/">Terms</a>
+          </nav>
+
+          <!-- 7. Copyright -->
+          <div class="footer-copyright">
+            <span>© {new Date().getFullYear()} Skill Foundry. All rights reserved.</span>
           </div>
         </div>
-
-        <!-- 6. Legal Links -->
-        <nav class="footer-legal" aria-label="Legal navigation">
-          <a href="/privacy/">Privacy</a>
-          <span class="legal-separator" aria-hidden="true">|</span>
-          <a href="/terms/">Terms</a>
-        </nav>
-
-        <!-- 7. Copyright -->
-        <div class="footer-copyright">
-          <span>© {new Date().getFullYear()} Skill Foundry. All rights reserved.</span>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    )}
 
     <style>
+      :global(body.no-header) {
+        padding-top: 0 !important;
+      }
+
       /* ==========================================================================
          GLOBAL UNIFIED HEADER (TWO WINGS INTERLOCKING WITH CENTER SF TAB)
          ========================================================================== */
@@ -374,6 +329,9 @@ const platformLinks = [
         border-radius: 0 9999px 9999px 0;
         padding: 0 48px 0 82px;
         margin-left: -10px;
+      }
+      .nav-segment-right.no-search {
+        justify-content: flex-end;
       }
 
       /* Navigation Links (HOME, RESOURCES, ABOUT - NO DIVIDER LINES) */
@@ -445,7 +403,7 @@ const platformLinks = [
         box-shadow: 0 2px 8px rgba(255, 102, 0, 0.38);
       }
 
-      /* ZONE 4. Search Capsule (SAME DARK FAMILY & BORDER AS NAV CONTROLS • NO PLACEHOLDER • ICON ON RIGHT) */
+      /* ZONE 4. Search Capsule (MATCHES NAV CONTROLS IN TONE, BORDER & SOFT WHITE ICON • ICON ON RIGHT) */
       .header-search-wrap {
         position: relative;
         display: flex;
@@ -454,42 +412,23 @@ const platformLinks = [
       .header-search-box {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         width: 88px;
         height: 32px;
         padding: 0 8px 0 10px;
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.035);
-        color: #94A3B8;
-        transition: border-color 0.2s ease, background 0.2s ease;
-        cursor: text;
+        background: rgba(255, 255, 255, 0.04);
+        color: #DCE4EE;
+        transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        cursor: pointer;
+        text-decoration: none;
+        box-sizing: border-box;
       }
       .header-search-box:hover {
-        border-color: rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.05);
-      }
-      .header-search-box:focus-within {
-        border-color: rgba(255, 255, 255, 0.25);
-        background: rgba(10, 16, 26, 0.95);
-        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
-      }
-      .header-search-input {
-        width: 100%;
-        min-width: 0;
-        border: 0;
-        outline: 0;
-        background: transparent;
-        color: #F8FAFC;
-        font-family: inherit;
-        font-size: 11.5px;
-        font-weight: 500;
-        padding: 0;
-      }
-      .header-search-input::-webkit-search-cancel-button {
-        -webkit-appearance: none;
-        appearance: none;
-        display: none;
+        border-color: rgba(255, 255, 255, 0.22);
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
       }
       .header-search-submit {
         display: grid;
@@ -501,16 +440,14 @@ const platformLinks = [
         border: none;
         border-radius: 999px;
         background: transparent;
-        color: #94A3B8;
+        color: inherit;
         cursor: pointer;
         transition: color 0.15s ease;
-      }
-      .header-search-submit:hover {
-        color: #FFFFFF;
       }
       .header-search-submit svg {
         width: 13px;
         height: 13px;
+        stroke: currentColor;
       }
 
       /* Desktop Attached Dropdown */
@@ -1142,7 +1079,7 @@ const platformLinks = [
         background: #080d0f;
         border-top: 0;
         color: #AAB4C0;
-        padding: 54px 0 46px;
+        padding: 32px 0 46px;
         margin-top: 0;
         width: 100%;
       }
@@ -1319,12 +1256,18 @@ const platformLinks = [
         margin-top: 18px;
       }
 
+      @media (max-width: 640px) {
+        .site-footer {
+          padding: 24px 0 38px;
+        }
+      }
+
       @media (max-width: 420px) {
         .footer-description {
           display: none;
         }
         .site-footer {
-          padding: 52px 0 38px;
+          padding: 24px 0 38px;
         }
         .footer-container {
           padding-left: 18px;
@@ -1450,287 +1393,16 @@ const platformLinks = [
         siteMenu.hidden = open;
       });
 
-      // 2. Search Data & Shared Matching Engine
-      let searchData: Array<{
-        title: string;
-        slug: string;
-        description: string;
-        category: string;
-        tool: string;
-        toolsUsed?: string[];
-        tags?: string[];
-        thumbnail: string;
-        imageAlt: string;
-        date?: string;
-      }> = [];
-
-      try {
-        const rawJson = document.querySelector('#sf-search-data')?.textContent;
-        if (rawJson) {
-          searchData = JSON.parse(rawJson);
-        }
-      } catch (e) {
-        console.error('Failed to parse search data', e);
-      }
-
-      const matchResources = (query: string) => {
-        const q = query.trim().toLowerCase();
-        if (!q) return [];
-        const tokens = q.split(/\s+/).filter(Boolean);
-        return searchData.filter((item) => {
-          const searchable = [
-            item.title,
-            item.description,
-            item.category,
-            item.tool,
-            ...(item.toolsUsed || []),
-            ...(item.tags || [])
-          ].join(' ').toLowerCase();
-
-          return tokens.every((token) => searchable.includes(token));
-        });
-      };
-
-      // 3. Desktop Header Search Field & Live Dropdown
-      const headerSearchInput = document.querySelector('#header-search-input') as HTMLInputElement | null;
-      const headerSearchDropdown = document.querySelector('#header-search-dropdown') as HTMLElement | null;
-      const dropdownStatus = document.querySelector('#dropdown-status') as HTMLElement | null;
-      const dropdownList = document.querySelector('#dropdown-list') as HTMLElement | null;
-      const dropdownEmpty = document.querySelector('#dropdown-empty') as HTMLElement | null;
-
-      const renderDropdownItem = (item: typeof searchData[0]) => `
-        <a href="/resources/${item.slug}/" class="dropdown-item">
-          <div class="dropdown-thumb">
-            <img src="${item.thumbnail}" alt="${item.imageAlt || item.title}" loading="lazy" />
-          </div>
-          <div class="dropdown-info">
-            <div class="dropdown-cat">${item.category || 'Blueprint'}</div>
-            <p class="dropdown-title">${item.title}</p>
-            <p class="dropdown-desc">${item.description}</p>
-          </div>
-          <div class="dropdown-arrow">
-            <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-          </div>
-        </a>
-      `;
-
-      const updateDesktopSearch = (query: string) => {
-        if (!headerSearchDropdown || !dropdownList || !dropdownStatus || !dropdownEmpty) return;
-
-        const trimmed = query.trim();
-        if (!trimmed) {
-          headerSearchDropdown.hidden = true;
-          return;
-        }
-
-        const matches = matchResources(trimmed);
-        headerSearchDropdown.hidden = false;
-
-        if (matches.length > 0) {
-          dropdownEmpty.hidden = true;
-          dropdownStatus.hidden = false;
-          dropdownStatus.textContent = `${matches.length} published ${matches.length === 1 ? 'match' : 'matches'}`;
-          dropdownList.innerHTML = matches.slice(0, 5).map(renderDropdownItem).join('');
-        } else {
-          dropdownStatus.hidden = true;
-          dropdownList.innerHTML = '';
-          dropdownEmpty.hidden = false;
-        }
-      };
-
-      headerSearchInput?.addEventListener('input', () => {
-        updateDesktopSearch(headerSearchInput.value);
-      });
-
-      headerSearchInput?.addEventListener('focus', () => {
-        if (window.innerWidth <= 768) {
-          openModalSearch(headerSearchInput.value);
-        } else if (headerSearchInput.value.trim()) {
-          updateDesktopSearch(headerSearchInput.value);
-        }
-      });
-
-      headerSearchInput?.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
-          e.preventDefault();
-          openModalSearch(headerSearchInput.value);
-        }
-      });
-
-      const headerSearchForm = document.querySelector('#header-search-form') as HTMLFormElement | null;
-      headerSearchForm?.addEventListener('submit', (e) => {
-        if (window.innerWidth <= 768) {
-          e.preventDefault();
-          openModalSearch(headerSearchInput?.value || '');
-        }
-      });
-
-      // 4. Mobile / Modal Global Search Overlay
-      const searchModal = document.querySelector('#global-search-modal') as HTMLElement | null;
-      const searchBackdrop = document.querySelector('#search-backdrop');
-      const modalSearchInput = document.querySelector('#global-search-input') as HTMLInputElement | null;
-      const searchClearBtn = document.querySelector('#search-clear-btn') as HTMLElement | null;
-      const searchCloseBtn = document.querySelector('#search-close-btn') as HTMLElement | null;
-      const mobileSearchSubmitBtn = document.querySelector('#mobile-search-submit-btn');
-      const mobileSearchInputPreview = document.querySelector('#mobile-search-input-preview') as HTMLInputElement | null;
-      const searchResultsList = document.querySelector('#search-results-list') as HTMLElement | null;
-      const searchStatusBar = document.querySelector('#search-status-bar') as HTMLElement | null;
-      const searchEmptyState = document.querySelector('#search-empty-state') as HTMLElement | null;
-      const searchEmptyDesc = document.querySelector('#search-empty-desc') as HTMLElement | null;
-      const searchInitialState = document.querySelector('#search-initial-state') as HTMLElement | null;
-      const searchInitialList = document.querySelector('#search-initial-list') as HTMLElement | null;
-      const emptyClearBtn = document.querySelector('#empty-clear-btn');
-
-      const renderModalCard = (item: typeof searchData[0]) => `
-        <a href="/resources/${item.slug}/" class="search-result-card" role="option">
-          <div class="card-thumb-wrap">
-            <img src="${item.thumbnail}" alt="${item.imageAlt || item.title}" class="card-thumb-img" loading="lazy" />
-          </div>
-          <div class="card-info">
-            <div class="card-meta-row">
-              <span class="card-cat-badge">${item.category || 'Blueprint'}</span>
-            </div>
-            <p class="card-title">${item.title}</p>
-            <p class="card-desc">${item.description}</p>
-          </div>
-          <div class="card-arrow">
-            <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/></svg>
-          </div>
-        </a>
-      `;
-
-      const renderInitialResources = () => {
-        if (!searchInitialList || !searchInitialState) return;
-        searchInitialState.hidden = false;
-        searchStatusBar && (searchStatusBar.hidden = true);
-        searchResultsList && (searchResultsList.innerHTML = '');
-        searchEmptyState && (searchEmptyState.hidden = true);
-        searchInitialList.innerHTML = searchData.slice(0, 4).map(renderModalCard).join('');
-      };
-
-      const openModalSearch = (initialVal?: string) => {
-        if (!searchModal || !modalSearchInput) return;
-        searchModal.hidden = false;
-        document.body.style.overflow = 'hidden';
-        modalSearchInput.value = initialVal || '';
-        if (initialVal) {
-          performModalSearch(initialVal);
-        } else {
-          renderInitialResources();
-        }
-        setTimeout(() => modalSearchInput.focus(), 50);
-      };
-
-      const closeModalSearch = () => {
-        if (!searchModal) return;
-        searchModal.hidden = true;
-        document.body.style.overflow = '';
-      };
-
-      const performModalSearch = (query: string) => {
-        if (!modalSearchInput || !searchResultsList || !searchStatusBar || !searchEmptyState || !searchEmptyDesc || !searchInitialState) return;
-
-        const trimmed = query.trim();
-        if (!trimmed) {
-          renderInitialResources();
-          return;
-        }
-
-        searchInitialState.hidden = true;
-        const matches = matchResources(trimmed);
-
-        if (matches.length > 0) {
-          searchEmptyState.hidden = true;
-          searchStatusBar.hidden = false;
-          searchStatusBar.textContent = `Found ${matches.length} published ${matches.length === 1 ? 'resource' : 'resources'}`;
-          searchResultsList.innerHTML = matches.map(renderModalCard).join('');
-        } else {
-          searchStatusBar.hidden = true;
-          searchResultsList.innerHTML = '';
-          searchEmptyState.hidden = false;
-          searchEmptyDesc.textContent = `No published blueprints match "${trimmed}".`;
-        }
-      };
-
-      mobileSearchSubmitBtn?.addEventListener('click', () => {
-        openModalSearch(mobileSearchInputPreview?.value || '');
-      });
-
-      mobileSearchInputPreview?.addEventListener('focus', () => {
-        openModalSearch(mobileSearchInputPreview.value);
-      });
-
-      searchCloseBtn?.addEventListener('click', closeModalSearch);
-      searchBackdrop?.addEventListener('click', closeModalSearch);
-
-      emptyClearBtn?.addEventListener('click', () => {
-        if (modalSearchInput) {
-          modalSearchInput.value = '';
-          searchClearBtn && (searchClearBtn.hidden = true);
-          modalSearchInput.focus();
-          renderInitialResources();
-        }
-      });
-
-      searchClearBtn?.addEventListener('click', () => {
-        if (modalSearchInput) {
-          modalSearchInput.value = '';
-          searchClearBtn.hidden = true;
-          modalSearchInput.focus();
-          renderInitialResources();
-        }
-      });
-
-      modalSearchInput?.addEventListener('input', () => {
-        const val = modalSearchInput.value;
-        if (searchClearBtn) {
-          searchClearBtn.hidden = val.length === 0;
-        }
-        performModalSearch(val);
-      });
-
-      // Global click outside to dismiss desktop search dropdown & mobile menu
-      document.addEventListener('click', (event) => {
-        const target = event.target as HTMLElement | null;
-        if (!target) return;
-
-        // Dismiss desktop search dropdown when clicking outside
-        const searchWrap = document.querySelector('#header-search-wrap');
-        if (headerSearchDropdown && !headerSearchDropdown.hidden && searchWrap && !searchWrap.contains(target)) {
-          headerSearchDropdown.hidden = true;
-        }
-
-        // Dismiss mobile menu when clicking outside
-        if (siteMenu && !siteMenu.hidden && menuToggle && !siteMenu.contains(target) && !menuToggle.contains(target)) {
-          closeMenu();
-        }
-      });
-
       // Keyboard support
       document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
-          if (headerSearchDropdown && !headerSearchDropdown.hidden) {
-            headerSearchDropdown.hidden = true;
-          }
-          if (searchModal && !searchModal.hidden) {
-            closeModalSearch();
-          }
           closeMenu();
         }
 
-        // Cmd/Ctrl + K shortcut
+        // Cmd/Ctrl + K shortcut -> navigate to dedicated Search page
         if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
           event.preventDefault();
-          if (window.innerWidth <= 768) {
-            if (searchModal && !searchModal.hidden) {
-              closeModalSearch();
-            } else {
-              openModalSearch();
-            }
-          } else {
-            headerSearchInput?.focus();
-            headerSearchInput?.select();
-          }
+          window.location.href = '/search/';
         }
       });
     </script>

@@ -2,6 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { resourceSlug, resourceThumbnail, resourceImageAlt } from '../lib/resource';
+import { FAQ_DATA } from '../data/faqs';
+
+const homepageFaqs = FAQ_DATA.slice(0, 6);
 
 // 1. DYNAMIC PUBLISHED RESOURCES
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -37,6 +40,16 @@ const dynamicCategories = Array.from(categoryCounts.entries())
     }
     return { name, count, description };
   });
+
+const formatUploadDate = (d: Date | string | undefined) => {
+  if (!d) return '';
+  const date = new Date(d);
+  const day = date.getDate();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+};
 
 const toolLogo = (name: string) => {
   const raw = (name || '').toLowerCase();
@@ -139,34 +152,23 @@ const toolLogo = (name: string) => {
               const slug = resourceSlug(resource);
               const thumbnail = resourceThumbnail(resource);
               const alt = resourceImageAlt(resource);
-              const toolsUsed = Array.isArray(resource.data.toolsUsed) ? resource.data.toolsUsed : [];
 
               return (
                 <article class="home-card resource-display-card">
                   <a class="resource-thumb-wrap" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
                     <img class="resource-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
-                    <span class="resource-cat-badge">{resource.data.category}</span>
                   </a>
 
                   <div class="resource-card-body">
+                    <div class="resource-card-meta">
+                      <span class="resource-meta-category">{resource.data.category}</span>
+                      <span class="resource-meta-date">{formatUploadDate(resource.data.date)}</span>
+                    </div>
+
                     <h3 class="resource-card-title">
                       <a href={`/resources/${slug}/`}>{resource.data.title}</a>
                     </h3>
                     <p class="resource-card-desc">{resource.data.description}</p>
-
-                    {toolsUsed.length > 0 && (
-                      <div class="resource-tools-strip">
-                        <span class="tools-strip-label">Tools used:</span>
-                        <div class="tools-strip-list">
-                          {toolsUsed.map((tool) => (
-                            <span class="tool-micro-chip">
-                              <img class="tool-micro-logo" src={toolLogo(tool.name)} alt="" width="16" height="16" loading="lazy" />
-                              {tool.name}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     <div class="resource-card-footer">
                       <a class="resource-cta-btn" href={`/resources/${slug}/`}>
@@ -262,7 +264,152 @@ const toolLogo = (name: string) => {
       </section>
     )}
 
-    <!-- SECTION 6 — FINAL CTA -->
+    <!-- SECTION 6 — FREQUENTLY ASKED QUESTIONS -->
+    <section class="home-section faq-section" id="faq">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="home-capsule">FREQUENTLY ASKED</p>
+          <h2>Questions you might have</h2>
+          <p class="section-subcopy">
+            Quick answers to common questions about Skill Foundry, its resources, and how to use them.
+          </p>
+        </div>
+
+        <!-- FAQ Search (Order: label → heading → description → search field → FAQ cards) -->
+        <div class="faq-search-wrap">
+          <label for="faq-search-input" class="sr-only">Search for a question or topic</label>
+          <div class="faq-search-field">
+            <span class="faq-search-icon" aria-hidden="true">
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="9" r="6"></circle>
+                <line x1="13.5" y1="13.5" x2="18" y2="18"></line>
+              </svg>
+            </span>
+            <input
+              type="search"
+              id="faq-search-input"
+              class="faq-search-input"
+              placeholder="Search for a question or topic…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button
+              type="button"
+              id="faq-search-clear"
+              class="faq-search-clear"
+              aria-label="Clear search query"
+              style="display: none;"
+            >
+              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="5" x2="15" y2="15"></line>
+                <line x1="15" y1="5" x2="5" y2="15"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- FAQ Cards List (Fully visible static cards from canonical FAQ dataset) -->
+        <div class="faq-list" id="faq-list">
+          {homepageFaqs.map((faq) => (
+            <article class="home-card faq-card">
+              <h3 class="faq-question">{faq.question}</h3>
+              <p class="faq-answer">{faq.answer}</p>
+            </article>
+          ))}
+        </div>
+
+        <!-- More FAQs CTA Button (opens dedicated FAQ page) -->
+        <div class="faq-more-wrap" id="faq-more-wrap">
+          <a href="/faq/" class="home-button home-button-secondary faq-more-btn">
+            <span>More FAQs</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <!-- Compact No-result State -->
+        <div class="faq-no-results" id="faq-no-results" style="display: none;">
+          <p class="faq-no-results-title">We couldn’t find an answer to that.</p>
+          <p class="faq-no-results-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
+          <a href="#faq-submit-card" class="faq-no-results-link">Go to question submission ↓</a>
+        </div>
+
+        <!-- Question Submission Card (Separate professional card before START BUILDING CTA) -->
+        <div class="home-card faq-submit-card" id="faq-submit-card">
+          <script is:inline>
+            (function() {
+              function positionFaqImmediately() {
+                var isFaqReturn = false;
+                try {
+                  if (sessionStorage.getItem('sf_back_to_faq') === 'true') isFaqReturn = true;
+                } catch (e) {}
+                if (typeof window !== 'undefined' && (window.location.hash === '#faq-submit-card' || window.location.hash === '#faq')) {
+                  isFaqReturn = true;
+                }
+                if (!isFaqReturn) return;
+
+                var targetCard = document.getElementById('faq-submit-card') || document.getElementById('faq');
+                if (targetCard) {
+                  targetCard.scrollIntoView({ behavior: 'auto', block: 'center' });
+                }
+                try {
+                  sessionStorage.removeItem('sf_back_to_faq');
+                } catch (e) {}
+                document.documentElement.classList.remove('jump-to-faq-pending');
+              }
+
+              if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', positionFaqImmediately, { once: true });
+              } else {
+                positionFaqImmediately();
+              }
+            })();
+          </script>
+          <div class="faq-submit-head">
+            <h3 class="faq-submit-title">Didn’t find your question?</h3>
+            <p class="faq-submit-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
+          </div>
+          <form id="faq-submit-form" class="faq-submit-form" novalidate>
+            <div class="faq-input-group">
+              <div class="faq-textarea-wrap">
+                <label for="faq-question-input" class="sr-only">Type your question</label>
+                <textarea
+                  id="faq-question-input"
+                  name="question"
+                  class="faq-textarea"
+                  rows="5"
+                  placeholder="Type your question…"
+                  required
+                ></textarea>
+                <button
+                  type="button"
+                  id="faq-expand-btn"
+                  class="faq-textarea-expand-btn"
+                  aria-label="Expand question editor"
+                  title="Expand question editor"
+                >
+                  <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M13 3h4v4M7 17H3v-4M17 3l-6 6M3 17l6-6"/>
+                  </svg>
+                  <span class="sr-only">Expand editor</span>
+                </button>
+              </div>
+              <p id="faq-validation-msg" class="faq-validation-msg" role="alert" style="display: none;"></p>
+            </div>
+            <div class="faq-form-footer">
+              <button type="button" id="faq-clear-btn" class="faq-action-btn faq-clear-btn" disabled>
+                Clear
+              </button>
+              <button type="submit" id="faq-submit-btn" class="faq-action-btn faq-submit-btn" disabled>
+                <span class="btn-text">Submit</span>
+              </button>
+            </div>
+            <p id="faq-form-status" class="faq-form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 7 — FINAL CTA -->
     <section class="home-section final-cta-section">
       <div class="container narrow">
         <div class="home-cta-card">
@@ -279,6 +426,61 @@ const toolLogo = (name: string) => {
         </div>
       </div>
     </section>
+
+    <!-- Expanded Question Submission Modal (Exact same modal as FAQ page) -->
+    <div id="faq-modal-overlay" class="faq-modal-overlay" aria-hidden="true" style="display: none;">
+      <div class="faq-modal-backdrop" id="faq-modal-backdrop"></div>
+      <div
+        class="faq-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="faq-modal-title"
+      >
+        <!-- Top Navigation Row: Back (left) only -->
+        <div class="faq-modal-nav-row">
+          <button
+            type="button"
+            id="faq-modal-back-btn"
+            class="faq-modal-nav-back"
+            aria-label="Back to FAQ"
+          >
+            <svg class="faq-modal-nav-chevron" viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M10 13L5 8l5-5"/>
+            </svg>
+            <span>Back</span>
+          </button>
+        </div>
+
+        <!-- Title / Subtitle -->
+        <div class="faq-modal-header-text">
+          <h2 id="faq-modal-title" class="faq-modal-title">Ask a Question</h2>
+          <p class="faq-modal-subtitle">Submit a question or workflow request to be considered for the FAQ.</p>
+        </div>
+
+        <form id="faq-modal-form" class="faq-modal-form" novalidate>
+          <div class="faq-modal-body">
+            <label for="faq-modal-question-input" class="sr-only">Write your question here</label>
+            <textarea
+              id="faq-modal-question-input"
+              class="faq-modal-textarea"
+              placeholder="Write your question, tool suggestion, or workflow request here in detail..."
+              required
+            ></textarea>
+            <p id="faq-modal-validation-msg" class="faq-validation-msg" role="alert" style="display: none;"></p>
+          </div>
+
+          <div class="faq-modal-footer">
+            <button type="button" id="faq-modal-clear-btn" class="faq-modal-action-btn faq-modal-clear-btn" disabled>
+              Clear
+            </button>
+            <button type="submit" id="faq-modal-submit-btn" class="faq-modal-action-btn faq-modal-submit-btn" disabled>
+              <span class="btn-text">Submit</span>
+            </button>
+          </div>
+          <p id="faq-modal-status" class="faq-form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
   </div>
 </BaseLayout>
 
@@ -302,7 +504,7 @@ const toolLogo = (name: string) => {
     min-height: 100vh;
     padding-top: var(--header-height);
     margin-top: calc(-1 * var(--header-height));
-    padding-bottom: 30px;
+    padding-bottom: 0;
   }
 
   /* Shared Section Layout */
@@ -443,7 +645,7 @@ const toolLogo = (name: string) => {
      ========================================================================== */
   .home-hero {
     position: relative;
-    padding: clamp(56px, 7vw, 84px) 0 clamp(44px, 5.5vw, 68px);
+    padding: clamp(56px, 7vw, 84px) 0 clamp(36px, 4.2vw, 48px);
     /* Background is inherited from .home-page so it continues seamlessly behind the fixed header. */
     background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -575,6 +777,11 @@ const toolLogo = (name: string) => {
   /* ==========================================================================
      SECTION 2 — THE SKILL FOUNDRY PROMISE
      ========================================================================== */
+  .promise-section {
+    padding-top: 36px;
+    padding-bottom: 24px;
+  }
+
   .promise-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -599,14 +806,19 @@ const toolLogo = (name: string) => {
   /* ==========================================================================
      SECTION 3 — FEATURED RESOURCES
      ========================================================================== */
+  .featured-section {
+    padding-top: 36px;
+    padding-bottom: 28px;
+  }
+
   .featured-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
     gap: 24px;
   }
 
-  .resource-display-card {
-    padding: 0;
+  .home-card.resource-display-card {
+    padding: 20px 20px 18px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -619,7 +831,8 @@ const toolLogo = (name: string) => {
     aspect-ratio: 16 / 9;
     overflow: hidden;
     background: #04070D;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
   }
 
   .resource-thumb-img {
@@ -634,38 +847,55 @@ const toolLogo = (name: string) => {
     transform: scale(1.03);
   }
 
-  .resource-cat-badge {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: rgba(8, 14, 24, 0.9);
-    border: 1px solid rgba(56, 189, 248, 0.4);
-    color: #38BDF8;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 9999px;
-    backdrop-filter: blur(8px);
-  }
-
   .resource-card-body {
-    padding: 24px 24px 26px;
+    padding: 16px 0 0 0;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
   }
 
+  .resource-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .resource-meta-category {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #38BDF8;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    padding: 3px 9px;
+    border-radius: 9999px;
+    line-height: 1.2;
+  }
+
+  .resource-meta-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #94A3B8;
+    white-space: nowrap;
+  }
+
   .resource-card-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 500;
     color: #FFFFFF;
     margin: 0 0 10px 0;
     line-height: 1.25;
     letter-spacing: -0.015em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .resource-card-title a {
@@ -680,59 +910,24 @@ const toolLogo = (name: string) => {
 
   .resource-card-desc {
     color: #94A3B8;
-    font-size: 14.5px;
-    line-height: 1.6;
-    margin: 0 0 20px 0;
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 18px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
     flex: 1 1 auto;
-  }
-
-  .resource-tools-strip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    margin-bottom: 20px;
-  }
-
-  .tools-strip-label {
-    font-size: 12px;
-    color: #64748B;
-    font-weight: 600;
-  }
-
-  .tools-strip-list {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .tool-micro-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 6px;
-    padding: 3px 8px;
-    font-size: 12px;
-    color: #CBD5E1;
-    font-weight: 600;
-  }
-
-  .tool-micro-logo {
-    width: 14px;
-    height: 14px;
-    border-radius: 3px;
-    object-fit: contain;
   }
 
   .resource-card-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
   .resource-cta-btn {
@@ -760,6 +955,11 @@ const toolLogo = (name: string) => {
   /* ==========================================================================
      SECTION 4 — HOW IT WORKS
      ========================================================================== */
+  .method-section {
+    padding-top: 32px;
+    padding-bottom: 28px;
+  }
+
   .steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -793,6 +993,11 @@ const toolLogo = (name: string) => {
   /* ==========================================================================
      SECTION 5 — EXPLORE BY CATEGORY (Dynamic)
      ========================================================================== */
+  .categories-section {
+    padding-top: 32px;
+    padding-bottom: 28px;
+  }
+
   .categories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
@@ -859,8 +1064,719 @@ const toolLogo = (name: string) => {
   }
 
   /* ==========================================================================
-     SECTION 6 — FINAL CTA (Matches Resource Detail .cta-card)
+     SECTION 6 — FREQUENTLY ASKED QUESTIONS (Static, fully visible)
      ========================================================================== */
+  .faq-section {
+    scroll-margin-top: calc(var(--header-height, 94px) + 20px);
+    padding-top: 32px;
+    padding-bottom: 12px;
+  }
+
+  .faq-section .section-head {
+    margin-bottom: 26px;
+  }
+
+  .faq-section .home-capsule {
+    margin-bottom: 12px;
+  }
+
+  .faq-section .section-head h2 {
+    margin: 0 0 10px 0;
+  }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 820px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .home-card.faq-card {
+    padding: 24px 28px;
+    border-radius: 18px;
+    background: rgba(13, 20, 34, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .home-card.faq-card:hover {
+    border-color: rgba(56, 189, 248, 0.28);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.06);
+  }
+
+  .faq-question {
+    margin: 0 0 10px 0;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #F8FAFC;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-answer {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.68;
+    color: #94A3B8;
+  }
+
+  /* FAQ Live Search Field */
+  .faq-search-wrap {
+    max-width: 820px;
+    margin: 0 auto 22px auto;
+    width: 100%;
+  }
+
+  .faq-search-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(8, 13, 22, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    padding: 0 12px 0 16px;
+    min-height: 50px;
+    box-sizing: border-box;
+  }
+
+  .faq-search-field:focus-within {
+    border-color: rgba(56, 189, 248, 0.55);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+  }
+
+  .faq-search-icon {
+    color: #94A3B8;
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .faq-search-input {
+    flex: 1 1 auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-family: inherit;
+    padding: 12px 0;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Completely remove native browser clear/cancel X button */
+  .faq-search-input::-webkit-search-cancel-button,
+  .faq-search-input::-webkit-search-decoration,
+  .faq-search-input::-webkit-search-results-button,
+  .faq-search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+
+  .faq-search-input::-ms-clear,
+  .faq-search-input::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .faq-search-input::placeholder {
+    color: #64748B;
+  }
+
+  .faq-search-clear {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #94A3B8;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .faq-search-clear:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #FFFFFF;
+  }
+
+  /* More FAQs Button (Aligned to the right underneath FAQ item 6) */
+  .faq-more-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 14px auto 0 auto;
+    max-width: 820px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .faq-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px 18px;
+    font-size: 13.5px;
+    font-weight: 700;
+    gap: 7px;
+    border-radius: 9999px;
+  }
+
+  /* Search Match Highlighting (Subtle Cyan/Blue glow) */
+  .faq-match-mark {
+    background: rgba(56, 189, 248, 0.20);
+    color: #38BDF8;
+    border-bottom: 1.5px solid rgba(56, 189, 248, 0.65);
+    border-radius: 3px;
+    padding: 0 3px;
+    margin: 0;
+    font-weight: inherit;
+    display: inline;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .faq-question .faq-match-mark {
+    color: #FFFFFF;
+    background: rgba(56, 189, 248, 0.28);
+    border-bottom: 2px solid #38BDF8;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+  }
+
+  /* Compact No-result State */
+  .faq-no-results {
+    max-width: 820px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    padding: 30px 24px;
+    background: rgba(13, 20, 34, 0.6);
+    border: 1px dashed rgba(56, 189, 248, 0.25);
+    border-radius: 18px;
+    box-sizing: border-box;
+  }
+
+  .faq-no-results-title {
+    margin: 0 0 6px 0;
+    color: #F8FAFC;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .faq-no-results-desc {
+    margin: 0 0 14px 0;
+    color: #94A3B8;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .faq-no-results-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #38BDF8;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .faq-no-results-link:hover {
+    color: #7DD3FC;
+    text-decoration: underline;
+  }
+
+  /* Question Submission Card */
+  .home-card.faq-submit-card {
+    max-width: 820px;
+    margin: 26px auto 0 auto;
+    width: 100%;
+    padding: 28px 32px 20px 32px;
+    border-radius: 18px;
+    background: rgba(13, 20, 34, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .home-card.faq-submit-card:hover {
+    border-color: rgba(56, 189, 248, 0.25);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  .faq-submit-head {
+    margin-bottom: 14px;
+  }
+
+  .faq-submit-title {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-submit-desc {
+    margin: 0;
+    font-size: 14.5px;
+    color: #94A3B8;
+    line-height: 1.5;
+  }
+
+  .faq-submit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .faq-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .faq-textarea-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .faq-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 13px;
+    background: rgba(7, 17, 31, 0.75);
+    color: #F8FAFC;
+    font-family: inherit;
+    font-size: 14.5px;
+    line-height: 1.55;
+    padding: 16px 46px 16px 16px;
+    min-height: clamp(150px, 18vw, 175px);
+    height: 165px;
+    resize: none !important; /* Completely removes browser diagonal resize handle */
+    overflow-y: auto; /* Clean scrolling when content overflows */
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .faq-textarea:focus {
+    border-color: rgba(56, 189, 248, 0.55);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+  }
+
+  .faq-textarea::placeholder {
+    color: #64748B;
+  }
+
+  .faq-textarea-expand-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 7px;
+    color: #64748B;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    z-index: 2;
+  }
+
+  .faq-textarea-expand-btn:hover {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #38BDF8;
+  }
+
+  .faq-validation-msg {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #F87171;
+    line-height: 1.4;
+  }
+
+  .faq-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .faq-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    min-width: 88px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.18s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .faq-clear-btn {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #CBD5E1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+
+  .faq-clear-btn:not(:disabled):hover {
+    background: #1B263B;
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .faq-clear-btn:not(:disabled):active {
+    transform: scale(0.97);
+  }
+
+  .faq-clear-btn:disabled {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #64748B;
+    opacity: 0.50;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    pointer-events: none;
+  }
+
+  .faq-submit-btn {
+    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+    border: 1.5px solid #38BDF8;
+    color: #FFFFFF;
+    font-weight: 700;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.32), 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .faq-submit-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, #0369A1 0%, #0284C7 100%);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.48), 0 4px 12px rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .faq-submit-btn:not(:disabled):active {
+    transform: scale(0.97);
+  }
+
+  .faq-submit-btn:disabled {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #64748B;
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  /* ==========================================================================
+     EXPANDED QUESTION SUBMISSION MODAL
+     Matches the exact design language and specifications of the FAQ page modal
+     ========================================================================== */
+  .faq-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(18px, 4vh, 32px) clamp(16px, 4vw, 24px);
+    box-sizing: border-box;
+  }
+
+  .faq-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 9, 16, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1001;
+  }
+
+  .faq-modal-dialog {
+    position: relative;
+    z-index: 1002;
+    width: 100%;
+    max-width: 410px;
+    height: clamp(500px, 75vh, 600px);
+    max-height: 78vh;
+    background: #0D1422;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 26px rgba(56, 189, 248, 0.12);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 16px 20px 18px 20px;
+    overflow: hidden;
+    animation: faqModalFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes faqModalFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.97) translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .faq-modal-nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  .faq-modal-nav-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 28px;
+    padding: 4px 11px 4px 8px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #94A3B8;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .faq-modal-nav-back:hover {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #F8FAFC;
+  }
+
+  .faq-modal-nav-back:active {
+    transform: scale(0.96);
+  }
+
+  .faq-modal-nav-chevron {
+    flex-shrink: 0;
+  }
+
+  .faq-modal-header-text {
+    width: 100%;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+
+  .faq-modal-title {
+    margin: 0 0 3px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: -0.01em;
+  }
+
+  .faq-modal-subtitle {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: #94A3B8;
+  }
+
+  .faq-modal-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .faq-modal-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .faq-modal-textarea {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    min-height: 220px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 12px;
+    background: rgba(7, 17, 31, 0.85);
+    color: #F8FAFC;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 13px 14px;
+    resize: none !important;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+  }
+
+  .faq-modal-textarea:focus {
+    border-color: rgba(56, 189, 248, 0.60);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14);
+  }
+
+  .faq-modal-textarea::placeholder {
+    color: #64748B;
+  }
+
+  .faq-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .faq-modal-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    min-width: 88px;
+    padding: 0 18px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.18s ease;
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .faq-modal-clear-btn {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #CBD5E1;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  }
+
+  .faq-modal-clear-btn:not(:disabled):hover {
+    background: #1B263B;
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+  }
+
+  .faq-modal-clear-btn:not(:disabled):active {
+    transform: scale(0.97);
+  }
+
+  .faq-modal-clear-btn:disabled {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: #64748B;
+    opacity: 0.50;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+    pointer-events: none;
+  }
+
+  .faq-modal-submit-btn {
+    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+    border: 1.5px solid #38BDF8;
+    color: #FFFFFF;
+    font-weight: 700;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.32), 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .faq-modal-submit-btn:not(:disabled):hover {
+    background: linear-gradient(135deg, #0369A1 0%, #0284C7 100%);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.48), 0 4px 12px rgba(0, 0, 0, 0.45);
+    transform: translateY(-1px);
+  }
+
+  .faq-modal-submit-btn:not(:disabled):active {
+    transform: scale(0.97);
+  }
+
+  .faq-modal-submit-btn:disabled {
+    background: #141D2D;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #64748B;
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .faq-form-status {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #94A3B8;
+  }
+
+  .faq-form-status.success {
+    color: #34D399;
+    font-weight: 600;
+  }
+
+  .faq-form-status.error {
+    color: #F87171;
+    font-weight: 500;
+  }
+
+  /* ==========================================================================
+     SECTION 7 — FINAL CTA (Matches Resource Detail .cta-card)
+     ========================================================================== */
+  .final-cta-section {
+    padding-top: 18px;
+    padding-bottom: 60px;
+  }
+
   .home-cta-card {
     background: radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 102, 0, 0.18) 0%, rgba(13, 20, 34, 0.95) 65%);
     border: 1px solid rgba(255, 102, 0, 0.32);
@@ -946,6 +1862,23 @@ const toolLogo = (name: string) => {
       border-radius: 20px;
     }
 
+    .home-card.resource-display-card {
+      padding: 16px 16px 14px;
+      border-radius: 20px;
+    }
+
+    .home-card.resource-display-card .resource-thumb-wrap {
+      border-radius: 12px;
+    }
+
+    .home-card.resource-display-card .resource-card-body {
+      padding: 14px 0 0 0;
+    }
+
+    .home-card.resource-display-card .resource-card-footer {
+      padding-top: 12px;
+    }
+
     .home-capsule {
       margin-bottom: 14px;
     }
@@ -954,11 +1887,205 @@ const toolLogo = (name: string) => {
       margin-bottom: 10px;
     }
 
+    .promise-section {
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+
+    .featured-section {
+      padding-top: 24px;
+      padding-bottom: 16px;
+    }
+
+    .method-section {
+      padding-top: 24px;
+      padding-bottom: 18px;
+    }
+
+    .categories-section {
+      padding-top: 24px;
+      padding-bottom: 18px;
+    }
+
+    .faq-section {
+      scroll-margin-top: calc(var(--header-height, 80px) + 16px);
+      padding-top: 24px;
+      padding-bottom: 10px;
+    }
+
+    .faq-section .section-head {
+      margin-bottom: 20px;
+    }
+
+    .faq-section .home-capsule {
+      margin-bottom: 10px;
+    }
+
+    .faq-section .section-head h2 {
+      margin-bottom: 8px;
+    }
+
+    .faq-list {
+      gap: 10px;
+    }
+
+    .home-card.faq-card {
+      padding: 20px 20px;
+      border-radius: 14px;
+    }
+
+    .faq-question {
+      font-size: 15.5px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .faq-answer {
+      font-size: 13.5px;
+      line-height: 1.62;
+    }
+
+    .faq-search-wrap {
+      margin-bottom: 16px;
+    }
+
+    .faq-search-field {
+      min-height: 46px;
+      padding: 0 10px 0 14px;
+      border-radius: 12px;
+    }
+
+    .faq-search-input {
+      font-size: 14px;
+      padding: 10px 0;
+    }
+
+    .home-card.faq-submit-card {
+      margin-top: 20px;
+      padding: 22px 18px 16px 18px;
+      border-radius: 16px;
+    }
+
+    .faq-submit-head {
+      margin-bottom: 12px;
+    }
+
+    .faq-submit-title {
+      font-size: 16.5px;
+    }
+
+    .faq-submit-desc {
+      font-size: 13.5px;
+    }
+
+    .faq-textarea {
+      min-height: clamp(140px, 38vw, 165px);
+      height: 150px;
+      padding: 14px 42px 14px 14px;
+      font-size: 14px;
+      border-radius: 11px;
+    }
+
+    .faq-submit-form {
+      gap: 10px;
+    }
+
+    .faq-form-footer {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 9px !important;
+      width: 100% !important;
+      margin-top: 0 !important;
+    }
+
+    .faq-action-btn {
+      flex: 0 0 auto;
+      min-height: 38px;
+      min-width: 84px;
+      padding: 0 16px;
+      font-size: 13px;
+    }
+
+    .faq-modal-overlay {
+      padding: clamp(14px, 4vh, 24px) 16px;
+    }
+
+    .faq-modal-dialog {
+      max-width: 360px;
+      height: 74vh;
+      min-height: 470px;
+      max-height: 78vh;
+      border-radius: 16px;
+      padding: 14px 16px 16px 16px;
+    }
+
+    .faq-modal-nav-row {
+      margin-bottom: 18px;
+      justify-content: flex-start;
+    }
+
+    .faq-modal-header-text {
+      margin-bottom: 10px;
+    }
+
+    .faq-modal-title {
+      font-size: 16.5px;
+    }
+
+    .faq-modal-subtitle {
+      font-size: 12px;
+    }
+
+    .faq-modal-form {
+      gap: 10px;
+    }
+
+    .faq-modal-textarea {
+      font-size: 13.5px;
+      padding: 12px 13px;
+      min-height: 190px;
+    }
+
+    .faq-modal-footer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 9px;
+      padding-top: 0;
+      width: 100%;
+    }
+
+    .faq-modal-action-btn {
+      flex: 0 0 auto;
+      min-height: 38px;
+      min-width: 84px;
+      padding: 0 16px;
+      font-size: 13px;
+    }
+
+    .final-cta-section {
+      padding-top: 14px;
+      padding-bottom: 42px;
+    }
+
+    .home-hero {
+      padding-top: 38px;
+      padding-bottom: 20px;
+    }
+
+    .hero-lead {
+      margin-bottom: 36px;
+    }
+
     .hero-actions {
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
+      margin-top: 0;
       gap: 10px;
     }
 
@@ -981,6 +2108,15 @@ const toolLogo = (name: string) => {
     .home-card {
       padding: 20px 16px;
     }
+    .home-card.faq-card {
+      padding: 18px 16px;
+    }
+    .home-card.faq-submit-card {
+      padding: 18px 14px 14px 14px;
+    }
+    .home-card.resource-display-card {
+      padding: 14px 14px 12px;
+    }
     .hero-title {
       font-size: 30px;
     }
@@ -989,3 +2125,482 @@ const toolLogo = (name: string) => {
     }
   }
 </style>
+
+<script>
+  function initFaqFeatures() {
+    const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
+    const clearBtn = document.getElementById('faq-search-clear') as HTMLButtonElement | null;
+    const faqList = document.getElementById('faq-list');
+    const noResults = document.getElementById('faq-no-results');
+    const moreWrap = document.getElementById('faq-more-wrap');
+    const cards = faqList ? Array.from(faqList.querySelectorAll<HTMLElement>('.faq-card')) : [];
+
+    // 1. Live FAQ Search
+    if (searchInput && cards.length > 0) {
+      // Cache original raw text for accurate highlight restoration
+      const faqItems = cards.map((card) => {
+        const qEl = card.querySelector<HTMLElement>('.faq-question');
+        const aEl = card.querySelector<HTMLElement>('.faq-answer');
+        const rawQuestion = qEl ? qEl.textContent || '' : '';
+        const rawAnswer = aEl ? aEl.textContent || '' : '';
+        return { card, qEl, aEl, rawQuestion, rawAnswer };
+      });
+
+      function escapeHtml(str: string): string {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function highlightContent(text: string, terms: string[]): string {
+        if (!terms.length || !text) return escapeHtml(text);
+        const escaped = terms
+          .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+          .filter(Boolean);
+        if (!escaped.length) return escapeHtml(text);
+        const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+        const parts = text.split(regex);
+        return parts
+          .map((part) => {
+            const isMatch = escaped.some((t) => new RegExp(`^${t}$`, 'i').test(part));
+            if (isMatch) {
+              return `<mark class="faq-match-mark">${escapeHtml(part)}</mark>`;
+            }
+            return escapeHtml(part);
+          })
+          .join('');
+      }
+
+      const handleSearch = () => {
+        const query = searchInput.value.trim().toLowerCase();
+
+        if (clearBtn) {
+          clearBtn.style.display = query ? 'inline-flex' : 'none';
+        }
+
+        if (!query) {
+          faqItems.forEach(({ card, qEl, aEl, rawQuestion, rawAnswer }) => {
+            card.style.display = '';
+            if (qEl) qEl.innerHTML = escapeHtml(rawQuestion);
+            if (aEl) aEl.innerHTML = escapeHtml(rawAnswer);
+          });
+          if (noResults) noResults.style.display = 'none';
+          if (moreWrap) moreWrap.style.display = 'flex';
+          return;
+        }
+
+        const terms = query.split(/\s+/).filter(Boolean);
+        let matchCount = 0;
+
+        faqItems.forEach(({ card, qEl, aEl, rawQuestion, rawAnswer }) => {
+          const qLower = rawQuestion.toLowerCase();
+          const aLower = rawAnswer.toLowerCase();
+          const combined = `${qLower} ${aLower}`;
+
+          const isMatch = terms.every((term) => combined.includes(term));
+          if (isMatch) {
+            card.style.display = '';
+            if (qEl) qEl.innerHTML = highlightContent(rawQuestion, terms);
+            if (aEl) aEl.innerHTML = highlightContent(rawAnswer, terms);
+            matchCount++;
+          } else {
+            card.style.display = 'none';
+            if (qEl) qEl.innerHTML = escapeHtml(rawQuestion);
+            if (aEl) aEl.innerHTML = escapeHtml(rawAnswer);
+          }
+        });
+
+        if (noResults) {
+          noResults.style.display = matchCount === 0 ? 'block' : 'none';
+        }
+        if (moreWrap) {
+          moreWrap.style.display = matchCount === 0 ? 'none' : 'flex';
+        }
+      };
+
+      searchInput.addEventListener('input', handleSearch);
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          handleSearch();
+          searchInput.focus();
+        });
+      }
+    }
+
+    // 2. Question Submission Form (Inline & Expanded Modal)
+    const submitForm = document.getElementById('faq-submit-form') as HTMLFormElement | null;
+    const questionInput = document.getElementById('faq-question-input') as HTMLTextAreaElement | null;
+    const validationMsg = document.getElementById('faq-validation-msg');
+    const inlineClearBtn = document.getElementById('faq-clear-btn') as HTMLButtonElement | null;
+    const submitBtn = document.getElementById('faq-submit-btn') as HTMLButtonElement | null;
+    const expandBtn = document.getElementById('faq-expand-btn') as HTMLButtonElement | null;
+    const formStatus = document.getElementById('faq-form-status');
+
+    // Modal elements
+    const modalOverlay = document.getElementById('faq-modal-overlay');
+    const modalBackdrop = document.getElementById('faq-modal-backdrop');
+    const modalBackBtn = document.getElementById('faq-modal-back-btn') as HTMLButtonElement | null;
+    const modalClearBtn = document.getElementById('faq-modal-clear-btn') as HTMLButtonElement | null;
+    const modalForm = document.getElementById('faq-modal-form') as HTMLFormElement | null;
+    const modalInput = document.getElementById('faq-modal-question-input') as HTMLTextAreaElement | null;
+    const modalValidationMsg = document.getElementById('faq-modal-validation-msg');
+    const modalSubmitBtn = document.getElementById('faq-modal-submit-btn') as HTMLButtonElement | null;
+    const modalStatus = document.getElementById('faq-modal-status');
+
+    let isModalOpen = false;
+
+    // Helper to update inline form button states (Clear & Submit)
+    const updateInlineButtonState = () => {
+      if (!questionInput) return;
+      const hasText = questionInput.value.trim().length > 0;
+      if (submitBtn) submitBtn.disabled = !hasText;
+      if (inlineClearBtn) inlineClearBtn.disabled = !hasText;
+    };
+
+    // Helper to update modal button states (Clear & Submit)
+    const updateModalButtonState = () => {
+      if (!modalInput) return;
+      const hasText = modalInput.value.trim().length > 0;
+      if (modalSubmitBtn) modalSubmitBtn.disabled = !hasText;
+      if (modalClearBtn) modalClearBtn.disabled = !hasText;
+    };
+
+    // Set initial disabled states (dark, muted, clearly inactive)
+    updateInlineButtonState();
+    updateModalButtonState();
+
+    // Open Modal
+    const openModal = () => {
+      if (!modalOverlay || !modalInput || !questionInput) return;
+      isModalOpen = true;
+
+      // Carry over text already typed in homepage textarea
+      modalInput.value = questionInput.value;
+      updateModalButtonState();
+
+      if (modalValidationMsg) {
+        modalValidationMsg.style.display = 'none';
+        modalValidationMsg.textContent = '';
+      }
+      if (modalStatus) {
+        modalStatus.className = 'faq-form-status';
+        modalStatus.textContent = '';
+      }
+
+      // Lock background scrolling so page cannot scroll underneath
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
+      modalOverlay.style.display = 'flex';
+      modalOverlay.setAttribute('aria-hidden', 'false');
+
+      setTimeout(() => {
+        modalInput.focus();
+        modalInput.selectionStart = modalInput.selectionEnd = modalInput.value.length;
+      }, 50);
+    };
+
+    // Close Modal without submitting (used by Back button, Escape key)
+    const closeModal = () => {
+      if (!modalOverlay || !modalInput || !questionInput) return;
+      isModalOpen = false;
+
+      // Keep state synchronized when returning to homepage form
+      questionInput.value = modalInput.value;
+      updateInlineButtonState();
+
+      modalOverlay.style.display = 'none';
+      modalOverlay.setAttribute('aria-hidden', 'true');
+
+      // Unlock background scrolling
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+
+      if (expandBtn) {
+        expandBtn.focus();
+      }
+    };
+
+    if (expandBtn) {
+      expandBtn.addEventListener('click', openModal);
+    }
+
+    if (modalBackBtn) {
+      modalBackBtn.addEventListener('click', closeModal);
+    }
+
+    // Modal Clear action
+    if (modalClearBtn) {
+      modalClearBtn.addEventListener('click', () => {
+        if (modalInput) {
+          modalInput.value = '';
+          updateModalButtonState();
+          modalInput.focus();
+        }
+        if (questionInput) {
+          questionInput.value = '';
+          updateInlineButtonState();
+        }
+        if (modalValidationMsg) {
+          modalValidationMsg.style.display = 'none';
+          modalValidationMsg.textContent = '';
+        }
+        if (modalStatus) {
+          modalStatus.className = 'faq-form-status';
+          modalStatus.textContent = '';
+        }
+      });
+    }
+
+    // Modal backdrop click
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', () => {
+        if (!modalInput) return;
+        if (modalInput.value.trim().length > 0) {
+          modalInput.focus();
+        } else {
+          closeModal();
+        }
+      });
+    }
+
+    // Keyboard navigation (Escape closes modal)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    });
+
+    // Inline typing listener
+    if (questionInput) {
+      questionInput.addEventListener('input', () => {
+        updateInlineButtonState();
+        if (validationMsg && validationMsg.style.display !== 'none') {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
+        }
+      });
+    }
+
+    // Modal typing listener: syncs state with homepage in real time
+    if (modalInput) {
+      modalInput.addEventListener('input', () => {
+        updateModalButtonState();
+        if (questionInput) {
+          questionInput.value = modalInput.value;
+          updateInlineButtonState();
+        }
+        if (modalValidationMsg && modalValidationMsg.style.display !== 'none') {
+          modalValidationMsg.style.display = 'none';
+          modalValidationMsg.textContent = '';
+        }
+      });
+    }
+
+    // Homepage Clear action
+    if (inlineClearBtn && questionInput) {
+      inlineClearBtn.addEventListener('click', () => {
+        questionInput.value = '';
+        updateInlineButtonState();
+        if (modalInput) {
+          modalInput.value = '';
+          updateModalButtonState();
+        }
+        if (validationMsg) {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
+        }
+        if (formStatus) {
+          formStatus.className = 'faq-form-status';
+          formStatus.textContent = '';
+        }
+        questionInput.focus();
+      });
+    }
+
+    // Submit handler for Homepage form
+    if (submitForm && questionInput && submitBtn && formStatus) {
+      submitForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = questionInput.value.trim();
+
+        if (validationMsg) {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
+        }
+        formStatus.className = 'faq-form-status';
+        formStatus.textContent = '';
+
+        if (!question) {
+          if (validationMsg) {
+            validationMsg.textContent = 'Please enter your question before submitting.';
+            validationMsg.style.display = 'block';
+          }
+          questionInput.focus();
+          updateInlineButtonState();
+          return;
+        }
+
+        if (question.length < 5) {
+          if (validationMsg) {
+            validationMsg.textContent = 'Please provide a little more detail in your question (at least 5 characters).';
+            validationMsg.style.display = 'block';
+          }
+          questionInput.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        if (inlineClearBtn) inlineClearBtn.disabled = true;
+        submitBtn.classList.add('is-submitting');
+        const btnText = submitBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'Submitting…';
+
+        try {
+          const response = await fetch('/api/faq-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+
+          const result = await response.json().catch(() => ({}));
+
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || 'We could not submit your question right now.');
+          }
+
+          questionInput.value = '';
+          if (modalInput) modalInput.value = '';
+          formStatus.className = 'faq-form-status success';
+          formStatus.textContent = 'Thanks — your question has been received.';
+        } catch (error: any) {
+          formStatus.className = 'faq-form-status error';
+          formStatus.textContent = error?.message && error.message !== 'Failed to fetch'
+            ? error.message
+            : 'We could not submit your question right now. Please try again later.';
+        } finally {
+          submitBtn.classList.remove('is-submitting');
+          if (btnText) btnText.textContent = 'Submit';
+          updateInlineButtonState();
+          updateModalButtonState();
+        }
+      });
+    }
+
+    // Submit handler for Modal form
+    if (modalForm && modalInput && modalSubmitBtn && modalStatus) {
+      modalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = modalInput.value.trim();
+
+        if (modalValidationMsg) {
+          modalValidationMsg.style.display = 'none';
+          modalValidationMsg.textContent = '';
+        }
+        modalStatus.className = 'faq-form-status';
+        modalStatus.textContent = '';
+
+        if (!question) {
+          if (modalValidationMsg) {
+            modalValidationMsg.textContent = 'Please enter your question before submitting.';
+            modalValidationMsg.style.display = 'block';
+          }
+          modalInput.focus();
+          updateModalButtonState();
+          return;
+        }
+
+        if (question.length < 5) {
+          if (modalValidationMsg) {
+            modalValidationMsg.textContent = 'Please provide a little more detail in your question (at least 5 characters).';
+            modalValidationMsg.style.display = 'block';
+          }
+          modalInput.focus();
+          return;
+        }
+
+        modalSubmitBtn.disabled = true;
+        if (modalClearBtn) modalClearBtn.disabled = true;
+        modalSubmitBtn.classList.add('is-submitting');
+        const modalBtnText = modalSubmitBtn.querySelector('.btn-text');
+        if (modalBtnText) modalBtnText.textContent = 'Submitting…';
+
+        try {
+          const response = await fetch('/api/faq-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+
+          const result = await response.json().catch(() => ({}));
+
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || 'We could not submit your question right now.');
+          }
+
+          modalInput.value = '';
+          if (questionInput) questionInput.value = '';
+          modalStatus.className = 'faq-form-status success';
+          modalStatus.textContent = 'Thanks — your question has been received.';
+
+          if (formStatus) {
+            formStatus.className = 'faq-form-status success';
+            formStatus.textContent = 'Thanks — your question has been received.';
+          }
+
+          setTimeout(() => {
+            if (isModalOpen) {
+              closeModal();
+            }
+          }, 1200);
+        } catch (error: any) {
+          modalStatus.className = 'faq-form-status error';
+          modalStatus.textContent = error?.message && error.message !== 'Failed to fetch'
+            ? error.message
+            : 'We could not submit your question right now. Please try again later.';
+        } finally {
+          modalSubmitBtn.classList.remove('is-submitting');
+          if (modalBtnText) modalBtnText.textContent = 'Submit';
+          updateModalButtonState();
+          updateInlineButtonState();
+        }
+      });
+    }
+
+    // 3. Return-to-FAQ navigation handler
+    // Returns user directly to homepage FAQ/question area with zero top-of-home flash or jump
+    const handleReturnToFaq = () => {
+      let isFaqReturn = false;
+      try {
+        if (sessionStorage.getItem('sf_back_to_faq') === 'true') isFaqReturn = true;
+      } catch (e) {}
+      if (window.location.hash === '#faq-submit-card' || window.location.hash === '#faq') isFaqReturn = true;
+
+      if (isFaqReturn) {
+        const targetElement = document.getElementById('faq-submit-card') || document.getElementById('faq');
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'auto', block: 'center' });
+        }
+        try {
+          sessionStorage.removeItem('sf_back_to_faq');
+        } catch (e) {}
+        document.documentElement.classList.remove('jump-to-faq-pending');
+      }
+    };
+    handleReturnToFaq();
+    window.addEventListener('hashchange', handleReturnToFaq);
+    window.addEventListener('pageshow', handleReturnToFaq);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFaqFeatures);
+  } else {
+    initFaqFeatures();
+  }
+  document.addEventListener('astro:page-load', initFaqFeatures);
+</script>
