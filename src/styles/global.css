@@ -81,7 +81,7 @@ h2 { margin: 0; font-size: clamp(28px, 4vw, 40px); line-height: 1.12; letter-spa
 .meta, .resource-top-meta { color: var(--muted); font-size: 13px; }
 .resource-top-meta { display: flex; flex-wrap: wrap; gap: 8px; }
 .content-wide { margin-top: 42px; }
-.hero-image { display: block; width: 100%; max-height: 650px; object-fit: cover; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); }
+.hero-image { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); }
 .article-layout { margin-top: 18px; }
 .resource-section { margin-top: 64px; padding-top: 56px; border-top: 1px solid var(--line); }
 .section-lead { color: #E2E8F0; font-size: 17px; margin: 0; }
