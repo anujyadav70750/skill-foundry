@@ -4,7 +4,7 @@
   "main":"./src/worker.js",
   "compatibility_date":"2026-09-07",
   "secrets":{
-    "required":["GITHUB_TOKEN"]
+    "required":["GITHUB_TOKEN","ADMIN_PASSWORD"]
   },
   "assets":{
     "directory":"./dist",
