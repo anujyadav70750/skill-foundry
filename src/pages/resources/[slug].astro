@@ -29,16 +29,16 @@ if (isTesting1) {
         const parsed = yaml.load(match[1]);
         if (parsed) {
           data = {
-            ...data,
             ...parsed,
-            date: parsed.date ? new Date(parsed.date) : data.date,
-            toolsUsed: Array.isArray(parsed.toolsUsed) ? parsed.toolsUsed : data.toolsUsed,
-            steps: Array.isArray(parsed.steps) ? parsed.steps : data.steps,
-            tips: Array.isArray(parsed.tips) ? parsed.tips : data.tips,
-            tags: Array.isArray(parsed.tags) ? parsed.tags : data.tags,
-            relatedResources: Array.isArray(parsed.relatedResources) ? parsed.relatedResources : data.relatedResources,
+            ...data,
+            date: data.date || (parsed.date ? new Date(parsed.date) : data.date),
+            toolsUsed: data.toolsUsed?.length ? data.toolsUsed : (Array.isArray(parsed.toolsUsed) ? parsed.toolsUsed : data.toolsUsed),
+            steps: data.steps?.length ? data.steps : (Array.isArray(parsed.steps) ? parsed.steps : data.steps),
+            tips: data.tips?.length ? data.tips : (Array.isArray(parsed.tips) ? parsed.tips : data.tips),
+            tags: data.tags?.length ? data.tags : (Array.isArray(parsed.tags) ? parsed.tags : data.tags),
+            relatedResources: data.relatedResources?.length ? data.relatedResources : (Array.isArray(parsed.relatedResources) ? parsed.relatedResources : data.relatedResources),
           };
-          if (match[2]) {
+          if (match[2] && !body) {
             body = match[2];
           }
         }
@@ -205,6 +205,20 @@ const seoDescription = data.seoDescription ?? data.description;
 const heroImage = resourceHeroImage(resource);
 const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
+
+const finalWorkflowStep = workflowSteps[workflowSteps.length - 1];
+const finalWorkflowOutput = finalWorkflowStep ? outputVisual(finalWorkflowStep, workflowSteps.length - 1) : null;
+const finalWorkflowMediaUrl = (finalWorkflowOutput?.src && isRealVideo(finalWorkflowOutput.src))
+  ? finalWorkflowOutput.src
+  : (data.heroImage || heroImage || finalWorkflowOutput?.previewSrc || resultImages[0] || '');
+const isFinalWorkflowVideoDirect = finalWorkflowOutput?.src ? isRealVideo(finalWorkflowOutput.src) : false;
+const isFinalWorkflowVideo = finalWorkflowOutput?.type === 'video' || isFinalWorkflowVideoDirect || isTesting1;
+const introText = isTesting1
+  ? "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
+  : data.intro;
+const whatItDoesText = isTesting1
+  ? "Keep character identity, outfit, framing, and visual continuity consistent from the first image to the final video."
+  : data.whatItDoes;
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
 const schema = { '@context': 'https://schema.org', '@graph': [
@@ -221,6 +235,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   <style is:global>
     @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Playfair+Display:ital,wght@0,400..800;1,400..800&display=swap');
 
+    html:has(.testing-1-theme),
     body:has(.testing-1-theme) {
       background-color: #060911 !important;
       background-image:
@@ -229,11 +244,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px) !important;
       background-size: 100% auto, 100% auto, 40px 40px, 40px 40px !important;
+      background-repeat: no-repeat, no-repeat, repeat, repeat !important;
+      background-position: center top, center top, center top, center top !important;
       color: #CBD5E1 !important;
       padding-top: 0 !important;
+      margin: 0 !important;
       min-height: 100vh !important;
     }
     @media (max-width: 700px) {
+      html:has(.testing-1-theme),
       body:has(.testing-1-theme) {
         padding-top: 0 !important;
       }
@@ -269,8 +288,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     /* ==========================================================================
        TESTING-1 EDITORIAL LUXURY SYSTEM (AWESMOS INSPIRATION)
        ========================================================================== */
+    .testing-1-theme,
     .testing-1-theme .resource-page {
       color: #CBD5E1 !important;
+      background: transparent !important;
+      background-image: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding-top: 0 !important;
     }
 
     .testing-1-theme .resource-hero-unified-section,
@@ -297,19 +322,21 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       pointer-events: none !important;
     }
 
-    /* 1. HERO SECTION */
+    /* 1. HERO SECTION — CONTINUOUS BACKGROUND */
     .testing-1-theme .resource-hero-unified-section {
       position: relative !important;
-      padding-top: 168px !important;
-      padding-bottom: 28px !important;
+      padding-top: 76px !important;
+      padding-bottom: 0 !important;
       background: transparent !important;
+      background-image: none !important;
+      border: none !important;
       border-bottom: none !important;
       box-shadow: none !important;
     }
     @media (max-width: 700px) {
       .testing-1-theme .resource-hero-unified-section {
-        padding-top: 112px !important;
-        padding-bottom: 18px !important;
+        padding-top: 60px !important;
+        padding-bottom: 0 !important;
       }
     }
     .testing-1-theme .hero-unified-header {
@@ -530,35 +557,52 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     /* 2. TRANSITION BRIDGE / START HERE CUE */
     .testing-1-theme .resource-transition-bridge {
       display: flex !important;
+      align-items: center !important;
       justify-content: center !important;
-      margin: 16px 0 24px !important;
+      width: 100% !important;
+      margin: 6px auto 0 !important;
     }
     .testing-1-theme .guide-cue {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      gap: 8px !important;
-      background: rgba(14, 23, 38, 0.92) !important;
-      border: 1px solid rgba(59, 130, 246, 0.35) !important;
+      gap: 7px !important;
+      background: linear-gradient(180deg, rgba(16, 26, 44, 0.95) 0%, rgba(10, 16, 28, 0.98) 100%) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
       color: #F8FAFC !important;
       border-radius: 9999px !important;
-      padding: 12px 34px !important;
-      width: min(520px, calc(100% - 48px)) !important;
-      max-width: min(540px, calc(100% - 32px)) !important;
-      font-size: 11px !important;
+      padding: 14px 22px !important;
+      min-height: 50px !important;
+      width: auto !important;
+      max-width: calc(100% - 32px) !important;
+      font-size: 12.5px !important;
       font-weight: 700 !important;
-      letter-spacing: 0.12em !important;
+      letter-spacing: 0.08em !important;
       text-decoration: none !important;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 24px rgba(59, 130, 246, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-      transition: all 0.2s ease !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+      white-space: nowrap !important;
+      box-sizing: border-box !important;
     }
     .testing-1-theme .guide-cue:hover {
       transform: translateY(-2px) !important;
-      border-color: rgba(59, 130, 246, 0.6) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 32px rgba(59, 130, 246, 0.35) !important;
+      border-color: rgba(56, 189, 248, 0.6) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
     }
     .testing-1-theme .guide-cue-icon {
       color: #38BDF8 !important;
+      stroke: #38BDF8 !important;
+      width: 13.5px !important;
+      height: 13.5px !important;
+      flex-shrink: 0 !important;
+    }
+
+    .testing-1-theme .article-layout.resource-content {
+      margin-top: 0 !important;
+    }
+
+    .testing-1-theme .intro-section {
+      margin-top: -8px !important;
     }
 
     /* 3. SECTION WRAPPERS (INTRODUCTION, AT A GLANCE, TOOLS & RESOURCES) */
@@ -1097,65 +1141,106 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         </a>
       </div>
 
-      {data.intro && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Before you begin</h2></div></div><p class="section-lead">{data.intro}</p></section>}
+      {introText && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Before you begin</h2></div></div><p class="section-lead">{introText}</p></section>}
 
-      {data.whatItDoes && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{data.whatItDoes}</p></section>}
+      {whatItDoesText && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{whatItDoesText}</p></section>}
 
-      {tools.length > 0 && <section class="resource-section tools-section" id="tools"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Every app and AI tool used throughout this resource.</p></div></div><div class="tools-list">{tools.map((tool) => <a class="tool-card" href={tool.url || '#'} target={tool.url ? '_blank' : undefined} rel={tool.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${tool.name}`} title={tool.name}><img class="tool-logo" src={toolLogo(tool)} alt={`${tool.name} logo`} width="64" height="64" loading="lazy"/></a>)}</div></section>}
+      {tools.length > 0 && <section class="resource-section tools-section" id="tools"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Tool logos are clickable throughout the workflow. Tap a logo to open the tool used for that step.</p></div></div><div class="tools-list">{tools.map((tool) => <a class="tool-card" href={tool.url || '#'} target={tool.url ? '_blank' : undefined} rel={tool.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${tool.name}`} title={tool.name}><img class="tool-logo" src={toolLogo(tool)} alt={`${tool.name} logo`} width="64" height="64" loading="lazy"/></a>)}</div></section>}
 
       {workflowSteps.length > 0 && <section class="resource-section workflow-section blueprint-workflow-section" id="workflow">
-        <div class="section-heading">
+        <div class="section-heading blueprint-main-heading">
           <div>
             <p class="eyebrow">WORKFLOW BLUEPRINT</p>
-            <h2>From input to final result</h2>
-            <p class="section-subcopy">Follow the creation sequence from the starting resources to the final result.</p>
+            <h2>Build the final video step by step</h2>
+            <p class="section-subcopy">Tap ↓ on a step to see how it works.</p>
           </div>
         </div>
 
-        <div class="blueprint-workflow-container" aria-label="Connected Workflow Blueprint">
-          <div class="blueprint-header-capsule">
-            <span class="blueprint-capsule-label">
-              <svg class="blueprint-stack-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                <polyline points="2 17 12 22 22 17"></polyline>
-                <polyline points="2 12 12 17 22 12"></polyline>
-              </svg>
-              BLUEPRINT
-            </span>
-            <span class="blueprint-capsule-title">{data.title}</span>
-          </div>
+        <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+          {workflowSteps.map((step, index) => {
+            const output = outputVisual(step, index);
+            const actionText = String(step.process || '').trim();
+            const isInstructionStep = step.actionType === 'instructions' || (!step.actionType && (step.toolPurpose.toLowerCase().includes('editing') || (!actionText && String(step.description || '').trim())));
+            const isFinal = index === workflowSteps.length - 1;
+            const hasMedia = Boolean(output.src || output.previewSrc);
+            const isImage = hasMedia && (output.type === 'image' || !output.type);
+            const isVideo = hasMedia && output.type === 'video';
+            const isAudio = output.src && output.type === 'audio' && isRealAudio(output.src);
+            const isVisual = isImage || isVideo;
+            const mediaUrl = output.src || output.previewSrc;
 
-          <div class="blueprint-workflow-stream">
-            {workflowSteps.map((step, index) => {
-              const output = outputVisual(step, index);
-              const actionText = String(step.process || '').trim();
-              const isInstructionStep = step.actionType === 'instructions' || (!step.actionType && (step.toolPurpose.toLowerCase().includes('editing') || (!actionText && String(step.description || '').trim())));
-              const isFinal = index === workflowSteps.length - 1;
-              const hasMedia = Boolean(output.src || output.previewSrc);
-              const isImage = hasMedia && (output.type === 'image' || !output.type);
-              const isVideo = hasMedia && output.type === 'video';
-              const isAudio = output.src && output.type === 'audio' && isRealAudio(output.src);
-              const isVisual = isImage || isVideo;
-              const mediaUrl = output.src || output.previewSrc;
+            const stepThemes = ['step-theme-blue', 'step-theme-green', 'step-theme-orange', 'step-theme-cyan', 'step-theme-purple'];
+            const stepThemeClass = isFinal ? 'step-theme-purple' : (stepThemes[index % stepThemes.length] || 'step-theme-blue');
 
-              const stepThemes = ['step-theme-blue', 'step-theme-green', 'step-theme-orange', 'step-theme-cyan', 'step-theme-purple'];
-              const stepThemeClass = isFinal ? 'step-theme-purple' : (stepThemes[index % stepThemes.length] || 'step-theme-blue');
+            const compactPurposes = [
+              "Combine the character and outfit into one 9:16 image.",
+              "Animate the dressed character into a 10-second clip.",
+              "Continue the same character and visual continuity.",
+              "Continue the sequence into the final clip.",
+              "Arrange, trim, and export all three clips."
+            ];
+            const stepPurpose = isTesting1 ? (compactPurposes[index] || step.outputDescription || step.description || '') : (step.outputDescription || step.description || '');
+            const thumbUrl = mediaUrl || (isFinal ? heroImage : '') || (step.inputs?.[0]?.src || '');
 
-              return (
-                <div class="blueprint-step-wrapper" data-blueprint-step={index + 1}>
-                  <div class={`blueprint-step-container ${stepThemeClass}`} data-step={index + 1}>
-                    <!-- Step Capsule centered/intersecting the top border -->
-                    <div class="blueprint-step-capsule">
-                      <span>STEP {String(index + 1).padStart(2, '0')}</span>
+            const stepOutputNames = [
+              "Dressed character image",
+              "Video Clip 01",
+              "Video Clip 02",
+              "Video Clip 03",
+              "Final edited video"
+            ];
+            const outputAssetName = isTesting1 ? (stepOutputNames[index] || step.outputLabel || 'Output') : (step.outputLabel || 'Output');
+
+            return (
+              <div class="blueprint-step-wrapper" data-blueprint-step={index + 1}>
+                <div class={`blueprint-step-container ${stepThemeClass} is-collapsed`} data-step={index + 1} id={`step-item-${index + 1}`}>
+                  <!-- Step Capsule centered/intersecting the top border -->
+                  <div class="blueprint-step-capsule">
+                    <span>STEP {String(index + 1).padStart(2, '0')}</span>
+                  </div>
+
+                  <!-- Collapsed Overview Header (Toggle Trigger) -->
+                  <button
+                    type="button"
+                    class="blueprint-step-header"
+                    aria-expanded="false"
+                    aria-controls={`step-body-${index + 1}`}
+                    data-step-toggle
+                  >
+                    <div class="step-header-thumb-box">
+                      {thumbUrl ? (
+                        <>
+                          <img class="step-header-thumb" src={thumbUrl} alt="" aria-hidden="true" loading="lazy" />
+                          {isVideo && <span class="step-header-thumb-play" aria-hidden="true">▶</span>}
+                        </>
+                      ) : (
+                        <div class="step-header-thumb-placeholder">
+                          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                        </div>
+                      )}
                     </div>
 
-                    <!-- Step Title -->
-                    <h3 class="blueprint-step-title">{step.title}</h3>
+                    <div class="step-header-info">
+                      <div class="step-header-title-row">
+                        <h3 class="step-header-title">{step.title}</h3>
+                      </div>
+                      {stepPurpose && <p class="step-header-purpose">{stepPurpose}</p>}
+                    </div>
 
+                    <div class="step-header-action" aria-hidden="true">
+                      <span class="step-expand-chevron">
+                        <svg class="step-chevron-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </span>
+                    </div>
+                  </button>
+
+                  <!-- Expanded Step Content (Revealed in place when open) -->
+                  <div class="blueprint-step-body" id={`step-body-${index + 1}`} hidden>
                     <!-- 1. INPUTS SUB-NODE -->
-                    <div class="blueprint-subnode node-inputs">
+                      <div class="blueprint-subnode node-inputs">
                       <div class="blueprint-subnode-header">
-                        <span class="blueprint-node-badge">1</span>
                         <div class="blueprint-node-titles">
                           <span class="blueprint-node-title">INPUTS</span>
                           <span class="blueprint-node-subtitle">What you provide to this step</span>
@@ -1233,88 +1318,218 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                       </svg>
                     </div>
 
-                    <!-- 2. PROMPT SUB-NODE -->
-                    <div class="blueprint-subnode node-prompt">
-                      <div class="blueprint-subnode-header">
-                        <span class="blueprint-node-badge">2</span>
-                        <div class="blueprint-node-titles">
-                          <span class="blueprint-node-title">{isInstructionStep ? 'INSTRUCTIONS' : 'PROMPT'}</span>
-                          <span class="blueprint-node-subtitle">{isInstructionStep ? 'Follow these instructions' : 'Use this prompt'}</span>
-                        </div>
-                      </div>
-                      <div class="blueprint-subnode-content">
-                        {isInstructionStep ? (
-                          <div class="instruction-card">
-                            {String(step.description || step.process || '').split(/\n+/).filter(Boolean).map((line, instructionIndex) => (
-                              <div class="instruction-line">
-                                <span>{instructionIndex + 1}</span>
-                                <p>{line.replace(/^\d+[.)]\s*/, '')}</p>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div class="workflow-prompt">
-                            <div class="workflow-prompt-head">
-                              <button type="button" data-copy-step>Copy</button>
-                              <span>FULL PROMPT</span>
-                              <button type="button" data-expand-step>Expand</button>
+                    {isInstructionStep ? (
+                      <>
+                        <!-- 2. TOOL / SETTINGS SUB-NODE (Step 05 / Instruction step: Tool precedes Instructions) -->
+                        <div class="blueprint-subnode node-tools">
+                          <div class="blueprint-subnode-header">
+                            <div class="blueprint-node-titles">
+                              <span class="blueprint-node-title">TOOL / SETTINGS</span>
                             </div>
-                            <pre data-step-prompt>{actionText}</pre>
-                            <button class="workflow-download" type="button" data-download-step>Download PDF</button>
                           </div>
-                        )}
-                      </div>
-                    </div>
-
-                    <!-- Downward Arrow -->
-                    <div class="blueprint-sub-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="2" x2="12" y2="20"></line>
-                        <polyline points="6 14 12 20 18 14"></polyline>
-                      </svg>
-                    </div>
-
-                    <!-- 3. TOOL / SETTINGS SUB-NODE -->
-                    <div class="blueprint-subnode node-tools">
-                      <div class="blueprint-subnode-header">
-                        <span class="blueprint-node-badge">3</span>
-                        <div class="blueprint-node-titles">
-                          <span class="blueprint-node-title">{step.tool ? 'AI TOOL / SETTINGS' : 'SETTINGS'}</span>
-                          <span class="blueprint-node-subtitle">Generation setup</span>
-                        </div>
-                      </div>
-                      <div class="blueprint-subnode-content">
-                        <div class="blueprint-tools-layout">
-                          {step.tool && (
-                            <div class="blueprint-tool-logo-box">
-                              <a class="blueprint-tool-link" href={step.toolMeta?.url || '#'} target={step.toolMeta?.url ? '_blank' : undefined} rel={step.toolMeta?.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${step.tool}`}>
-                                <img class="tool-logo-img" src={toolLogo(step.toolMeta)} alt={`${step.tool} logo`} width="64" height="64" loading="lazy"/>
-                              </a>
-                            </div>
-                          )}
-                          <div class="blueprint-tool-details">
-                            {step.toolPurpose && (
-                              <div class="blueprint-purpose-row">
-                                <span class="blueprint-purpose-pill">{(step.toolPurpose || '').toUpperCase()}</span>
-                              </div>
-                            )}
-                            {step.settings.length > 0 && (
-                              <div class="blueprint-settings-row">
-                                <span class="blueprint-settings-icon" aria-hidden="true">⚙</span>
-                                <div class="blueprint-settings-grid">
-                                  {step.settings.map((setting) => (
-                                    <div class="blueprint-setting-chip">
-                                      <span class="setting-label">{setting.label}</span>
-                                      <span class="setting-val">{setting.value}</span>
-                                    </div>
-                                  ))}
+                          <div class="blueprint-subnode-content">
+                            <div class="blueprint-tools-layout">
+                              <div class="blueprint-tool-row">
+                                {step.tool && (
+                                  <a
+                                    class="blueprint-tool-logo-link"
+                                    href={step.toolMeta?.url || '#'}
+                                    target={step.toolMeta?.url ? '_blank' : undefined}
+                                    rel={step.toolMeta?.url ? 'noopener noreferrer' : undefined}
+                                    aria-label={`Open ${step.tool}`}
+                                    title={`Open ${step.tool}`}
+                                  >
+                                    <img class="tool-logo-img" src={toolLogo(step.toolMeta)} alt={`${step.tool} logo`} width="64" height="64" loading="lazy"/>
+                                  </a>
+                                )}
+                                <div class="blueprint-tool-info">
+                                  {step.tool && <span class="blueprint-tool-name">{step.tool}</span>}
+                                  {step.toolPurpose && (
+                                    <span class="blueprint-purpose-pill">{(step.toolPurpose || '').toUpperCase()}</span>
+                                  )}
                                 </div>
                               </div>
-                            )}
+                              {step.settings.length > 0 && (
+                                <div class="blueprint-settings-block">
+                                  <span class="blueprint-settings-label">SETTINGS</span>
+                                  <div class="blueprint-settings-strip" role="region" aria-label="Step settings">
+                                    {step.settings.map((setting) => {
+                                      const labelKey = String(setting.label || '').trim().toLowerCase();
+                                      return (
+                                        <div class="blueprint-setting-chip">
+                                          <span class="setting-label">
+                                            {labelKey.includes('model') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                            )}
+                                            {labelKey.includes('aspect') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+                                            )}
+                                            {labelKey.includes('duration') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                            )}
+                                            {labelKey.includes('resolution') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                            )}
+                                            {labelKey.includes('style') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0-1.7 19.8c.6.1 1.2-.4 1.2-1v-1.5c0-.8.7-1.5 1.5-1.5h1.5a5 5 0 0 0 5-5c0-4.4-3.4-8-7.5-8z"/></svg>
+                                            )}
+                                            {labelKey.includes('format') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                                            )}
+                                            {labelKey.includes('edit') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                                            )}
+                                            {(labelKey.includes('export') || labelKey.includes('output')) && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            )}
+                                            <span>{setting.label}</span>
+                                          </span>
+                                          <span class="setting-val">{setting.value}</span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
+
+                        <!-- Downward Arrow -->
+                        <div class="blueprint-sub-arrow" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="2" x2="12" y2="20"></line>
+                            <polyline points="6 14 12 20 18 14"></polyline>
+                          </svg>
+                        </div>
+
+                        <!-- 3. INSTRUCTIONS SUB-NODE -->
+                        <div class="blueprint-subnode node-prompt">
+                          <div class="blueprint-subnode-header">
+                            <div class="blueprint-node-titles">
+                              <span class="blueprint-node-title">INSTRUCTIONS</span>
+                              <span class="blueprint-node-subtitle">Follow these instructions</span>
+                            </div>
+                          </div>
+                          <div class="blueprint-subnode-content">
+                            <div class="instruction-card">
+                              {String(step.description || step.process || '').split(/\n+/).filter(Boolean).map((line, instructionIndex) => (
+                                <div class="instruction-line">
+                                  <span>{instructionIndex + 1}</span>
+                                  <p>{line.replace(/^\d+[.)]\s*/, '')}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <!-- 2. PROMPT SUB-NODE -->
+                        <div class="blueprint-subnode node-prompt">
+                          <div class="blueprint-subnode-header">
+                            <div class="blueprint-node-titles">
+                              <span class="blueprint-node-title">PROMPT</span>
+                              <span class="blueprint-node-subtitle">Use this prompt</span>
+                            </div>
+                          </div>
+                          <div class="blueprint-subnode-content">
+                            <div class="workflow-prompt">
+                              <div class="workflow-prompt-head">
+                                <button type="button" data-copy-step>Copy</button>
+                                <span>FULL PROMPT</span>
+                                <button type="button" data-expand-step>Expand</button>
+                              </div>
+                              <pre data-step-prompt>{actionText}</pre>
+                              <button class="workflow-download" type="button" data-download-step>Download PDF</button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Downward Arrow -->
+                        <div class="blueprint-sub-arrow" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="2" x2="12" y2="20"></line>
+                            <polyline points="6 14 12 20 18 14"></polyline>
+                          </svg>
+                        </div>
+
+                        <!-- 3. TOOL / SETTINGS SUB-NODE -->
+                        <div class="blueprint-subnode node-tools">
+                          <div class="blueprint-subnode-header">
+                            <div class="blueprint-node-titles">
+                              <span class="blueprint-node-title">TOOL / SETTINGS</span>
+                            </div>
+                          </div>
+                          <div class="blueprint-subnode-content">
+                            <div class="blueprint-tools-layout">
+                              <div class="blueprint-tool-row">
+                                {step.tool && (
+                                  <a
+                                    class="blueprint-tool-logo-link"
+                                    href={step.toolMeta?.url || '#'}
+                                    target={step.toolMeta?.url ? '_blank' : undefined}
+                                    rel={step.toolMeta?.url ? 'noopener noreferrer' : undefined}
+                                    aria-label={`Open ${step.tool}`}
+                                    title={`Open ${step.tool}`}
+                                  >
+                                    <img class="tool-logo-img" src={toolLogo(step.toolMeta)} alt={`${step.tool} logo`} width="64" height="64" loading="lazy"/>
+                                  </a>
+                                )}
+                                <div class="blueprint-tool-info">
+                                  {step.tool && <span class="blueprint-tool-name">{step.tool}</span>}
+                                  {step.toolPurpose && (
+                                    <span class="blueprint-purpose-pill">{(step.toolPurpose || '').toUpperCase()}</span>
+                                  )}
+                                </div>
+                              </div>
+                              {step.settings.length > 0 && (
+                                <div class="blueprint-settings-block">
+                                  <span class="blueprint-settings-label">SETTINGS</span>
+                                  <div class="blueprint-settings-strip" role="region" aria-label="Step settings">
+                                    {step.settings.map((setting) => {
+                                      const labelKey = String(setting.label || '').trim().toLowerCase();
+                                      return (
+                                        <div class="blueprint-setting-chip">
+                                          <span class="setting-label">
+                                            {labelKey.includes('model') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                                            )}
+                                            {labelKey.includes('aspect') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+                                            )}
+                                            {labelKey.includes('duration') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                            )}
+                                            {labelKey.includes('resolution') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                            )}
+                                            {labelKey.includes('style') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0-1.7 19.8c.6.1 1.2-.4 1.2-1v-1.5c0-.8.7-1.5 1.5-1.5h1.5a5 5 0 0 0 5-5c0-4.4-3.4-8-7.5-8z"/></svg>
+                                            )}
+                                            {labelKey.includes('format') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                                            )}
+                                            {labelKey.includes('edit') && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                                            )}
+                                            {(labelKey.includes('export') || labelKey.includes('output')) && (
+                                              <svg class="setting-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                            )}
+                                            <span>{setting.label}</span>
+                                          </span>
+                                          <span class="setting-val">{setting.value}</span>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     <!-- Downward Arrow -->
                     <div class="blueprint-sub-arrow" aria-hidden="true">
@@ -1324,13 +1539,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                       </svg>
                     </div>
 
-                    <!-- 4. RESULT SUB-NODE -->
+                    <!-- 4. ASSET / OUTPUT SUB-NODE -->
                     <div class={`blueprint-subnode node-result ${isFinal ? 'is-final-result-node' : ''}`}>
                       <div class="blueprint-subnode-header">
-                        <span class="blueprint-node-badge">4</span>
                         <div class="blueprint-node-titles">
-                          <span class="blueprint-node-title">{isFinal ? 'FINAL RESULT' : 'RESULT'}</span>
-                          <span class="blueprint-node-subtitle">Generated output</span>
+                          <span class="blueprint-node-title">OUTPUT</span>
+                          <span class="blueprint-node-subtitle">{outputAssetName}</span>
                         </div>
                       </div>
                       <div class="blueprint-subnode-content">
@@ -1371,7 +1585,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                                     ) : output.type === 'video' ? (
                                       <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
                                     ) : (
-                                      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                      <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h6"/></svg>
                                     )}
                                   </div>
                                   <span class="nonvisual-badge">{(output.type || 'output').toUpperCase()}</span>
@@ -1384,7 +1598,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                             </div>
                           </div>
                           <div class="blueprint-result-meta-info">
-                            <strong class="blueprint-result-label">{output.label}</strong>
+                            <strong class="blueprint-result-label">{outputAssetName}</strong>
                             {step.outputDescription && (
                               <p class="blueprint-result-desc">{step.outputDescription}</p>
                             )}
@@ -1392,39 +1606,61 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                         </div>
                       </div>
                     </div>
+                    </div>
                   </div>
 
-                  <!-- Inter-Step Connector -->
-                  {!isFinal && (
-                    <div class="blueprint-step-transition">
-                      <div class="blueprint-flow-arrow" aria-hidden="true">
-                        <svg class="blueprint-arrow-icon" viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <line x1="12" y1="2" x2="12" y2="20"></line>
-                          <polyline points="6 14 12 20 18 14"></polyline>
-                        </svg>
-                      </div>
-                      <div class="blueprint-instruction-container">
-                        <div class="blueprint-instruction-capsule">
-                          <span>INSTRUCTION</span>
-                        </div>
-                        <div class="blueprint-instruction-body">
-                          <span class="blueprint-instruction-badge">1</span>
-                          <span class="blueprint-instruction-text">{getHandoffText(step, workflowSteps[index + 1], index)}</span>
-                        </div>
-                      </div>
-                      <div class="blueprint-flow-arrow" aria-hidden="true">
-                        <svg class="blueprint-arrow-icon" viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                          <line x1="12" y1="2" x2="12" y2="20"></line>
-                          <polyline points="6 14 12 20 18 14"></polyline>
-                        </svg>
-                      </div>
-                    </div>
-                  )}
+                  <!-- Downward flow arrow to the next step / result in stream -->
+                  <div class="blueprint-stream-connector" aria-hidden="true">
+                    <div class="stream-line"></div>
+                    <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="16" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="12" y1="2" x2="12" y2="18"></line>
+                      <polyline points="6 12 12 18 18 12"></polyline>
+                    </svg>
+                  </div>
                 </div>
               );
             })}
+
+            <!-- Dedicated Always-Visible Unnumbered Final RESULT Block -->
+            <div class="blueprint-result-block" id="workflow-final-result" aria-label="Workflow Final Result">
+              <!-- Unnumbered Capsule -->
+              <div class="blueprint-step-capsule blueprint-result-capsule">
+                <span>RESULT</span>
+              </div>
+
+              <div class="blueprint-result-inner">
+                <div class="blueprint-final-preview-wrap">
+                  {finalWorkflowMediaUrl ? (
+                    <div class="blueprint-final-media-frame">
+                      {isFinalWorkflowVideoDirect ? (
+                        <video class="blueprint-final-video" src={finalWorkflowMediaUrl} controls playsinline preload="metadata" poster={heroImage}></video>
+                      ) : (
+                        <div class="blueprint-final-img-wrap">
+                          <img class="blueprint-final-media" src={finalWorkflowMediaUrl} alt={imageAlt || "Final edited video"} loading="lazy" />
+                          {isFinalWorkflowVideo && (
+                            <div class="blueprint-final-play-badge" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div class="blueprint-final-placeholder">
+                      <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                  )}
+                </div>
+
+                <div class="blueprint-final-meta">
+                  <h3 class="blueprint-final-title">{isTesting1 || isFinalWorkflowVideo ? "Ready-to-post video" : "Ready-to-use asset"}</h3>
+                  <p class="blueprint-final-desc">{isTesting1 || isFinalWorkflowVideo ? "Ready to post, save, share, or remix with suitable audio before publishing." : "Ready to save, publish, or use in your workflow."}</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
       </section>}
 
       {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
@@ -1454,6 +1690,43 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       const a = document.createElement('a'); a.href = url; a.download = `${name}.pdf`; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
+
+    // Step expand/collapse toggle interaction
+    document.querySelectorAll('[data-step-toggle]').forEach((toggleBtn) => {
+      toggleBtn.addEventListener('click', () => {
+        const container = toggleBtn.closest('.blueprint-step-container');
+        if (!container) return;
+        const body = container.querySelector('.blueprint-step-body');
+        if (!body) return;
+
+        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+        const nextState = !isExpanded;
+
+        toggleBtn.setAttribute('aria-expanded', String(nextState));
+        container.classList.toggle('is-expanded', nextState);
+        container.classList.toggle('is-collapsed', !nextState);
+
+        if (nextState) {
+          body.hidden = false;
+          // Synchronize prompt box button widths when newly visible
+          body.querySelectorAll('.workflow-prompt').forEach((box) => {
+            const copy = box.querySelector('[data-copy-step]');
+            const expand = box.querySelector('[data-expand-step]');
+            if (copy && expand) {
+              requestAnimationFrame(() => {
+                const w = expand.getBoundingClientRect().width;
+                if (w > 0) {
+                  copy.style.width = w + 'px';
+                  copy.style.minWidth = w + 'px';
+                }
+              });
+            }
+          });
+        } else {
+          body.hidden = true;
+        }
+      });
+    });
 
     document.querySelectorAll('.workflow-prompt').forEach((box) => {
       const pre = box.querySelector('[data-step-prompt]');
@@ -1610,31 +1883,39 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     /* Guide Cue */
     .guide-cue {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 8px 14px;
+      gap: 7px;
+      padding: 14px 22px;
+      min-height: 50px;
+      width: auto;
+      max-width: calc(100% - 32px);
       text-align: center;
       user-select: none;
       text-decoration: none;
       cursor: pointer;
+      white-space: nowrap;
+      box-sizing: border-box;
     }
-    .guide-cue span {
-      font: 700 11px/1.2 var(--font-mono);
-      letter-spacing: 0.14em;
+    .guide-cue span,
+    .guide-cue .guide-cue-text {
+      font: 700 12.5px/1 var(--font-mono);
+      letter-spacing: 0.08em;
       color: var(--accent);
+      white-space: nowrap;
     }
     .guide-cue svg {
-      width: 18px;
-      height: 18px;
+      width: 13.5px;
+      height: 13.5px;
       fill: none;
       stroke: var(--accent);
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.8;
+      opacity: 0.85;
       transform: none;
+      flex-shrink: 0;
     }
 
     /* Tools Rail */
@@ -2476,10 +2757,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         flex: 0 0 58px;
       }
       .guide-cue {
-        gap: 10px;
+        gap: 6px;
+        padding: 10px 16px;
+        min-height: 38px;
+        max-width: calc(100% - 24px);
+        width: auto;
       }
-      .guide-cue span {
+      .guide-cue span,
+      .guide-cue .guide-cue-text {
         font-size: 10px;
+        letter-spacing: 0.08em;
+      }
+      .guide-cue svg {
+        width: 12px;
+        height: 12px;
       }
       [data-prompt-modal] {
         padding: 12px !important;
@@ -2743,151 +3034,478 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         z-index: 5;
       }
 
-      .blueprint-step-title {
-        font-size: 20px;
-        font-weight: 800;
-        text-align: center;
-        color: #F8FAFC;
-        margin: 10px 0 20px;
-        line-height: 1.35;
+      .blueprint-step-container.is-collapsed {
+        padding: 34px 26px 28px;
+        min-height: 138px;
       }
 
-      /* Blueprint Sub-Nodes inside Step Container */
-      .blueprint-subnode {
-        width: 100%;
-        background: #111A29;
-        border: 1.5px solid var(--step-subnode-border, rgba(255, 255, 255, 0.09));
-        border-radius: 16px;
-        padding: 18px 20px;
-        box-sizing: border-box;
+      .blueprint-step-container.is-expanded {
+        padding: 28px 24px 28px;
       }
-      .blueprint-subnode-header {
+
+      .blueprint-step-header {
+        width: 100%;
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 14px;
+        gap: 20px;
+        background: transparent;
+        border: none;
+        padding: 4px 0 0;
+        margin: 0;
+        cursor: pointer;
+        text-align: left;
+        font: inherit;
+        color: inherit;
+        outline: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
       }
-      .blueprint-node-badge {
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
+
+      .blueprint-step-header:focus-visible {
+        outline: 2px solid var(--step-accent, #38BDF8);
+        outline-offset: 4px;
+        border-radius: 12px;
+      }
+
+      .step-header-thumb-box {
+        position: relative;
+        width: 90px;
+        height: 90px;
+        min-width: 90px;
+        min-height: 90px;
+        border-radius: 14px;
+        background: #060A13;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 13px;
-        font-weight: 800;
-        color: #FFFFFF;
-        background: var(--step-accent, #0284C7);
-        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
       }
 
-      .blueprint-node-titles {
+      .step-header-thumb {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .step-header-thumb-play {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.35);
+        color: #FFFFFF;
+        font-size: 14px;
+        line-height: 1;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+      }
+
+      .step-header-thumb-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+      }
+
+      .step-header-info {
+        flex: 1 1 auto;
+        min-width: 0;
         display: flex;
         flex-direction: column;
-        gap: 2px;
-      }
-      .blueprint-node-title {
-        font-size: 14px;
-        font-weight: 800;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--step-accent-dark, #38BDF8);
-      }
-      .blueprint-node-subtitle {
-        font-size: 12.5px;
-        font-weight: 500;
-        color: #94A3B8;
+        justify-content: center;
+        gap: 6px;
       }
 
-      .blueprint-sub-arrow {
+      .step-header-title {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+        font-size: 20px;
+        font-weight: 500;
+        color: #FFFFFF;
+        margin: 0;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+      }
+
+      .step-header-purpose {
+        font-size: 14px;
+        color: #94A3B8;
+        margin: 0;
+        line-height: 1.45;
+      }
+
+      .step-header-action {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-left: auto;
+      }
+
+      .step-expand-chevron {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: var(--step-accent-dark, #38BDF8);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      }
+
+      .blueprint-step-header:hover .step-expand-chevron {
+        background: rgba(56, 189, 248, 0.14);
+        border-color: rgba(56, 189, 248, 0.45);
+        color: #FFFFFF;
+      }
+
+      .blueprint-step-container.is-expanded .step-expand-chevron {
+        transform: rotate(180deg);
+        background: rgba(56, 189, 248, 0.18);
+        border-color: var(--step-accent-dark, #38BDF8);
+        color: #FFFFFF;
+      }
+
+      .blueprint-step-body {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 24px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 24px;
+      }
+
+      .blueprint-step-body[hidden] {
+        display: none !important;
+      }
+
+      .blueprint-stream-connector {
+        display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         padding: 10px 0;
-        color: var(--step-accent, #0284C7);
-        opacity: 0.9;
+        color: #38BDF8;
+        opacity: 0.85;
+      }
+
+      .stream-line {
+        width: 2px;
+        height: 10px;
+        background: rgba(56, 189, 248, 0.4);
+        margin-bottom: 2px;
+      }
+
+      .stream-arrow-icon {
+        display: block;
+      }
+
+      /* Dedicated Final RESULT Block */
+      .blueprint-result-block {
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 36px;
+        margin-bottom: 12px;
+        background: linear-gradient(180deg, rgba(16, 25, 44, 0.94) 0%, rgba(9, 15, 26, 0.98) 100%);
+        border: 1.5px solid rgba(168, 85, 247, 0.4);
+        border-radius: 24px;
+        padding: 38px 28px 32px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+
+      .blueprint-result-capsule {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0D1626;
+        border: 1.5px solid #A855F7;
+        color: #FFFFFF;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        padding: 6px 22px;
+        border-radius: 9999px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 16px rgba(168, 85, 247, 0.2);
+        z-index: 5;
+      }
+
+      .blueprint-result-inner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .blueprint-final-preview-wrap {
+        width: 100%;
+        max-width: 680px;
+        margin: 10px auto 0;
+      }
+
+      .blueprint-final-media-frame {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #060A13;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      }
+
+      .blueprint-final-img-wrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .blueprint-final-media,
+      .blueprint-final-video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .blueprint-final-play-badge {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(10, 16, 28, 0.72);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        padding-left: 4px;
+      }
+
+      .blueprint-final-placeholder {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 16px;
+        background: #070C14;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #64748B;
+      }
+
+      .blueprint-final-meta {
+        text-align: center;
+        margin-top: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .blueprint-final-title {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+        font-size: 22px;
+        font-weight: 500;
+        color: #FFFFFF;
+        line-height: 1.3;
+        margin: 0;
+      }
+
+      .blueprint-final-desc {
+        font-size: 14px;
+        color: #94A3B8;
+        line-height: 1.45;
+        margin: 0;
       }
 
       /* Tool & Settings Layout inside Node 3 */
+      .blueprint-subnode.node-tools {
+        padding: 22px 24px;
+      }
       .blueprint-tools-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        min-width: 0;
+      }
+      .blueprint-tool-row {
         display: flex;
         align-items: center;
         gap: 16px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        width: 100%;
       }
-      .blueprint-tool-logo-box {
+      .blueprint-tool-logo-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 64px;
         height: 64px;
-        border-radius: 12px;
-        background: #070c14;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-width: 64px;
+        min-height: 64px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
         padding: 8px;
         flex-shrink: 0;
+        box-sizing: border-box;
+        overflow: hidden;
+        transition: all 0.2s ease;
+        text-decoration: none;
       }
-      .blueprint-tool-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .blueprint-tool-logo-link:hover {
+        border-color: rgba(56, 189, 248, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+      .blueprint-tool-logo-link img,
+      .blueprint-tool-logo-link .tool-logo-img {
         width: 100%;
         height: 100%;
-      }
-      .blueprint-tool-logo-box img {
         max-width: 100%;
         max-height: 100%;
+        padding: 0;
+        margin: 0;
+        border-radius: 6px;
         object-fit: contain;
+        display: block;
       }
-      .blueprint-tool-details {
+      .blueprint-tool-info {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        flex: 1;
-        min-width: 200px;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 6px;
+        min-width: 0;
       }
-      .blueprint-purpose-row {
-        display: flex;
-        align-items: center;
+      .blueprint-tool-name {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.15;
+        letter-spacing: -0.015em;
       }
       .blueprint-purpose-pill {
         display: inline-flex;
         align-items: center;
         padding: 4px 12px;
         border-radius: 9999px;
+        font-family: 'JetBrains Mono', monospace;
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        background: rgba(245, 158, 11, 0.15);
-        color: #FBBF24;
-        border: 1px solid rgba(245, 158, 11, 0.35);
+        background: rgba(14, 165, 233, 0.12);
+        color: #38BDF8;
+        border: 1px solid rgba(14, 165, 233, 0.4);
+        line-height: 1.2;
+        width: fit-content;
       }
-      .blueprint-settings-grid {
+      .blueprint-settings-block {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        min-width: 0;
+        margin-top: 20px;
+      }
+      .blueprint-settings-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #94A3B8;
+        line-height: 1;
+        display: block;
+      }
+      .blueprint-settings-strip {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 12px;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 2px 2px 4px 2px;
+      }
+      .blueprint-settings-strip::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
       }
       .blueprint-setting-chip {
         display: inline-flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
         gap: 6px;
-        padding: 5px 10px;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.04);
+        padding: 10px 16px;
+        border-radius: 12px;
+        background: rgba(10, 16, 28, 0.7);
         border: 1px solid rgba(255, 255, 255, 0.08);
-        font-size: 12px;
+        min-width: 100px;
+        flex-shrink: 0;
+        white-space: nowrap;
+        box-sizing: border-box;
+        transition: border-color 0.15s ease, background 0.15s ease;
+      }
+      .blueprint-setting-chip:hover {
+        border-color: rgba(56, 189, 248, 0.25);
+        background: rgba(14, 22, 38, 0.85);
       }
       .blueprint-setting-chip .setting-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
         font-weight: 700;
-        color: #94A3B8;
-        font-size: 10.5px;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        color: #7DD3FC;
+        line-height: 1;
+      }
+      .blueprint-setting-chip .setting-icon {
+        width: 13px;
+        height: 13px;
+        color: #38BDF8;
+        flex-shrink: 0;
       }
       .blueprint-setting-chip .setting-val {
-        font-weight: 600;
-        color: #F8FAFC;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #FFFFFF;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
       }
 
       /* Result Node Layout */
@@ -3046,53 +3664,28 @@ const schema = { '@context': 'https://schema.org', '@graph': [
          TESTING-1 EDITORIAL LUXURY SYSTEM (SECOND PASS: FULL UNIFIED DARK THEME)
          ========================================================================== */
 
-      /* 1. HERO — DARK EDITORIAL SYSTEM */
+      /* 1. HERO — CONTINUOUS BACKGROUND WITH REST OF PAGE */
       .testing-1-theme .resource-hero-unified-section {
         position: relative !important;
-        isolation: isolate !important;
-        overflow: hidden !important;
-        background:
-          radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.16) 0%, rgba(6, 182, 212, 0.06) 40%, transparent 75%),
-          linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-          linear-gradient(180deg, #070B14 0%, #0A101D 60%, #070B14 100%) !important;
-        background-size: 100% 100%, 36px 36px, 36px 36px, 100% 100% !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-        box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.8) !important;
-        padding-top: 72px !important;
+        background: transparent !important;
+        background-image: none !important;
+        border: none !important;
+        border-bottom: none !important;
+        box-shadow: none !important;
+        padding-top: 140px !important;
         padding-bottom: 28px !important;
       }
 
       @media (min-width: 641px) {
         .testing-1-theme .resource-hero-unified-section {
-          padding-top: 72px !important;
+          padding-top: 140px !important;
         }
       }
 
-      .testing-1-theme .resource-hero-unified-section::before {
-        content: "" !important;
-        position: absolute !important;
-        width: 480px !important;
-        height: 480px !important;
-        top: -120px !important;
-        right: -160px !important;
-        border-radius: 50% !important;
-        background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(6, 182, 212, 0.02) 45%, transparent 70%) !important;
-        pointer-events: none !important;
-        z-index: 0 !important;
-      }
-
+      .testing-1-theme .resource-hero-unified-section::before,
       .testing-1-theme .resource-hero-unified-section::after {
-        content: "" !important;
-        position: absolute !important;
-        width: 320px !important;
-        height: 320px !important;
-        bottom: -60px !important;
-        left: -120px !important;
-        border-radius: 50% !important;
-        background: radial-gradient(circle, rgba(14, 165, 233, 0.06) 0%, transparent 65%) !important;
-        pointer-events: none !important;
-        z-index: 0 !important;
+        content: none !important;
+        display: none !important;
       }
 
       .testing-1-theme .resource-hero-unified-section > * {
@@ -3185,7 +3778,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .resource-hero-unified-section .resource-description {
-        padding: 4px 0 !important;
+        padding: 0 0 2px !important;
         text-align: center !important;
       }
 
@@ -3206,7 +3799,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
-        margin: 24px auto 8px !important;
+        margin: 6px auto 0 !important;
         z-index: 5 !important;
       }
 
@@ -3228,10 +3821,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        gap: 8px !important;
-        padding: 12px 34px !important;
-        width: min(520px, calc(100% - 48px)) !important;
-        max-width: min(540px, calc(100% - 32px)) !important;
+        gap: 7px !important;
+        padding: 14px 22px !important;
+        min-height: 50px !important;
+        width: auto !important;
+        max-width: calc(100% - 32px) !important;
         background: linear-gradient(180deg, rgba(16, 26, 44, 0.95) 0%, rgba(10, 16, 28, 0.98) 100%) !important;
         border: 1px solid rgba(56, 189, 248, 0.35) !important;
         border-radius: 9999px !important;
@@ -3239,6 +3833,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         text-decoration: none !important;
         cursor: pointer !important;
         white-space: nowrap !important;
+        box-sizing: border-box !important;
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
       }
 
@@ -3251,9 +3846,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .guide-cue span,
       .testing-1-theme .guide-cue .guide-cue-text {
         font-family: 'JetBrains Mono', monospace !important;
-        font-size: 11px !important;
+        font-size: 12.5px !important;
         font-weight: 700 !important;
-        letter-spacing: 0.12em !important;
+        letter-spacing: 0.08em !important;
         color: #F8FAFC !important;
         text-transform: uppercase !important;
         line-height: 1 !important;
@@ -3261,8 +3856,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .guide-cue svg {
-        width: 13px !important;
-        height: 13px !important;
+        width: 13.5px !important;
+        height: 13.5px !important;
         flex-shrink: 0 !important;
         fill: none !important;
         stroke: #38BDF8 !important;
@@ -3273,14 +3868,55 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       @media (max-width: 640px) {
         .testing-1-theme .guide-cue {
-          gap: 7px !important;
-          padding: 11px 20px !important;
+          gap: 6px !important;
+          padding: 10px 16px !important;
+          min-height: 38px !important;
+          max-width: calc(100% - 24px) !important;
         }
         .testing-1-theme .guide-cue span,
         .testing-1-theme .guide-cue .guide-cue-text {
           font-size: 10px !important;
-          letter-spacing: 0.09em !important;
+          letter-spacing: 0.08em !important;
         }
+        .testing-1-theme .guide-cue svg {
+          width: 12px !important;
+          height: 12px !important;
+        }
+      }
+
+      /* Instructions Card Mode for Step 05 */
+      .testing-1-theme .instruction-card {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        padding: 18px 20px !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        background: rgba(8, 14, 25, 0.85) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+      }
+      .testing-1-theme .instruction-line {
+        display: grid !important;
+        grid-template-columns: 26px 1fr !important;
+        gap: 12px !important;
+        align-items: start !important;
+      }
+      .testing-1-theme .instruction-line span {
+        display: grid !important;
+        place-items: center !important;
+        width: 24px !important;
+        height: 24px !important;
+        border-radius: 50% !important;
+        border: 1px solid rgba(56, 189, 248, 0.4) !important;
+        background: rgba(56, 189, 248, 0.12) !important;
+        color: #38BDF8 !important;
+        font: 700 11px/1 'JetBrains Mono', monospace !important;
+      }
+      .testing-1-theme .instruction-line p {
+        margin: 2px 0 0 !important;
+        font-size: 13.5px !important;
+        line-height: 1.55 !important;
+        color: #E2E8F0 !important;
       }
 
       /* 2. BLUEPRINT — COMPLETE DARK REDESIGN */
@@ -3330,9 +3966,62 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         margin-bottom: 8px !important;
         background: linear-gradient(180deg, rgba(14, 22, 38, 0.92) 0%, rgba(9, 15, 26, 0.98) 100%) !important;
         border-radius: 22px !important;
-        padding: 38px 24px 28px !important;
+        padding: 24px 22px 20px !important;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
         overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-step-container.is-collapsed {
+        padding: 34px 28px 28px !important;
+        min-height: 138px !important;
+      }
+
+      .testing-1-theme .blueprint-step-container.is-expanded {
+        padding: 28px 24px 28px !important;
+      }
+
+      .testing-1-theme .blueprint-step-header {
+        gap: 20px !important;
+      }
+
+      .testing-1-theme .step-header-thumb-box {
+        width: 90px !important;
+        height: 90px !important;
+        min-width: 90px !important;
+        min-height: 90px !important;
+        border-radius: 14px !important;
+      }
+
+      .testing-1-theme .step-header-title {
+        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+        font-size: 20px !important;
+        font-weight: 500 !important;
+        color: #FFFFFF !important;
+        letter-spacing: -0.01em !important;
+      }
+
+      .testing-1-theme .blueprint-result-block {
+        margin-top: 36px !important;
+        margin-bottom: 12px !important;
+        background: linear-gradient(180deg, rgba(14, 22, 38, 0.94) 0%, rgba(9, 15, 26, 0.98) 100%) !important;
+        border: 1px solid rgba(168, 85, 247, 0.35) !important;
+        border-radius: 22px !important;
+        padding: 38px 28px 32px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-result-capsule {
+        background: rgba(10, 16, 28, 0.98) !important;
+        border: 1.5px solid #C084FC !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 18px rgba(168, 85, 247, 0.18) !important;
+        color: #FFFFFF !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em !important;
+        border-radius: 9999px !important;
+        padding: 6px 22px !important;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-blue {
@@ -3532,58 +4221,102 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           min-width: 0 !important;
           max-width: 100% !important;
         }
-        .testing-1-theme .blueprint-tool-details {
-          min-width: 0 !important;
-          max-width: 100% !important;
-          overflow: hidden !important;
+        .testing-1-theme .blueprint-tool-row {
+          display: flex !important;
+          align-items: center !important;
+          gap: 14px !important;
+          flex-wrap: nowrap !important;
+          width: 100% !important;
         }
-        .testing-1-theme .blueprint-settings-row {
+        .testing-1-theme .blueprint-tool-logo-link {
+          width: 56px !important;
+          height: 56px !important;
+          min-width: 56px !important;
+          min-height: 56px !important;
+          border-radius: 14px !important;
+          padding: 7px !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          background: rgba(255, 255, 255, 0.04) !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+          box-sizing: border-box !important;
+          overflow: hidden !important;
+          flex-shrink: 0 !important;
+          text-decoration: none !important;
+          transition: all 0.2s ease !important;
+        }
+        .testing-1-theme .blueprint-tool-logo-link:hover {
+          border-color: rgba(56, 189, 248, 0.4) !important;
+          transform: translateY(-2px) !important;
+          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        }
+        .testing-1-theme .blueprint-tool-logo-link img,
+        .testing-1-theme .blueprint-tool-logo-link .tool-logo-img {
+          width: 100% !important;
+          height: 100% !important;
+          max-width: 100% !important;
+          max-height: 100% !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          border-radius: 6px !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
+        .testing-1-theme .blueprint-tool-info {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          justify-content: center !important;
+          gap: 4px !important;
+          min-width: 0 !important;
+        }
+        .testing-1-theme .blueprint-tool-name {
+          font-size: 19px !important;
+        }
+        .testing-1-theme .blueprint-purpose-pill {
+          font-size: 10px !important;
+          padding: 3px 10px !important;
+        }
+        .testing-1-theme .blueprint-settings-block {
+          width: 100% !important;
+          min-width: 0 !important;
+          margin-top: 16px !important;
+        }
+        .testing-1-theme .blueprint-settings-strip {
           display: flex !important;
           flex-direction: row !important;
-          align-items: center !important;
           flex-wrap: nowrap !important;
-          gap: 8px !important;
+          gap: 10px !important;
           width: 100% !important;
+          min-width: 0 !important;
           max-width: 100% !important;
           overflow-x: auto !important;
           overflow-y: hidden !important;
           -webkit-overflow-scrolling: touch !important;
           scrollbar-width: none !important;
-          padding-bottom: 2px !important;
+          -ms-overflow-style: none !important;
+          padding-bottom: 4px !important;
         }
-        .testing-1-theme .blueprint-settings-row::-webkit-scrollbar {
+        .testing-1-theme .blueprint-settings-strip::-webkit-scrollbar {
           display: none !important;
-        }
-        .testing-1-theme .blueprint-settings-icon {
-          display: inline-flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          font-size: 13px !important;
-          color: #38BDF8 !important;
-          opacity: 0.85 !important;
-          flex: 0 0 auto !important;
-          flex-shrink: 0 !important;
-          align-self: center !important;
-          line-height: 1 !important;
-          margin: 0 !important;
-        }
-        .testing-1-theme .blueprint-settings-grid {
-          display: flex !important;
-          flex-direction: row !important;
-          flex-wrap: nowrap !important;
-          gap: 8px !important;
-          align-items: center !important;
-          flex: 0 0 auto !important;
-          min-width: 0 !important;
+          width: 0 !important;
+          height: 0 !important;
         }
         .testing-1-theme .blueprint-setting-chip {
           display: inline-flex !important;
           flex-direction: column !important;
+          justify-content: center !important;
+          gap: 5px !important;
           flex: 0 0 auto !important;
           flex-shrink: 0 !important;
-          width: auto !important;
-          max-width: max-content !important;
+          padding: 9px 14px !important;
+          min-width: 90px !important;
           white-space: nowrap !important;
+        }
+        .testing-1-theme .blueprint-setting-chip .setting-label {
+          font-size: 9.5px !important;
+        }
+        .testing-1-theme .blueprint-setting-chip .setting-val {
+          font-size: 12.5px !important;
         }
         .testing-1-theme .workflow-prompt-head {
           height: 46px !important;
@@ -3632,73 +4365,194 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: #38BDF8 !important;
       }
 
-      /* Inner Card 3: AI Tool / Settings */
-      .testing-1-theme .blueprint-tool-logo-box {
-        background: rgba(255, 255, 255, 0.03) !important;
+      /* Inner Card 3: Tool / Settings */
+      .testing-1-theme .blueprint-subnode.node-tools {
+        padding: 22px 24px !important;
+      }
+
+      .testing-1-theme .blueprint-tools-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important;
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-tool-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 16px !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+      }
+
+      .testing-1-theme .blueprint-tool-logo-link {
+        width: 64px !important;
+        height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        padding: 8px !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 14px !important;
+        border-radius: 18px !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+        text-decoration: none !important;
+        transition: all 0.2s ease !important;
+      }
+
+      .testing-1-theme .blueprint-tool-logo-link:hover {
+        border-color: rgba(56, 189, 248, 0.4) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+      }
+
+      .testing-1-theme .blueprint-tool-logo-link img,
+      .testing-1-theme .blueprint-tool-logo-link .tool-logo-img {
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 6px !important;
+        object-fit: contain !important;
+        display: block !important;
+      }
+
+      .testing-1-theme .blueprint-tool-info {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        min-width: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-tool-name {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
+        line-height: 1.15 !important;
+        letter-spacing: -0.015em !important;
       }
 
       .testing-1-theme .blueprint-purpose-pill {
-        background: rgba(56, 189, 248, 0.12) !important;
+        background: rgba(14, 165, 233, 0.12) !important;
         color: #38BDF8 !important;
-        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border: 1px solid rgba(14, 165, 233, 0.4) !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
         letter-spacing: 0.08em !important;
-      }
-
-      .testing-1-theme .blueprint-settings-row {
-        display: flex !important;
+        padding: 4px 12px !important;
+        border-radius: 9999px !important;
+        line-height: 1.2 !important;
+        display: inline-flex !important;
         align-items: center !important;
-        gap: 8px !important;
-        flex-wrap: wrap !important;
+        width: fit-content !important;
       }
 
-      .testing-1-theme .blueprint-settings-icon {
-        font-size: 13px !important;
-        color: #38BDF8 !important;
-        opacity: 0.85 !important;
-        flex-shrink: 0 !important;
-      }
-
-      .testing-1-theme .blueprint-settings-grid {
+      .testing-1-theme .blueprint-settings-block {
         display: flex !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-        align-items: center !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        margin-top: 20px !important;
+      }
+
+      .testing-1-theme .blueprint-settings-label {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.1em !important;
+        text-transform: uppercase !important;
+        color: #94A3B8 !important;
+        line-height: 1 !important;
+        display: block !important;
+      }
+
+      .testing-1-theme .blueprint-settings-strip {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        padding: 2px 2px 4px 2px !important;
+      }
+
+      .testing-1-theme .blueprint-settings-strip::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
       }
 
       .testing-1-theme .blueprint-setting-chip {
         display: inline-flex !important;
         flex-direction: column !important;
-        gap: 2px !important;
-        padding: 6px 12px !important;
-        background: rgba(255, 255, 255, 0.04) !important;
+        justify-content: center !important;
+        gap: 6px !important;
+        padding: 10px 16px !important;
+        background: rgba(10, 16, 28, 0.7) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 8px !important;
-        width: auto !important;
-        max-width: max-content !important;
+        border-radius: 12px !important;
+        min-width: 100px !important;
         flex: 0 0 auto !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+        transition: border-color 0.15s ease, background 0.15s ease !important;
+      }
+
+      .testing-1-theme .blueprint-setting-chip:hover {
+        border-color: rgba(56, 189, 248, 0.25) !important;
+        background: rgba(14, 22, 38, 0.85) !important;
       }
 
       .testing-1-theme .blueprint-setting-chip .setting-label {
-        color: #8EA2BD !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        color: #7DD3FC !important;
         font-family: 'JetBrains Mono', monospace !important;
-        font-size: 9.5px !important;
+        font-size: 10px !important;
         font-weight: 700 !important;
         letter-spacing: 0.08em !important;
         text-transform: uppercase !important;
         line-height: 1 !important;
-        margin-bottom: 2px !important;
+        margin: 0 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-setting-chip .setting-icon {
+        width: 13px !important;
+        height: 13px !important;
+        color: #38BDF8 !important;
+        flex-shrink: 0 !important;
       }
 
       .testing-1-theme .blueprint-setting-chip .setting-val {
-        color: #F8FAFC !important;
-        font-size: 12.5px !important;
-        font-weight: 600 !important;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+        color: #FFFFFF !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
         line-height: 1.25 !important;
+        letter-spacing: -0.01em !important;
+        flex-shrink: 0 !important;
       }
 
       /* Inner Card 4: Result / Final Result */
@@ -3913,8 +4767,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* Mobile Precision */
       @media (max-width: 640px) {
         .testing-1-theme .resource-hero-unified-section {
-          padding-top: 42px !important;
-          padding-bottom: 20px !important;
+          padding-top: 76px !important;
+          padding-bottom: 6px !important;
         }
 
         .testing-1-theme .hero-unified-header h1 {
@@ -3933,8 +4787,64 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
 
         .testing-1-theme .blueprint-step-container {
-          padding: 30px 14px 20px !important;
           border-radius: 18px !important;
+        }
+
+        .testing-1-theme .blueprint-step-container.is-collapsed {
+          padding: 30px 16px 22px !important;
+          min-height: 128px !important;
+        }
+
+        .testing-1-theme .blueprint-step-container.is-expanded {
+          padding: 28px 16px 24px !important;
+        }
+
+        .testing-1-theme .blueprint-step-header {
+          gap: 14px !important;
+        }
+
+        .testing-1-theme .step-header-thumb-box {
+          width: 82px !important;
+          height: 82px !important;
+          min-width: 82px !important;
+          min-height: 82px !important;
+          border-radius: 12px !important;
+        }
+
+        .testing-1-theme .step-header-title {
+          font-size: 16.5px !important;
+          line-height: 1.25 !important;
+        }
+
+        .testing-1-theme .step-header-purpose {
+          font-size: 12.5px !important;
+          line-height: 1.4 !important;
+        }
+
+        .testing-1-theme .step-expand-chevron {
+          width: 44px !important;
+          height: 44px !important;
+          min-width: 44px !important;
+          min-height: 44px !important;
+        }
+
+        .testing-1-theme .blueprint-result-block {
+          padding: 32px 16px 24px !important;
+          border-radius: 20px !important;
+          margin-top: 30px !important;
+        }
+
+        .testing-1-theme .blueprint-final-title {
+          font-size: 18px !important;
+        }
+
+        .testing-1-theme .blueprint-final-desc {
+          font-size: 13px !important;
+        }
+
+        .testing-1-theme .blueprint-step-body {
+          margin-top: 18px !important;
+          padding-top: 18px !important;
         }
 
         .testing-1-theme .blueprint-step-title {

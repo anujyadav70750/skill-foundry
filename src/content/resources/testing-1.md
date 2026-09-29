@@ -16,8 +16,8 @@ inputImageRatios: ["original"]
 resultImages: []
 resultImageRatios: []
 imageAlt: "AI character video workflow cover image"
-intro: "Start with the character and clothing references, then work through the resource in order: create the dressed character, generate three connected vertical clips, and assemble the final video."
-whatItDoes: "This workflow keeps character identity, outfit, framing, and visual continuity consistent across an image-generation step, three video-generation steps, and a final editing step."
+intro: "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
+whatItDoes: "Keep character identity, outfit, framing, and visual continuity consistent from the first image to the final video."
 toolsUsed:
   - name: "Google Flow"
     purpose: "Image and video generation used to create the character image and three vertical clips."
@@ -31,10 +31,11 @@ prompt: |
   Use the workflow steps below to create a consistent AI character video.
 steps:
   - title: "Create the dressed character image"
+    purpose: "Create the dressed character image that will become the visual foundation."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "Dressed character image"
-    outputDescription: "Generated character image used as the reference for the first video clip."
+    outputDescription: "Generated character image used as the visual foundation for the video clips."
     tool: "Google Flow"
     toolPurpose: "IMAGE GENERATION"
     inputs:
@@ -52,8 +53,9 @@ steps:
       - label: "ASPECT RATIO"
         value: "9:16"
     process: "Use the uploaded character image as the primary identity reference. Preserve the character’s facial identity, facial structure, hairstyle, skin tone, and overall appearance. Use the uploaded dress image as the clothing reference and replace the character’s current outfit with the referenced dress. Keep the character’s identity and proportions consistent. Create a polished vertical 9:16 image with natural lighting, realistic fabric details, and a clean cinematic presentation."
-    next: "Use this generated character image as the reference for the first video clip."
+    next: "Use this dressed character image as the reference for Video Clip 01 in Step 02."
   - title: "Generate video clip 01"
+    purpose: "Turn the dressed character image into the first vertical video clip."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Video Clip 01"
@@ -73,8 +75,9 @@ steps:
       - label: "DURATION"
         value: "10 sec"
     process: "Use the uploaded dressed character image as the primary visual reference. Keep the same character identity, outfit, appearance, and visual style. Animate the character naturally according to the supplied scene direction, with realistic movement and a consistent vertical 9:16 composition. Create one clean 10-second video clip."
-    next: "Repeat the same production setup for Clip 02 while keeping the character and outfit consistent."
+    next: "Use Video Clip 01 as the continuity reference for Step 03."
   - title: "Generate video clip 02"
+    purpose: "Continue the sequence using Video Clip 01 as the continuity reference."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Video Clip 02"
@@ -98,8 +101,9 @@ steps:
       - label: "DURATION"
         value: "10 sec"
     process: "Continue the same visual character and outfit established in Clip 01. Use the supplied reference assets to maintain identity, clothing, lighting, framing, and overall visual continuity. Generate the next natural 10-second vertical clip with the new scene direction."
-    next: "Use Clip 02 as the continuity reference for the third clip."
+    next: "Use Video Clip 02 as the continuity reference for Step 04."
   - title: "Generate video clip 03"
+    purpose: "Continue the sequence using Video Clip 02 as the continuity reference."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Video Clip 03"
@@ -123,12 +127,13 @@ steps:
       - label: "DURATION"
         value: "10 sec"
     process: "Continue the same character, outfit, visual language, lighting, and vertical framing established by the previous clips. Use the supplied continuity reference and character image to keep the result visually consistent. Generate the final 10-second clip with the required closing scene direction."
-    next: "Bring Clips 01, 02, and 03 into CapCut for the final edit."
+    next: "Bring Video Clips 01, 02, and 03 into CapCut for the final video assembly in Step 05."
   - title: "Assemble the final video"
+    purpose: "Arrange the three generated clips into the final vertical video."
     actionType: "instructions"
     outputType: "video"
-    outputLabel: "Final edited vertical video"
-    outputDescription: "Final video produced after all clips are assembled."
+    outputLabel: "Final edited video"
+    outputDescription: "This is the completed video exported from the editing step."
     tool: "CapCut"
     toolPurpose: "VIDEO EDITING"
     inputs:
@@ -149,10 +154,16 @@ steps:
         value: "9:16"
       - label: "EDIT"
         value: "Trim + arrange + transitions"
-      - label: "OUTPUT"
-        value: "Final vertical video"
-    process: "Import Video Clip 01, Video Clip 02, and Video Clip 03. Arrange them in the intended order, trim timing where needed, add clean transitions only where they improve continuity, check the pacing, and export the completed vertical video."
-    next: "Final result is ready to publish or share."
+      - label: "EXPORT"
+        value: "1080p"
+    process: |
+      Import Video Clip 01, Video Clip 02 and Video Clip 03.
+      Arrange them in the intended order.
+      Trim unnecessary portions and adjust timing.
+      Add simple transitions only if needed for continuity.
+      Keep the project vertical at 9:16.
+      Export the completed video at 1080p.
+    next: ""
 tips:
   - "Keep the character reference and clothing reference consistent across every generation step."
   - "Use the previous clip as the continuity reference when generating the next clip."

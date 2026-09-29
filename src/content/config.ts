@@ -24,6 +24,7 @@ const workflowStep = z.object({
   output: z.string().default(''),
   next: z.string().default(''),
   description: z.string().default(''),
+  purpose: z.string().optional(),
   actionType: z.enum(['prompt','instructions']).optional(),
   outputType: z.enum(['image','video','audio','text','document']).optional(),
   outputLabel: z.string().optional(),
