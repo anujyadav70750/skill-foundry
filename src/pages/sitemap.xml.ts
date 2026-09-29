@@ -12,7 +12,7 @@ const escapeXml = (value: string) => value
   .replace(/'/g, '&apos;');
 
 export const GET: APIRoute = async ({ site }) => {
-  const base = site ?? new URL('https://hub.skillfoundryai.workers.dev');
+  const base = site ?? new URL('https://hub.skillfoundry-web.workers.dev');
   const resources = await getCollection('resources');
   const urls = [
     ...staticPaths.map((path) => ({ loc: new URL(path, base).href })),
