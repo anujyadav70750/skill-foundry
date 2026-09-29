@@ -162,25 +162,18 @@ const platformLinks = [
     {socialImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
   </head>
   <body class={hideHeader ? 'no-header' : ''}>
-    <!-- GLOBAL UNIFIED NAVIGATION HEADER (TWO WINGS INTERLOCKING WITH CENTER COMPACT SF TAB) -->
+    <!-- GLOBAL UNIFIED NAVIGATION HEADER (ROUNDED RECTANGLE WITH BRAND LEFT, SEARCH & MENU RIGHT) -->
     {!hideHeader && (
       <header class="site-header" id="global-site-header">
-        <nav class="nav-pill-container" aria-label="Main navigation">
-          <!-- LEFT WING: HOME & RESOURCES -->
-          <div class="nav-segment nav-segment-left">
-            <a class={`nav-link ${currentPath === '/' ? 'active' : ''}`} href="/">HOME</a>
-            <a class={`nav-link ${currentPath.startsWith('/resources') ? 'active' : ''}`} href="/resources/">RESOURCES</a>
-          </div>
+        <nav class="nav-bar-container" aria-label="Main navigation">
+          <!-- LEFT SIDE: Brand Logo + Brand Name -->
+          <a class="nav-brand" href="/" aria-label="Skill Foundry home">
+            <span class="brand-mark">SF</span>
+            <span class="brand-name">Skill <span class="brand-name-accent">Foundry</span></span>
+          </a>
 
-          <!-- CENTER RAISED COMPACT ROUNDED-SQUARE SF TAB -->
-          <div class="nav-zone-logo">
-            <a class="nav-logo-tab" href="/" aria-label="Skill Foundry home">
-              <span class="brand-mark">SF</span>
-            </a>
-          </div>
-
-          <!-- RIGHT WING: SEARCH & ABOUT -->
-          <div class={`nav-segment nav-segment-right ${hideHeaderSearch ? 'no-search' : ''}`}>
+          <!-- RIGHT SIDE: Search Capsule + Hamburger Menu Button -->
+          <div class="nav-actions">
             {!hideHeaderSearch && (
               <div class="header-search-wrap" id="header-search-wrap">
                 <a class="header-search-box" id="header-search-box" href={searchHref} aria-label="Search resources">
@@ -194,7 +187,128 @@ const platformLinks = [
               </div>
             )}
 
-            <a class={`nav-link ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">ABOUT</a>
+            <button
+              type="button"
+              class="nav-menu-btn"
+              id="menu-toggle"
+              aria-expanded="false"
+              aria-controls="site-menu"
+              aria-label="Open navigation menu"
+            >
+              <svg class="icon-hamburger" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="4" y1="7" x2="20" y2="7"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="17" x2="20" y2="17"></line>
+              </svg>
+              <svg class="icon-close" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <!-- DROPDOWN MENU PANEL -->
+          <div class="nav-dropdown-menu" id="site-menu" hidden aria-labelledby="menu-toggle">
+            <nav class="menu-nav-list" aria-label="Site menu navigation">
+              <a class={`menu-nav-item ${currentPath === '/' ? 'active' : ''}`} href="/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Home</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/resources') ? 'active' : ''}`} href="/resources/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Resources</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </span>
+                <span class="menu-item-label">About</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/privacy') ? 'active' : ''}`} href="/privacy/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Privacy Policy</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/terms') ? 'active' : ''}`} href="/terms/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <polyline points="9 12 11 14 15 10"></polyline>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Terms &amp; Conditions</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/contact') ? 'active' : ''}`} href="/contact/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Contact</span>
+              </a>
+            </nav>
+
+            <div class="menu-divider" role="separator"></div>
+
+            <!-- SINGLE COMBINED PILL THEME TOGGLE (Sun / Moon) -->
+            <div class="menu-theme-wrap">
+              <button
+                type="button"
+                class="theme-pill-toggle"
+                id="theme-pill-toggle"
+                role="switch"
+                aria-checked="true"
+                data-theme="dark"
+                aria-label="Toggle dark and light theme"
+                title="Toggle Theme"
+              >
+                <span class="theme-pill-option theme-pill-light" aria-label="Light mode">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="4.2"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                  </svg>
+                </span>
+                <span class="theme-pill-option theme-pill-dark is-active" aria-label="Dark mode">
+                  <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  </svg>
+                </span>
+              </button>
+            </div>
           </div>
         </nav>
       </header>
@@ -273,7 +387,7 @@ const platformLinks = [
       }
 
       /* ==========================================================================
-         GLOBAL UNIFIED HEADER (TWO WINGS INTERLOCKING WITH CENTER SF TAB)
+         GLOBAL UNIFIED HEADER (ROUNDED RECTANGLE BAR WITH SEARCH & MENU)
          ========================================================================== */
       .site-header {
         position: fixed;
@@ -290,116 +404,44 @@ const platformLinks = [
         will-change: transform;
         backface-visibility: hidden;
       }
-      /* The opening section on each page owns its background surface and extends
-         underneath this fixed header. No separate header background layer is used. */
 
-
-
-      .nav-pill-container {
+      .nav-bar-container {
         pointer-events: auto;
         position: relative;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         width: 100%;
         max-width: 820px;
+        height: 62px;
+        min-height: 62px;
         margin: 0 auto;
-        overflow: visible;
-      }
-
-      /* Two Horizontal Capsule Wings (Stop at SF Tab Sides) */
-      .nav-segment {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex: 1 1 0%;
-        height: 56px;
-        min-height: 56px;
-        background: rgba(6, 11, 20, 0.96);
+        padding: 0 14px 0 16px;
+        border-radius: 18px;
+        background: rgba(6, 11, 20, 0.94);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border-top: 1px solid rgba(255, 255, 255, 0.10);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-        box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      }
-      .nav-segment-left {
-        border-left: 1px solid rgba(255, 255, 255, 0.10);
-        border-right: none;
-        border-radius: 9999px 0 0 9999px;
-        padding: 0 82px 0 48px;
-        margin-right: -10px;
-      }
-      .nav-segment-right {
-        border-right: 1px solid rgba(255, 255, 255, 0.10);
-        border-left: none;
-        border-radius: 0 9999px 9999px 0;
-        padding: 0 48px 0 82px;
-        margin-left: -10px;
-      }
-      .nav-segment-right.no-search {
-        justify-content: flex-end;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.75), 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       }
 
-      /* Navigation Links (HOME, RESOURCES, ABOUT - NO DIVIDER LINES) */
-      .nav-link {
-        font-size: 13px;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        color: #DCE4EE;
-        text-transform: uppercase;
-        text-decoration: none;
-        transition: color 0.15s ease, opacity 0.15s ease;
-        padding: 4px 0;
-        white-space: nowrap;
+      /* Brand (Logo + Text on Left) */
+      .nav-brand {
         display: inline-flex;
         align-items: center;
-      }
-      .nav-link:hover {
+        gap: 12px;
+        text-decoration: none;
         color: #FFFFFF;
-      }
-      .nav-link.active {
-        color: #FFFFFF;
-        text-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
-      }
-
-      /* Center Compact Rounded-Square SF Tab (RAISED • PROTRUDES SLIGHTLY • WINGS ATTACH AT SIDES) */
-      .nav-zone-logo {
-        position: relative;
-        z-index: 20;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        transition: opacity 0.15s ease;
         flex: 0 0 auto;
       }
-      .nav-logo-tab {
-        position: relative;
-        display: grid;
-        place-items: center;
-        width: 64px;
-        height: 64px;
-        min-width: 64px;
-        margin: 0;
-        padding: 0;
-        border-radius: 14px;
-        overflow: hidden;
-        background: #060B14;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        box-shadow: 0 10px 24px -2px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        text-decoration: none;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .nav-logo-tab:hover {
-        background: #0A111E;
-        border-color: rgba(255, 255, 255, 0.22);
-        transform: translateY(-1px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.90), inset 0 1px 0 rgba(255, 255, 255, 0.20);
+      .nav-brand:hover {
+        opacity: 0.92;
       }
       .brand-mark {
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
         border-radius: 10px;
         background: #FF6600;
         color: #FFFFFF;
@@ -410,8 +452,29 @@ const platformLinks = [
         place-items: center;
         box-shadow: 0 2px 8px rgba(255, 102, 0, 0.38);
       }
+      .brand-name {
+        font-size: 20px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        color: #FFFFFF;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .brand-name-accent {
+        color: #3dd6d0;
+      }
 
-      /* ZONE 4. Search Capsule (MATCHES NAV CONTROLS IN TONE, BORDER & SOFT WHITE ICON • ICON ON RIGHT) */
+      /* Right Actions Area (Search Capsule + Menu Button) */
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 0 0 auto;
+      }
+
+      /* Search Capsule - Preserving exact look and feel */
       .header-search-wrap {
         position: relative;
         display: flex;
@@ -421,12 +484,12 @@ const platformLinks = [
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        width: 88px;
-        height: 32px;
-        padding: 0 8px 0 10px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        width: 140px;
+        height: 34px;
+        padding: 0 10px 0 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
         border-radius: 9999px;
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(255, 255, 255, 0.035);
         color: #DCE4EE;
         transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
         cursor: pointer;
@@ -434,8 +497,8 @@ const platformLinks = [
         box-sizing: border-box;
       }
       .header-search-box:hover {
-        border-color: rgba(255, 255, 255, 0.22);
-        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(61, 214, 208, 0.40);
+        background: rgba(255, 255, 255, 0.07);
         color: #FFFFFF;
       }
       .header-search-submit {
@@ -453,9 +516,186 @@ const platformLinks = [
         transition: color 0.15s ease;
       }
       .header-search-submit svg {
-        width: 13px;
-        height: 13px;
+        width: 14px;
+        height: 14px;
         stroke: currentColor;
+      }
+
+      /* Hamburger Menu Toggle Button */
+      .nav-menu-btn {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.04);
+        color: #F8FAFC;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        padding: 0;
+      }
+      .nav-menu-btn:hover {
+        border-color: rgba(255, 255, 255, 0.26);
+        background: rgba(255, 255, 255, 0.08);
+        color: #FFFFFF;
+      }
+      .nav-menu-btn[aria-expanded="true"] {
+        border-color: rgba(61, 214, 208, 0.5);
+        background: rgba(61, 214, 208, 0.1);
+        color: #3dd6d0;
+      }
+      .nav-menu-btn .icon-close {
+        display: none;
+      }
+      .nav-menu-btn .icon-hamburger {
+        display: block;
+      }
+      .nav-menu-btn[aria-expanded="true"] .icon-close {
+        display: block;
+      }
+      .nav-menu-btn[aria-expanded="true"] .icon-hamburger {
+        display: none;
+      }
+
+      /* Dropdown Menu Panel */
+      .nav-dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: 246px;
+        max-width: calc(100vw - 32px);
+        background: #080f19;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.90), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        padding: 12px;
+        z-index: 1100;
+        animation: menuDropdownIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes menuDropdownIn {
+        from { transform: translateY(-6px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+      .nav-dropdown-menu[hidden] {
+        display: none !important;
+      }
+
+      .menu-nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .menu-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 10px 14px;
+        border-radius: 10px;
+        color: #DCE4EE;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.15s ease;
+        background: transparent;
+      }
+      .menu-nav-item:hover, .menu-nav-item:focus-visible {
+        background: rgba(255, 255, 255, 0.06);
+        color: #FFFFFF;
+      }
+      .menu-nav-item.active {
+        background: rgba(61, 214, 208, 0.18);
+        color: #3dd6d0;
+        font-weight: 700;
+      }
+      .menu-item-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        color: #CBD5E1;
+        flex: 0 0 auto;
+        transition: color 0.15s ease;
+      }
+      .menu-nav-item:hover .menu-item-icon {
+        color: #FFFFFF;
+      }
+      .menu-nav-item.active .menu-item-icon {
+        color: #3dd6d0;
+      }
+      .menu-item-label {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .menu-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 10px 4px 12px 4px;
+      }
+
+      .menu-theme-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2px 0 4px;
+      }
+
+      /* Combined Pill Theme Toggle */
+      .theme-pill-toggle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 106px;
+        height: 42px;
+        padding: 4px;
+        border-radius: 9999px;
+        background: #060b13;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+      .theme-pill-toggle:hover {
+        border-color: rgba(61, 214, 208, 0.4);
+      }
+      .theme-pill-option {
+        position: relative;
+        z-index: 2;
+        flex: 1;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        color: #64748B;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .theme-pill-option svg {
+        transition: transform 0.22s ease, color 0.22s ease;
+      }
+      .theme-pill-option.is-active {
+        background: #009aa8;
+        background: linear-gradient(135deg, #00b4c8 0%, #008796 100%);
+        color: #FFFFFF;
+        box-shadow: 0 0 16px rgba(0, 180, 200, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+      }
+      .theme-pill-light.is-active {
+        background: linear-gradient(135deg, #00b4c8 0%, #008796 100%);
+        color: #FFDE59;
+      }
+      .theme-pill-light.is-active svg {
+        color: #FFE600;
+        filter: drop-shadow(0 0 4px rgba(255, 230, 0, 0.6));
+      }
+      .theme-pill-dark.is-active {
+        background: linear-gradient(135deg, #00b4c8 0%, #008796 100%);
+        color: #FFFFFF;
+      }
+      .theme-pill-option:not(.is-active):hover {
+        color: #CBD5E1;
       }
 
       /* Desktop Attached Dropdown */
@@ -597,54 +837,41 @@ const platformLinks = [
       }
 
       /* ==========================================================================
-         RESPONSIVE ADAPTATIONS (SAME TWO WINGS + CENTER SF TAB SCALED PROPORTIONALLY)
+         RESPONSIVE ADAPTATIONS
          ========================================================================== */
       @media (max-width: 768px) {
         .site-header {
-          top: 10px;
+          top: 12px;
           padding: 0 16px;
         }
-        .nav-segment {
-          height: 54px;
-          min-height: 54px;
-        }
-        .nav-segment-left {
-          padding: 0 40px 0 22px;
-          margin-right: -10px;
-        }
-        .nav-segment-right {
-          padding: 0 22px 0 40px;
-          margin-left: -10px;
-        }
-        .nav-link {
-          font-size: 11.5px;
-          letter-spacing: 0.05em;
-        }
-        .nav-logo-tab {
-          width: 60px;
-          height: 60px;
-          min-width: 60px;
-          border-radius: 13px;
+        .nav-bar-container {
+          height: 56px;
+          min-height: 56px;
+          padding: 0 12px 0 14px;
+          border-radius: 16px;
         }
         .brand-mark {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
           border-radius: 9px;
-          font-size: 13px;
+          font-size: 13.5px;
+        }
+        .brand-name {
+          font-size: 18px;
         }
         .header-search-box {
-          width: 66px;
-          height: 28px;
-          padding: 0 6px 0 8px;
+          width: 110px;
+          height: 32px;
         }
-        .header-search-submit {
-          width: 16px;
-          height: 16px;
+        .nav-menu-btn {
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+          border-radius: 9px;
         }
-        .header-search-submit svg {
-          width: 12px;
-          height: 12px;
+        .nav-actions {
+          gap: 8px;
         }
         .header-search-dropdown {
           width: min(340px, 92vw);
@@ -652,140 +879,70 @@ const platformLinks = [
         }
       }
 
-      @media (max-width: 412px) {
+      @media (max-width: 480px) {
         .site-header {
           top: 8px;
           padding: 0 10px;
         }
-        .nav-segment {
-          height: 50px;
-          min-height: 50px;
-        }
-        .nav-segment-left {
-          padding: 0 30px 0 14px;
-          margin-right: -10px;
-        }
-        .nav-segment-right {
-          padding: 0 14px 0 30px;
-          margin-left: -10px;
-        }
-        .nav-link {
-          font-size: 10.5px;
-          letter-spacing: 0.03em;
-        }
-        .nav-logo-tab {
-          width: 56px;
-          height: 56px;
-          min-width: 56px;
-          border-radius: 12px;
-        }
-        .brand-mark {
-          width: 36px;
-          height: 36px;
-          min-width: 36px;
-          border-radius: 8px;
-          font-size: 12px;
-        }
-        .header-search-box {
-          width: 58px;
-          height: 26px;
-          padding: 0 5px 0 6px;
-        }
-        .header-search-submit svg {
-          width: 11px;
-          height: 11px;
-        }
-        .header-search-dropdown {
-          width: min(300px, 94vw);
-          right: -50px;
-        }
-      }
-
-      @media (max-width: 375px) {
-        .site-header {
-          padding: 0 8px;
-        }
-        .nav-segment {
-          height: 48px;
-          min-height: 48px;
-        }
-        .nav-segment-left {
-          padding: 0 26px 0 12px;
-          margin-right: -10px;
-        }
-        .nav-segment-right {
-          padding: 0 12px 0 26px;
-          margin-left: -10px;
-        }
-        .nav-link {
-          font-size: 10px;
-          letter-spacing: 0.02em;
-        }
-        .nav-logo-tab {
-          width: 54px;
-          height: 54px;
-          min-width: 54px;
-          border-radius: 11px;
-        }
-        .brand-mark {
-          width: 34px;
-          height: 34px;
-          min-width: 34px;
-          border-radius: 8px;
-          font-size: 11.5px;
-        }
-        .header-search-box {
-          width: 54px;
-          height: 25px;
-          padding: 0 4px 0 5px;
-        }
-      }
-
-      @media (max-width: 360px) {
-        .site-header {
-          padding: 0 6px;
-        }
-        .nav-segment {
-          height: 46px;
-          min-height: 46px;
-        }
-        .nav-segment-left {
-          padding: 0 22px 0 10px;
-          margin-right: -10px;
-        }
-        .nav-segment-right {
-          padding: 0 10px 0 22px;
-          margin-left: -10px;
-        }
-        .nav-link {
-          font-size: 9.5px;
-          letter-spacing: 0.01em;
-        }
-        .nav-logo-tab {
-          width: 52px;
+        .nav-bar-container {
           height: 52px;
-          min-width: 52px;
-          border-radius: 10px;
+          min-height: 52px;
+          padding: 0 10px 0 12px;
+          border-radius: 14px;
         }
         .brand-mark {
           width: 32px;
           height: 32px;
           min-width: 32px;
+          border-radius: 8px;
+          font-size: 12px;
+        }
+        .brand-name {
+          font-size: 16px;
+          letter-spacing: -0.02em;
+        }
+        .header-search-box {
+          width: 76px;
+          height: 30px;
+          padding: 0 7px 0 9px;
+        }
+        .nav-menu-btn {
+          width: 32px;
+          height: 32px;
+          min-width: 32px;
+          border-radius: 8px;
+        }
+        .nav-dropdown-menu {
+          width: calc(100vw - 20px);
+          right: 0;
+          top: calc(100% + 8px);
+        }
+      }
+
+      @media (max-width: 360px) {
+        .brand-mark {
+          width: 28px;
+          height: 28px;
+          min-width: 28px;
           border-radius: 7px;
           font-size: 11px;
         }
+        .brand-name {
+          font-size: 14px;
+        }
         .header-search-box {
-          width: 50px;
-          height: 24px;
-          padding: 0 3px 0 4px;
+          width: 54px;
+          height: 26px;
+          padding: 0 5px 0 6px;
         }
-        .header-search-submit {
-          width: 15px;
-          height: 15px;
+        .nav-menu-btn {
+          width: 28px;
+          height: 28px;
+          min-width: 28px;
+          border-radius: 7px;
         }
-        .header-search-submit svg {
-          width: 10px;
-          height: 10px;
+        .nav-actions {
+          gap: 6px;
         }
       }
 
@@ -1364,19 +1521,6 @@ const platformLinks = [
       }
     
 
-      /* MOBILE-ONLY SF TAB CONNECTION
-         Extend the EXISTING navigation wings themselves into the SF tab area.
-         No separate connector lines; preserve the existing fill and borders. */
-      @media (max-width: 768px) {
-        .nav-segment-left {
-          margin-right: -16px;
-        }
-
-        .nav-segment-right {
-          margin-left: -16px;
-        }
-      }
-
 </style>
 
     <style is:global>
@@ -1384,21 +1528,76 @@ const platformLinks = [
     </style>
 
     <script>
-      // 1. Mobile Menu Toggle
+      // 1. Navigation Menu Toggle & Outside Click
       const menuToggle = document.querySelector('#menu-toggle');
       const siteMenu = document.querySelector('#site-menu');
+
       const closeMenu = () => {
         if (!menuToggle || !siteMenu) return;
         menuToggle.setAttribute('aria-expanded', 'false');
         menuToggle.setAttribute('aria-label', 'Open navigation menu');
         siteMenu.hidden = true;
       };
-      menuToggle?.addEventListener('click', () => {
+
+      const openMenu = () => {
+        if (!menuToggle || !siteMenu) return;
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', 'Close navigation menu');
+        siteMenu.hidden = false;
+      };
+
+      menuToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
         if (!siteMenu) return;
-        const open = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', String(!open));
-        menuToggle.setAttribute('aria-label', open ? 'Open navigation menu' : 'Close navigation menu');
-        siteMenu.hidden = open;
+        const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      // Close menu when clicking outside or clicking any link inside
+      document.addEventListener('click', (event) => {
+        if (!siteMenu || siteMenu.hidden) return;
+        const target = event.target as HTMLElement | null;
+        if (target && !siteMenu.contains(target) && !menuToggle?.contains(target)) {
+          closeMenu();
+        }
+      });
+
+      siteMenu?.querySelectorAll('.menu-nav-item').forEach((item) => {
+        item.addEventListener('click', () => {
+          closeMenu();
+        });
+      });
+
+      // Single Combined Pill Theme Toggle Handler
+      const themeToggle = document.querySelector('#theme-pill-toggle');
+      const lightOption = document.querySelector('.theme-pill-light');
+      const darkOption = document.querySelector('.theme-pill-dark');
+
+      let currentTheme = 'dark';
+
+      const updateThemeUI = (theme: string) => {
+        currentTheme = theme;
+        if (theme === 'light') {
+          lightOption?.classList.add('is-active');
+          darkOption?.classList.remove('is-active');
+          themeToggle?.setAttribute('aria-checked', 'false');
+          themeToggle?.setAttribute('data-theme', 'light');
+        } else {
+          darkOption?.classList.add('is-active');
+          lightOption?.classList.remove('is-active');
+          themeToggle?.setAttribute('aria-checked', 'true');
+          themeToggle?.setAttribute('data-theme', 'dark');
+        }
+      };
+
+      themeToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        updateThemeUI(newTheme);
       });
 
       // Keyboard & search shortcut support
