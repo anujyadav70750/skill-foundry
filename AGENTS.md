@@ -8,7 +8,7 @@ Every user-requested change or feature must follow this strict sequential lifecy
 4. Wait for user approval when the change requires approval.
 5. After the approved change is complete, commit and synchronize the approved changes to the connected GitHub repository on branch `main`.
 6. Verify that the Cloudflare production deployment is triggered and completed.
-7. Verify the live website (`https://hub.skillfoundryai.workers.dev`) to confirm changes are live.
+7. Verify the live website (`https://hub.skillfoundry-web.workers.dev`) to confirm changes are live.
 8. Never push or publish changes that have not been approved.
 9. Never make unrelated changes, redesign other sections, or modify already-correct areas without approval.
 
