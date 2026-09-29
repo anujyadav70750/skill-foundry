@@ -36,7 +36,7 @@ const dynamicCategories = Array.from(categoryCounts.entries())
     let description = categoryDescriptions.get(name);
     if (!description) {
       const sample = resources.find((r) => r.data.category?.trim() === name);
-      description = sample?.data.description || `Practical AI skills and workflows for ${name}.`;
+      description = sample?.data.description || `Practical skills and workflows for ${name}.`;
     }
     return { name, count, description };
   });
@@ -60,21 +60,21 @@ const toolLogo = (name: string) => {
 ---
 
 <BaseLayout 
-  title="Skill Foundry — Learn Practical AI Skills, Workflows & Tools"
-  description="Learn practical AI skills through clear, beginner-friendly tutorials, step-by-step workflows, and direct access to the tools you need."
+  title="Skill Foundry — Learn Practical Skills, Workflows & Tools"
+  description="Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows."
 >
   <div class="home-page">
     <!-- SECTION 1 — HERO -->
     <section class="home-hero">
       <div class="container narrow hero-content">
         <div class="hero-capsule-row">
-          <span class="home-capsule">PRACTICAL AI LEARNING</span>
+          <span class="home-capsule">PRACTICAL SKILLS PLATFORM</span>
         </div>
         <h1 class="hero-title">
-          Build practical AI skills that work in the <span class="hero-highlight">real world.</span>
+          Build practical skills that work in the <span class="hero-highlight">real world.</span>
         </h1>
         <p class="hero-lead">
-          Learn practical AI skills through clear, beginner-friendly tutorials, step-by-step workflows, and direct access to the tools you need.
+          Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.
         </p>
         <div class="hero-actions">
           <a class="home-button home-button-primary" href="/resources/">Explore Resources</a>
@@ -96,7 +96,7 @@ const toolLogo = (name: string) => {
       <div class="container narrow">
         <div class="section-head">
           <p class="home-capsule">THE PROMISE</p>
-          <h2>Learn and actually use AI</h2>
+          <h2>Learn and actually build skills</h2>
           <p class="section-subcopy">
             No complicated theory or guesswork. Everything is structured so you know exactly where to begin and how to finish.
           </p>
@@ -207,7 +207,7 @@ const toolLogo = (name: string) => {
           <article class="home-card method-card">
             <div class="method-step-badge">01</div>
             <div class="method-subcapsule">FIND</div>
-            <h3 class="card-title">Find a practical AI topic or workflow</h3>
+            <h3 class="card-title">Find a practical topic or workflow</h3>
             <p class="card-description">
               Choose a practical topic or guided workflow matched to what you want to create.
             </p>
@@ -242,7 +242,7 @@ const toolLogo = (name: string) => {
             <p class="home-capsule">EXPLORE BY CATEGORY</p>
             <h2>Find what you want to build</h2>
             <p class="section-subcopy">
-              Browse practical AI resources organized by creative domain and production discipline.
+              Browse practical resources organized by creative domain and production discipline.
             </p>
           </div>
 
@@ -417,7 +417,7 @@ const toolLogo = (name: string) => {
             <p class="home-capsule cta-capsule">START BUILDING</p>
             <h2 class="cta-title">Build the skill. Then make it your own.</h2>
             <p class="cta-desc">
-              Explore practical AI resources, follow clear workflows, and start building.
+              Explore practical resources, build useful skills, and put what you learn into practice.
             </p>
           </div>
           <div class="cta-action-wrap">

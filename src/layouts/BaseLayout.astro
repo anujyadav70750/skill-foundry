@@ -18,15 +18,15 @@ export interface Props {
 
 const siteUrl = 'https://skillfoundry.dev';
 const siteName = 'Skill Foundry';
-const defaultTitle = 'Skill Foundry | Practical AI Blueprint Library';
-const defaultDescription = 'Skill Foundry is an editorial library for builders. Discover practical AI blueprints, prompt systems, and executable workflows that turn models into production software.';
+const defaultTitle = 'Skill Foundry | Practical Skills Platform & Resource Library';
+const defaultDescription = 'Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.';
 
 const {
   title,
   description = defaultDescription,
   canonical,
   image = '/og-image.svg',
-  imageAlt = 'Skill Foundry — Practical AI blueprints, workflows, and tools',
+  imageAlt = 'Skill Foundry — Practical learning resources, tutorials, and workflows',
   type = 'website',
   robots = 'index, follow',
   hideHeaderSearch = false,
@@ -34,7 +34,9 @@ const {
   hideHeader = false
 } = Astro.props;
 
-const fullTitle = title ? `${title} | ${siteName}` : defaultTitle;
+const fullTitle = title
+  ? (title.includes(siteName) ? title : `${title} | ${siteName}`)
+  : defaultTitle;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = image ? new URL(image, siteUrl).href : undefined;
 
