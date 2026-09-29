@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://hub.skillfoundryai.workers.dev',
+  site: 'https://hub.skillfoundry-web.workers.dev',
   output: 'static',
   compressHTML: true,
   integrations: [sitemap()],
