@@ -14,7 +14,8 @@ const escapeXml = (value: string) => value
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://hub.skillfoundry-web.workers.dev');
   const resources = (await getCollection('resources'))
-    .filter((resource) => !('draft' in resource.data && resource.data.draft === true));
+    .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
+    .filter((resource) => resourceSlug(resource) !== 'testing-1');
   const urls = [
     ...staticPaths.map((path) => ({ loc: new URL(path, base).href })),
     ...resources.map((resource) => ({
