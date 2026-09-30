@@ -4868,5 +4868,791 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           border-radius: 22px !important;
         }
       }
+
+      /* ==========================================================================
+         LIGHT THEME OVERRIDES FOR RESOURCE DETAIL PAGE
+         ========================================================================== */
+      :root[data-theme="light"] body:has(.testing-1-theme),
+      html.light-theme:has(.testing-1-theme),
+      html.light-theme body:has(.testing-1-theme),
+      html[data-theme="light"]:has(.testing-1-theme),
+      html[data-theme="light"] body:has(.testing-1-theme) {
+        background-color: #F8FAFC !important;
+        background-image:
+          radial-gradient(ellipse 85% 50% at 50% -10%, rgba(2, 132, 199, 0.08) 0%, rgba(241, 245, 249, 0.5) 50%, transparent 80%),
+          radial-gradient(circle at 50% 55%, rgba(2, 132, 199, 0.04) 0%, transparent 65%),
+          linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px) !important;
+        color: #0F172A !important;
+      }
+
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer,
+      html.light-theme body:has(.testing-1-theme) .site-footer {
+        background: #F8FAFC !important;
+        border-top: 1px solid #E2E8F0 !important;
+        color: #475569 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
+        color: #0F172A !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-descriptors .descriptor-item {
+        color: #334155 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-nav a,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-nav a {
+        color: #1E293B !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-nav a:hover,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
+        color: #0284C7 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-legal a,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-legal a {
+        color: #64748B !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-legal a:hover,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
+        color: #0284C7 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) .site-footer .footer-copyright,
+      html.light-theme body:has(.testing-1-theme) .site-footer .footer-copyright {
+        color: #64748B !important;
+      }
+
+      :root[data-theme="light"] .testing-1-theme,
+      html.light-theme .testing-1-theme,
+      :root[data-theme="light"] .resource-page,
+      html.light-theme .resource-page {
+        color: #0F172A !important;
+      }
+
+      /* 1. Breadcrumbs, Separators & Active Category */
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs,
+      html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs,
+      :root[data-theme="light"] .resource-intro .breadcrumbs,
+      html.light-theme .resource-intro .breadcrumbs,
+      :root[data-theme="light"] .breadcrumbs,
+      html.light-theme .breadcrumbs {
+        color: #64748B !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs a,
+      html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs a,
+      :root[data-theme="light"] .resource-intro .breadcrumbs a,
+      html.light-theme .resource-intro .breadcrumbs a,
+      :root[data-theme="light"] .breadcrumbs a,
+      html.light-theme .breadcrumbs a {
+        color: #334155 !important;
+        font-weight: 600 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs a:hover,
+      html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs a:hover,
+      :root[data-theme="light"] .resource-intro .breadcrumbs a:hover,
+      html.light-theme .resource-intro .breadcrumbs a:hover,
+      :root[data-theme="light"] .breadcrumbs a:hover,
+      html.light-theme .breadcrumbs a:hover {
+        color: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs span,
+      html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs span,
+      :root[data-theme="light"] .resource-intro .breadcrumbs span,
+      html.light-theme .resource-intro .breadcrumbs span,
+      :root[data-theme="light"] .breadcrumbs span,
+      html.light-theme .breadcrumbs span {
+        color: #94A3B8 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs span:last-child,
+      html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs span:last-child,
+      :root[data-theme="light"] .resource-intro .breadcrumbs span:last-child,
+      html.light-theme .resource-intro .breadcrumbs span:last-child,
+      :root[data-theme="light"] .breadcrumbs span:last-child,
+      html.light-theme .breadcrumbs span:last-child {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+
+      /* 2. Category Eyebrow Badge */
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header .eyebrow,
+      html.light-theme .testing-1-theme .hero-unified-header .eyebrow,
+      :root[data-theme="light"] .resource-intro .eyebrow,
+      html.light-theme .resource-intro .eyebrow,
+      :root[data-theme="light"] .testing-1-theme .section-heading .eyebrow,
+      html.light-theme .testing-1-theme .section-heading .eyebrow,
+      :root[data-theme="light"] .section-heading .eyebrow,
+      html.light-theme .section-heading .eyebrow {
+        background: #EFF6FF !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #0369A1 !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.12em !important;
+        box-shadow: 0 1px 4px rgba(2, 132, 199, 0.1) !important;
+        backdrop-filter: none !important;
+      }
+
+      /* 3. Resource Title & Lead Description */
+      :root[data-theme="light"] .testing-1-theme .hero-unified-header h1,
+      html.light-theme .testing-1-theme .hero-unified-header h1,
+      :root[data-theme="light"] .resource-intro h1,
+      html.light-theme .resource-intro h1 {
+        color: #0F172A !important;
+        text-shadow: none !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .resource-description .lead,
+      html.light-theme .testing-1-theme .resource-description .lead,
+      :root[data-theme="light"] .resource-page .lead,
+      html.light-theme .resource-page .lead {
+        color: #334155 !important;
+        font-weight: 450 !important;
+      }
+
+      /* 4. Publisher Identity Capsule */
+      :root[data-theme="light"] .testing-1-theme .publisher-identity,
+      html.light-theme .testing-1-theme .publisher-identity,
+      :root[data-theme="light"] .publisher-identity,
+      html.light-theme .publisher-identity {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .publisher-avatar-box,
+      html.light-theme .testing-1-theme .publisher-avatar-box,
+      :root[data-theme="light"] .publisher-avatar-box,
+      html.light-theme .publisher-avatar-box {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .publisher-name-row strong,
+      html.light-theme .testing-1-theme .publisher-name-row strong,
+      :root[data-theme="light"] .publisher-name-row strong,
+      html.light-theme .publisher-name-row strong {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .publisher-meta,
+      html.light-theme .testing-1-theme .publisher-meta,
+      :root[data-theme="light"] .publisher-meta,
+      html.light-theme .publisher-meta {
+        color: #475569 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .publisher-verification svg circle,
+      html.light-theme .testing-1-theme .publisher-verification svg circle,
+      :root[data-theme="light"] .publisher-verification svg circle,
+      html.light-theme .publisher-verification svg circle {
+        fill: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .publisher-verification svg path,
+      html.light-theme .testing-1-theme .publisher-verification svg path,
+      :root[data-theme="light"] .publisher-verification svg path,
+      html.light-theme .publisher-verification svg path {
+        stroke: #FFFFFF !important;
+      }
+
+      /* 5. Hero Image Container */
+      :root[data-theme="light"] .testing-1-theme .hero-image-wrap,
+      html.light-theme .testing-1-theme .hero-image-wrap,
+      :root[data-theme="light"] .resource-hero-media .hero-image,
+      html.light-theme .resource-hero-media .hero-image {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08), 0 0 30px rgba(2, 132, 199, 0.04) !important;
+      }
+
+      /* 6. Guide Cue (Follow Step-by-Step Guide CTA) */
+      :root[data-theme="light"] .testing-1-theme .transition-track-line,
+      html.light-theme .testing-1-theme .transition-track-line,
+      :root[data-theme="light"] .transition-track-line,
+      html.light-theme .transition-track-line {
+        background: linear-gradient(90deg, transparent 0%, rgba(2, 132, 199, 0.2) 25%, rgba(2, 132, 199, 0.5) 50%, rgba(2, 132, 199, 0.2) 75%, transparent 100%) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .guide-cue,
+      html.light-theme .testing-1-theme .guide-cue,
+      :root[data-theme="light"] .guide-cue,
+      html.light-theme .guide-cue {
+        background: #FFFFFF !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #0F172A !important;
+        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.16), 0 2px 6px rgba(15, 23, 42, 0.06) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .guide-cue:hover,
+      html.light-theme .testing-1-theme .guide-cue:hover,
+      :root[data-theme="light"] .guide-cue:hover,
+      html.light-theme .guide-cue:hover {
+        background: #F0F9FF !important;
+        border-color: #0369A1 !important;
+        color: #0F172A !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 26px rgba(2, 132, 199, 0.25) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .guide-cue span,
+      html.light-theme .testing-1-theme .guide-cue span,
+      :root[data-theme="light"] .testing-1-theme .guide-cue .guide-cue-text,
+      html.light-theme .testing-1-theme .guide-cue .guide-cue-text,
+      :root[data-theme="light"] .guide-cue span,
+      html.light-theme .guide-cue span,
+      :root[data-theme="light"] .guide-cue .guide-cue-text,
+      html.light-theme .guide-cue .guide-cue-text {
+        color: #0F172A !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 12px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.08em !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .guide-cue svg,
+      html.light-theme .testing-1-theme .guide-cue svg,
+      :root[data-theme="light"] .testing-1-theme .guide-cue-icon,
+      html.light-theme .testing-1-theme .guide-cue-icon,
+      :root[data-theme="light"] .guide-cue svg,
+      html.light-theme .guide-cue svg,
+      :root[data-theme="light"] .guide-cue-icon,
+      html.light-theme .guide-cue-icon {
+        color: #0284C7 !important;
+        stroke: #0284C7 !important;
+        stroke-width: 2.5 !important;
+      }
+
+      /* 7. Sections (Introduction, At a Glance, Tools & Resources) */
+      :root[data-theme="light"] .testing-1-theme .resource-section,
+      html.light-theme .testing-1-theme .resource-section,
+      :root[data-theme="light"] .testing-1-theme .intro-section,
+      html.light-theme .testing-1-theme .intro-section,
+      :root[data-theme="light"] .resource-page .resource-section,
+      html.light-theme .resource-page .resource-section {
+        background: #FFFFFF !important;
+        border: 1.5px solid #E2E8F0 !important;
+        box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .section-heading h2,
+      html.light-theme .testing-1-theme .section-heading h2,
+      :root[data-theme="light"] .section-heading h2,
+      html.light-theme .section-heading h2 {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .section-lead,
+      html.light-theme .testing-1-theme .section-lead,
+      :root[data-theme="light"] .section-lead,
+      html.light-theme .section-lead {
+        color: #334155 !important;
+        font-weight: 450 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .section-subcopy,
+      html.light-theme .testing-1-theme .section-subcopy,
+      :root[data-theme="light"] .section-subcopy,
+      html.light-theme .section-subcopy {
+        color: #475569 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tool-card,
+      html.light-theme .testing-1-theme .tool-card,
+      :root[data-theme="light"] .testing-1-theme .tools-list .tool-card,
+      html.light-theme .testing-1-theme .tools-list .tool-card,
+      :root[data-theme="light"] .tool-card,
+      html.light-theme .tool-card {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tool-card:hover,
+      html.light-theme .testing-1-theme .tool-card:hover,
+      :root[data-theme="light"] .testing-1-theme .tools-list .tool-card:hover,
+      html.light-theme .testing-1-theme .tools-list .tool-card:hover,
+      :root[data-theme="light"] .tool-card:hover,
+      html.light-theme .tool-card:hover {
+        border-color: #0284C7 !important;
+        box-shadow: 0 6px 18px rgba(2, 132, 199, 0.2) !important;
+      }
+
+      /* 8. Workflow Container & Header Capsule */
+      :root[data-theme="light"] .testing-1-theme .blueprint-workflow-container,
+      html.light-theme .testing-1-theme .blueprint-workflow-container {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 16px 44px rgba(15, 23, 42, 0.06), 0 0 30px rgba(2, 132, 199, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-header-capsule,
+      html.light-theme .testing-1-theme .blueprint-header-capsule {
+        background: #F0F9FF !important;
+        border: 1.5px solid #0284C7 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-capsule-label,
+      html.light-theme .testing-1-theme .blueprint-capsule-label {
+        color: #0369A1 !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-capsule-title,
+      html.light-theme .testing-1-theme .blueprint-capsule-title {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-top-arrow,
+      html.light-theme .testing-1-theme .blueprint-top-arrow {
+        color: #0284C7 !important;
+      }
+
+      /* 9. Step Containers & Collapsible Headers */
+      :root[data-theme="light"] .testing-1-theme .blueprint-step-container,
+      html.light-theme .testing-1-theme .blueprint-step-container {
+        background: #F8FAFC !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule,
+      html.light-theme .testing-1-theme .blueprint-step-capsule {
+        background: #FFFFFF !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #0369A1 !important;
+        box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule span,
+      html.light-theme .testing-1-theme .blueprint-step-capsule span {
+        color: #0369A1 !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .step-header-thumb-box,
+      html.light-theme .testing-1-theme .step-header-thumb-box {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .step-header-title,
+      html.light-theme .testing-1-theme .step-header-title {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .step-header-purpose,
+      html.light-theme .testing-1-theme .step-header-purpose {
+        color: #334155 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .step-expand-chevron,
+      html.light-theme .testing-1-theme .step-expand-chevron {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        color: #334155 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .step-expand-chevron:hover,
+      html.light-theme .testing-1-theme .step-expand-chevron:hover {
+        background: #F1F5F9 !important;
+        color: #0284C7 !important;
+        border-color: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-step-body,
+      html.light-theme .testing-1-theme .blueprint-step-body {
+        border-top: 1.5px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-step-title,
+      html.light-theme .testing-1-theme .blueprint-step-title {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+
+      /* 10. Subnodes (Inputs, Tools/Settings, Prompt, Output) */
+      :root[data-theme="light"] .testing-1-theme .blueprint-subnode,
+      html.light-theme .testing-1-theme .blueprint-subnode {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-node-title,
+      html.light-theme .testing-1-theme .blueprint-node-title {
+        color: #0F172A !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-node-subtitle,
+      html.light-theme .testing-1-theme .blueprint-node-subtitle {
+        color: #475569 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-sub-arrow,
+      html.light-theme .testing-1-theme .blueprint-sub-arrow,
+      :root[data-theme="light"] .testing-1-theme .blueprint-sub-arrow svg,
+      html.light-theme .testing-1-theme .blueprint-sub-arrow svg {
+        color: #0284C7 !important;
+        stroke: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-stream-connector .stream-line,
+      html.light-theme .testing-1-theme .blueprint-stream-connector .stream-line {
+        background: linear-gradient(180deg, #CBD5E1 0%, #0284C7 100%) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-stream-connector .stream-arrow-icon,
+      html.light-theme .testing-1-theme .blueprint-stream-connector .stream-arrow-icon {
+        color: #0284C7 !important;
+        stroke: #0284C7 !important;
+      }
+
+      /* 11. Tool & Settings Subnode */
+      :root[data-theme="light"] .testing-1-theme .blueprint-tool-row,
+      html.light-theme .testing-1-theme .blueprint-tool-row {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 12px !important;
+        padding: 8px 12px !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-tool-logo-link,
+      html.light-theme .testing-1-theme .blueprint-tool-logo-link {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-tool-name,
+      html.light-theme .testing-1-theme .blueprint-tool-name {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-purpose-pill,
+      html.light-theme .testing-1-theme .blueprint-purpose-pill {
+        background: #EFF6FF !important;
+        color: #1D4ED8 !important;
+        border: 1px solid #93C5FD !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-settings-label,
+      html.light-theme .testing-1-theme .blueprint-settings-label {
+        color: #475569 !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-setting-chip,
+      html.light-theme .testing-1-theme .blueprint-setting-chip {
+        background: #F1F5F9 !important;
+        border: 1px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-setting-chip .setting-label,
+      html.light-theme .testing-1-theme .blueprint-setting-chip .setting-label {
+        color: #0369A1 !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-setting-chip .setting-icon,
+      html.light-theme .testing-1-theme .blueprint-setting-chip .setting-icon {
+        stroke: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-setting-chip .setting-val,
+      html.light-theme .testing-1-theme .blueprint-setting-chip .setting-val {
+        color: #0F172A !important;
+        font-weight: 600 !important;
+      }
+
+      /* 12. Prompt Subnode */
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt,
+      html.light-theme .testing-1-theme .workflow-prompt {
+        background: #F8FAFC !important;
+        border: 1.5px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt-head,
+      html.light-theme .testing-1-theme .workflow-prompt-head {
+        background: #F1F5F9 !important;
+        border-bottom: 1px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt-head span,
+      html.light-theme .testing-1-theme .workflow-prompt-head span {
+        color: #0369A1 !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt-head button,
+      html.light-theme .testing-1-theme .workflow-prompt-head button {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt-head button:hover,
+      html.light-theme .testing-1-theme .workflow-prompt-head button:hover {
+        background: #0284C7 !important;
+        border-color: #0284C7 !important;
+        color: #FFFFFF !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-prompt pre,
+      html.light-theme .testing-1-theme .workflow-prompt pre,
+      :root[data-theme="light"] .testing-1-theme [data-step-prompt],
+      html.light-theme .testing-1-theme [data-step-prompt] {
+        color: #0F172A !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-download,
+      html.light-theme .testing-1-theme .workflow-download {
+        background: #F1F5F9 !important;
+        border-top: 1px solid #CBD5E1 !important;
+        color: #0F172A !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-download:hover,
+      html.light-theme .testing-1-theme .workflow-download:hover {
+        background: #0284C7 !important;
+        color: #FFFFFF !important;
+        border-color: #0284C7 !important;
+      }
+
+      /* 13. Instructions Card */
+      :root[data-theme="light"] .testing-1-theme .instruction-card,
+      html.light-theme .testing-1-theme .instruction-card {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .instruction-line span,
+      html.light-theme .testing-1-theme .instruction-line span {
+        background: #EFF6FF !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #0284C7 !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .instruction-line p,
+      html.light-theme .testing-1-theme .instruction-line p {
+        color: #1E293B !important;
+        font-weight: 500 !important;
+      }
+
+      /* 14. Output Subnode & Final Result */
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-body .media-frame,
+      html.light-theme .testing-1-theme .blueprint-result-body .media-frame {
+        background: #F1F5F9 !important;
+        border: 1.5px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-meta-info,
+      html.light-theme .testing-1-theme .blueprint-result-meta-info {
+        border-top: 1px solid #E2E8F0 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-label,
+      html.light-theme .testing-1-theme .blueprint-result-label {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-desc,
+      html.light-theme .testing-1-theme .blueprint-result-desc {
+        color: #334155 !important;
+        font-weight: 450 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-subnode.node-result.is-final-result-node,
+      html.light-theme .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
+        background: #FFFFFF !important;
+        border: 2px solid #0284C7 !important;
+        box-shadow: 0 10px 30px rgba(2, 132, 199, 0.12) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-block,
+      html.light-theme .testing-1-theme .blueprint-result-block {
+        background: #FFFFFF !important;
+        border: 2px solid #0284C7 !important;
+        box-shadow: 0 12px 36px rgba(2, 132, 199, 0.12) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule,
+      html.light-theme .testing-1-theme .blueprint-result-capsule {
+        background: #0284C7 !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule span,
+      html.light-theme .testing-1-theme .blueprint-result-capsule span {
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-final-media-frame,
+      html.light-theme .testing-1-theme .blueprint-final-media-frame {
+        background: #F1F5F9 !important;
+        border: 1.5px solid #CBD5E1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-final-title,
+      html.light-theme .testing-1-theme .blueprint-final-title {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .blueprint-final-desc,
+      html.light-theme .testing-1-theme .blueprint-final-desc {
+        color: #334155 !important;
+        font-weight: 450 !important;
+      }
+
+      /* 15. Tips, Tutorial & Tags */
+      :root[data-theme="light"] .testing-1-theme .tutorial-section,
+      html.light-theme .testing-1-theme .tutorial-section {
+        background: #FFFFFF !important;
+        border: 1.5px solid #E2E8F0 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tutorial-section .text-link,
+      html.light-theme .testing-1-theme .tutorial-section .text-link {
+        color: #0284C7 !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tips-section,
+      html.light-theme .testing-1-theme .tips-section {
+        background: #FFFFFF !important;
+        border: 1.5px solid #E2E8F0 !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tips-section .section-heading h2,
+      html.light-theme .testing-1-theme .tips-section .section-heading h2 {
+        color: #0F172A !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tips-section .section-heading .eyebrow,
+      html.light-theme .testing-1-theme .tips-section .section-heading .eyebrow {
+        color: #0369A1 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tips-list,
+      html.light-theme .testing-1-theme .tips-list {
+        background: #F8FAFC !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: none !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tips-list li,
+      html.light-theme .testing-1-theme .tips-list li {
+        color: #1E293B !important;
+        font-weight: 500 !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+      }
+
+      /* 16. Bottom CTA & Tags */
+      :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card,
+      html.light-theme .testing-1-theme .resource-cta .cta-card {
+        background: radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.08), transparent 35%), #FFFFFF !important;
+        border: 1.5px solid rgba(217, 119, 6, 0.35) !important;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card h2,
+      html.light-theme .testing-1-theme .resource-cta .cta-card h2 {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card p,
+      html.light-theme .testing-1-theme .resource-cta .cta-card p {
+        color: #334155 !important;
+        font-weight: 500 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card .button-primary,
+      html.light-theme .testing-1-theme .resource-cta .cta-card .button-primary {
+        background: #D97706 !important;
+        color: #FFFFFF !important;
+        border: 1px solid #B45309 !important;
+        box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25) !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card .button-primary:hover,
+      html.light-theme .testing-1-theme .resource-cta .cta-card .button-primary:hover {
+        background: #B45309 !important;
+        color: #FFFFFF !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tags a,
+      html.light-theme .testing-1-theme .tags a {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        color: #334155 !important;
+        font-weight: 600 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tags a:hover,
+      html.light-theme .testing-1-theme .tags a:hover {
+        border-color: #D97706 !important;
+        color: #D97706 !important;
+        background: rgba(217, 119, 6, 0.08) !important;
+      }
+
+      /* 17. Prompt Modal */
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog,
+      html.light-theme [data-prompt-modal] .prompt-modal-dialog {
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2) !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head,
+      html.light-theme [data-prompt-modal] .prompt-modal-head {
+        background: #F8FAFC !important;
+        border-bottom: 1px solid #E2E8F0 !important;
+        color: #0F172A !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head span,
+      html.light-theme [data-prompt-modal] .prompt-modal-head span {
+        color: #0F172A !important;
+        font-weight: 750 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions,
+      html.light-theme [data-prompt-modal] .prompt-modal-actions {
+        background: #F8FAFC !important;
+        border-top: 1px solid #E2E8F0 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions button,
+      html.light-theme [data-prompt-modal] .prompt-modal-actions button {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        border: 1.5px solid #CBD5E1 !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions button:hover,
+      html.light-theme [data-prompt-modal] .prompt-modal-actions button:hover {
+        background: #D97706 !important;
+        border-color: #D97706 !important;
+        color: #FFFFFF !important;
+      }
+      :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog pre,
+      html.light-theme [data-prompt-modal] .prompt-modal-dialog pre {
+        background: #F1F5F9 !important;
+        color: #0F172A !important;
+      }
+
+      /* 18. Generic Resource Page Fallback */
+      :global([data-theme="light"]) .blueprint-step-card,
+      :global([data-theme="light"]) .workflow-card,
+      :global([data-theme="light"]) .step-card,
+      :global([data-theme="light"]) .tools-used-card,
+      :global([data-theme="light"]) .tips-section,
+      :global(html.light-theme) .blueprint-step-card,
+      :global(html.light-theme) .workflow-card,
+      :global(html.light-theme) .step-card,
+      :global(html.light-theme) .tools-used-card,
+      :global(html.light-theme) .tips-section {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      }
+      :global([data-theme="light"]) .step-header-title,
+      :global([data-theme="light"]) .blueprint-step-title,
+      :global([data-theme="light"]) .blueprint-final-title,
+      :global(html.light-theme) .step-header-title,
+      :global(html.light-theme) .blueprint-step-title,
+      :global(html.light-theme) .blueprint-final-title {
+        color: #0F172A;
+        font-weight: 750;
+      }
+      :global([data-theme="light"]) .step-header-purpose,
+      :global([data-theme="light"]) .blueprint-final-desc,
+      :global(html.light-theme) .step-header-purpose,
+      :global(html.light-theme) .blueprint-final-desc {
+        color: #334155;
+      }
+      :global([data-theme="light"]) .blueprint-subnode,
+      :global([data-theme="light"]) .input-card,
+      :global([data-theme="light"]) .output-card,
+      :global(html.light-theme) .blueprint-subnode,
+      :global(html.light-theme) .input-card,
+      :global(html.light-theme) .output-card {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+      }
+      :global([data-theme="light"]) .prompt-box,
+      :global([data-theme="light"]) .prompt-shell,
+      :global(html.light-theme) .prompt-box,
+      :global(html.light-theme) .prompt-shell {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+      }
+      :global([data-theme="light"]) .prompt-box pre,
+      :global([data-theme="light"]) .prompt-shell pre,
+      :global(html.light-theme) .prompt-box pre,
+      :global(html.light-theme) .prompt-shell pre {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .copy-button,
+      :global(html.light-theme) .copy-button {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        color: #0F172A;
+        font-weight: 700;
+      }
+      :global([data-theme="light"]) .tips-list,
+      :global(html.light-theme) .tips-list {
+        background: #F8FAFC;
+        border-color: #CBD5E1;
+        color: #1E293B;
+      }
   </style>
 </BaseLayout>

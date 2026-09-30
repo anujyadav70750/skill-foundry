@@ -14,12 +14,16 @@ export interface Props {
   hideHeaderSearch?: boolean;
   hideFooter?: boolean;
   hideHeader?: boolean;
+  hideBackButton?: boolean;
 }
 
 const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
 const siteName = 'Skill Foundry';
 const defaultTitle = 'Skill Foundry | Practical Skills Platform & Resource Library';
 const defaultDescription = 'Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.';
+
+const currentPath = Astro.url.pathname;
+const isHomePage = currentPath === '/' || currentPath === '';
 
 const {
   title,
@@ -31,7 +35,8 @@ const {
   robots = 'index, follow',
   hideHeaderSearch = false,
   hideFooter = false,
-  hideHeader = false
+  hideHeader = false,
+  hideBackButton = isHomePage
 } = Astro.props;
 
 const fullTitle = title
@@ -58,7 +63,6 @@ const publishedSearchData = allResources
     date: r.data.date ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(r.data.date)) : ''
   }));
 
-const currentPath = Astro.url.pathname;
 const searchHref = currentPath && currentPath !== '/search/' && currentPath !== '/search'
   ? `/search/?from=${encodeURIComponent(currentPath)}`
   : '/search/';
@@ -121,6 +125,17 @@ const platformLinks = [
     <script src="/workflow-fixes.js?v=20260916-final" defer></script>
     <script is:inline>
       (function() {
+        try {
+          var saved = localStorage.getItem('sf_theme');
+          var theme = saved || 'dark';
+          document.documentElement.setAttribute('data-theme', theme);
+          if (theme === 'light') {
+            document.documentElement.classList.add('light-theme');
+          } else {
+            document.documentElement.classList.remove('light-theme');
+          }
+        } catch (e) {}
+
         var isFaqReturn = false;
         try {
           if (sessionStorage.getItem('sf_back_to_faq') === 'true') {
@@ -220,7 +235,7 @@ const platformLinks = [
                 <span class="menu-item-label">Home</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/resources') ? 'active' : ''}`} href="/resources/">
+              <a class={`menu-nav-item ${currentPath === '/resources/' || (currentPath.startsWith('/resources') && !currentPath.includes('guides')) ? 'active' : ''}`} href="/resources/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -228,6 +243,27 @@ const platformLinks = [
                   </svg>
                 </span>
                 <span class="menu-item-label">Resources</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/guides') ? 'active' : ''}`} href="/guides/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                  </svg>
+                </span>
+                <span class="menu-item-label">Guides</span>
+              </a>
+
+              <a class={`menu-nav-item ${currentPath.startsWith('/faq') ? 'active' : ''}`} href="/faq/">
+                <span class="menu-item-icon">
+                  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </span>
+                <span class="menu-item-label">FAQ</span>
               </a>
 
               <a class={`menu-nav-item ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">
@@ -314,6 +350,25 @@ const platformLinks = [
       </header>
     )}
 
+    {!hideBackButton && (
+      <aside class="site-back-bar" id="site-back-bar" aria-label="Page navigation">
+        <div class="site-back-container">
+          <button
+            type="button"
+            class="site-back-btn"
+            id="site-global-back-btn"
+            aria-label="Go back to previous page"
+            title="Go back"
+          >
+            <svg class="site-back-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+          </button>
+        </div>
+      </aside>
+    )}
+
     <main><slot /></main>
 
     <!-- EMBEDDED PUBLISHED RESOURCE SEARCH DATA -->
@@ -345,6 +400,8 @@ const platformLinks = [
           <nav class="footer-nav" aria-label="Main navigation">
             <a href="/">Home</a>
             <a href="/resources/">Resources</a>
+            <a href="/guides/">Guides</a>
+            <a href="/faq/">FAQ</a>
             <a href="/about/">About</a>
             <a href="/contact/">Contact</a>
           </nav>
@@ -384,6 +441,89 @@ const platformLinks = [
     <style>
       :global(body.no-header) {
         padding-top: 0 !important;
+      }
+
+      /* ==========================================================================
+         GLOBAL BACK BUTTON BAR (SQUARE BUTTON WITH CLEAN ARROW)
+         ========================================================================== */
+      .site-back-bar {
+        width: 100%;
+        padding: 10px 0 4px 0;
+        position: relative;
+        z-index: 50;
+      }
+
+      .site-back-container {
+        width: min(820px, calc(100% - 48px));
+        margin-inline: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      @media (max-width: 600px) {
+        .site-back-container {
+          width: min(calc(100% - 28px), 820px);
+        }
+        .site-back-bar {
+          padding: 8px 0 2px 0;
+        }
+      }
+
+      .site-back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: #94A3B8;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      .site-back-btn:hover {
+        background: rgba(24, 32, 48, 0.95);
+        border-color: rgba(56, 189, 248, 0.5);
+        color: #FFFFFF;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+
+      .site-back-btn:active {
+        transform: translateY(0);
+      }
+
+      .site-back-icon {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.18s ease;
+      }
+
+      .site-back-btn:hover .site-back-icon {
+        transform: translateX(-2px);
+      }
+
+      :global([data-theme="light"]) .site-back-btn,
+      :global(html.light-theme) .site-back-btn {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        color: #475569;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+      }
+
+      :global([data-theme="light"]) .site-back-btn:hover,
+      :global(html.light-theme) .site-back-btn:hover {
+        background: #F8FAFC;
+        border-color: #0284C7;
+        color: #0F172A;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
       }
 
       /* ==========================================================================
@@ -834,6 +974,144 @@ const platformLinks = [
       }
       .dropdown-view-all:hover {
         opacity: 0.85;
+      }
+
+      /* Light Theme Adaptations for Header, Menu & Footer */
+      :global([data-theme="light"]) .nav-bar-container,
+      :global(html.light-theme) .nav-bar-container {
+        background: rgba(255, 255, 255, 0.94);
+        border-color: rgba(15, 23, 42, 0.12);
+        box-shadow: 0 16px 36px -8px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+      }
+      :global([data-theme="light"]) .brand-name,
+      :global(html.light-theme) .brand-name {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .brand-name-accent,
+      :global(html.light-theme) .brand-name-accent {
+        color: #0284C7;
+      }
+      :global([data-theme="light"]) .header-search-box,
+      :global(html.light-theme) .header-search-box {
+        background: rgba(15, 23, 42, 0.04);
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #475569;
+      }
+      :global([data-theme="light"]) .header-search-box:hover,
+      :global(html.light-theme) .header-search-box:hover {
+        background: rgba(15, 23, 42, 0.08);
+        border-color: rgba(2, 132, 199, 0.5);
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .nav-menu-btn,
+      :global(html.light-theme) .nav-menu-btn {
+        background: rgba(15, 23, 42, 0.04);
+        border-color: rgba(15, 23, 42, 0.12);
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .nav-menu-btn:hover,
+      :global(html.light-theme) .nav-menu-btn:hover {
+        background: rgba(15, 23, 42, 0.08);
+        border-color: rgba(15, 23, 42, 0.22);
+      }
+      :global([data-theme="light"]) .nav-dropdown-menu,
+      :global(html.light-theme) .nav-dropdown-menu {
+        background: #FFFFFF;
+        border-color: #E2E8F0;
+        box-shadow: 0 24px 60px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.05);
+      }
+      :global([data-theme="light"]) .menu-nav-item,
+      :global(html.light-theme) .menu-nav-item {
+        color: #334155;
+      }
+      :global([data-theme="light"]) .menu-nav-item:hover,
+      :global(html.light-theme) .menu-nav-item:hover {
+        background: rgba(15, 23, 42, 0.05);
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .menu-nav-item.active,
+      :global(html.light-theme) .menu-nav-item.active {
+        background: rgba(2, 132, 199, 0.12);
+        color: #0284C7;
+      }
+      :global([data-theme="light"]) .menu-item-icon,
+      :global(html.light-theme) .menu-item-icon {
+        color: #64748B;
+      }
+      :global([data-theme="light"]) .menu-nav-item:hover .menu-item-icon,
+      :global(html.light-theme) .menu-nav-item:hover .menu-item-icon {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .menu-nav-item.active .menu-item-icon,
+      :global(html.light-theme) .menu-nav-item.active .menu-item-icon {
+        color: #0284C7;
+      }
+      :global([data-theme="light"]) .menu-divider,
+      :global(html.light-theme) .menu-divider {
+        background: #E2E8F0;
+      }
+      :global([data-theme="light"]) .theme-pill-toggle,
+      :global(html.light-theme) .theme-pill-toggle {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+        box-shadow: inset 0 2px 4px rgba(15, 23, 42, 0.06);
+      }
+      :global([data-theme="light"]) .theme-pill-option,
+      :global(html.light-theme) .theme-pill-option {
+        color: #94A3B8;
+      }
+      :global([data-theme="light"]) .theme-pill-light.is-active,
+      :global(html.light-theme) .theme-pill-light.is-active {
+        background: #FFFFFF;
+        color: #D97706;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+      }
+      :global([data-theme="light"]) .site-footer,
+      :global(html.light-theme) .site-footer {
+        background: #F8FAFC;
+        border-top-color: #E2E8F0;
+        color: #64748B;
+      }
+      :global([data-theme="light"]) .footer-brand-wrap .brand-name,
+      :global(html.light-theme) .footer-brand-wrap .brand-name {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .descriptor-item,
+      :global(html.light-theme) .descriptor-item {
+        color: #475569;
+      }
+      :global([data-theme="light"]) .footer-divider,
+      :global(html.light-theme) .footer-divider {
+        background: #E2E8F0;
+      }
+      :global([data-theme="light"]) .footer-nav a,
+      :global(html.light-theme) .footer-nav a {
+        color: #334155;
+      }
+      :global([data-theme="light"]) .footer-nav a:hover,
+      :global(html.light-theme) .footer-nav a:hover {
+        color: #0284C7;
+      }
+      :global([data-theme="light"]) .footer-platform-btn,
+      :global(html.light-theme) .footer-platform-btn {
+        background: #FFFFFF;
+        border-color: #E2E8F0;
+        color: #475569;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+      }
+      :global([data-theme="light"]) .footer-platform-btn:hover,
+      :global(html.light-theme) .footer-platform-btn:hover {
+        background: #F1F5F9;
+        border-color: #CBD5E1;
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .footer-legal a,
+      :global(html.light-theme) .footer-legal a {
+        color: #64748B;
+      }
+      :global([data-theme="light"]) .footer-copyright,
+      :global(html.light-theme) .footer-copyright {
+        color: #94A3B8;
       }
 
       /* ==========================================================================
@@ -1577,16 +1855,31 @@ const platformLinks = [
       const lightOption = document.querySelector('.theme-pill-light');
       const darkOption = document.querySelector('.theme-pill-dark');
 
-      let currentTheme = 'dark';
+      const getInitialTheme = () => {
+        try {
+          const saved = localStorage.getItem('sf_theme');
+          if (saved === 'light' || saved === 'dark') return saved;
+        } catch (e) {}
+        return document.documentElement.getAttribute('data-theme') || 'dark';
+      };
 
-      const updateThemeUI = (theme: string) => {
+      let currentTheme = getInitialTheme();
+
+      const applyTheme = (theme: string) => {
         currentTheme = theme;
+        try {
+          localStorage.setItem('sf_theme', theme);
+        } catch (e) {}
+
+        document.documentElement.setAttribute('data-theme', theme);
         if (theme === 'light') {
+          document.documentElement.classList.add('light-theme');
           lightOption?.classList.add('is-active');
           darkOption?.classList.remove('is-active');
           themeToggle?.setAttribute('aria-checked', 'false');
           themeToggle?.setAttribute('data-theme', 'light');
         } else {
+          document.documentElement.classList.remove('light-theme');
           darkOption?.classList.add('is-active');
           lightOption?.classList.remove('is-active');
           themeToggle?.setAttribute('aria-checked', 'true');
@@ -1594,10 +1887,13 @@ const platformLinks = [
         }
       };
 
+      // Initialize theme UI state on mount
+      applyTheme(currentTheme);
+
       themeToggle?.addEventListener('click', (e) => {
         e.stopPropagation();
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        updateThemeUI(newTheme);
+        applyTheme(newTheme);
       });
 
       // Keyboard & search shortcut support
@@ -1622,6 +1918,36 @@ const platformLinks = [
       if (searchBox && window.location.pathname !== '/search/' && window.location.pathname !== '/search') {
         const fullClientPath = `${window.location.pathname}${window.location.search}`;
         searchBox.href = `/search/?from=${encodeURIComponent(fullClientPath)}`;
+      }
+
+      // Global Back Button Navigation
+      const globalBackBtn = document.getElementById('site-global-back-btn') as HTMLButtonElement | null;
+      if (globalBackBtn) {
+        globalBackBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          let hasSameSiteReferrer = false;
+          try {
+            if (document.referrer) {
+              const refUrl = new URL(document.referrer, window.location.href);
+              if (refUrl.origin === window.location.origin && refUrl.href !== window.location.href) {
+                hasSameSiteReferrer = true;
+              }
+            }
+          } catch (err) {}
+
+          if (hasSameSiteReferrer) {
+            window.history.back();
+          } else if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            const path = window.location.pathname;
+            if (path.startsWith('/resources/') && path !== '/resources/' && path !== '/resources') {
+              window.location.href = '/resources/';
+            } else {
+              window.location.href = '/resources/';
+            }
+          }
+        });
       }
     </script>
   </body>

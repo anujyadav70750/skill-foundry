@@ -4,104 +4,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="About Skill Foundry | Practical Skills Platform"
   description="Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows."
-  hideHeader={true}
-  hideFooter={true}
-  robots="noindex, follow"
+  canonical="https://hub.skillfoundry-web.workers.dev/about/"
 >
-  <button type="button" class="fixed-back-btn" id="fixed-back-btn" aria-label="Go back">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    <span>Back</span>
-  </button>
-
-  <section class="about-hero">
-    <div class="about-container">
-      <p class="about-eyebrow">ABOUT SKILL FOUNDRY</p>
-      <h1 class="about-title">Learn by building.</h1>
-      <p class="about-lead">Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.</p>
-    </div>
-  </section>
-
-  <section class="about-body">
-    <div class="about-container">
-      <div class="about-content">
-        <section class="about-section-block">
-          <h2>What Skill Foundry is for</h2>
-          <p>Modern tools and technology are moving quickly, and it can be difficult to know which workflows, techniques, and skills are actually worth learning. Skill Foundry focuses on turning useful knowledge into practical resources you can understand and use.</p>
-          <p>Each resource is built around a real task or outcome — so you can discover an idea, understand how it works, follow the process, and apply it to your own project.</p>
-        </section>
-
-        <section class="about-section-block">
-          <h2>What you’ll find here</h2>
-          <p>Practical tutorials, step-by-step blueprints, and executable workflows covering AI, content creation, video editing, design, automation, productivity, and other digital skills.</p>
-          <p>The goal is simple: give you something useful to learn, try, and build with.</p>
-        </section>
-
-        <section class="about-section-block about-section-last">
-          <h2>Built to grow with you</h2>
-          <p>Our current resource library is free to access. Individual resources may recommend third-party tools with their own independent pricing. As new tools, workflows, and practical skills emerge, the library will continue to grow.</p>
-          <div class="about-cta-wrap">
-            <a class="about-cta-link" href="/resources/">
-              Explore the resource library <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </section>
+  <div class="about-page">
+    <section class="about-hero">
+      <div class="about-container">
+        <p class="about-eyebrow">ABOUT SKILL FOUNDRY</p>
+        <h1 class="about-title">Learn by building.</h1>
+        <p class="about-lead">Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.</p>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <script is:inline>
-    document.getElementById('fixed-back-btn')?.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
-        window.history.back();
-      } else if (window.history.length > 1 && !document.referrer) {
-        window.history.back();
-      } else {
-        window.location.href = '/';
-      }
-    });
-  </script>
+    <section class="about-body">
+      <div class="about-container">
+        <div class="about-content">
+          <section class="about-section-block">
+            <h2>What Skill Foundry is for</h2>
+            <p>Modern tools and technology are moving quickly, and it can be difficult to know which workflows, techniques, and skills are actually worth learning. Skill Foundry focuses on turning useful knowledge into practical resources you can understand and use.</p>
+            <p>Each resource is built around a real task or outcome — so you can discover an idea, understand how it works, follow the process, and apply it to your own project.</p>
+          </section>
+
+          <section class="about-section-block">
+            <h2>What you’ll find here</h2>
+            <p>Practical tutorials, step-by-step blueprints, and executable workflows covering AI, content creation, video editing, design, automation, productivity, and other digital skills.</p>
+            <p>The goal is simple: give you something useful to learn, try, and build with.</p>
+          </section>
+
+          <section class="about-section-block about-section-last">
+            <h2>Built to grow with you</h2>
+            <p>Our current resource library is free to access. Individual resources may recommend third-party tools with their own independent pricing. As new tools, workflows, and practical skills emerge, the library will continue to grow.</p>
+            <div class="about-cta-wrap">
+              <a class="about-cta-link" href="/resources/">
+                Explore the resource library <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .fixed-back-btn {
-    position: fixed;
-    top: 20px;
-    left: 24px;
-    z-index: 1000;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 13px;
-    background: rgba(13, 20, 34, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    color: #F1F5F9;
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
-    text-decoration: none;
-    user-select: none;
-  }
-
-  .fixed-back-btn:hover {
-    background: rgba(20, 30, 48, 0.98);
-    border-color: rgba(255, 255, 255, 0.22);
-    color: #FFFFFF;
-    transform: translateY(-1px);
-  }
-
-  .fixed-back-btn:active {
-    transform: translateY(0);
-    background: rgba(10, 16, 28, 0.98);
+  .about-page {
+    min-height: 80vh;
+    padding-bottom: 20px;
   }
 
   .about-container {
@@ -111,7 +58,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* 1. Hero Section */
   .about-hero {
-    padding: 96px 0 36px;
+    padding: clamp(48px, 6vw, 72px) 0 clamp(28px, 3.5vw, 36px);
     border-bottom: 1px solid var(--line, #1E293B);
     background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 245, 158, 11), 0.08), transparent 38%);
   }
@@ -202,22 +149,45 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     transform: translateX(3px);
   }
 
+  /* Light Theme Overrides */
+  :global([data-theme="light"]) .about-hero,
+  :global(html.light-theme) .about-hero {
+    border-bottom-color: #E2E8F0;
+    background: radial-gradient(circle at 75% 20%, rgba(217, 119, 6, 0.06), transparent 38%);
+  }
+  :global([data-theme="light"]) .about-title,
+  :global(html.light-theme) .about-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .about-lead,
+  :global(html.light-theme) .about-lead {
+    color: #475569;
+  }
+  :global([data-theme="light"]) .about-section-block h2,
+  :global(html.light-theme) .about-section-block h2 {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .about-section-block p,
+  :global(html.light-theme) .about-section-block p {
+    color: #334155;
+  }
+  :global([data-theme="light"]) .about-eyebrow,
+  :global(html.light-theme) .about-eyebrow {
+    color: #D97706;
+  }
+  :global([data-theme="light"]) .about-cta-link,
+  :global(html.light-theme) .about-cta-link {
+    color: #D97706;
+  }
+
   /* Mobile Responsive Rhythm */
   @media (max-width: 640px) {
-    .fixed-back-btn {
-      top: 14px;
-      left: 14px;
-      padding: 6px 12px;
-      font-size: 13px;
-      border-radius: 7px;
-    }
-
     .about-container {
       width: min(740px, calc(100% - 32px));
     }
 
     .about-hero {
-      padding: 76px 0 24px;
+      padding: 40px 0 24px;
     }
 
     .about-body {

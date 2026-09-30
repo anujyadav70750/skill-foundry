@@ -1,0 +1,776 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const guideTracks = [
+  {
+    number: '01',
+    title: 'AI Video & Motion Control',
+    category: 'AI Video',
+    lead: 'Master character continuity, prompt staging, multi-clip pacing, and final timeline assembly.',
+    topics: [
+      'Character & Outfit Reference Staging',
+      'Prompt Parameter Architectures',
+      '3-Clip Vertical Scene Generation',
+      'CapCut & Timeline Assembly'
+    ],
+    actionLabel: 'Explore AI Video Guides',
+    actionHref: '/resources/?category=AI%20Video',
+    icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`
+  },
+  {
+    number: '02',
+    title: 'Visual Assets & Styling',
+    category: 'AI Image',
+    lead: 'Build consistent character references, style palettes, outfit modifications, and brand imagery.',
+    topics: [
+      'Facial & Hairstyle Identity Preservation',
+      'Outfit & Garment Replacement',
+      'Lighting, Framing & Texture Control',
+      'High-Resolution Asset Upscaling'
+    ],
+    actionLabel: 'Explore AI Image Guides',
+    actionHref: '/resources/?category=AI%20Image',
+    icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`
+  },
+  {
+    number: '03',
+    title: 'Prompt Engineering Systems',
+    category: 'Prompt Engineering',
+    lead: 'Understand prompt structures, subject separation, camera parameters, and model-specific nuances.',
+    topics: [
+      'Modular Prompt Frameworks',
+      'Subject vs. Environment Separation',
+      'Camera Angles & Motion Descriptors',
+      'Negative Prompting & Quality Boosters'
+    ],
+    actionLabel: 'Explore Prompt Engineering Guides',
+    actionHref: '/resources/?category=Prompt%20Engineering',
+    icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`
+  },
+  {
+    number: '04',
+    title: 'Tool Orchestration & Pipelines',
+    category: 'Workflows',
+    lead: 'Connect raw inputs to final deliverables across multiple tools and automated workflows.',
+    topics: [
+      'Multi-Tool Pipeline Design',
+      'Direct Tool Configuration & Free Tiers',
+      'Asset Hand-off & File Management',
+      'Repeatable Production Playbooks'
+    ],
+    actionLabel: 'Explore Workflow Guides',
+    actionHref: '/resources/?category=Workflows',
+    icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`
+  }
+];
+---
+
+<BaseLayout
+  title="Practical Guides & Learning Paths | Skill Foundry"
+  description="Structured guides and learning paths designed to teach you the principles, tool mechanics, and practical techniques behind real-world workflows."
+  canonical="https://hub.skillfoundry-web.workers.dev/guides/"
+>
+  <div class="guides-page">
+    <!-- 1. HERO -->
+    <header class="guides-hero">
+      <div class="container narrow">
+        <div class="guides-capsule-row">
+          <span class="home-capsule">GUIDES &amp; LEARNING PATHS</span>
+        </div>
+        <h1 class="guides-title">
+          Learn skills through <span class="guides-highlight">structured guides</span>
+        </h1>
+        <p class="guides-lead">
+          Follow organized learning paths that take you from understanding a skill to applying it in real projects.
+        </p>
+      </div>
+    </header>
+
+    <!-- 2. CORE METHODOLOGY / 3 PRINCIPLES -->
+    <section class="guides-section methodology-section">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="home-capsule">LEARNING PRINCIPLES</p>
+          <h2>Built for true understanding, not blind copy-paste</h2>
+          <p class="section-subcopy">
+            A practical skill is only useful if you know why each step exists and how to modify it when your requirements change.
+          </p>
+        </div>
+
+        <div class="methodology-grid">
+          <article class="home-card method-card">
+            <div class="method-capsule">01 • DECONSTRUCT</div>
+            <h3 class="method-title">Understand the mechanics</h3>
+            <p class="method-description">
+              Every guide breaks down why specific prompts, references, and tool settings were chosen, giving you the foundation to troubleshoot and innovate.
+            </p>
+          </article>
+
+          <article class="home-card method-card">
+            <div class="method-capsule">02 • EXECUTE</div>
+            <h3 class="method-title">Follow step-by-step</h3>
+            <p class="method-description">
+              Clear, sequenced blueprints guide you from raw idea to polished deliverable with exact parameters, inputs, and verified outputs.
+            </p>
+          </article>
+
+          <article class="home-card method-card">
+            <div class="method-capsule">03 • ADAPT</div>
+            <h3 class="method-title">Make it your own</h3>
+            <p class="method-description">
+              Take proven workflow architectures and customize them to your unique creative goals, client deliverables, and new tools.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. GUIDED LEARNING TRACKS -->
+    <section class="guides-section tracks-section" id="tracks">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="home-capsule">LEARNING TRACKS</p>
+          <h2>Curated skill domains</h2>
+          <p class="section-subcopy">
+            A learning track organizes core concepts, practical techniques, and verified tools into a progressive sequence so you gain deep, reusable competence.
+          </p>
+        </div>
+
+        <div class="tracks-grid">
+          {guideTracks.map((track) => (
+            <div class="home-card track-card">
+              <!-- Header: Icon container + small numbered index -->
+              <div class="track-card-header">
+                <div class="track-icon-wrap" set:html={track.icon} />
+                <span class="track-badge">{track.number}</span>
+              </div>
+
+              <!-- Title & Short Description -->
+              <h3 class="track-title">{track.title}</h3>
+              <p class="track-lead">{track.lead}</p>
+
+              <!-- Subtle Divider -->
+              <div class="track-divider" role="separator"></div>
+
+              <!-- Competency Checklist -->
+              <div class="track-topics-wrap">
+                <span class="track-topics-label">KEY SKILLS COVERED</span>
+                <ul class="track-topics-list">
+                  {track.topics.map((topic) => (
+                    <li>
+                      <svg class="topic-check" viewBox="0 0 16 16" width="13" height="13" fill="currentColor" aria-hidden="true">
+                        <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/>
+                      </svg>
+                      <span>{topic}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Primary Action Button (Clean action button styled consistently across all cards) -->
+              <div class="track-card-footer">
+                <a class="track-cta-btn" href={track.actionHref}>
+                  <span>{track.actionLabel}</span>
+                  <span class="btn-arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GET STARTED CTA -->
+    <section class="guides-section guides-cta-section">
+      <div class="container narrow">
+        <div class="home-cta-card">
+          <div class="cta-text-content">
+            <p class="home-capsule cta-capsule">GET STARTED</p>
+            <h2 class="cta-title">Ready to put skills into practice?</h2>
+            <p class="cta-desc">
+              Browse our complete library of practical resources, follow the verified steps, and build real deliverables.
+            </p>
+          </div>
+          <div class="cta-action-wrap">
+            <a class="home-button home-button-cta" href="/resources/">Explore All Resources →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ==========================================================================
+     GUIDES PAGE - CLEAN HIERARCHY, BALANCED SPACING & POLISHED VISUAL RHYTHM
+     ========================================================================== */
+  .guides-page {
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.06) 0%, transparent 40%),
+      #080D14;
+    color: #F8FAFC;
+    min-height: 100vh;
+    padding-bottom: 24px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  :global([data-theme="light"]) .guides-page,
+  :global(html.light-theme) .guides-page {
+    background:
+      radial-gradient(ellipse 80% 45% at 50% -10%, rgba(2, 132, 199, 0.07) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.04) 0%, transparent 40%),
+      #F8FAFC;
+    color: #0F172A;
+  }
+
+  /* 1. Hero Section */
+  .guides-hero {
+    padding: clamp(48px, 6.5vw, 68px) 0 clamp(24px, 3.5vw, 36px);
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="light"]) .guides-hero,
+  :global(html.light-theme) .guides-hero {
+    border-bottom-color: rgba(15, 23, 42, 0.08);
+  }
+
+  .guides-capsule-row {
+    margin-bottom: 10px;
+  }
+
+  .home-capsule {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.32);
+    color: #38BDF8;
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.12);
+  }
+
+  :global([data-theme="light"]) .home-capsule,
+  :global(html.light-theme) .home-capsule {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.3);
+    color: #0284C7;
+    box-shadow: none;
+  }
+
+  .guides-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: clamp(34px, 5.2vw, 52px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: #FFFFFF;
+    margin: 0 0 14px 0;
+    text-wrap: balance;
+  }
+
+  :global([data-theme="light"]) .guides-title,
+  :global(html.light-theme) .guides-title {
+    color: #0F172A;
+  }
+
+  .guides-highlight {
+    background: linear-gradient(180deg, #FF9E44 0%, #FF6600 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: italic;
+  }
+
+  :global([data-theme="light"]) .guides-highlight,
+  :global(html.light-theme) .guides-highlight {
+    background: linear-gradient(180deg, #EA580C 0%, #C2410C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .guides-lead {
+    font-size: clamp(15px, 2vw, 17px);
+    line-height: 1.6;
+    color: #94A3B8;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  :global([data-theme="light"]) .guides-lead,
+  :global(html.light-theme) .guides-lead {
+    color: #475569;
+  }
+
+  /* Section Spacing & Headings */
+  .guides-section {
+    padding: clamp(36px, 5vw, 52px) 0;
+  }
+
+  .section-head {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto clamp(24px, 3.5vw, 36px);
+  }
+
+  .section-head .home-capsule {
+    margin-bottom: 12px;
+  }
+
+  .section-head h2 {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: clamp(26px, 3.8vw, 38px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    text-wrap: balance;
+  }
+
+  :global([data-theme="light"]) .section-head h2,
+  :global(html.light-theme) .section-head h2 {
+    color: #0F172A;
+  }
+
+  .section-subcopy {
+    font-size: clamp(14px, 1.8vw, 15.5px);
+    line-height: 1.6;
+    color: #94A3B8;
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .section-subcopy,
+  :global(html.light-theme) .section-subcopy {
+    color: #64748B;
+  }
+
+  /* Card Base */
+  .home-card {
+    background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 24px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  :global([data-theme="light"]) .home-card,
+  :global(html.light-theme) .home-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  }
+
+  .home-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  :global([data-theme="light"]) .home-card:hover,
+  :global(html.light-theme) .home-card:hover {
+    border-color: rgba(2, 132, 199, 0.35);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  }
+
+  /* 2. Methodology Section */
+  .methodology-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .method-card {
+    display: flex;
+    flex-direction: column;
+    padding: 22px;
+  }
+
+  .method-capsule {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: #38BDF8;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  :global([data-theme="light"]) .method-capsule,
+  :global(html.light-theme) .method-capsule {
+    color: #0284C7;
+  }
+
+  .method-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+  }
+
+  :global([data-theme="light"]) .method-title,
+  :global(html.light-theme) .method-title {
+    color: #0F172A;
+  }
+
+  .method-description {
+    color: #94A3B8;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .method-description,
+  :global(html.light-theme) .method-description {
+    color: #475569;
+  }
+
+  /* 3. Learning Tracks Section */
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .track-card {
+    display: flex;
+    flex-direction: column;
+    padding: 26px;
+  }
+
+  .track-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .track-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38BDF8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .track-icon-wrap,
+  :global(html.light-theme) .track-icon-wrap {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0284C7;
+  }
+
+  .track-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #64748B;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 4px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.05em;
+  }
+
+  :global([data-theme="light"]) .track-badge,
+  :global(html.light-theme) .track-badge {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
+  }
+
+  .track-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+    line-height: 1.25;
+  }
+
+  :global([data-theme="light"]) .track-title,
+  :global(html.light-theme) .track-title {
+    color: #0F172A;
+  }
+
+  .track-lead {
+    color: #94A3B8;
+    font-size: 14px;
+    line-height: 1.55;
+    margin: 0 0 16px 0;
+  }
+
+  :global([data-theme="light"]) .track-lead,
+  :global(html.light-theme) .track-lead {
+    color: #475569;
+  }
+
+  .track-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    margin: 0 0 16px 0;
+    width: 100%;
+  }
+
+  :global([data-theme="light"]) .track-divider,
+  :global(html.light-theme) .track-divider {
+    background: #F1F5F9;
+  }
+
+  .track-topics-wrap {
+    margin-bottom: 22px;
+    flex: 1 1 auto;
+  }
+
+  .track-topics-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #38BDF8;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  :global([data-theme="light"]) .track-topics-label,
+  :global(html.light-theme) .track-topics-label {
+    color: #0284C7;
+  }
+
+  .track-topics-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .track-topics-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: #CBD5E1;
+  }
+
+  :global([data-theme="light"]) .track-topics-list li,
+  :global(html.light-theme) .track-topics-list li {
+    color: #334155;
+  }
+
+  .topic-check {
+    color: #38BDF8;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  :global([data-theme="light"]) .topic-check,
+  :global(html.light-theme) .topic-check {
+    color: #0284C7;
+  }
+
+  .track-card-footer {
+    margin-top: auto;
+    padding-top: 4px;
+  }
+
+  /* Consistent Action Button for Guide Domain Cards */
+  .track-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 10px;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    color: #38BDF8;
+    font-family: inherit;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+  }
+
+  :global([data-theme="light"]) .track-cta-btn,
+  :global(html.light-theme) .track-cta-btn {
+    background: #F8FAFC;
+    border-color: rgba(2, 132, 199, 0.35);
+    color: #0284C7;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  }
+
+  .track-cta-btn .btn-arrow {
+    display: inline-block;
+    transition: transform 0.18s ease;
+  }
+
+  .track-cta-btn:hover {
+    background: rgba(56, 189, 248, 0.18);
+    border-color: rgba(56, 189, 248, 0.55);
+    color: #7DD3FC;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.15);
+  }
+
+  :global([data-theme="light"]) .track-cta-btn:hover,
+  :global(html.light-theme) .track-cta-btn:hover {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: #0284C7;
+    color: #0369A1;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+  }
+
+  .track-cta-btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+
+  /* 4. Bottom CTA */
+  .home-cta-card {
+    background: linear-gradient(135deg, rgba(16, 26, 44, 0.9) 0%, rgba(9, 15, 27, 0.95) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 22px;
+    padding: clamp(28px, 4vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  }
+
+  :global([data-theme="light"]) .home-cta-card,
+  :global(html.light-theme) .home-cta-card {
+    background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+    border-color: rgba(2, 132, 199, 0.3);
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+  }
+
+  .cta-text-content {
+    flex: 1;
+    max-width: 540px;
+  }
+
+  .cta-capsule {
+    margin-bottom: 10px;
+  }
+
+  .cta-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: clamp(24px, 3.2vw, 32px);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0 0 8px 0;
+  }
+
+  :global([data-theme="light"]) .cta-title,
+  :global(html.light-theme) .cta-title {
+    color: #0F172A;
+  }
+
+  .cta-desc {
+    font-size: clamp(14px, 1.8vw, 15px);
+    line-height: 1.55;
+    color: #94A3B8;
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .cta-desc,
+  :global(html.light-theme) .cta-desc {
+    color: #475569;
+  }
+
+  .cta-action-wrap {
+    flex-shrink: 0;
+  }
+
+  .home-button-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 24px;
+    border-radius: 9999px;
+    background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(234, 85, 0, 0.35);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    white-space: nowrap;
+  }
+
+  .home-button-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(234, 85, 0, 0.5);
+  }
+
+  /* Responsive Rules */
+  @media (max-width: 860px) {
+    .methodology-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .tracks-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .home-cta-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .cta-action-wrap {
+      width: 100%;
+    }
+
+    .home-button-cta {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .guides-hero {
+      padding: 36px 0 20px;
+    }
+
+    .guides-section {
+      padding: 28px 0;
+    }
+
+    .home-card {
+      padding: 20px 18px;
+    }
+
+    .track-card {
+      padding: 20px 18px;
+    }
+  }
+</style>

@@ -4,77 +4,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout
   title="Contact | Skill Foundry"
   description="Have a question, found an issue, or want to share feedback? Send us a message."
-  hideHeader={true}
-  hideFooter={true}
-  robots="noindex, follow"
+  canonical="https://hub.skillfoundry-web.workers.dev/contact/"
 >
-  <button type="button" class="fixed-back-btn" id="fixed-back-btn" aria-label="Go back">
-    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    <span>Back</span>
-  </button>
-
-  <section class="contact-hero">
-    <div class="contact-container">
-      <p class="contact-eyebrow">CONTACT</p>
-      <h1 class="contact-title">Contact Skill Foundry</h1>
-      <p class="contact-lead">Have a question, found an issue, or want to share feedback? Send us a message.</p>
-    </div>
-  </section>
-
-  <section class="contact-body">
-    <div class="contact-container">
-      <div class="contact-card">
-        <form id="contact-form" class="contact-form" novalidate>
-          <div class="field-grid">
-            <label>
-              <span>Name</span>
-              <input name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name" required />
-            </label>
-            <label>
-              <span>Email</span>
-              <input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required />
-            </label>
-          </div>
-          <label>
-            <span>Subject</span>
-            <input name="subject" type="text" maxlength="160" placeholder="What is this about?" required />
-          </label>
-          <label>
-            <span>Message</span>
-            <textarea name="message" rows="5" maxlength="5000" placeholder="Write your message here…" required></textarea>
-          </label>
-          <label class="website-field" aria-hidden="true">
-            <span>Website</span>
-            <input name="website" type="text" tabindex="-1" autocomplete="off" />
-          </label>
-          <div class="form-actions">
-            <button id="contact-submit" class="contact-submit-btn" type="submit" disabled>
-              <span>Send message</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </button>
-            <p id="contact-status" class="form-status" role="status" aria-live="polite"></p>
-          </div>
-        </form>
+  <div class="contact-page">
+    <section class="contact-hero">
+      <div class="contact-container">
+        <p class="contact-eyebrow">CONTACT</p>
+        <h1 class="contact-title">Contact Skill Foundry</h1>
+        <p class="contact-lead">Have a question, found an issue, or want to share feedback? Send us a message.</p>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="contact-body">
+      <div class="contact-container">
+        <div class="contact-card">
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="field-grid">
+              <label>
+                <span>Name</span>
+                <input name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required />
+              </label>
+            </div>
+            <label>
+              <span>Subject</span>
+              <input name="subject" type="text" maxlength="160" placeholder="What is this about?" required />
+            </label>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="5" maxlength="5000" placeholder="Write your message here…" required></textarea>
+            </label>
+            <label class="website-field" aria-hidden="true">
+              <span>Website</span>
+              <input name="website" type="text" tabindex="-1" autocomplete="off" />
+            </label>
+            <div class="form-actions">
+              <button id="contact-submit" class="contact-submit-btn" type="submit" disabled>
+                <span>Send message</span>
+                <span class="arrow" aria-hidden="true">→</span>
+              </button>
+              <p id="contact-status" class="form-status" role="status" aria-live="polite"></p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script is:inline>
-    // 1. Back button navigation
-    document.getElementById('fixed-back-btn')?.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (window.history.length > 1 && document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
-        window.history.back();
-      } else if (window.history.length > 1 && !document.referrer) {
-        window.history.back();
-      } else {
-        window.location.href = '/';
-      }
-    });
-
-    // 2. Form state management and submission
+    // Form state management and submission
     (function() {
       const form = document.querySelector('#contact-form');
       const submit = document.querySelector('#contact-submit');
@@ -143,42 +124,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .fixed-back-btn {
-    position: fixed;
-    top: 20px;
-    left: 24px;
-    z-index: 1000;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 7px 13px;
-    background: rgba(13, 20, 34, 0.92);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 8px;
-    color: #F1F5F9;
-    font-family: inherit;
-    font-size: 13.5px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
-    text-decoration: none;
-    user-select: none;
-  }
-
-  .fixed-back-btn:hover {
-    background: rgba(20, 30, 48, 0.98);
-    border-color: rgba(255, 255, 255, 0.22);
-    color: #FFFFFF;
-    transform: translateY(-1px);
-  }
-
-  .fixed-back-btn:active {
-    transform: translateY(0);
-    background: rgba(10, 16, 28, 0.98);
+  .contact-page {
+    min-height: 80vh;
+    padding-bottom: 20px;
   }
 
   .contact-container {
@@ -188,7 +136,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   /* 1. Hero Section */
   .contact-hero {
-    padding: 96px 0 36px;
+    padding: clamp(48px, 6vw, 72px) 0 clamp(28px, 3.5vw, 36px);
     border-bottom: 1px solid var(--line, #1E293B);
     background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 245, 158, 11), 0.08), transparent 38%);
   }
@@ -373,22 +321,77 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #F87171;
   }
 
+  /* Light Theme Overrides */
+  :global([data-theme="light"]) .contact-hero,
+  :global(html.light-theme) .contact-hero {
+    border-bottom-color: #E2E8F0;
+    background: radial-gradient(circle at 75% 20%, rgba(217, 119, 6, 0.06), transparent 38%);
+  }
+  :global([data-theme="light"]) .contact-title,
+  :global(html.light-theme) .contact-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .contact-lead,
+  :global(html.light-theme) .contact-lead {
+    color: #475569;
+  }
+  :global([data-theme="light"]) .contact-eyebrow,
+  :global(html.light-theme) .contact-eyebrow {
+    color: #D97706;
+  }
+  :global([data-theme="light"]) .contact-card,
+  :global(html.light-theme) .contact-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  }
+  :global([data-theme="light"]) .contact-form label > span,
+  :global(html.light-theme) .contact-form label > span {
+    color: #334155;
+  }
+  :global([data-theme="light"]) .contact-form input:not([type="checkbox"]),
+  :global([data-theme="light"]) .contact-form textarea,
+  :global(html.light-theme) .contact-form input:not([type="checkbox"]),
+  :global(html.light-theme) .contact-form textarea {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .contact-form input:focus,
+  :global([data-theme="light"]) .contact-form textarea:focus,
+  :global(html.light-theme) .contact-form input:focus,
+  :global(html.light-theme) .contact-form textarea:focus {
+    border-color: #D97706;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+  }
+  :global([data-theme="light"]) .contact-form input::placeholder,
+  :global([data-theme="light"]) .contact-form textarea::placeholder,
+  :global(html.light-theme) .contact-form input::placeholder,
+  :global(html.light-theme) .contact-form textarea::placeholder {
+    color: #94A3B8;
+  }
+  :global([data-theme="light"]) .contact-submit-btn,
+  :global(html.light-theme) .contact-submit-btn {
+    background: rgba(217, 119, 6, 0.1);
+    border-color: #D97706;
+    color: #B45309;
+  }
+  :global([data-theme="light"]) .contact-submit-btn:not(:disabled):hover,
+  :global(html.light-theme) .contact-submit-btn:not(:disabled):hover {
+    background: #D97706;
+    border-color: #B45309;
+    color: #FFFFFF;
+  }
+
   /* Mobile Responsive Rhythm */
   @media (max-width: 640px) {
-    .fixed-back-btn {
-      top: 14px;
-      left: 14px;
-      padding: 6px 12px;
-      font-size: 13px;
-      border-radius: 7px;
-    }
-
     .contact-container {
       width: min(740px, calc(100% - 32px));
     }
 
     .contact-hero {
-      padding: 76px 0 24px;
+      padding: 40px 0 24px;
     }
 
     .contact-body {

@@ -21,21 +21,7 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
   title="Search Workflows & Blueprints | Skill Foundry"
   description="Search and discover practical resources, step-by-step blueprints, and real-world workflows from Skill Foundry."
   canonical="https://hub.skillfoundry-web.workers.dev/search/"
-  robots="noindex, follow"
-  hideHeader={true}
-  hideHeaderSearch={true}
-  hideFooter={true}
 >
-  <!-- Persistent Fixed "< Back" control at top-left -->
-  <aside class="search-back-fixed" aria-label="Navigation back">
-    <a href={fallbackBackUrl} class="search-back-btn" id="search-back-btn" aria-label="Back">
-      <svg class="search-back-chevron" viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M10 13L5 8l5-5"/>
-      </svg>
-      <span>Back</span>
-    </a>
-  </aside>
-
   <div class="search-page-container">
     <div class="search-page-inner">
       <!-- 1. SEARCH BAR NEAR THE TOP -->
@@ -557,6 +543,58 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
       line-height: 1.3;
       -webkit-line-clamp: 2;
     }
+  }
+
+  /* Light Theme Overrides for Search */
+  :global([data-theme="light"]) .search-page-container,
+  :global(html.light-theme) .search-page-container {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .search-bar-form,
+  :global(html.light-theme) .search-bar-form {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+  }
+  :global([data-theme="light"]) .search-bar-form input,
+  :global(html.light-theme) .search-bar-form input {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .search-bar-form input::placeholder,
+  :global(html.light-theme) .search-bar-form input::placeholder {
+    color: #94A3B8;
+  }
+  :global([data-theme="light"]) .search-resource-card,
+  :global(html.light-theme) .search-resource-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  }
+  :global([data-theme="light"]) .search-resource-card:hover,
+  :global(html.light-theme) .search-resource-card:hover {
+    border-color: rgba(2, 132, 199, 0.35);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  }
+  :global([data-theme="light"]) .card-title,
+  :global(html.light-theme) .card-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .search-resource-card:hover .card-title,
+  :global(html.light-theme) .search-resource-card:hover .card-title {
+    color: #0284C7;
+  }
+  :global([data-theme="light"]) .card-desc,
+  :global(html.light-theme) .card-desc {
+    color: #475569;
+  }
+  :global([data-theme="light"]) .search-empty-box,
+  :global(html.light-theme) .search-empty-box {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+  }
+  :global([data-theme="light"]) .empty-text,
+  :global(html.light-theme) .empty-text {
+    color: #0F172A;
   }
 </style>
 
