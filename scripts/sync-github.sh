@@ -42,7 +42,7 @@ if git diff-index --quiet HEAD 2>/dev/null; then
   echo "No changes to commit."
 else
   echo "Committing updates..."
-  git commit -m "Fix Resources page and Resource Detail page day/night theme contrast and element visibility"
+  git commit -m "Finalize Resource Page structure with reusable editorial layout and step handoff continuity"
 fi
 
 echo "Pushing to GitHub..."

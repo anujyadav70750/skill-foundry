@@ -159,28 +159,33 @@ const getHandoffText = (currentStep, nextStep, stepIndex) => {
   if (currentStep.handoff) return String(currentStep.handoff).trim();
   if (currentStep.transition) return String(currentStep.transition).trim();
   if (currentStep.transitionInstruction) return String(currentStep.transitionInstruction).trim();
+  if (!nextStep) return '';
 
   const outVisual = outputVisual(currentStep, stepIndex);
-  const rawLabel = String(currentStep.outputLabel || currentStep.output || outVisual.label || 'generated result').trim();
+  const rawLabel = String(currentStep.outputLabel || currentStep.output || outVisual.label || '').trim();
   const cleanLabel = rawLabel
     .replace(/^Output(?:\s+produced\s+by\s+this\s+step)?/i, '')
     .replace(/^Output\s*[:\-]\s*/i, '')
-    .trim() || 'result';
+    .trim();
 
   const nextStepNum = String(stepIndex + 2).padStart(2, '0');
 
   const matchingInput = nextStep?.inputs?.find((inp) => {
-    const inpLabel = String(inp.label || inp.role || '').toLowerCase();
+    const inpLabel = String(inp.label || inp.role || inp.value || '').toLowerCase();
     const cl = cleanLabel.toLowerCase();
     return inpLabel && (cl.includes(inpLabel) || inpLabel.includes(cl));
   });
 
   if (matchingInput) {
-    const roleName = String(matchingInput.role || matchingInput.label || 'input').trim();
-    return `Use this ${cleanLabel} as the ${roleName} for Step ${nextStepNum}.`;
+    const roleName = String(matchingInput.role || matchingInput.label || matchingInput.value || cleanLabel).trim();
+    return `Use this ${cleanLabel || 'output'} as ${roleName} in Step ${nextStepNum}`;
   }
 
-  return `Use this generated ${cleanLabel} as the reference for Step ${nextStepNum}.`;
+  if (cleanLabel && cleanLabel.length <= 36) {
+    return `Use this ${cleanLabel.toLowerCase()} in Step ${nextStepNum}`;
+  }
+
+  return `Use this output in Step ${nextStepNum}`;
 };
 
 const allResources = await getCollection('resources');
@@ -1081,9 +1086,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       window.addEventListener('pageshow', resetFreshResourcePosition);
     })();
   </script>
-  <div class={isTesting1 ? "testing-1-theme" : ""}>
+  <div class="testing-1-theme resource-editorial-layout">
     <article class="resource-page">
-    {isTesting1 ? (
       <section class="resource-hero-unified-section">
         <div class="container narrow hero-unified-header">
           <div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/resources/">Resources</a><span>/</span><span>{data.category}</span></div>
@@ -1110,26 +1114,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           </section>
         </div>
       </section>
-    ) : (
-      <>
-        <div class="container narrow resource-intro">
-          <div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/resources/">Resources</a><span>/</span><span>{data.category}</span></div>
-          <p class="eyebrow">{data.tool} • {data.category}</p>
-          <h1>{data.title}</h1>
-          <div class="publisher-identity">
-            <div class="publisher-avatar-box">
-              <img class="publisher-avatar" src={authorAvatar} alt={authorName} width="44" height="44" />
-            </div>
-            <div class="publisher-details">
-              <div class="publisher-name-row"><strong>{authorName}</strong><span class="publisher-verification" aria-label="Verified publisher"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10"/><path d="M5.3 10.2 8.3 13.1 14.8 6.7"/></svg></span></div>
-              <span class="publisher-meta">Published {data.date.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}</span>
-            </div>
-          </div>
-        </div>
-        <div class="container content-wide resource-hero-media"><img class="hero-image" src={heroImage} alt={imageAlt}/></div>
-        <div class="container narrow resource-hero-description"><section class="resource-description"><p class="lead">{data.description}</p></section></div>
-      </>
-    )}
 
     <div class="container narrow article-layout resource-content">
       <div class="resource-transition-bridge">
@@ -1151,7 +1135,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         <div class="section-heading blueprint-main-heading">
           <div>
             <p class="eyebrow">WORKFLOW BLUEPRINT</p>
-            <h2>Build the final video step by step</h2>
+            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
             <p class="section-subcopy">Tap ↓ on a step to see how it works.</p>
           </div>
         </div>
@@ -1179,7 +1163,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               "Continue the sequence into the final clip.",
               "Arrange, trim, and export all three clips."
             ];
-            const stepPurpose = isTesting1 ? (compactPurposes[index] || step.outputDescription || step.description || '') : (step.outputDescription || step.description || '');
+            const stepPurpose = isTesting1
+              ? (compactPurposes[index] || step.purpose || step.outputDescription || step.description || '')
+              : (step.purpose || step.outputDescription || step.description || '');
             const thumbUrl = mediaUrl || (isFinal ? heroImage : '') || (step.inputs?.[0]?.src || '');
 
             const stepOutputNames = [
@@ -1189,7 +1175,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               "Video Clip 03",
               "Final edited video"
             ];
-            const outputAssetName = isTesting1 ? (stepOutputNames[index] || step.outputLabel || 'Output') : (step.outputLabel || 'Output');
+            const outputAssetName = isTesting1
+              ? (stepOutputNames[index] || step.outputLabel || step.output || 'Output')
+              : (step.outputLabel || step.output || 'Output');
+            const handoffText = getHandoffText(step, workflowSteps[index + 1], index);
 
             return (
               <div class="blueprint-step-wrapper" data-blueprint-step={index + 1}>
@@ -1610,9 +1599,17 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                   </div>
 
                   <!-- Downward flow arrow to the next step / result in stream -->
-                  <div class="blueprint-stream-connector" aria-hidden="true">
-                    <div class="stream-line"></div>
-                    <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="16" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <div class="blueprint-stream-connector">
+                    <div class="stream-line" aria-hidden="true"></div>
+                    {!isFinal && handoffText && (
+                      <div class="stream-handoff-capsule" role="note" aria-label="Step handoff transition">
+                        <svg class="stream-handoff-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M7 13l5 5 5-5M12 4v14"/>
+                        </svg>
+                        <span class="stream-handoff-text">{handoffText}</span>
+                      </div>
+                    )}
+                    <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="16" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <line x1="12" y1="2" x2="12" y2="18"></line>
                       <polyline points="6 12 12 18 18 12"></polyline>
                     </svg>
@@ -4583,7 +4580,51 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         box-shadow: 0 16px 44px rgba(0, 0, 0, 0.6), 0 0 35px rgba(192, 132, 252, 0.15) !important;
       }
 
-      /* Inter-Step Transitions */
+      /* Inter-Step Transitions & Handoff */
+      .testing-1-theme .blueprint-stream-connector {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: relative !important;
+        padding: 18px 0 22px !important;
+        gap: 6px !important;
+      }
+
+      .testing-1-theme .stream-handoff-capsule {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 7px !important;
+        padding: 7px 18px !important;
+        background: rgba(10, 16, 28, 0.96) !important;
+        border: 1px solid rgba(56, 189, 248, 0.35) !important;
+        border-radius: 9999px !important;
+        color: #E2E8F0 !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 16px rgba(56, 189, 248, 0.08) !important;
+        backdrop-filter: blur(10px) !important;
+        max-width: min(520px, calc(100% - 24px)) !important;
+        box-sizing: border-box !important;
+        margin: 2px auto !important;
+        z-index: 2 !important;
+        text-align: center !important;
+      }
+
+      .testing-1-theme .stream-handoff-icon {
+        color: #38BDF8 !important;
+        stroke: #38BDF8 !important;
+        flex-shrink: 0 !important;
+      }
+
+      .testing-1-theme .stream-handoff-text {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.04em !important;
+        color: #E2E8F0 !important;
+        line-height: 1.35 !important;
+      }
+
       .testing-1-theme .blueprint-flow-arrow {
         color: #38BDF8 !important;
         opacity: 0.8 !important;
@@ -5277,6 +5318,23 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-stream-connector .stream-line,
       html.light-theme .testing-1-theme .blueprint-stream-connector .stream-line {
         background: linear-gradient(180deg, #CBD5E1 0%, #0284C7 100%) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .stream-handoff-capsule,
+      html.light-theme .testing-1-theme .stream-handoff-capsule {
+        background: #FFFFFF !important;
+        border: 1.5px solid #0284C7 !important;
+        color: #0F172A !important;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .stream-handoff-icon,
+      html.light-theme .testing-1-theme .stream-handoff-icon {
+        color: #0284C7 !important;
+        stroke: #0284C7 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .stream-handoff-text,
+      html.light-theme .testing-1-theme .stream-handoff-text {
+        color: #0F172A !important;
+        font-weight: 750 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-stream-connector .stream-arrow-icon,
       html.light-theme .testing-1-theme .blueprint-stream-connector .stream-arrow-icon {
