@@ -1141,13 +1141,30 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       {workflowSteps.length > 0 && <section class="resource-section workflow-section blueprint-workflow-section" id="workflow">
         <div class="section-heading blueprint-main-heading">
           <div>
-            <p class="eyebrow">WORKFLOW BLUEPRINT</p>
-            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
-            <p class="section-subcopy">Tap ↓ on a step to see how it works.</p>
+            <p class="eyebrow blueprint-eyebrow">WORKFLOW BLUEPRINT</p>
+            <h2 class="blueprint-section-title">{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
+            <p class="section-subcopy blueprint-helper-text">Tap <span class="helper-chevron-cue" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span> on a step to see how it works.</p>
           </div>
         </div>
 
-        <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+        <!-- RECESSED INNER WORKFLOW CONTAINER -->
+        <div class="blueprint-inner-workflow-container" id="blueprint-inner-workflow-tray">
+          <button
+            type="button"
+            class="blueprint-inner-expand-control"
+            id="blueprint-board-expand-toggle"
+            aria-label="Toggle expand all workflow steps"
+            title="Toggle expand all workflow steps"
+          >
+            <svg class="inner-expand-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <polyline points="9 21 3 21 3 15"></polyline>
+              <line x1="21" y1="3" x2="14" y2="10"></line>
+              <line x1="3" y1="21" x2="10" y2="14"></line>
+            </svg>
+          </button>
+
+          <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
           {workflowSteps.map((step, index) => {
             const output = outputVisual(step, index);
             const actionText = String(step.process || '').trim();
@@ -1206,7 +1223,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                     <div class="step-header-thumb-box">
                       {thumbUrl ? (
                         <>
-                          <img class="step-header-thumb" src={thumbUrl} alt="" aria-hidden="true" loading="lazy" />
+                          <img class="step-header-thumb-backdrop" src={thumbUrl} alt="" aria-hidden="true" />
+                          <div class="step-header-thumb-overlay" aria-hidden="true"></div>
+                          <img class="step-header-thumb-main" src={thumbUrl} alt="" aria-hidden="true" loading="lazy" />
                           {isVideo && <span class="step-header-thumb-play" aria-hidden="true">▶</span>}
                         </>
                       ) : (
@@ -1225,7 +1244,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
                     <div class="step-header-action" aria-hidden="true">
                       <span class="step-expand-chevron">
-                        <svg class="step-chevron-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <svg class="step-chevron-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                           <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                       </span>
@@ -1717,6 +1736,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               </div>
             </div>
           </div>
+        </div>
       </section>}
 
       {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
@@ -1797,6 +1817,32 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
       });
     });
+
+    // Board expand/collapse all steps toggle
+    const boardExpandBtn = document.getElementById('blueprint-board-expand-toggle');
+    if (boardExpandBtn) {
+      boardExpandBtn.addEventListener('click', () => {
+        const stepContainers = document.querySelectorAll('.blueprint-step-container');
+        const anyCollapsed = Array.from(stepContainers).some((c) => c.classList.contains('is-collapsed'));
+        const shouldExpandAll = anyCollapsed;
+
+        stepContainers.forEach((container) => {
+          const toggle = container.querySelector('[data-step-toggle]');
+          const body = container.querySelector('.blueprint-step-body');
+          if (shouldExpandAll) {
+            container.classList.remove('is-collapsed');
+            container.classList.add('is-expanded');
+            if (toggle) toggle.setAttribute('aria-expanded', 'true');
+            if (body) body.hidden = false;
+          } else {
+            container.classList.remove('is-expanded');
+            container.classList.add('is-collapsed');
+            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            if (body) body.hidden = true;
+          }
+        });
+      });
+    }
 
     document.querySelectorAll('.workflow-prompt').forEach((box) => {
       const pre = box.querySelector('[data-step-prompt]');
@@ -3044,8 +3090,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .blueprint-step-container {
         width: 100%;
         max-width: 100%;
-        border-radius: 20px;
-        padding: 34px 22px 24px;
+        border-radius: 16px;
+        padding: 0;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
@@ -3053,52 +3099,73 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         position: relative;
         margin-top: 24px;
         margin-bottom: 8px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-        background: #0c1421;
+        background: #FFFFFF;
+        border: 1.5px solid var(--step-accent, #0084FF);
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
+        overflow: visible;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      :root[data-theme="light"] .blueprint-step-container,
+      html.light-theme .blueprint-step-container {
+        background: #FFFFFF;
+        border: 1.5px solid var(--step-accent, #0084FF);
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05);
       }
 
       /* Step Theme Color Accents */
       .blueprint-step-container.step-theme-blue {
-        border: 2px solid #0284C7;
-        --step-accent: #0284C7;
-        --step-accent-dark: #38BDF8;
-        --step-accent-text: #0284C7;
-        --step-subnode-border: rgba(2, 132, 199, 0.35);
+        border-color: #0084FF;
+        --step-accent: #0084FF;
+        --step-accent-rgb: 0, 132, 255;
+        --step-accent-dark: #0284C7;
+        --step-accent-text: #0084FF;
+        --step-accent-bg: #EBF4FF;
+        --step-subnode-border: rgba(0, 132, 255, 0.35);
         --step-subnode-border-light: #93C5FD;
       }
       .blueprint-step-container.step-theme-green {
-        border: 2px solid #10B981;
+        border-color: #10B981;
         --step-accent: #10B981;
-        --step-accent-dark: #34D399;
+        --step-accent-rgb: 16, 185, 129;
+        --step-accent-dark: #059669;
         --step-accent-text: #059669;
+        --step-accent-bg: #ECFDF5;
         --step-subnode-border: rgba(16, 185, 129, 0.35);
         --step-subnode-border-light: #86EFAC;
       }
       .blueprint-step-container.step-theme-orange {
-        border: 2px solid #F59E0B;
+        border-color: #F59E0B;
         --step-accent: #F59E0B;
-        --step-accent-dark: #FBBF24;
+        --step-accent-rgb: 245, 158, 11;
+        --step-accent-dark: #D97706;
         --step-accent-text: #D97706;
+        --step-accent-bg: #FFFBEB;
         --step-subnode-border: rgba(245, 158, 11, 0.35);
         --step-subnode-border-light: #FDE68A;
       }
       .blueprint-step-container.step-theme-cyan {
-        border: 2px solid #06B6D4;
+        border-color: #06B6D4;
         --step-accent: #06B6D4;
-        --step-accent-dark: #22D3EE;
+        --step-accent-rgb: 6, 182, 212;
+        --step-accent-dark: #0891B2;
         --step-accent-text: #0891B2;
+        --step-accent-bg: #ECFEFF;
         --step-subnode-border: rgba(6, 182, 212, 0.35);
         --step-subnode-border-light: #A5F3FC;
       }
       .blueprint-step-container.step-theme-purple {
-        border: 2px solid #8B5CF6;
+        border-color: #8B5CF6;
         --step-accent: #8B5CF6;
-        --step-accent-dark: #A78BFA;
+        --step-accent-rgb: 139, 92, 246;
+        --step-accent-dark: #7C3AED;
         --step-accent-text: #7C3AED;
+        --step-accent-bg: #F5F3FF;
         --step-subnode-border: rgba(139, 92, 246, 0.35);
         --step-subnode-border-light: #DDD6FE;
       }
 
+      /* 1. COMPACT ATTACHED STEP CAPSULE */
       .blueprint-step-capsule {
         position: absolute;
         top: 0;
@@ -3108,36 +3175,56 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 6px 24px;
+        padding: 2.5px 11px;
         border-radius: 9999px;
-        font-size: 12.5px;
-        font-weight: 800;
+        font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace;
+        font-size: 10px;
+        font-weight: 700;
         letter-spacing: 0.08em;
+        line-height: 1.1;
         text-transform: uppercase;
-        color: #FFFFFF;
-        background: var(--step-accent, #0284C7);
-        border: 2px solid var(--step-accent, #0284C7);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-        z-index: 5;
+        color: var(--step-accent, #0084FF);
+        background: #FFFFFF;
+        border: 1px solid var(--step-accent, #0084FF);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        z-index: 10;
+        user-select: none;
+        white-space: nowrap;
+      }
+
+      .blueprint-step-capsule span {
+        color: var(--step-accent, #0084FF);
+        font-weight: 700;
+        line-height: 1.1;
+      }
+
+      :root[data-theme="light"] .blueprint-step-capsule,
+      html.light-theme .blueprint-step-capsule {
+        background: #FFFFFF;
+        color: var(--step-accent, #0084FF);
+        border: 1px solid var(--step-accent, #0084FF);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
       }
 
       .blueprint-step-container.is-collapsed {
-        padding: 34px 26px 28px;
-        min-height: 138px;
+        padding: 0;
+        min-height: unset;
       }
 
       .blueprint-step-container.is-expanded {
-        padding: 28px 24px 28px;
+        padding: 0;
       }
 
+      /* 2. COMPACT HORIZONTAL HEADER ROW & CLEAR BREATHING SPACE */
       .blueprint-step-header {
         width: 100%;
         display: flex;
+        flex-direction: row;
         align-items: center;
-        gap: 20px;
+        gap: 16px;
         background: transparent;
         border: none;
-        padding: 4px 0 0;
+        padding: 18px 18px 16px 18px;
         margin: 0;
         cursor: pointer;
         text-align: left;
@@ -3145,85 +3232,192 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: inherit;
         outline: none;
         user-select: none;
+        box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
+        border-radius: 16px;
+        transition: background-color 0.15s ease;
+      }
+
+      .blueprint-step-header:hover {
+        background: rgba(0, 132, 255, 0.02);
+      }
+
+      :root[data-theme="light"] .blueprint-step-header:hover,
+      html.light-theme .blueprint-step-header:hover {
+        background: rgba(0, 132, 255, 0.02);
       }
 
       .blueprint-step-header:focus-visible {
-        outline: 2px solid var(--step-accent, #38BDF8);
-        outline-offset: 4px;
-        border-radius: 12px;
+        outline: 2px solid var(--step-accent, #0084FF);
+        outline-offset: -2px;
       }
 
+      /* 3. FIXED RECTANGULAR CONTAINER & ALIGNMENT */
       .step-header-thumb-box {
         position: relative;
-        width: 90px;
-        height: 90px;
-        min-width: 90px;
-        min-height: 90px;
-        border-radius: 14px;
+        flex: 0 0 152px;
+        width: 152px;
+        height: 85.5px;
+        min-width: 152px;
+        max-width: 152px;
+        min-height: 85.5px;
+        max-height: 85.5px;
+        aspect-ratio: 16 / 9;
+        border-radius: 10px;
         background: #060A13;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(0, 0, 0, 0.08);
         overflow: hidden;
-        flex-shrink: 0;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
       }
 
-      .step-header-thumb {
+      :root[data-theme="light"] .step-header-thumb-box,
+      html.light-theme .step-header-thumb-box {
+        background: #F1F5F9;
+        border-color: rgba(0, 0, 0, 0.08);
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+      }
+
+      /* Blurred background treatment inside the fixed rectangular container */
+      .step-header-thumb-backdrop {
+        position: absolute;
+        inset: -20%;
+        width: 140%;
+        height: 140%;
+        object-fit: cover;
+        filter: blur(14px) brightness(0.35) saturate(0.8);
+        transform: scale(1.15);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .step-header-thumb-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(4, 7, 13, 0.3);
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .step-header-thumb-main {
+        position: relative;
+        z-index: 3;
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
+        transition: transform 0.25s ease;
+      }
+
+      .blueprint-step-header:hover .step-header-thumb-main {
+        transform: scale(1.02);
       }
 
       .step-header-thumb-play {
         position: absolute;
         inset: 0;
+        z-index: 4;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(0, 0, 0, 0.35);
+        background: rgba(0, 0, 0, 0.3);
         color: #FFFFFF;
         font-size: 14px;
-        line-height: 1;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
       }
 
       .step-header-thumb-placeholder {
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 100%;
+        height: 100%;
         color: #64748B;
+        background: rgba(255, 255, 255, 0.05);
       }
 
+      /* Content Area on the right: Height matches the 85.5px image box */
       .step-header-info {
         flex: 1 1 auto;
         min-width: 0;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 6px;
+        height: 85.5px;
+        box-sizing: border-box;
       }
 
+      /* 4. TITLE STRUCTURE (Max 2 lines in collapsed card) */
       .step-header-title {
-        font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-        font-size: 20px;
-        font-weight: 500;
-        color: #FFFFFF;
-        margin: 0;
-        line-height: 1.3;
-        letter-spacing: -0.01em;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.25;
+        letter-spacing: -0.015em;
+        color: #081534;
+        margin: 0 0 4px 0;
+        transition: color 0.15s ease;
       }
 
+      :root[data-theme="light"] .step-header-title,
+      html.light-theme .step-header-title {
+        color: #081534;
+      }
+
+      .blueprint-step-header:hover .step-header-title {
+        color: var(--step-accent, #0084FF);
+      }
+
+      .blueprint-step-container.is-collapsed .step-header-title {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: calc(1.25em * 2);
+      }
+
+      .blueprint-step-container.is-expanded .step-header-title {
+        display: block;
+        -webkit-line-clamp: unset;
+        overflow: visible;
+        max-height: none;
+      }
+
+      /* 5. DESCRIPTION STRUCTURE (Max 2 lines in collapsed card with ellipsis) */
       .step-header-purpose {
-        font-size: 14px;
-        color: #94A3B8;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.35;
+        color: #52637A;
         margin: 0;
-        line-height: 1.45;
       }
 
+      :root[data-theme="light"] .step-header-purpose,
+      html.light-theme .step-header-purpose {
+        color: #52637A;
+      }
+
+      .blueprint-step-container.is-collapsed .step-header-purpose {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-height: calc(1.35em * 2);
+      }
+
+      .blueprint-step-container.is-expanded .step-header-purpose {
+        display: block;
+        -webkit-line-clamp: unset;
+        overflow: visible;
+        max-height: none;
+      }
+
+      /* 7. EXPAND CONTROL (Circular button on right) */
       .step-header-action {
         display: flex;
         align-items: center;
@@ -3236,40 +3430,64 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 44px;
-        height: 44px;
-        min-width: 44px;
-        min-height: 44px;
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        color: var(--step-accent-dark, #38BDF8);
-        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        min-height: 34px;
+        border-radius: 9999px;
+        background: var(--step-accent-bg, #EBF4FF);
+        color: var(--step-accent, #0084FF);
+        transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease;
+        box-sizing: border-box;
+      }
+
+      :root[data-theme="light"] .step-expand-chevron,
+      html.light-theme .step-expand-chevron {
+        background: var(--step-accent-bg, #EBF4FF);
+        color: var(--step-accent, #0084FF);
       }
 
       .blueprint-step-header:hover .step-expand-chevron {
-        background: rgba(56, 189, 248, 0.14);
-        border-color: rgba(56, 189, 248, 0.45);
-        color: #FFFFFF;
+        background: rgba(0, 132, 255, 0.16);
+      }
+
+      :root[data-theme="light"] .blueprint-step-header:hover .step-expand-chevron,
+      html.light-theme .blueprint-step-header:hover .step-expand-chevron {
+        background: rgba(0, 132, 255, 0.16);
       }
 
       .blueprint-step-container.is-expanded .step-expand-chevron {
         transform: rotate(180deg);
-        background: rgba(56, 189, 248, 0.18);
-        border-color: var(--step-accent-dark, #38BDF8);
-        color: #FFFFFF;
+        background: rgba(0, 132, 255, 0.2);
       }
 
+      :root[data-theme="light"] .blueprint-step-container.is-expanded .step-expand-chevron,
+      html.light-theme .blueprint-step-container.is-expanded .step-expand-chevron {
+        background: rgba(0, 132, 255, 0.2);
+      }
+
+      .step-chevron-icon {
+        display: block;
+        stroke-width: 2.8;
+      }
+
+      /* Expanded body */
       .blueprint-step-body {
         width: 100%;
+        padding: 16px 20px 24px;
+        box-sizing: border-box;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 24px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-top: 24px;
       }
 
+      :root[data-theme="light"] .blueprint-step-body,
+      html.light-theme .blueprint-step-body {
+        border-top: 1px solid #E2E8F0;
+      }
+
+      .blueprint-step-container.is-collapsed .blueprint-step-body,
       .blueprint-step-body[hidden] {
         display: none !important;
       }
@@ -3336,14 +3554,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       .blueprint-final-preview-wrap {
         width: 100%;
-        max-width: 680px;
+        max-width: 480px;
         margin: 10px auto 0;
       }
 
       .blueprint-final-media-frame {
         position: relative;
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
         border-radius: 16px;
         overflow: hidden;
         background: #060A13;
@@ -3418,7 +3636,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       .blueprint-final-placeholder {
         width: 100%;
-        aspect-ratio: 16 / 9;
+        aspect-ratio: 1 / 1;
         border-radius: 16px;
         background: linear-gradient(145deg, #0d1522 0%, #070c14 100%);
         border: 1px solid rgba(168, 85, 247, 0.25);
@@ -4133,126 +4351,154 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: none !important;
       }
 
-      /* Step Containers: NO MORE PASTEL BACKGROUNDS */
+      /* Step Containers: Compact Horizontal Structure */
       .testing-1-theme .blueprint-step-container {
-        margin-top: 36px !important;
+        margin-top: 24px !important;
         margin-bottom: 8px !important;
-        background: linear-gradient(180deg, rgba(14, 22, 38, 0.92) 0%, rgba(9, 15, 26, 0.98) 100%) !important;
-        border-radius: 22px !important;
-        padding: 24px 22px 20px !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        padding: 0 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
         overflow: visible !important;
       }
 
       .testing-1-theme .blueprint-step-container.is-collapsed {
-        padding: 34px 28px 28px !important;
-        min-height: 138px !important;
+        padding: 0 !important;
+        min-height: unset !important;
       }
 
       .testing-1-theme .blueprint-step-container.is-expanded {
-        padding: 28px 24px 28px !important;
+        padding: 0 !important;
       }
 
       .testing-1-theme .blueprint-step-header {
-        gap: 20px !important;
+        padding: 18px 18px 16px 18px !important;
+        gap: 16px !important;
+        border-radius: 16px !important;
       }
 
       .testing-1-theme .step-header-thumb-box {
-        width: 90px !important;
-        height: 90px !important;
-        min-width: 90px !important;
-        min-height: 90px !important;
-        border-radius: 14px !important;
+        flex: 0 0 152px !important;
+        width: 152px !important;
+        height: 85.5px !important;
+        min-width: 152px !important;
+        max-width: 152px !important;
+        min-height: 85.5px !important;
+        max-height: 85.5px !important;
+        aspect-ratio: 16 / 9 !important;
+        border-radius: 10px !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
+      }
+
+      .testing-1-theme .step-header-info {
+        height: 85.5px !important;
       }
 
       .testing-1-theme .step-header-title {
-        font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
-        font-size: 20px !important;
-        font-weight: 500 !important;
-        color: #FFFFFF !important;
-        letter-spacing: -0.01em !important;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        line-height: 1.25 !important;
+        color: #081534 !important;
+        letter-spacing: -0.015em !important;
+        margin: 0 0 4px 0 !important;
       }
 
-      .testing-1-theme .blueprint-result-block {
-        margin-top: 36px !important;
-        margin-bottom: 12px !important;
-        background: linear-gradient(180deg, rgba(14, 22, 38, 0.94) 0%, rgba(9, 15, 26, 0.98) 100%) !important;
-        border: 1px solid rgba(168, 85, 247, 0.35) !important;
-        border-radius: 22px !important;
-        padding: 38px 28px 32px !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        overflow: visible !important;
+      .testing-1-theme .step-header-purpose {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+        font-size: 13px !important;
+        font-weight: 400 !important;
+        line-height: 1.35 !important;
+        color: #52637A !important;
+        margin: 0 !important;
       }
 
-      .testing-1-theme .blueprint-result-capsule {
-        background: rgba(10, 16, 28, 0.98) !important;
-        border: 1.5px solid #C084FC !important;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 18px rgba(168, 85, 247, 0.18) !important;
-        color: #FFFFFF !important;
-        font-family: 'JetBrains Mono', monospace !important;
-        font-size: 11.5px !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.12em !important;
-        border-radius: 9999px !important;
-        padding: 6px 22px !important;
+      .testing-1-theme .step-expand-chevron {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-blue {
-        border: 1px solid rgba(56, 189, 248, 0.35) !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(56, 189, 248, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        --step-accent: #38BDF8;
-        --step-accent-dark: #0284C7;
-        --step-accent-text: #7DD3FC;
-        --step-subnode-border-light: rgba(56, 189, 248, 0.2);
+        background: #D9EAFE !important;
+        border: 1px solid #BFDBFE !important;
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.06) !important;
+        --step-accent: #2563EB;
+        --step-accent-dark: #1D4ED8;
+        --step-accent-text: #2563EB;
+        --step-accent-bg: #BFDBFE;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-green {
-        border: 1px solid rgba(52, 211, 153, 0.35) !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(52, 211, 153, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        --step-accent: #34D399;
-        --step-accent-dark: #059669;
-        --step-accent-text: #6EE7B7;
-        --step-subnode-border-light: rgba(52, 211, 153, 0.2);
+        background: #D1FAE5 !important;
+        border: 1px solid #A7F3D0 !important;
+        box-shadow: 0 3px 10px rgba(16, 185, 129, 0.06) !important;
+        --step-accent: #059669;
+        --step-accent-dark: #047857;
+        --step-accent-text: #059669;
+        --step-accent-bg: #A7F3D0;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-orange {
-        border: 1px solid rgba(251, 146, 60, 0.35) !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(251, 146, 60, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        --step-accent: #FB923C;
-        --step-accent-dark: #EA580C;
-        --step-accent-text: #FDBA74;
-        --step-subnode-border-light: rgba(251, 146, 60, 0.2);
+        background: #FEF3C7 !important;
+        border: 1px solid #FDE68A !important;
+        box-shadow: 0 3px 10px rgba(245, 158, 11, 0.06) !important;
+        --step-accent: #D97706;
+        --step-accent-dark: #B45309;
+        --step-accent-text: #D97706;
+        --step-accent-bg: #FDE68A;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-cyan {
-        border: 1px solid rgba(34, 211, 238, 0.35) !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(34, 211, 238, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        --step-accent: #22D3EE;
-        --step-accent-dark: #0891B2;
-        --step-accent-text: #67E8F9;
-        --step-subnode-border-light: rgba(34, 211, 238, 0.2);
+        background: #CFFAFE !important;
+        border: 1px solid #BAE6FD !important;
+        box-shadow: 0 3px 10px rgba(6, 182, 212, 0.06) !important;
+        --step-accent: #0891B2;
+        --step-accent-dark: #0E7490;
+        --step-accent-text: #0891B2;
+        --step-accent-bg: #BAE6FD;
       }
 
       .testing-1-theme .blueprint-step-container.step-theme-purple {
-        border: 1px solid rgba(192, 132, 252, 0.35) !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(192, 132, 252, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        --step-accent: #C084FC;
-        --step-accent-dark: #7C3AED;
-        --step-accent-text: #D8B4FE;
-        --step-subnode-border-light: rgba(192, 132, 252, 0.2);
+        background: #EDE9FE !important;
+        border: 1px solid #DDD6FE !important;
+        box-shadow: 0 3px 10px rgba(139, 92, 246, 0.06) !important;
+        --step-accent: #7C3AED;
+        --step-accent-dark: #6D28D9;
+        --step-accent-text: #7C3AED;
+        --step-accent-bg: #DDD6FE;
       }
 
       .testing-1-theme .blueprint-step-capsule {
-        background: rgba(10, 16, 28, 0.98) !important;
-        border: 1.5px solid var(--step-accent, #38BDF8) !important;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 18px rgba(56, 189, 248, 0.15) !important;
-        color: #FFFFFF !important;
-        font-family: 'JetBrains Mono', monospace !important;
-        font-size: 11.5px !important;
-        font-weight: 800 !important;
-        letter-spacing: 0.12em !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        background: #FFFFFF !important;
+        border: 1px solid var(--step-accent, #0084FF) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+        color: var(--step-accent, #0084FF) !important;
+        font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
+        font-size: 10px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.08em !important;
+        line-height: 1.1 !important;
+        text-transform: uppercase !important;
         border-radius: 9999px !important;
-        padding: 6px 22px !important;
+        padding: 2.5px 11px !important;
+        z-index: 10 !important;
+        white-space: nowrap !important;
+      }
+
+      .testing-1-theme .blueprint-step-capsule span {
+        color: var(--step-accent, #0084FF) !important;
+        font-weight: 700 !important;
+        line-height: 1.1 !important;
       }
 
       .testing-1-theme .blueprint-step-title {
@@ -5012,45 +5258,74 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
 
         .testing-1-theme .blueprint-step-container {
-          border-radius: 18px !important;
+          border-radius: 14px !important;
+          margin-top: 20px !important;
+          margin-bottom: 6px !important;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+        }
+
+        .testing-1-theme .blueprint-step-capsule {
+          padding: 2px 9px !important;
+          font-size: 9px !important;
+          letter-spacing: 0.07em !important;
+          line-height: 1 !important;
+          border-width: 1px !important;
         }
 
         .testing-1-theme .blueprint-step-container.is-collapsed {
-          padding: 30px 16px 22px !important;
-          min-height: 128px !important;
+          padding: 0 !important;
+          min-height: unset !important;
         }
 
         .testing-1-theme .blueprint-step-container.is-expanded {
-          padding: 28px 16px 24px !important;
+          padding: 0 !important;
         }
 
         .testing-1-theme .blueprint-step-header {
-          gap: 14px !important;
+          padding: 15px 12px 13px 12px !important;
+          gap: 10px !important;
+          border-radius: 14px !important;
         }
 
         .testing-1-theme .step-header-thumb-box {
-          width: 82px !important;
-          height: 82px !important;
-          min-width: 82px !important;
-          min-height: 82px !important;
-          border-radius: 12px !important;
+          flex: 0 0 108px !important;
+          width: 108px !important;
+          height: 60.75px !important;
+          min-width: 108px !important;
+          max-width: 108px !important;
+          min-height: 60.75px !important;
+          max-height: 60.75px !important;
+          aspect-ratio: 16 / 9 !important;
+          border-radius: 8px !important;
+        }
+
+        .testing-1-theme .step-header-info {
+          height: 60.75px !important;
         }
 
         .testing-1-theme .step-header-title {
-          font-size: 16.5px !important;
-          line-height: 1.25 !important;
+          font-size: 12.5px !important;
+          line-height: 1.2 !important;
+          margin-bottom: 2px !important;
+          color: #081534 !important;
         }
 
         .testing-1-theme .step-header-purpose {
-          font-size: 12.5px !important;
-          line-height: 1.4 !important;
+          font-size: 10.5px !important;
+          line-height: 1.25 !important;
+          color: #52637A !important;
         }
 
         .testing-1-theme .step-expand-chevron {
-          width: 44px !important;
-          height: 44px !important;
-          min-width: 44px !important;
-          min-height: 44px !important;
+          width: 28px !important;
+          height: 28px !important;
+          min-width: 28px !important;
+          min-height: 28px !important;
+        }
+
+        .testing-1-theme .step-expand-chevron .step-chevron-icon {
+          width: 15px !important;
+          height: 15px !important;
         }
 
         .testing-1-theme .blueprint-result-block {
@@ -5458,51 +5733,46 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       /* 9. Step Containers & Collapsible Headers */
-      :root[data-theme="light"] .testing-1-theme .blueprint-step-container,
-      html.light-theme .testing-1-theme .blueprint-step-container {
-        background: #F8FAFC !important;
-        border: 1px solid #CBD5E1 !important;
-        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
-      }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule,
       html.light-theme .testing-1-theme .blueprint-step-capsule {
         background: #FFFFFF !important;
-        border: 1px solid #0284C7 !important;
-        color: #0369A1 !important;
-        box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15) !important;
+        border: 1px solid var(--step-accent, #0084FF) !important;
+        color: var(--step-accent, #0084FF) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+        font-size: 10px !important;
+        padding: 2.5px 11px !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule span,
       html.light-theme .testing-1-theme .blueprint-step-capsule span {
-        color: #0369A1 !important;
+        color: var(--step-accent, #0084FF) !important;
         font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-thumb-box,
       html.light-theme .testing-1-theme .step-header-thumb-box {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
+        background: #F1F5F9 !important;
+        border: 1px solid rgba(0, 0, 0, 0.08) !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-title,
       html.light-theme .testing-1-theme .step-header-title {
-        color: #0F172A !important;
+        color: #081534 !important;
         font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-purpose,
       html.light-theme .testing-1-theme .step-header-purpose {
-        color: #334155 !important;
-        font-weight: 500 !important;
+        color: #52637A !important;
+        font-weight: 400 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-expand-chevron,
       html.light-theme .testing-1-theme .step-expand-chevron {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
-        color: #334155 !important;
+        background: #EBF4FF !important;
+        border: none !important;
+        color: var(--step-accent, #0084FF) !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-expand-chevron:hover,
       html.light-theme .testing-1-theme .step-expand-chevron:hover {
-        background: #F1F5F9 !important;
-        color: #0284C7 !important;
-        border-color: #0284C7 !important;
+        background: #DCEBFF !important;
+        color: var(--step-accent, #0084FF) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-body,
       html.light-theme .testing-1-theme .blueprint-step-body {

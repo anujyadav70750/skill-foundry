@@ -689,8 +689,8 @@ body:has(.testing-1-theme) .site-footer .footer-copyright {
 .blueprint-step-container {
   width: 100% !important;
   max-width: 100% !important;
-  border-radius: 20px !important;
-  padding: 34px 22px 24px !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
@@ -698,48 +698,67 @@ body:has(.testing-1-theme) .site-footer .footer-copyright {
   position: relative !important;
   margin-top: 24px !important;
   margin-bottom: 8px !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
-  background: #0c1421 !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05) !important;
+  overflow: visible !important;
+}
+
+:root[data-theme="light"] .blueprint-step-container,
+html.light-theme .blueprint-step-container {
+  background: #FFFFFF !important;
+  border: 1.5px solid var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05) !important;
 }
 
 /* Step Theme Color Accents */
 .blueprint-step-container.step-theme-blue {
-  border: 2px solid #0284C7 !important;
-  --step-accent: #0284C7 !important;
-  --step-accent-dark: #38BDF8 !important;
-  --step-accent-text: #0284C7 !important;
-  --step-subnode-border: rgba(2, 132, 199, 0.35) !important;
+  border-color: #0084FF !important;
+  --step-accent: #0084FF !important;
+  --step-accent-rgb: 0, 132, 255 !important;
+  --step-accent-dark: #0284C7 !important;
+  --step-accent-text: #0084FF !important;
+  --step-accent-bg: #EBF4FF !important;
+  --step-subnode-border: rgba(0, 132, 255, 0.35) !important;
   --step-subnode-border-light: #93C5FD !important;
 }
 .blueprint-step-container.step-theme-green {
-  border: 2px solid #10B981 !important;
+  border-color: #10B981 !important;
   --step-accent: #10B981 !important;
-  --step-accent-dark: #34D399 !important;
+  --step-accent-rgb: 16, 185, 129 !important;
+  --step-accent-dark: #059669 !important;
   --step-accent-text: #059669 !important;
+  --step-accent-bg: #ECFDF5 !important;
   --step-subnode-border: rgba(16, 185, 129, 0.35) !important;
   --step-subnode-border-light: #86EFAC !important;
 }
 .blueprint-step-container.step-theme-orange {
-  border: 2px solid #F59E0B !important;
+  border-color: #F59E0B !important;
   --step-accent: #F59E0B !important;
-  --step-accent-dark: #FBBF24 !important;
+  --step-accent-rgb: 245, 158, 11 !important;
+  --step-accent-dark: #D97706 !important;
   --step-accent-text: #D97706 !important;
+  --step-accent-bg: #FFFBEB !important;
   --step-subnode-border: rgba(245, 158, 11, 0.35) !important;
   --step-subnode-border-light: #FDE68A !important;
 }
 .blueprint-step-container.step-theme-cyan {
-  border: 2px solid #06B6D4 !important;
+  border-color: #06B6D4 !important;
   --step-accent: #06B6D4 !important;
-  --step-accent-dark: #22D3EE !important;
+  --step-accent-rgb: 6, 182, 212 !important;
+  --step-accent-dark: #0891B2 !important;
   --step-accent-text: #0891B2 !important;
+  --step-accent-bg: #ECFEFF !important;
   --step-subnode-border: rgba(6, 182, 212, 0.35) !important;
   --step-subnode-border-light: #A5F3FC !important;
 }
 .blueprint-step-container.step-theme-purple {
-  border: 2px solid #8B5CF6 !important;
+  border-color: #8B5CF6 !important;
   --step-accent: #8B5CF6 !important;
-  --step-accent-dark: #A78BFA !important;
+  --step-accent-rgb: 139, 92, 246 !important;
+  --step-accent-dark: #7C3AED !important;
   --step-accent-text: #7C3AED !important;
+  --step-accent-bg: #F5F3FF !important;
   --step-subnode-border: rgba(139, 92, 246, 0.35) !important;
   --step-subnode-border-light: #DDD6FE !important;
 }
@@ -753,17 +772,234 @@ body:has(.testing-1-theme) .site-footer .footer-copyright {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 6px 24px !important;
+  padding: 2.5px 11px !important;
   border-radius: 9999px !important;
-  font-size: 12.5px !important;
-  font-weight: 800 !important;
+  font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
   letter-spacing: 0.08em !important;
+  line-height: 1.1 !important;
   text-transform: uppercase !important;
+  color: var(--step-accent, #0084FF) !important;
+  background: #FFFFFF !important;
+  border: 1px solid var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  z-index: 10 !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+}
+
+.blueprint-step-capsule span {
+  color: var(--step-accent, #0084FF) !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+}
+
+:root[data-theme="light"] .blueprint-step-capsule,
+html.light-theme .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  color: var(--step-accent, #0084FF) !important;
+  border: 1px solid var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Step Header Layout, Thumb Box, Titles & Secondary Expand Button */
+.blueprint-step-header {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 16px !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 18px 18px 16px 18px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  font: inherit !important;
+  color: inherit !important;
+  outline: none !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+  -webkit-tap-highlight-color: transparent !important;
+  border-radius: 16px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.blueprint-step-header:hover {
+  background: rgba(0, 132, 255, 0.02) !important;
+}
+
+.step-header-thumb-box {
+  position: relative !important;
+  flex: 0 0 152px !important;
+  width: 152px !important;
+  height: 85.5px !important;
+  min-width: 152px !important;
+  max-width: 152px !important;
+  min-height: 85.5px !important;
+  max-height: 85.5px !important;
+  aspect-ratio: 16 / 9 !important;
+  border-radius: 10px !important;
+  background: #060A13 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
+}
+
+:root[data-theme="light"] .step-header-thumb-box,
+html.light-theme .step-header-thumb-box {
+  background: #F1F5F9 !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06) !important;
+}
+
+.step-header-thumb-backdrop {
+  position: absolute !important;
+  inset: -20% !important;
+  width: 140% !important;
+  height: 140% !important;
+  object-fit: cover !important;
+  filter: blur(14px) brightness(0.35) saturate(0.8) !important;
+  transform: scale(1.15) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.step-header-thumb-overlay {
+  position: absolute !important;
+  inset: 0 !important;
+  background: rgba(4, 7, 13, 0.3) !important;
+  z-index: 2 !important;
+  pointer-events: none !important;
+}
+
+.step-header-thumb-main {
+  position: relative !important;
+  z-index: 3 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  display: block !important;
+  transition: transform 0.25s ease !important;
+}
+
+.blueprint-step-header:hover .step-header-thumb-main {
+  transform: scale(1.02) !important;
+}
+
+.step-header-thumb-play {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 4 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(0, 0, 0, 0.3) !important;
   color: #FFFFFF !important;
-  background: var(--step-accent, #0284C7) !important;
-  border: 2px solid var(--step-accent, #0284C7) !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
-  z-index: 5 !important;
+  font-size: 14px !important;
+}
+
+.step-header-info {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  height: 85.5px !important;
+  box-sizing: border-box !important;
+}
+
+.step-header-title {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.015em !important;
+  color: #081534 !important;
+  margin: 0 0 4px 0 !important;
+  transition: color 0.15s ease !important;
+}
+
+.blueprint-step-header:hover .step-header-title {
+  color: var(--step-accent, #0084FF) !important;
+}
+
+.blueprint-step-container.is-collapsed .step-header-title {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-height: calc(1.25em * 2) !important;
+}
+
+.blueprint-step-container.is-expanded .step-header-title {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+.step-header-purpose {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.35 !important;
+  color: #52637A !important;
+  margin: 0 !important;
+}
+
+.blueprint-step-container.is-collapsed .step-header-purpose {
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-height: calc(1.35em * 2) !important;
+}
+
+.blueprint-step-container.is-expanded .step-header-purpose {
+  display: block !important;
+  -webkit-line-clamp: unset !important;
+  overflow: visible !important;
+  max-height: none !important;
+}
+
+.step-header-action {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  margin-left: auto !important;
+}
+
+.step-expand-chevron {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  min-width: 34px !important;
+  min-height: 34px !important;
+  border-radius: 9999px !important;
+  background: var(--step-accent-bg, #EBF4FF) !important;
+  color: var(--step-accent, #0084FF) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease !important;
+  box-sizing: border-box !important;
+}
+
+.blueprint-step-header:hover .step-expand-chevron {
+  background: rgba(0, 132, 255, 0.16) !important;
+}
+
+.blueprint-step-container.is-expanded .step-expand-chevron {
+  transform: rotate(180deg) !important;
+  background: rgba(0, 132, 255, 0.2) !important;
 }
 
 .blueprint-step-title {
@@ -1137,61 +1373,92 @@ body:has(.testing-1-theme) .blueprint-top-arrow,
 }
 body:has(.testing-1-theme) .blueprint-step-container,
 .testing-1-theme .blueprint-step-container {
-  background: rgba(13, 20, 36, 0.85) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-blue,
 .testing-1-theme .blueprint-step-container.step-theme-blue {
-  border-color: rgba(56, 189, 248, 0.35) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(56, 189, 248, 0.08) !important;
-  --step-accent: #38BDF8;
-  --step-accent-dark: #0284C7;
-  --step-accent-text: #7DD3FC;
-  --step-subnode-border-light: rgba(56, 189, 248, 0.2);
+  background: #D9EAFE !important;
+  border: 1px solid #BFDBFE !important;
+  --step-accent: #2563EB;
+  --step-accent-dark: #1D4ED8;
+  --step-accent-text: #2563EB;
+  --step-accent-bg: #BFDBFE;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-green,
 .testing-1-theme .blueprint-step-container.step-theme-green {
-  border-color: rgba(52, 211, 153, 0.35) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(52, 211, 153, 0.08) !important;
-  --step-accent: #34D399;
-  --step-accent-dark: #059669;
-  --step-accent-text: #6EE7B7;
-  --step-subnode-border-light: rgba(52, 211, 153, 0.2);
+  background: #D1FAE5 !important;
+  border: 1px solid #A7F3D0 !important;
+  --step-accent: #059669;
+  --step-accent-dark: #047857;
+  --step-accent-text: #059669;
+  --step-accent-bg: #A7F3D0;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-orange,
 .testing-1-theme .blueprint-step-container.step-theme-orange {
-  border-color: rgba(251, 146, 60, 0.35) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(251, 146, 60, 0.08) !important;
-  --step-accent: #FB923C;
-  --step-accent-dark: #EA580C;
-  --step-accent-text: #FDBA74;
-  --step-subnode-border-light: rgba(251, 146, 60, 0.2);
+  background: #FEF3C7 !important;
+  border: 1px solid #FDE68A !important;
+  --step-accent: #D97706;
+  --step-accent-dark: #B45309;
+  --step-accent-text: #D97706;
+  --step-accent-bg: #FDE68A;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-cyan,
 .testing-1-theme .blueprint-step-container.step-theme-cyan {
-  border-color: rgba(34, 211, 238, 0.35) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 28px rgba(34, 211, 238, 0.08) !important;
-  --step-accent: #22D3EE;
-  --step-accent-dark: #0891B2;
-  --step-accent-text: #67E8F9;
-  --step-subnode-border-light: rgba(34, 211, 238, 0.2);
+  background: #CFFAFE !important;
+  border: 1px solid #BAE6FD !important;
+  --step-accent: #0891B2;
+  --step-accent-dark: #0E7490;
+  --step-accent-text: #0891B2;
+  --step-accent-bg: #BAE6FD;
 }
 body:has(.testing-1-theme) .blueprint-step-container.step-theme-purple,
 .testing-1-theme .blueprint-step-container.step-theme-purple {
-  border-color: rgba(192, 132, 252, 0.35) !important;
-  box-shadow: 0 16px 44px -8px rgba(0, 0, 0, 0.5), 0 0 32px rgba(192, 132, 252, 0.1) !important;
-  --step-accent: #C084FC;
-  --step-accent-dark: #7C3AED;
-  --step-accent-text: #E9D5FF;
-  --step-subnode-border-light: rgba(192, 132, 252, 0.2);
+  background: #EDE9FE !important;
+  border: 1px solid #DDD6FE !important;
+  --step-accent: #7C3AED;
+  --step-accent-dark: #6D28D9;
+  --step-accent-text: #7C3AED;
+  --step-accent-bg: #DDD6FE;
 }
 body:has(.testing-1-theme) .blueprint-step-capsule,
 .testing-1-theme .blueprint-step-capsule {
-  background: rgba(10, 16, 28, 0.96) !important;
-  border: 1.5px solid var(--step-accent, #38BDF8) !important;
-  color: var(--step-accent, #38BDF8) !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background: #FFFFFF !important;
+  border: 1px solid var(--step-accent, #0084FF) !important;
+  color: var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  padding: 2.5px 11px !important;
+  border-radius: 9999px !important;
+  font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+  z-index: 10 !important;
+  white-space: nowrap !important;
+}
+
+body:has(.testing-1-theme) .blueprint-step-capsule span,
+.testing-1-theme .blueprint-step-capsule span {
+  color: var(--step-accent, #0084FF) !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+}
+
+:root[data-theme="light"] body:has(.testing-1-theme) .blueprint-step-capsule,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-capsule,
+html.light-theme body:has(.testing-1-theme) .blueprint-step-capsule,
+html.light-theme .testing-1-theme .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  color: var(--step-accent, #0084FF) !important;
+  border: 1px solid var(--step-accent, #0084FF) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
 }
 body:has(.testing-1-theme) .blueprint-step-title,
 .testing-1-theme .blueprint-step-title {
@@ -1325,12 +1592,66 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     font-size: 13.5px !important;
   }
   .blueprint-step-container {
-    padding: 24px 12px 16px !important;
-    border-radius: 16px !important;
+    padding: 0 !important;
+    border-radius: 14px !important;
+    margin-top: 20px !important;
+    margin-bottom: 6px !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid var(--step-accent, #0084FF) !important;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.05) !important;
   }
   .blueprint-step-capsule {
-    font-size: 11.5px !important;
-    padding: 5px 16px !important;
+    font-size: 9px !important;
+    padding: 2px 9px !important;
+    letter-spacing: 0.07em !important;
+    line-height: 1 !important;
+    border-width: 1px !important;
+    background: #FFFFFF !important;
+    border-color: var(--step-accent, #0084FF) !important;
+    color: var(--step-accent, #0084FF) !important;
+  }
+  .blueprint-step-capsule span {
+    color: var(--step-accent, #0084FF) !important;
+    font-weight: 700 !important;
+  }
+  .blueprint-step-header {
+    padding: 15px 12px 13px 12px !important;
+    gap: 10px !important;
+    border-radius: 14px !important;
+  }
+  .step-header-thumb-box {
+    flex: 0 0 108px !important;
+    width: 108px !important;
+    height: 60.75px !important;
+    min-width: 108px !important;
+    max-width: 108px !important;
+    min-height: 60.75px !important;
+    max-height: 60.75px !important;
+    border-radius: 8px !important;
+  }
+  .step-header-info {
+    height: 60.75px !important;
+  }
+  .step-header-title {
+    font-size: 12.5px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 2px !important;
+    color: #081534 !important;
+  }
+  .step-header-purpose {
+    font-size: 10.5px !important;
+    line-height: 1.25 !important;
+    color: #52637A !important;
+  }
+  .step-expand-chevron {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+  }
+  .step-expand-chevron .step-chevron-icon {
+    width: 15px !important;
+    height: 15px !important;
   }
   .blueprint-step-title {
     font-size: 17px !important;
@@ -2519,3 +2840,443 @@ html.light-theme .blueprint-result-desc,
 html.light-theme .testing-1-theme .blueprint-result-desc {
   color: #475569 !important;
 }
+
+/* Result Section Video Container — Square Shape */
+.blueprint-final-preview-wrap {
+  width: 100% !important;
+  max-width: 480px !important;
+  margin: 10px auto 0 !important;
+}
+
+.blueprint-final-media-frame,
+.blueprint-final-placeholder {
+  aspect-ratio: 1 / 1 !important;
+}
+
+/* ==========================================================================
+   WORKFLOW BLUEPRINT FINAL VISUAL CORRECTION (PDF INSTRUCTIONS)
+   ========================================================================== */
+
+/* 1. Typography & Heading Area */
+.blueprint-workflow-section .blueprint-main-heading {
+  margin-bottom: 0 !important;
+}
+
+.blueprint-eyebrow {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-family: 'Plus Jakarta Sans', var(--font-sans), sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  border-radius: 9999px !important;
+  padding: 6px 16px !important;
+  margin-bottom: 12px !important;
+}
+
+:root[data-theme="light"] .blueprint-eyebrow,
+html.light-theme .blueprint-eyebrow,
+[data-theme="light"] .blueprint-eyebrow {
+  background: #EBF4FF !important;
+  color: #0070F3 !important;
+  border: 1px solid #D0E4FF !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-eyebrow,
+:root[data-theme="dark"] .blueprint-eyebrow,
+html:not(.light-theme) .blueprint-eyebrow {
+  background: rgba(56, 189, 248, 0.12) !important;
+  color: #38BDF8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+}
+
+.blueprint-section-title {
+  font-family: 'Plus Jakarta Sans', var(--font-sans), sans-serif !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.025em !important;
+  margin: 0 0 8px 0 !important;
+}
+
+:root[data-theme="light"] .blueprint-section-title,
+html.light-theme .blueprint-section-title,
+[data-theme="light"] .blueprint-section-title {
+  color: #0F172A !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-section-title,
+:root[data-theme="dark"] .blueprint-section-title,
+html:not(.light-theme) .blueprint-section-title {
+  color: #F8FAFC !important;
+}
+
+.blueprint-helper-text {
+  font-family: 'Plus Jakarta Sans', var(--font-sans), sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  margin: 0 0 24px 0 !important;
+}
+
+:root[data-theme="light"] .blueprint-helper-text,
+html.light-theme .blueprint-helper-text,
+[data-theme="light"] .blueprint-helper-text {
+  color: #64748B !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-helper-text,
+:root[data-theme="dark"] .blueprint-helper-text,
+html:not(.light-theme) .blueprint-helper-text {
+  color: #94A3B8 !important;
+}
+
+/* 2. Recessed Inner Workflow Tray */
+.blueprint-inner-workflow-container,
+.testing-1-theme .blueprint-inner-workflow-container {
+  position: relative !important;
+  border-radius: 24px !important;
+  padding: 46px 18px 24px !important;
+  box-sizing: border-box !important;
+  margin-top: 24px !important;
+  width: 100% !important;
+}
+
+:root[data-theme="light"] .blueprint-inner-workflow-container,
+html.light-theme .blueprint-inner-workflow-container,
+[data-theme="light"] .blueprint-inner-workflow-container,
+:root[data-theme="light"] .testing-1-theme .blueprint-inner-workflow-container,
+html.light-theme .testing-1-theme .blueprint-inner-workflow-container {
+  background: linear-gradient(180deg, #E6F0FA 0%, #DFECF9 100%) !important;
+  border: 1px solid #D0E0F4 !important;
+  box-shadow: inset 0 3px 12px rgba(15, 60, 130, 0.08), inset 0 1px 3px rgba(15, 60, 130, 0.12), 0 1px 2px rgba(255, 255, 255, 0.8) !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-inner-workflow-container,
+:root[data-theme="dark"] .blueprint-inner-workflow-container,
+html:not(.light-theme) .blueprint-inner-workflow-container {
+  background: linear-gradient(180deg, rgba(10, 16, 28, 0.9) 0%, rgba(6, 10, 18, 0.96) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 3. Top-Right Tray Expand Control (Small Rounded Square, Absolute) */
+.blueprint-inner-expand-control {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  z-index: 10 !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+:root[data-theme="light"] .blueprint-inner-expand-control,
+html.light-theme .blueprint-inner-expand-control,
+[data-theme="light"] .blueprint-inner-expand-control {
+  background: #CBE1FA !important;
+  border: 1px solid #B0D0F6 !important;
+  color: #0284C7 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+}
+
+:root[data-theme="light"] .blueprint-inner-expand-control:hover,
+html.light-theme .blueprint-inner-expand-control:hover {
+  background: #B9D7F8 !important;
+  color: #0369A1 !important;
+  transform: scale(1.05) !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-inner-expand-control,
+:root[data-theme="dark"] .blueprint-inner-expand-control,
+html:not(.light-theme) .blueprint-inner-expand-control {
+  background: rgba(30, 41, 59, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #94A3B8 !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-inner-expand-control:hover,
+html:not(.light-theme) .blueprint-inner-expand-control:hover {
+  background: rgba(51, 65, 85, 0.9) !important;
+  color: #FFFFFF !important;
+  transform: scale(1.05) !important;
+}
+
+/* 4. STEP CARDS — REMOVE WHITE BACKGROUND & DRAW SOFT PASTEL TINTS (PDF Section 6) */
+:root[data-theme="light"] .blueprint-step-container.step-theme-blue,
+html.light-theme .blueprint-step-container.step-theme-blue,
+[data-theme="light"] .blueprint-step-container.step-theme-blue,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-container.step-theme-blue,
+html.light-theme .testing-1-theme .blueprint-step-container.step-theme-blue,
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-blue {
+  background: #D9EAFE !important;
+  border: 1px solid #BFDBFE !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.06) !important;
+  --step-accent: #2563EB !important;
+  --step-accent-text: #2563EB !important;
+}
+
+:root[data-theme="light"] .blueprint-step-container.step-theme-green,
+html.light-theme .blueprint-step-container.step-theme-green,
+[data-theme="light"] .blueprint-step-container.step-theme-green,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-container.step-theme-green,
+html.light-theme .testing-1-theme .blueprint-step-container.step-theme-green,
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-green {
+  background: #D1FAE5 !important;
+  border: 1px solid #A7F3D0 !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.06) !important;
+  --step-accent: #059669 !important;
+  --step-accent-text: #059669 !important;
+}
+
+:root[data-theme="light"] .blueprint-step-container.step-theme-orange,
+html.light-theme .blueprint-step-container.step-theme-orange,
+[data-theme="light"] .blueprint-step-container.step-theme-orange,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-container.step-theme-orange,
+html.light-theme .testing-1-theme .blueprint-step-container.step-theme-orange,
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-orange {
+  background: #FEF3C7 !important;
+  border: 1px solid #FDE68A !important;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.06) !important;
+  --step-accent: #D97706 !important;
+  --step-accent-text: #D97706 !important;
+}
+
+:root[data-theme="light"] .blueprint-step-container.step-theme-cyan,
+html.light-theme .blueprint-step-container.step-theme-cyan,
+[data-theme="light"] .blueprint-step-container.step-theme-cyan,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-container.step-theme-cyan,
+html.light-theme .testing-1-theme .blueprint-step-container.step-theme-cyan,
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-cyan {
+  background: #CFFAFE !important;
+  border: 1px solid #BAE6FD !important;
+  box-shadow: 0 3px 10px rgba(6, 182, 212, 0.06) !important;
+  --step-accent: #0891B2 !important;
+  --step-accent-text: #0891B2 !important;
+}
+
+:root[data-theme="light"] .blueprint-step-container.step-theme-purple,
+html.light-theme .blueprint-step-container.step-theme-purple,
+[data-theme="light"] .blueprint-step-container.step-theme-purple,
+:root[data-theme="light"] .testing-1-theme .blueprint-step-container.step-theme-purple,
+html.light-theme .testing-1-theme .blueprint-step-container.step-theme-purple,
+body:has(.testing-1-theme) .blueprint-step-container.step-theme-purple {
+  background: #EDE9FE !important;
+  border: 1px solid #DDD6FE !important;
+  box-shadow: 0 3px 10px rgba(139, 92, 246, 0.06) !important;
+  --step-accent: #7C3AED !important;
+  --step-accent-text: #7C3AED !important;
+}
+
+/* 5. STEP CAPSULES (Light & Dark Themes) */
+:root[data-theme="light"] .step-theme-blue .blueprint-step-capsule,
+html.light-theme .step-theme-blue .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #2563EB !important;
+  color: #2563EB !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15) !important;
+}
+
+:root[data-theme="light"] .step-theme-green .blueprint-step-capsule,
+html.light-theme .step-theme-green .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #059669 !important;
+  color: #059669 !important;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15) !important;
+}
+
+:root[data-theme="light"] .step-theme-orange .blueprint-step-capsule,
+html.light-theme .step-theme-orange .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #D97706 !important;
+  color: #D97706 !important;
+  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.15) !important;
+}
+
+:root[data-theme="light"] .step-theme-cyan .blueprint-step-capsule,
+html.light-theme .step-theme-cyan .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #0891B2 !important;
+  color: #0891B2 !important;
+  box-shadow: 0 2px 6px rgba(8, 145, 178, 0.15) !important;
+}
+
+:root[data-theme="light"] .step-theme-purple .blueprint-step-capsule,
+html.light-theme .step-theme-purple .blueprint-step-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #7C3AED !important;
+  color: #7C3AED !important;
+  box-shadow: 0 2px 6px rgba(124, 58, 237, 0.15) !important;
+}
+
+/* 6. COMPACT ROUNDED-SQUARE EXPAND BUTTONS ON STEP CARDS (PDF Section 9) */
+.step-expand-chevron,
+.testing-1-theme .step-expand-chevron {
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease !important;
+}
+
+:root[data-theme="light"] .step-theme-blue .step-expand-chevron,
+html.light-theme .step-theme-blue .step-expand-chevron {
+  background: #BFDBFE !important;
+  color: #2563EB !important;
+}
+
+:root[data-theme="light"] .step-theme-green .step-expand-chevron,
+html.light-theme .step-theme-green .step-expand-chevron {
+  background: #A7F3D0 !important;
+  color: #059669 !important;
+}
+
+:root[data-theme="light"] .step-theme-orange .step-expand-chevron,
+html.light-theme .step-theme-orange .step-expand-chevron {
+  background: #FDE68A !important;
+  color: #D97706 !important;
+}
+
+:root[data-theme="light"] .step-theme-cyan .step-expand-chevron,
+html.light-theme .step-theme-cyan .step-expand-chevron {
+  background: #BAE6FD !important;
+  color: #0891B2 !important;
+}
+
+:root[data-theme="light"] .step-theme-purple .step-expand-chevron,
+html.light-theme .step-theme-purple .step-expand-chevron {
+  background: #DDD6FE !important;
+  color: #7C3AED !important;
+}
+
+:root:not([data-theme="light"]) .step-theme-blue .step-expand-chevron,
+:root[data-theme="dark"] .step-theme-blue .step-expand-chevron,
+html:not(.light-theme) .step-theme-blue .step-expand-chevron {
+  background: rgba(56, 189, 248, 0.18) !important;
+  color: #38BDF8 !important;
+}
+
+:root:not([data-theme="light"]) .step-theme-green .step-expand-chevron,
+:root[data-theme="dark"] .step-theme-green .step-expand-chevron,
+html:not(.light-theme) .step-theme-green .step-expand-chevron {
+  background: rgba(52, 211, 153, 0.18) !important;
+  color: #34D399 !important;
+}
+
+:root:not([data-theme="light"]) .step-theme-orange .step-expand-chevron,
+:root[data-theme="dark"] .step-theme-orange .step-expand-chevron,
+html:not(.light-theme) .step-theme-orange .step-expand-chevron {
+  background: rgba(251, 191, 36, 0.18) !important;
+  color: #FBBF24 !important;
+}
+
+:root:not([data-theme="light"]) .step-theme-cyan .step-expand-chevron,
+:root[data-theme="dark"] .step-theme-cyan .step-expand-chevron,
+html:not(.light-theme) .step-theme-cyan .step-expand-chevron {
+  background: rgba(56, 189, 248, 0.18) !important;
+  color: #38BDF8 !important;
+}
+
+:root:not([data-theme="light"]) .step-theme-purple .step-expand-chevron,
+:root[data-theme="dark"] .step-theme-purple .step-expand-chevron,
+html:not(.light-theme) .step-theme-purple .step-expand-chevron {
+  background: rgba(192, 132, 252, 0.18) !important;
+  color: #C084FC !important;
+}
+
+/* 7. RESULT BLOCK (Light & Dark Themes) */
+:root[data-theme="light"] .blueprint-result-block,
+html.light-theme .blueprint-result-block,
+[data-theme="light"] .blueprint-result-block,
+:root[data-theme="light"] .testing-1-theme .blueprint-result-block,
+html.light-theme .testing-1-theme .blueprint-result-block {
+  background: #FAF5FF !important;
+  border: 1px solid #E9D5FF !important;
+  box-shadow: 0 3px 10px rgba(168, 85, 247, 0.06) !important;
+}
+
+:root[data-theme="light"] .blueprint-result-capsule,
+html.light-theme .blueprint-result-capsule,
+[data-theme="light"] .blueprint-result-capsule,
+:root[data-theme="light"] .testing-1-theme .blueprint-result-capsule,
+html.light-theme .testing-1-theme .blueprint-result-capsule {
+  background: #FFFFFF !important;
+  border: 1.5px solid #9333EA !important;
+  color: #9333EA !important;
+  box-shadow: 0 2px 6px rgba(168, 85, 247, 0.15) !important;
+}
+
+/* 8. Stream Connectors */
+.blueprint-stream-connector {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 8px 0 10px !important;
+  gap: 4px !important;
+}
+
+:root[data-theme="light"] .blueprint-stream-connector,
+html.light-theme .blueprint-stream-connector,
+[data-theme="light"] .blueprint-stream-connector {
+  color: #0070F3 !important;
+}
+
+:root:not([data-theme="light"]) .blueprint-stream-connector,
+:root[data-theme="dark"] .blueprint-stream-connector,
+html:not(.light-theme) .blueprint-stream-connector {
+  color: #38BDF8 !important;
+}
+
+.stream-handoff-capsule {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 12px !important;
+  border-radius: 9999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  max-width: 90% !important;
+  text-align: center !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+:root[data-theme="light"] .stream-handoff-capsule,
+html.light-theme .stream-handoff-capsule,
+[data-theme="light"] .stream-handoff-capsule {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid #BFDBFE !important;
+  color: #1E293B !important;
+}
+
+:root:not([data-theme="light"]) .stream-handoff-capsule,
+:root[data-theme="dark"] .stream-handoff-capsule,
+html:not(.light-theme) .stream-handoff-capsule {
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  color: #E2E8F0 !important;
+}
+
+/* Mobile responsive padding */
+@media (max-width: 768px) {
+  .blueprint-inner-workflow-container,
+  .testing-1-theme .blueprint-inner-workflow-container {
+    padding: 24px 12px 20px !important;
+    border-radius: 20px !important;
+    margin-top: 20px !important;
+  }
+}
+
+

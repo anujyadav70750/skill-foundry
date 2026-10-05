@@ -5,6 +5,9 @@ export default defineConfig({
   site: 'https://hub.skillfoundry-web.workers.dev',
   output: 'static',
   compressHTML: true,
+  devToolbar: {
+    enabled: false
+  },
   integrations: [sitemap()],
   server: {
     host: '0.0.0.0',
