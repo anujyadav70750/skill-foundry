@@ -38,11 +38,13 @@ fi
 echo "Staging files..."
 git add -A
 
+COMMIT_MSG="${1:-Update Resource page structure, workflow assets, and medieval knight guide}"
+
 if git diff-index --quiet HEAD 2>/dev/null; then
   echo "No changes to commit."
 else
   echo "Committing updates..."
-  git commit -m "Finalize Resource Page structure with reusable editorial layout and step handoff continuity"
+  git commit -m "$COMMIT_MSG"
 fi
 
 echo "Pushing to GitHub..."

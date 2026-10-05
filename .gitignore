@@ -6,3 +6,4 @@ node_modules/
 *.log
 metadata.json
 bun.lock
+tmp/

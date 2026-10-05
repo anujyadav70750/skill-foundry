@@ -1114,6 +1114,79 @@ const platformLinks = [
         color: #94A3B8;
       }
 
+      /* Search Modal in Light Theme */
+      :global([data-theme="light"]) .search-modal-overlay,
+      :global(html.light-theme) .search-modal-overlay {
+        background: rgba(15, 23, 42, 0.5);
+      }
+      :global([data-theme="light"]) .search-modal-card,
+      :global(html.light-theme) .search-modal-card {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+        box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16);
+      }
+      :global([data-theme="light"]) .search-modal-header,
+      :global(html.light-theme) .search-modal-header {
+        border-bottom-color: #E2E8F0;
+      }
+      :global([data-theme="light"]) .search-modal-input,
+      :global(html.light-theme) .search-modal-input {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .search-modal-input::placeholder,
+      :global(html.light-theme) .search-modal-input::placeholder {
+        color: #94A3B8;
+      }
+      :global([data-theme="light"]) .search-modal-clear,
+      :global(html.light-theme) .search-modal-clear {
+        color: #64748B;
+        background: rgba(0, 0, 0, 0.05);
+      }
+      :global([data-theme="light"]) .search-modal-clear:hover,
+      :global(html.light-theme) .search-modal-clear:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .search-modal-close,
+      :global(html.light-theme) .search-modal-close {
+        color: #64748B;
+        background: rgba(0, 0, 0, 0.04);
+        border-color: #E2E8F0;
+      }
+      :global([data-theme="light"]) .search-modal-close:hover,
+      :global(html.light-theme) .search-modal-close:hover {
+        background: rgba(0, 0, 0, 0.08);
+        color: #0F172A;
+        border-color: #CBD5E1;
+      }
+      :global([data-theme="light"]) .search-modal-body,
+      :global(html.light-theme) .search-modal-body {
+        background: #FFFFFF;
+      }
+      :global([data-theme="light"]) .search-result-item,
+      :global(html.light-theme) .search-result-item {
+        background: #F8FAFC;
+        border-color: #E2E8F0;
+      }
+      :global([data-theme="light"]) .search-result-item:hover,
+      :global(html.light-theme) .search-result-item:hover {
+        background: #F1F5F9;
+        border-color: #0284C7;
+      }
+      :global([data-theme="light"]) .search-result-title,
+      :global(html.light-theme) .search-result-title {
+        color: #0F172A;
+      }
+      :global([data-theme="light"]) .search-result-desc,
+      :global(html.light-theme) .search-result-desc {
+        color: #475569;
+      }
+      :global([data-theme="light"]) .search-modal-footer,
+      :global(html.light-theme) .search-modal-footer {
+        background: #F8FAFC;
+        border-top-color: #E2E8F0;
+      }
+
       /* ==========================================================================
          RESPONSIVE ADAPTATIONS
          ========================================================================== */

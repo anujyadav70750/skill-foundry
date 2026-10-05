@@ -116,11 +116,9 @@ const tools = workflowSteps
 
 const toolLogo = (tool) => {
   try {
-    const rawName = String(tool?.name || '').toLowerCase();
-    const rawUrl = String(tool?.url || '').toLowerCase();
-    if (rawName.includes('flow') || rawUrl.includes('flow.google')) return '/google-flow-icon.svg';
-    if (rawName.includes('capcut') || rawUrl.includes('capcut.com')) return '/capcut-icon.svg';
-    const host = new URL(tool?.url || '').hostname;
+    const rawUrl = String(tool?.url || '').trim();
+    if (!rawUrl) return '/skill-foundry-resource-icon.svg';
+    const host = new URL(rawUrl).hostname;
     return host ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128` : '/skill-foundry-resource-icon.svg';
   } catch {
     return '/skill-foundry-resource-icon.svg';
@@ -144,11 +142,12 @@ const outputVisual = (step, index) => {
     /document|pdf/i.test(raw) ? 'document' : 'text'
   );
   if (step.outputSrc) return { type, src: step.outputSrc, previewSrc: '', label: step.outputLabel || raw || 'Output from this step' };
+  if (step.outputPreviewSrc) return { type, src: '', previewSrc: step.outputPreviewSrc, label: step.outputLabel || raw || 'Output from this step' };
   if (/^https?:\/\//i.test(raw)) return { type: mediaTypeFromUrl(raw), src: raw, previewSrc: '', label: raw };
   const next = workflowSteps[index + 1];
-  const linked = next?.inputs?.find((input) => input?.src && ((step.outputLabel && input?.label?.toLowerCase() === step.outputLabel.toLowerCase()) || (input.type === type || !type)));
+  const linked = next?.inputs?.find((input) => input?.src && step.outputLabel && input?.label?.toLowerCase().includes(step.outputLabel.toLowerCase()));
   if (linked?.src) return { type: linked.type || type, src: linked.src, previewSrc: '', label: step.outputLabel || raw || linked.label || 'Step output' };
-  const previewSrc = step.outputPreviewSrc || (index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '');
+  const previewSrc = index === workflowSteps.length - 1 && resultImages[0] ? resultImages[0] : '';
   return { type, src: '', previewSrc, label: step.outputLabel || raw || 'Output produced by this step' };
 };
 
@@ -157,6 +156,7 @@ const isRealAudio = (src) => mediaTypeFromUrl(src) === 'audio';
 
 const getHandoffText = (currentStep, nextStep, stepIndex) => {
   if (currentStep.handoff) return String(currentStep.handoff).trim();
+  if (currentStep.next) return String(currentStep.next).trim();
   if (currentStep.transition) return String(currentStep.transition).trim();
   if (currentStep.transitionInstruction) return String(currentStep.transitionInstruction).trim();
   if (!nextStep) return '';
@@ -211,11 +211,17 @@ const heroImage = resourceHeroImage(resource);
 const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
 
+const rawReel = (data as any).instagramReelUrl || (data as any).finalReelUrl || (data as any).videoEmbedUrl || '';
+const isInstagramReel = typeof rawReel === 'string' && rawReel.includes('instagram.com');
+const finalReelEmbedUrl = isInstagramReel
+  ? (rawReel.includes('/embed') ? rawReel : `${rawReel.split('?')[0].replace(/\/+$/, '')}/embed/`)
+  : '';
+
 const finalWorkflowStep = workflowSteps[workflowSteps.length - 1];
 const finalWorkflowOutput = finalWorkflowStep ? outputVisual(finalWorkflowStep, workflowSteps.length - 1) : null;
 const finalWorkflowMediaUrl = (finalWorkflowOutput?.src && isRealVideo(finalWorkflowOutput.src))
   ? finalWorkflowOutput.src
-  : (data.heroImage || heroImage || finalWorkflowOutput?.previewSrc || resultImages[0] || '');
+  : (isTesting1 ? (resultImages[0] || heroImage) : '');
 const isFinalWorkflowVideoDirect = finalWorkflowOutput?.src ? isRealVideo(finalWorkflowOutput.src) : false;
 const isFinalWorkflowVideo = finalWorkflowOutput?.type === 'video' || isFinalWorkflowVideoDirect || isTesting1;
 const introText = isTesting1
@@ -551,8 +557,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     .testing-1-theme .resource-description .lead {
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
-      font-size: 1.15rem !important;
-      line-height: 1.75 !important;
+      font-size: 1.14rem !important;
+      line-height: 1.7 !important;
+      letter-spacing: -0.005em !important;
       color: #CBD5E1 !important;
       text-align: center !important;
       max-width: 840px !important;
@@ -1227,85 +1234,97 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
                   <!-- Expanded Step Content (Revealed in place when open) -->
                   <div class="blueprint-step-body" id={`step-body-${index + 1}`} hidden>
-                    <!-- 1. INPUTS SUB-NODE -->
-                      <div class="blueprint-subnode node-inputs">
-                      <div class="blueprint-subnode-header">
-                        <div class="blueprint-node-titles">
-                          <span class="blueprint-node-title">INPUTS</span>
-                          <span class="blueprint-node-subtitle">What you provide to this step</span>
-                        </div>
-                      </div>
-                      <div class="blueprint-subnode-content">
-                        <div class="workflow-input-rail">
-                          {step.inputs.length > 0 ? step.inputs.map((input) => {
-                            const isInputImage = input.type === 'image' && input.src;
-                            const isInputVideo = input.type === 'video' && input.src;
-                            const isInputAudio = input.type === 'audio' && input.src && isRealAudio(input.src);
-                            const isInputVisual = isInputImage || isInputVideo;
-                            return (
-                              <article class={`workflow-media-card input-card input-${input.type || 'item'}`}>
-                                <span class="media-type">{(input.type || 'input').toUpperCase()}</span>
-                                <div class={`media-frame ${!isInputVisual && !isInputAudio ? 'media-frame-nonvisual' : ''}`}>
-                                  {isInputImage && (
-                                    <>
-                                      <img class="media-backdrop" src={input.src} alt="" aria-hidden="true" />
-                                      <img class="media-main" src={input.src} alt={input.label || input.role || 'Input image'} loading="lazy" />
-                                    </>
-                                  )}
-                                  {isInputVideo && (
-                                    isRealVideo(input.src) ? (
-                                      <video class="media-main" src={input.src} muted playsinline controls preload="metadata" />
-                                    ) : (
-                                      <>
-                                        <img class="media-backdrop" src={input.src} alt="" aria-hidden="true" />
-                                        <img class="media-main" src={input.src} alt={input.label || input.role || 'Video input'} loading="lazy" />
-                                        <span class="media-play" aria-hidden="true">▶</span>
-                                      </>
-                                    )
-                                  )}
-                                  {isInputAudio && (
-                                    <div class="media-audio-wrap">
-                                      <svg class="audio-wave-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                                      <audio class="media-audio" src={input.src} controls preload="metadata" />
-                                    </div>
-                                  )}
-                                  {!isInputVisual && !isInputAudio && (
-                                    <div class="nonvisual-content">
-                                      <div class="nonvisual-icon" aria-hidden="true">
-                                        {input.type === 'document' ? (
-                                          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
-                                        ) : input.type === 'audio' ? (
-                                          <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    {/* 1. INPUTS SUB-NODE (Rendered ONLY when step has 1+ inputs) */}
+                    {step.inputs && step.inputs.length > 0 && (
+                      <>
+                        <div class="blueprint-subnode node-inputs">
+                          <div class="blueprint-subnode-header">
+                            <div class="blueprint-node-titles">
+                              <span class="blueprint-node-title">INPUTS</span>
+                              <span class="blueprint-node-subtitle">What you provide to this step</span>
+                            </div>
+                          </div>
+                          <div class="blueprint-subnode-content">
+                            <div class="workflow-input-rail">
+                              {step.inputs.map((input) => {
+                                const isInputImage = input.type === 'image' && input.src;
+                                const isInputVideo = input.type === 'video' && input.src;
+                                const isInputAudio = input.type === 'audio' && input.src && isRealAudio(input.src);
+                                const isInputVisual = isInputImage || isInputVideo;
+                                return (
+                                  <article class={`workflow-media-card input-card input-${input.type || 'item'}`}>
+                                    <span class="media-type">{(input.type || 'input').toUpperCase()}</span>
+                                    <div class={`media-frame ${!isInputVisual && !isInputAudio ? 'media-frame-nonvisual' : ''}`}>
+                                      {isInputImage && (
+                                        <>
+                                          <img class="media-backdrop" src={input.src} alt="" aria-hidden="true" />
+                                          <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                                          <img class="media-main" src={input.src} alt={input.label || input.role || 'Input image'} loading="lazy" />
+                                        </>
+                                      )}
+                                      {isInputVideo && (
+                                        isRealVideo(input.src) ? (
+                                          <>
+                                            <video class="media-backdrop" src={input.src} muted playsinline autoplay loop aria-hidden="true" tabindex="-1" />
+                                            <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                                            <video class="media-main" src={input.src} muted playsinline controls preload="metadata" />
+                                          </>
                                         ) : (
-                                          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-                                        )}
-                                      </div>
-                                      <span class="nonvisual-badge">{(input.type || 'input').toUpperCase()}</span>
-                                      <strong class="nonvisual-title">{input.label || input.role || input.value || 'Input'}</strong>
-                                      {input.value && input.value !== input.label && (
-                                        <span class="nonvisual-snippet">{input.value}</span>
+                                          <>
+                                            <img class="media-backdrop" src={input.src} alt="" aria-hidden="true" />
+                                            <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                                            <img class="media-main" src={input.src} alt={input.label || input.role || 'Video input'} loading="lazy" />
+                                            <span class="media-play" aria-hidden="true">▶</span>
+                                          </>
+                                        )
+                                      )}
+                                      {isInputAudio && (
+                                        <div class="media-audio-wrap">
+                                          <svg class="audio-wave-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                          <audio class="media-audio" src={input.src} controls preload="metadata" />
+                                        </div>
+                                      )}
+                                      {!isInputVisual && !isInputAudio && (
+                                        <div class="nonvisual-content">
+                                          <div class="nonvisual-icon" aria-hidden="true">
+                                            {input.type === 'document' ? (
+                                              <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+                                            ) : input.type === 'audio' ? (
+                                              <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                            ) : input.type === 'video' ? (
+                                              <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                                            ) : (
+                                              <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+                                            )}
+                                          </div>
+                                          <span class="nonvisual-badge">{(input.type || 'input').toUpperCase()}</span>
+                                          <strong class="nonvisual-title">{input.label || input.role || input.value || 'Input'}</strong>
+                                          {input.value && input.value !== input.label && (
+                                            <span class="nonvisual-snippet">{input.value}</span>
+                                          )}
+                                        </div>
                                       )}
                                     </div>
-                                  )}
-                                </div>
-                                <div class="media-caption">
-                                  <strong>{input.label || input.role || input.value || 'Input'}</strong>
-                                  {input.role && <small>{input.role}</small>}
-                                </div>
-                              </article>
-                            );
-                          }) : <div class="workflow-empty-input">No structured input is required for this step.</div>}
+                                    <div class="media-caption">
+                                      <strong>{input.label || input.role || input.value || 'Input'}</strong>
+                                      {input.role && <small>{input.role}</small>}
+                                    </div>
+                                  </article>
+                                );
+                              })}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
 
-                    <!-- Downward Arrow -->
-                    <div class="blueprint-sub-arrow" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="2" x2="12" y2="20"></line>
-                        <polyline points="6 14 12 20 18 14"></polyline>
-                      </svg>
-                    </div>
+                        <!-- Downward Arrow -->
+                        <div class="blueprint-sub-arrow" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="18" height="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="2" x2="12" y2="20"></line>
+                            <polyline points="6 14 12 20 18 14"></polyline>
+                          </svg>
+                        </div>
+                      </>
+                    )}
 
                     {isInstructionStep ? (
                       <>
@@ -1539,32 +1558,48 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                       <div class="blueprint-subnode-content">
                         <div class="blueprint-result-body">
                           <div class="blueprint-result-media-center">
-                            <div class={`media-frame ${!isVisual && !isAudio ? 'media-frame-nonvisual' : ''}`}>
-                              {isImage && (
+                            <div class={`media-frame ${!isVisual && !isAudio && !(output.src && output.src.includes('instagram.com')) ? 'media-frame-nonvisual' : ''}`}>
+                              {output.src && output.src.includes('instagram.com') ? (
+                                <>
+                                  <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
+                                  <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                                  <div class="blueprint-final-reel-container">
+                                    <iframe
+                                      class="blueprint-final-reel-iframe"
+                                      src={output.src.includes('/embed') ? output.src : `${output.src.split('?')[0].replace(/\/+$/, '')}/embed/`}
+                                      title={output.label}
+                                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                                      loading="lazy"
+                                    ></iframe>
+                                  </div>
+                                </>
+                              ) : isImage ? (
                                 <>
                                   <img class="media-backdrop" src={mediaUrl} alt="" aria-hidden="true" />
+                                  <div class="media-backdrop-overlay" aria-hidden="true"></div>
                                   <img class="media-main" src={mediaUrl} alt={output.label} loading="lazy" />
                                 </>
-                              )}
-                              {isVideo && (
+                              ) : isVideo ? (
                                 output.src && isRealVideo(output.src) ? (
-                                  <video class="media-backdrop" src={output.src} muted playsinline autoplay loop preload="metadata" aria-hidden="true" tabindex="-1" />
-                                  <video class="media-main" src={output.src} muted playsinline controls preload="metadata" />
+                                  <>
+                                    <video class="media-backdrop" src={output.src} muted playsinline autoplay loop preload="metadata" aria-hidden="true" tabindex="-1" />
+                                    <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                                    <video class="media-main" src={output.src} muted playsinline controls preload="metadata" />
+                                  </>
                                 ) : (
                                   <>
                                     <img class="media-backdrop" src={mediaUrl} alt="" aria-hidden="true" />
+                                    <div class="media-backdrop-overlay" aria-hidden="true"></div>
                                     <img class="media-main" src={mediaUrl} alt={output.label} loading="lazy" />
                                     <span class="media-play" aria-hidden="true">▶</span>
                                   </>
                                 )
-                              )}
-                              {isAudio && (
+                              ) : isAudio ? (
                                 <div class="media-audio-wrap">
                                   <svg class="audio-wave-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                                   <audio class="media-audio" src={output.src} controls preload="metadata" />
                                 </div>
-                              )}
-                              {!isVisual && !isAudio && (
+                              ) : (
                                 <div class="nonvisual-content">
                                   <div class="nonvisual-icon" aria-hidden="true">
                                     {output.type === 'document' ? (
@@ -1627,33 +1662,57 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
               <div class="blueprint-result-inner">
                 <div class="blueprint-final-preview-wrap">
-                  {finalWorkflowMediaUrl ? (
-                    <div class="blueprint-final-media-frame">
+                  {finalReelEmbedUrl ? (
+                    <div class="blueprint-final-media-frame media-frame">
+                      <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
+                      <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                      <div class="blueprint-final-reel-container">
+                        <iframe
+                          class="blueprint-final-reel-iframe"
+                          src={finalReelEmbedUrl}
+                          title="Final edited Instagram Reel"
+                          allowtransparency="true"
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                          loading="lazy"
+                        ></iframe>
+                      </div>
+                    </div>
+                  ) : finalWorkflowMediaUrl ? (
+                    <div class="blueprint-final-media-frame media-frame">
                       {isFinalWorkflowVideoDirect ? (
-                        <video class="blueprint-final-video" src={finalWorkflowMediaUrl} controls playsinline preload="metadata" poster={heroImage}></video>
+                        <>
+                          <video class="media-backdrop" src={finalWorkflowMediaUrl} muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
+                          <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                          <video class="blueprint-final-video media-main" src={finalWorkflowMediaUrl} controls playsinline preload="metadata"></video>
+                        </>
                       ) : (
-                        <div class="blueprint-final-img-wrap">
-                          <img class="blueprint-final-media" src={finalWorkflowMediaUrl} alt={imageAlt || "Final edited video"} loading="lazy" />
-                          {isFinalWorkflowVideo && (
-                            <div class="blueprint-final-play-badge" aria-hidden="true">
-                              <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
-                                <polygon points="6 4 20 12 6 20 6 4"></polygon>
-                              </svg>
-                            </div>
-                          )}
-                        </div>
+                        <>
+                          <img class="media-backdrop" src={finalWorkflowMediaUrl} alt="" aria-hidden="true" />
+                          <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                          <img class="blueprint-final-media media-main" src={finalWorkflowMediaUrl} alt={imageAlt || "Final edited video"} loading="lazy" />
+                        </>
                       )}
                     </div>
                   ) : (
-                    <div class="blueprint-final-placeholder">
-                      <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    <div class="blueprint-final-placeholder media-frame-nonvisual">
+                      <div class="blueprint-final-placeholder-content">
+                        <div class="blueprint-final-placeholder-icon-wrap" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                          </svg>
+                        </div>
+                        <span class="blueprint-final-placeholder-badge">FINAL EXPORT</span>
+                        <strong class="blueprint-final-placeholder-title">Ready-to-share 9:16 video</strong>
+                        <p class="blueprint-final-placeholder-sub">Follow Steps 01 to 05 to create and export your final edited Reel.</p>
+                      </div>
                     </div>
                   )}
                 </div>
 
                 <div class="blueprint-final-meta">
-                  <h3 class="blueprint-final-title">{isTesting1 || isFinalWorkflowVideo ? "Ready-to-post video" : "Ready-to-use asset"}</h3>
-                  <p class="blueprint-final-desc">{isTesting1 || isFinalWorkflowVideo ? "Ready to post, save, share, or remix with suitable audio before publishing." : "Ready to save, publish, or use in your workflow."}</p>
+                  <h3 class="blueprint-final-title">{isTesting1 ? "Ready-to-post video" : (data.finalTitle || "Final edited video")}</h3>
+                  <p class="blueprint-final-desc">{isTesting1 ? "Ready to post, save, share, or remix with suitable audio before publishing." : (data.finalDescription || "Ready to export and share.")}</p>
                 </div>
               </div>
             </div>
@@ -1688,7 +1747,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
-    // Step expand/collapse toggle interaction
+    // Step expand/collapse toggle interaction (Single-Open Accordion across all 5 steps)
     document.querySelectorAll('[data-step-toggle]').forEach((toggleBtn) => {
       toggleBtn.addEventListener('click', () => {
         const container = toggleBtn.closest('.blueprint-step-container');
@@ -1698,6 +1757,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
         const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
         const nextState = !isExpanded;
+
+        // If expanding this step, close all other steps across the workflow
+        if (nextState) {
+          document.querySelectorAll('.blueprint-step-container').forEach((otherContainer) => {
+            if (otherContainer !== container) {
+              const otherToggle = otherContainer.querySelector('[data-step-toggle]');
+              const otherBody = otherContainer.querySelector('.blueprint-step-body');
+              if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
+              otherContainer.classList.remove('is-expanded');
+              otherContainer.classList.add('is-collapsed');
+              if (otherBody) otherBody.hidden = true;
+            }
+          });
+        }
 
         toggleBtn.setAttribute('aria-expanded', String(nextState));
         container.classList.toggle('is-expanded', nextState);
@@ -2149,14 +2222,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       color: var(--accent-2);
     }
 
-    /* Strict 1:1 Media Frames */
+    /* Strict Horizontal Media Frames */
     .media-frame {
       position: relative;
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 16 / 9;
       height: auto;
       margin: 10px 0 8px;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       background: #05080E;
       border: 1px solid var(--line);
@@ -2170,19 +2243,26 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       width: 100%;
       height: 100%;
       object-fit: cover;
-      filter: blur(14px);
-      transform: scale(1.18);
-      opacity: 0.38;
+      filter: blur(20px) brightness(0.35) saturate(0.7);
+      transform: scale(1.25);
+      opacity: 0.8;
       pointer-events: none;
+    }
+    .media-backdrop-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      pointer-events: none;
+      z-index: 1;
     }
     .media-main {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       display: block;
       max-width: 100%;
       max-height: 100%;
       width: auto;
-      height: auto;
+      height: 100%;
       object-fit: contain;
       border-radius: 6px;
     }
@@ -2356,8 +2436,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       width: 100%;
       padding: 0;
       margin: 0;
-      border-bottom: 1px solid var(--line);
-      background: var(--surface-2);
+      border-bottom: 1px solid #263449;
+      background: #0D1726;
       box-sizing: border-box;
     }
     .workflow-prompt-head button {
@@ -2368,19 +2448,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       width: 100%;
       padding: 0 12px;
       border: 0;
-      background: transparent;
-      color: var(--text);
+      background: linear-gradient(180deg, #163B63 0%, #102B49 100%);
+      color: #F8FAFC;
       font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s ease, color 0.15s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
     .workflow-prompt-head button[data-copy-step] {
-      border-right: 1px solid var(--line);
+      border-right: 1px solid #263449;
     }
     .workflow-prompt-head button[data-expand-step] {
-      border-left: 1px solid var(--line);
+      border-left: 1px solid #263449;
     }
     .workflow-prompt-head span {
       display: flex;
@@ -2389,20 +2470,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       height: 100%;
       width: 100%;
       padding: 0 8px;
-      color: var(--muted);
+      background: transparent;
+      color: #8EA2BD;
       font: 700 11px/1 var(--font-mono);
       letter-spacing: 0.12em;
       text-align: center;
       user-select: none;
     }
-    .workflow-prompt-head button:hover,
-    .workflow-download:hover {
-      background: rgba(255, 255, 255, 0.05);
+    .workflow-prompt-head button:hover {
+      background: linear-gradient(180deg, #1D4D7E 0%, #153B61 100%);
       color: #FFFFFF;
     }
-    .workflow-prompt-head button:active,
-    .workflow-download:active {
-      background: rgba(0, 0, 0, 0.2);
+    .workflow-prompt-head button:active {
+      background: #0E2742;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
     }
     .workflow-prompt pre {
       flex: 1 1 auto;
@@ -2415,8 +2496,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       overflow-x: hidden;
       margin: 0;
       padding: 14px 16px;
-      background: #06090F;
-      color: #DCE8F4;
+      background: #050A11;
+      color: #F1F5F9;
       font: 13px/1.6 var(--font-mono);
       white-space: pre-wrap;
       word-break: break-word;
@@ -2436,14 +2517,23 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       margin: 0;
       padding: 0 16px;
       border: 0;
-      border-top: 1px solid var(--line);
-      background: var(--surface-2);
-      color: var(--text);
-      font-size: 13px;
+      border-top: 1px solid #263449;
+      background: linear-gradient(180deg, #12395E 0%, #0D2945 100%);
+      color: #DCEEFF;
+      font-size: 13.5px;
       font-weight: 700;
       cursor: pointer;
       user-select: none;
-      transition: background 0.15s ease, color 0.15s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .workflow-download:hover {
+      background: linear-gradient(180deg, #1A4C79 0%, #123654 100%);
+      color: #FFFFFF;
+    }
+    .workflow-download:active {
+      background: #0A2035;
+      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35);
     }
 
     /* Instructions Mode */
@@ -3261,6 +3351,30 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
       }
 
+      .blueprint-final-reel-container {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        max-height: 100%;
+        aspect-ratio: 9 / 16;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+        overflow: hidden;
+        margin: 0 auto;
+      }
+
+      .blueprint-final-reel-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: #000000;
+        display: block;
+      }
+
       .blueprint-final-img-wrap {
         position: relative;
         width: 100%;
@@ -3272,9 +3386,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       .blueprint-final-media,
       .blueprint-final-video {
-        width: 100%;
+        position: relative;
+        z-index: 2;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
       }
 
@@ -3302,12 +3420,54 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         width: 100%;
         aspect-ratio: 16 / 9;
         border-radius: 16px;
-        background: #070C14;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: linear-gradient(145deg, #0d1522 0%, #070c14 100%);
+        border: 1px solid rgba(168, 85, 247, 0.25);
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #64748B;
+        padding: 24px;
+        box-sizing: border-box;
+      }
+      .blueprint-final-placeholder-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        max-width: 380px;
+      }
+      .blueprint-final-placeholder-icon-wrap {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: rgba(168, 85, 247, 0.12);
+        border: 1px solid rgba(168, 85, 247, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #A855F7;
+        margin-bottom: 2px;
+      }
+      .blueprint-final-placeholder-badge {
+        font: 700 10px/1 var(--font-mono);
+        letter-spacing: 0.1em;
+        color: #A855F7;
+        background: rgba(168, 85, 247, 0.15);
+        border: 1px solid rgba(168, 85, 247, 0.35);
+        padding: 4px 10px;
+        border-radius: 9999px;
+      }
+      .blueprint-final-placeholder-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #F8FAFC;
+        margin: 0;
+      }
+      .blueprint-final-placeholder-sub {
+        font-size: 13px;
+        color: #94A3B8;
+        line-height: 1.45;
+        margin: 0;
       }
 
       .blueprint-final-meta {
@@ -3528,7 +3688,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .blueprint-result-media-center .media-frame {
         width: 100%;
         max-width: 320px;
-        aspect-ratio: 1/1;
+        aspect-ratio: 1 / 1;
+        height: auto;
         border-radius: 14px;
         overflow: hidden;
         background: #070c14;
@@ -3538,16 +3699,29 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center;
         justify-content: center;
       }
+      @media (min-width: 769px) {
+        .blueprint-result-media-center .media-frame {
+          max-width: 760px;
+          aspect-ratio: 16 / 9;
+          border-radius: 16px;
+        }
+      }
       .blueprint-result-media-center .media-main {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
         position: relative;
         z-index: 2;
+        display: block;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 6px;
       }
       .blueprint-result-media-center video.media-main {
+        width: 100%;
+        height: 100%;
         object-fit: contain;
-        background: #000000;
+        background: transparent;
       }
       .blueprint-result-media-center .media-backdrop {
         position: absolute;
@@ -3555,8 +3729,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: blur(14px) brightness(0.4);
-        transform: scale(1.1);
+        filter: blur(20px) brightness(0.35) saturate(0.7);
+        transform: scale(1.25);
+        opacity: 0.8;
+        pointer-events: none;
         z-index: 1;
       }
       .blueprint-result-meta-info {
@@ -4170,30 +4346,37 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .workflow-prompt-head {
-        background: rgba(14, 22, 38, 0.95) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        background: #0D1726 !important;
+        border-bottom: 1px solid #263449 !important;
       }
 
       .testing-1-theme .workflow-prompt-head button {
-        background: rgba(255, 255, 255, 0.05) !important;
-        color: #E2E8F0 !important;
+        background: linear-gradient(180deg, #12395E 0%, #0D2945 100%) !important;
+        color: #DCEEFF !important;
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 13px !important;
+        font-size: 12.5px !important;
         font-weight: 700 !important;
-        transition: background 0.15s ease, color 0.15s ease !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+        transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
       }
 
       .testing-1-theme .workflow-prompt-head button[data-copy-step] {
-        border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-right: 1px solid #263449 !important;
       }
 
       .testing-1-theme .workflow-prompt-head button[data-expand-step] {
-        border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-left: 1px solid #263449 !important;
       }
 
       .testing-1-theme .workflow-prompt-head button:hover {
-        background: rgba(56, 189, 248, 0.18) !important;
+        background: linear-gradient(180deg, #1D4D7E 0%, #153B61 100%) !important;
+        border-color: #4B83BD !important;
         color: #FFFFFF !important;
+      }
+
+      .testing-1-theme .workflow-prompt-head button:active {
+        background: #0E2742 !important;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.35) !important;
       }
 
       .testing-1-theme .workflow-prompt-head span {
@@ -4348,18 +4531,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       .testing-1-theme .workflow-download,
       .testing-1-theme .workflow-prompt [data-download-step] {
-        background: rgba(255, 255, 255, 0.04) !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-        color: #94A3B8 !important;
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
+        background: linear-gradient(180deg, #12395E 0%, #0D2945 100%) !important;
+        border-top: 1px solid #263449 !important;
+        color: #DCEEFF !important;
+        font-family: inherit !important;
         font-weight: 700 !important;
-        transition: background 0.15s ease, color 0.15s ease !important;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07) !important;
+        transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease !important;
       }
 
       .testing-1-theme .workflow-download:hover,
       .testing-1-theme .workflow-prompt [data-download-step]:hover {
-        background: rgba(56, 189, 248, 0.12) !important;
-        color: #38BDF8 !important;
+        background: linear-gradient(180deg, #1A4C79 0%, #123654 100%) !important;
+        color: #FFFFFF !important;
       }
 
       /* Inner Card 3: Tool / Settings */
@@ -4985,7 +5169,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .breadcrumbs a,
       html.light-theme .breadcrumbs a {
         color: #334155 !important;
-        font-weight: 600 !important;
       }
       :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs a:hover,
       html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs a:hover,
@@ -5002,7 +5185,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .breadcrumbs span,
       html.light-theme .breadcrumbs span {
         color: #94A3B8 !important;
-        font-weight: 500 !important;
       }
       :root[data-theme="light"] .testing-1-theme .hero-unified-header .breadcrumbs span:last-child,
       html.light-theme .testing-1-theme .hero-unified-header .breadcrumbs span:last-child,
@@ -5011,7 +5193,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .breadcrumbs span:last-child,
       html.light-theme .breadcrumbs span:last-child {
         color: #0F172A !important;
-        font-weight: 750 !important;
       }
 
       /* 2. Category Eyebrow Badge */
@@ -5024,15 +5205,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .section-heading .eyebrow,
       html.light-theme .section-heading .eyebrow {
         background: #EFF6FF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #0369A1 !important;
-        font-weight: 800 !important;
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+        font-size: 11px !important;
+        font-weight: 700 !important;
         letter-spacing: 0.12em !important;
+        text-transform: uppercase !important;
+        padding: 6px 16px !important;
         box-shadow: 0 1px 4px rgba(2, 132, 199, 0.1) !important;
         backdrop-filter: none !important;
       }
 
-      /* 3. Resource Title & Lead Description */
+      /* 3. Resource Title & Lead Description under thumbnail */
       :root[data-theme="light"] .testing-1-theme .hero-unified-header h1,
       html.light-theme .testing-1-theme .hero-unified-header h1,
       :root[data-theme="light"] .resource-intro h1,
@@ -5040,12 +5225,31 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: #0F172A !important;
         text-shadow: none !important;
       }
+      :root[data-theme="light"] .testing-1-theme .resource-hero-unified-section .resource-description .lead,
+      html.light-theme .testing-1-theme .resource-hero-unified-section .resource-description .lead,
       :root[data-theme="light"] .testing-1-theme .resource-description .lead,
       html.light-theme .testing-1-theme .resource-description .lead,
       :root[data-theme="light"] .resource-page .lead,
       html.light-theme .resource-page .lead {
         color: #334155 !important;
-        font-weight: 450 !important;
+        font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+        font-size: 1.14rem !important;
+        line-height: 1.7 !important;
+        letter-spacing: -0.005em !important;
+        font-weight: 400 !important;
+        max-width: 840px !important;
+        margin: 0 auto !important;
+        text-align: center !important;
+      }
+      @media (max-width: 640px) {
+        :root[data-theme="light"] .testing-1-theme .resource-hero-unified-section .resource-description .lead,
+        html.light-theme .testing-1-theme .resource-hero-unified-section .resource-description .lead,
+        :root[data-theme="light"] .testing-1-theme .resource-description .lead,
+        html.light-theme .testing-1-theme .resource-description .lead,
+        :root[data-theme="light"] .resource-page .lead,
+        html.light-theme .resource-page .lead {
+          font-size: 1rem !important;
+        }
       }
 
       /* 4. Publisher Identity Capsule */
@@ -5054,7 +5258,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .publisher-identity,
       html.light-theme .publisher-identity {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
       }
       :root[data-theme="light"] .testing-1-theme .publisher-avatar-box,
@@ -5069,14 +5273,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .publisher-name-row strong,
       html.light-theme .publisher-name-row strong {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 600 !important;
       }
       :root[data-theme="light"] .testing-1-theme .publisher-meta,
       html.light-theme .testing-1-theme .publisher-meta,
       :root[data-theme="light"] .publisher-meta,
       html.light-theme .publisher-meta {
         color: #475569 !important;
-        font-weight: 500 !important;
+        font-weight: 400 !important;
       }
       :root[data-theme="light"] .testing-1-theme .publisher-verification svg circle,
       html.light-theme .testing-1-theme .publisher-verification svg circle,
@@ -5097,7 +5301,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .resource-hero-media .hero-image,
       html.light-theme .resource-hero-media .hero-image {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 16px 44px rgba(15, 23, 42, 0.08), 0 0 30px rgba(2, 132, 199, 0.04) !important;
       }
 
@@ -5113,9 +5317,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .guide-cue,
       html.light-theme .guide-cue {
         background: #FFFFFF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #0F172A !important;
-        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.16), 0 2px 6px rgba(15, 23, 42, 0.06) !important;
+        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12), 0 1px 3px rgba(15, 23, 42, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .guide-cue:hover,
       html.light-theme .testing-1-theme .guide-cue:hover,
@@ -5125,7 +5329,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border-color: #0369A1 !important;
         color: #0F172A !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 10px 26px rgba(2, 132, 199, 0.25) !important;
+        box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2) !important;
       }
       :root[data-theme="light"] .testing-1-theme .guide-cue span,
       html.light-theme .testing-1-theme .guide-cue span,
@@ -5137,9 +5341,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       html.light-theme .guide-cue .guide-cue-text {
         color: #0F172A !important;
         font-family: 'JetBrains Mono', monospace !important;
-        font-size: 12px !important;
-        font-weight: 800 !important;
+        font-size: 12.5px !important;
+        font-weight: 700 !important;
         letter-spacing: 0.08em !important;
+        line-height: 1 !important;
+        text-transform: uppercase !important;
       }
       :root[data-theme="light"] .testing-1-theme .guide-cue svg,
       html.light-theme .testing-1-theme .guide-cue svg,
@@ -5151,7 +5357,27 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       html.light-theme .guide-cue-icon {
         color: #0284C7 !important;
         stroke: #0284C7 !important;
-        stroke-width: 2.5 !important;
+        stroke-width: 2.2 !important;
+      }
+      @media (max-width: 640px) {
+        :root[data-theme="light"] .testing-1-theme .guide-cue span,
+        html.light-theme .testing-1-theme .guide-cue span,
+        :root[data-theme="light"] .testing-1-theme .guide-cue .guide-cue-text,
+        html.light-theme .testing-1-theme .guide-cue .guide-cue-text,
+        :root[data-theme="light"] .guide-cue span,
+        html.light-theme .guide-cue span,
+        :root[data-theme="light"] .guide-cue .guide-cue-text,
+        html.light-theme .guide-cue .guide-cue-text {
+          font-size: 10px !important;
+          letter-spacing: 0.08em !important;
+        }
+        :root[data-theme="light"] .testing-1-theme .guide-cue svg,
+        html.light-theme .testing-1-theme .guide-cue svg,
+        :root[data-theme="light"] .guide-cue svg,
+        html.light-theme .guide-cue svg {
+          width: 12px !important;
+          height: 12px !important;
+        }
       }
 
       /* 7. Sections (Introduction, At a Glance, Tools & Resources) */
@@ -5162,7 +5388,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .resource-page .resource-section,
       html.light-theme .resource-page .resource-section {
         background: #FFFFFF !important;
-        border: 1.5px solid #E2E8F0 !important;
+        border: 1px solid #E2E8F0 !important;
         box-shadow: 0 6px 24px rgba(15, 23, 42, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .section-heading h2,
@@ -5170,21 +5396,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .section-heading h2,
       html.light-theme .section-heading h2 {
         color: #0F172A !important;
-        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .section-lead,
       html.light-theme .testing-1-theme .section-lead,
       :root[data-theme="light"] .section-lead,
       html.light-theme .section-lead {
         color: #334155 !important;
-        font-weight: 450 !important;
       }
       :root[data-theme="light"] .testing-1-theme .section-subcopy,
       html.light-theme .testing-1-theme .section-subcopy,
       :root[data-theme="light"] .section-subcopy,
       html.light-theme .section-subcopy {
         color: #475569 !important;
-        font-weight: 500 !important;
       }
       :root[data-theme="light"] .testing-1-theme .tool-card,
       html.light-theme .testing-1-theme .tool-card,
@@ -5193,7 +5416,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .tool-card,
       html.light-theme .tool-card {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
       }
       :root[data-theme="light"] .testing-1-theme .tool-card:hover,
@@ -5210,24 +5433,24 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-workflow-container,
       html.light-theme .testing-1-theme .blueprint-workflow-container {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 16px 44px rgba(15, 23, 42, 0.06), 0 0 30px rgba(2, 132, 199, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-header-capsule,
       html.light-theme .testing-1-theme .blueprint-header-capsule {
         background: #F0F9FF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-capsule-label,
       html.light-theme .testing-1-theme .blueprint-capsule-label {
         color: #0369A1 !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-capsule-title,
       html.light-theme .testing-1-theme .blueprint-capsule-title {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-top-arrow,
       html.light-theme .testing-1-theme .blueprint-top-arrow {
@@ -5238,31 +5461,31 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-step-container,
       html.light-theme .testing-1-theme .blueprint-step-container {
         background: #F8FAFC !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule,
       html.light-theme .testing-1-theme .blueprint-step-capsule {
         background: #FFFFFF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #0369A1 !important;
         box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule span,
       html.light-theme .testing-1-theme .blueprint-step-capsule span {
         color: #0369A1 !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-thumb-box,
       html.light-theme .testing-1-theme .step-header-thumb-box {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-title,
       html.light-theme .testing-1-theme .step-header-title {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-header-purpose,
       html.light-theme .testing-1-theme .step-header-purpose {
@@ -5272,7 +5495,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .step-expand-chevron,
       html.light-theme .testing-1-theme .step-expand-chevron {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         color: #334155 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-expand-chevron:hover,
@@ -5283,29 +5506,62 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-body,
       html.light-theme .testing-1-theme .blueprint-step-body {
-        border-top: 1.5px solid #CBD5E1 !important;
+        border-top: 1px solid #CBD5E1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-step-title,
       html.light-theme .testing-1-theme .blueprint-step-title {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
 
       /* 10. Subnodes (Inputs, Tools/Settings, Prompt, Output) */
       :root[data-theme="light"] .testing-1-theme .blueprint-subnode,
       html.light-theme .testing-1-theme .blueprint-subnode {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-node-title,
       html.light-theme .testing-1-theme .blueprint-node-title {
         color: #0F172A !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-node-subtitle,
       html.light-theme .testing-1-theme .blueprint-node-subtitle {
         color: #475569 !important;
+        font-weight: 500 !important;
+      }
+
+      /* Inputs Subnode & Cards in Light Theme (Keep square media-frame inside untouched) */
+      :root[data-theme="light"] .testing-1-theme .workflow-input-rail .input-card,
+      html.light-theme .testing-1-theme .workflow-input-rail .input-card,
+      :root[data-theme="light"] .workflow-input-rail .input-card,
+      html.light-theme .workflow-input-rail .input-card {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-input-rail .input-card .media-type,
+      html.light-theme .testing-1-theme .workflow-input-rail .input-card .media-type,
+      :root[data-theme="light"] .workflow-input-rail .input-card .media-type,
+      html.light-theme .workflow-input-rail .input-card .media-type {
+        background: #EFF6FF !important;
+        border: 1px solid #BAE6FD !important;
+        color: #0284C7 !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-input-rail .media-caption strong,
+      html.light-theme .testing-1-theme .workflow-input-rail .media-caption strong,
+      :root[data-theme="light"] .workflow-input-rail .media-caption strong,
+      html.light-theme .workflow-input-rail .media-caption strong {
+        color: #0F172A !important;
+        font-weight: 700 !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .workflow-input-rail .media-caption small,
+      html.light-theme .testing-1-theme .workflow-input-rail .media-caption small,
+      :root[data-theme="light"] .workflow-input-rail .media-caption small,
+      html.light-theme .workflow-input-rail .media-caption small {
+        color: #64748B !important;
         font-weight: 500 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-sub-arrow,
@@ -5322,7 +5578,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .stream-handoff-capsule,
       html.light-theme .testing-1-theme .stream-handoff-capsule {
         background: #FFFFFF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #0F172A !important;
         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.12) !important;
       }
@@ -5334,7 +5590,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .stream-handoff-text,
       html.light-theme .testing-1-theme .stream-handoff-text {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-stream-connector .stream-arrow-icon,
       html.light-theme .testing-1-theme .blueprint-stream-connector .stream-arrow-icon {
@@ -5345,32 +5601,32 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* 11. Tool & Settings Subnode */
       :root[data-theme="light"] .testing-1-theme .blueprint-tool-row,
       html.light-theme .testing-1-theme .blueprint-tool-row {
-        background: #F8FAFC !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 12px !important;
-        padding: 8px 12px !important;
+        background: transparent !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-tool-logo-link,
       html.light-theme .testing-1-theme .blueprint-tool-logo-link {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-tool-name,
       html.light-theme .testing-1-theme .blueprint-tool-name {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-purpose-pill,
       html.light-theme .testing-1-theme .blueprint-purpose-pill {
         background: #EFF6FF !important;
         color: #1D4ED8 !important;
         border: 1px solid #93C5FD !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-settings-label,
       html.light-theme .testing-1-theme .blueprint-settings-label {
         color: #475569 !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-setting-chip,
       html.light-theme .testing-1-theme .blueprint-setting-chip {
@@ -5396,7 +5652,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .workflow-prompt,
       html.light-theme .testing-1-theme .workflow-prompt {
         background: #F8FAFC !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .workflow-prompt-head,
       html.light-theme .testing-1-theme .workflow-prompt-head {
@@ -5406,7 +5662,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .workflow-prompt-head span,
       html.light-theme .testing-1-theme .workflow-prompt-head span {
         color: #0369A1 !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .workflow-prompt-head button,
       html.light-theme .testing-1-theme .workflow-prompt-head button {
@@ -5447,15 +5703,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .instruction-card,
       html.light-theme .testing-1-theme .instruction-card {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
       }
       :root[data-theme="light"] .testing-1-theme .instruction-line span,
       html.light-theme .testing-1-theme .instruction-line span {
         background: #EFF6FF !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #0284C7 !important;
-        font-weight: 800 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .instruction-line p,
       html.light-theme .testing-1-theme .instruction-line p {
@@ -5467,7 +5723,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-result-body .media-frame,
       html.light-theme .testing-1-theme .blueprint-result-body .media-frame {
         background: #F1F5F9 !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-meta-info,
       html.light-theme .testing-1-theme .blueprint-result-meta-info {
@@ -5476,58 +5732,53 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-result-label,
       html.light-theme .testing-1-theme .blueprint-result-label {
         color: #0F172A !important;
-        font-weight: 750 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-desc,
       html.light-theme .testing-1-theme .blueprint-result-desc {
         color: #334155 !important;
-        font-weight: 450 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-subnode.node-result.is-final-result-node,
       html.light-theme .testing-1-theme .blueprint-subnode.node-result.is-final-result-node {
         background: #FFFFFF !important;
-        border: 2px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         box-shadow: 0 10px 30px rgba(2, 132, 199, 0.12) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-block,
       html.light-theme .testing-1-theme .blueprint-result-block {
         background: #FFFFFF !important;
-        border: 2px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         box-shadow: 0 12px 36px rgba(2, 132, 199, 0.12) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule,
       html.light-theme .testing-1-theme .blueprint-result-capsule {
         background: #0284C7 !important;
-        border: 1.5px solid #0284C7 !important;
+        border: 1px solid #0284C7 !important;
         color: #FFFFFF !important;
         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule span,
       html.light-theme .testing-1-theme .blueprint-result-capsule span {
         color: #FFFFFF !important;
-        font-weight: 800 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-final-media-frame,
       html.light-theme .testing-1-theme .blueprint-final-media-frame {
         background: #F1F5F9 !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-final-title,
       html.light-theme .testing-1-theme .blueprint-final-title {
         color: #0F172A !important;
-        font-weight: 750 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-final-desc,
       html.light-theme .testing-1-theme .blueprint-final-desc {
         color: #334155 !important;
-        font-weight: 450 !important;
       }
 
       /* 15. Tips, Tutorial & Tags */
       :root[data-theme="light"] .testing-1-theme .tutorial-section,
       html.light-theme .testing-1-theme .tutorial-section {
         background: #FFFFFF !important;
-        border: 1.5px solid #E2E8F0 !important;
+        border: 1px solid #E2E8F0 !important;
       }
       :root[data-theme="light"] .testing-1-theme .tutorial-section .text-link,
       html.light-theme .testing-1-theme .tutorial-section .text-link {
@@ -5537,7 +5788,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .tips-section,
       html.light-theme .testing-1-theme .tips-section {
         background: #FFFFFF !important;
-        border: 1.5px solid #E2E8F0 !important;
+        border: 1px solid #E2E8F0 !important;
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05) !important;
       }
       :root[data-theme="light"] .testing-1-theme .tips-section .section-heading h2,
@@ -5551,7 +5802,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .tips-list,
       html.light-theme .testing-1-theme .tips-list {
         background: #F8FAFC !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: none !important;
       }
       :root[data-theme="light"] .testing-1-theme .tips-list li,
@@ -5565,7 +5816,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card,
       html.light-theme .testing-1-theme .resource-cta .cta-card {
         background: radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.08), transparent 35%), #FFFFFF !important;
-        border: 1.5px solid rgba(217, 119, 6, 0.35) !important;
+        border: 1px solid rgba(217, 119, 6, 0.35) !important;
         box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
       }
       :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card h2,
@@ -5584,7 +5835,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         color: #FFFFFF !important;
         border: 1px solid #B45309 !important;
         box-shadow: 0 4px 14px rgba(217, 119, 6, 0.25) !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] .testing-1-theme .resource-cta .cta-card .button-primary:hover,
       html.light-theme .testing-1-theme .resource-cta .cta-card .button-primary:hover {
@@ -5594,7 +5845,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .tags a,
       html.light-theme .testing-1-theme .tags a {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         color: #334155 !important;
         font-weight: 600 !important;
       }
@@ -5609,7 +5860,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog,
       html.light-theme [data-prompt-modal] .prompt-modal-dialog {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2) !important;
       }
       :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head,
@@ -5621,7 +5872,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-head span,
       html.light-theme [data-prompt-modal] .prompt-modal-head span {
         color: #0F172A !important;
-        font-weight: 750 !important;
+        font-weight: 700 !important;
       }
       :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions,
       html.light-theme [data-prompt-modal] .prompt-modal-actions {
@@ -5632,7 +5883,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       html.light-theme [data-prompt-modal] .prompt-modal-actions button {
         background: #FFFFFF !important;
         color: #0F172A !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1px solid #CBD5E1 !important;
         font-weight: 700 !important;
       }
       :root[data-theme="light"] body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-actions button:hover,
@@ -5669,7 +5920,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :global(html.light-theme) .blueprint-step-title,
       :global(html.light-theme) .blueprint-final-title {
         color: #0F172A;
-        font-weight: 750;
       }
       :global([data-theme="light"]) .step-header-purpose,
       :global([data-theme="light"]) .blueprint-final-desc,
@@ -5704,7 +5954,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         background: #FFFFFF;
         border-color: #CBD5E1;
         color: #0F172A;
-        font-weight: 700;
       }
       :global([data-theme="light"]) .tips-list,
       :global(html.light-theme) .tips-list {

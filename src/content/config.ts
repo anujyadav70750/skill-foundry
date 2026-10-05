@@ -30,7 +30,8 @@ const workflowStep = z.object({
   outputLabel: z.string().optional(),
   outputDescription: z.string().optional(),
   outputSrc: z.string().optional(),
-  outputPreviewSrc: z.string().optional()
+  outputPreviewSrc: z.string().optional(),
+  handoff: z.string().optional()
 });
 
 const resourceTool = z.object({
