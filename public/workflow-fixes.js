@@ -1,52 +1,57 @@
 (() => {
   const ORIGINAL = 'https://cdn.jsdelivr.net/gh/anujyadav70750/skill-foundry@ba193bbe9557ce08f26c089e1eb96c93840eddf7/public/workflow-fixes.js';
-  const STYLE_ID = 'sf-workflow-blueprint-reference-match-v2';
+  const STYLE_ID = 'sf-workflow-blueprint-reference-match-v3';
 
   const injectReferenceMatch = () => {
     document.getElementById(STYLE_ID)?.remove();
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
-/* Workflow Blueprint — rebuilt around the approved pastel reference. Scoped only to Workflow Blueprint. */
+/* Workflow Blueprint — proportional mobile/desktop correction based on the approved reference. */
 .resource-page .blueprint-workflow-section .blueprint-section-title {
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:clamp(32px,4.15vw,52px) !important;
-  font-weight:800 !important;
-  line-height:1.08 !important;
-  letter-spacing:-.035em !important;
-  color:#172B55 !important;
-  margin:0 0 14px !important;
+  font-family:'Newsreader','Playfair Display',Georgia,serif !important;
+  font-size:26px !important;
+  font-weight:400 !important;
+  line-height:1.18 !important;
+  letter-spacing:-.02em !important;
+  color:var(--text) !important;
+  margin:0 0 10px !important;
 }
 .resource-page .blueprint-workflow-section .blueprint-eyebrow {
   display:inline-flex !important;
   align-items:center !important;
   justify-content:center !important;
-  min-height:64px !important;
-  padding:0 36px !important;
-  border:0 !important;
+  width:auto !important;
+  min-height:38px !important;
+  height:38px !important;
+  padding:0 24px !important;
+  border:1px solid #78C2EC !important;
   border-radius:999px !important;
-  background:#D6E9FD !important;
-  color:#0874D9 !important;
+  background:#EFF7FD !important;
+  color:#146E9F !important;
   box-shadow:none !important;
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:17px !important;
+  font-family:var(--font-sans) !important;
+  font-size:13px !important;
   font-weight:800 !important;
-  letter-spacing:.08em !important;
+  letter-spacing:.10em !important;
+  box-sizing:border-box !important;
 }
 .resource-page .blueprint-workflow-section .blueprint-helper-text {
   display:flex !important;
   align-items:center !important;
-  gap:9px !important;
+  gap:8px !important;
   margin:0 !important;
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:clamp(17px,2vw,23px) !important;
-  line-height:1.45 !important;
-  color:#71809B !important;
+  font-family:var(--font-sans) !important;
+  font-size:14.5px !important;
+  font-weight:450 !important;
+  line-height:1.55 !important;
+  color:#475569 !important;
 }
+/* Keep the user's existing helper arrow exactly as-is. */
 .resource-page .blueprint-workflow-section .helper-chevron-cue {
-  width:30px !important;
-  height:30px !important;
-  flex:0 0 30px !important;
+  width:29px !important;
+  height:29px !important;
+  flex:0 0 29px !important;
   display:inline-flex !important;
   align-items:center !important;
   justify-content:center !important;
@@ -55,50 +60,49 @@
   color:#1976D2 !important;
   box-shadow:0 3px 8px rgba(45,103,160,.12) !important;
 }
-.resource-page .blueprint-workflow-section .helper-chevron-cue svg { width:16px !important;height:16px !important; }
 
 .resource-page .blueprint-workflow-section .blueprint-inner-workflow-container {
-  width:calc(100% - 36px) !important;
+  width:calc(100% + 42px) !important;
   max-width:none !important;
-  margin:42px auto 0 !important;
-  padding:86px 34px 54px !important;
+  margin:30px 0 0 -21px !important;
+  padding:54px 12px 28px !important;
   box-sizing:border-box !important;
-  border-radius:30px !important;
-  background:linear-gradient(180deg,#EAF3FC 0%,#E4EDF7 100%) !important;
+  border-radius:25px !important;
+  background:linear-gradient(180deg,#E9F2FB 0%,#E2ECF7 100%) !important;
   border:1px solid #D2E2F2 !important;
-  box-shadow:inset 0 7px 22px rgba(45,91,139,.13),inset 0 1px 2px rgba(255,255,255,.95),0 12px 30px rgba(43,79,116,.10) !important;
+  box-shadow:inset 0 6px 18px rgba(45,91,139,.12),inset 0 1px 2px rgba(255,255,255,.96),0 10px 26px rgba(43,79,116,.09) !important;
 }
 .resource-page .blueprint-workflow-section .blueprint-inner-expand-control {
-  top:24px !important;
-  right:24px !important;
-  width:58px !important;
-  height:58px !important;
-  min-width:58px !important;
-  min-height:58px !important;
+  top:16px !important;
+  right:16px !important;
+  width:36px !important;
+  height:36px !important;
+  min-width:36px !important;
+  min-height:36px !important;
   padding:0 !important;
   border:0 !important;
-  border-radius:13px !important;
-  background:#DCEBFA !important;
+  border-radius:9px !important;
+  background:#D8EAFB !important;
   color:#0874D9 !important;
-  box-shadow:0 7px 17px rgba(43,96,151,.11),inset 0 1px 0 rgba(255,255,255,.92) !important;
+  box-shadow:0 5px 12px rgba(43,96,151,.10),inset 0 1px 0 rgba(255,255,255,.92) !important;
 }
-.resource-page .blueprint-workflow-section .blueprint-inner-expand-control svg { width:27px !important;height:27px !important; }
+.resource-page .blueprint-workflow-section .blueprint-inner-expand-control svg { width:18px !important;height:18px !important; }
 
 .resource-page .blueprint-workflow-section .blueprint-step-container {
   position:relative !important;
   width:100% !important;
-  min-height:260px !important;
+  min-height:108px !important;
   padding:0 !important;
   box-sizing:border-box !important;
-  border-radius:28px !important;
+  border-radius:18px !important;
   overflow:visible !important;
-  box-shadow:0 12px 26px rgba(47,82,119,.10),inset 0 1px 0 rgba(255,255,255,.58) !important;
+  box-shadow:0 7px 16px rgba(47,82,119,.08),inset 0 1px 0 rgba(255,255,255,.55) !important;
 }
-.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-blue { background:#D6E9FD !important;border:1px solid #B7D7F8 !important; }
-.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-green { background:#D6F8EB !important;border:1px solid #AEE7D0 !important; }
-.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-orange { background:#FFF1C5 !important;border:1px solid #F0D890 !important; }
-.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-cyan { background:#D8F5F9 !important;border:1px solid #B1E4ED !important; }
-.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-purple { background:#EEE3FA !important;border:1px solid #D4C2EC !important; }
+.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-blue { background:#D8E9FB !important;border:1px solid #B9D9F6 !important; }
+.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-green { background:#D7F4E7 !important;border:1px solid #AFE4CF !important; }
+.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-orange { background:#FFF1C8 !important;border:1px solid #F1D994 !important; }
+.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-cyan { background:#D7F4F8 !important;border:1px solid #B1E3EC !important; }
+.resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-purple { background:#EEE4FA !important;border:1px solid #D5C4ED !important; }
 
 .resource-page .blueprint-workflow-section .blueprint-step-capsule {
   position:absolute !important;
@@ -106,47 +110,47 @@
   left:50% !important;
   transform:translate(-50%,-50%) !important;
   z-index:5 !important;
-  width:214px !important;
-  min-width:214px !important;
-  height:64px !important;
+  width:92px !important;
+  min-width:92px !important;
+  height:34px !important;
   padding:0 !important;
   box-sizing:border-box !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
   border-radius:999px !important;
-  background:rgba(250,253,255,.98) !important;
-  border:3px solid !important;
-  box-shadow:0 5px 12px rgba(37,76,116,.11) !important;
+  background:#FAFCFF !important;
+  border:1.5px solid !important;
+  box-shadow:0 3px 8px rgba(37,76,116,.08) !important;
 }
-.resource-page .blueprint-workflow-section .step-theme-blue .blueprint-step-capsule { border-color:#69B4F5 !important;color:#0874D9 !important; }
-.resource-page .blueprint-workflow-section .step-theme-green .blueprint-step-capsule { border-color:#54D39A !important;color:#10895B !important; }
-.resource-page .blueprint-workflow-section .step-theme-orange .blueprint-step-capsule { border-color:#E9BE51 !important;color:#B77700 !important; }
-.resource-page .blueprint-workflow-section .step-theme-cyan .blueprint-step-capsule { border-color:#5AC7D8 !important;color:#07899D !important; }
-.resource-page .blueprint-workflow-section .step-theme-purple .blueprint-step-capsule { border-color:#B68BE3 !important;color:#7543A9 !important; }
+.resource-page .blueprint-workflow-section .step-theme-blue .blueprint-step-capsule { border-color:#6DB6F2 !important;color:#176FC6 !important; }
+.resource-page .blueprint-workflow-section .step-theme-green .blueprint-step-capsule { border-color:#56CE98 !important;color:#16865B !important; }
+.resource-page .blueprint-workflow-section .step-theme-orange .blueprint-step-capsule { border-color:#E4B94F !important;color:#B77900 !important; }
+.resource-page .blueprint-workflow-section .step-theme-cyan .blueprint-step-capsule { border-color:#5CC4D6 !important;color:#0B879B !important; }
+.resource-page .blueprint-workflow-section .step-theme-purple .blueprint-step-capsule { border-color:#B38ADF !important;color:#7541A8 !important; }
 .resource-page .blueprint-workflow-section .blueprint-step-capsule span {
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:18px !important;
+  font-family:var(--font-sans) !important;
+  font-size:11px !important;
   font-weight:800 !important;
-  letter-spacing:.13em !important;
+  letter-spacing:.11em !important;
 }
 
 .resource-page .blueprint-workflow-section .blueprint-step-header {
   display:flex !important;
   align-items:center !important;
   width:100% !important;
-  min-height:260px !important;
-  padding:62px 30px 28px !important;
+  min-height:108px !important;
+  padding:28px 12px 16px !important;
   box-sizing:border-box !important;
-  gap:28px !important;
-  border-radius:28px !important;
+  gap:12px !important;
+  border-radius:18px !important;
 }
 .resource-page .blueprint-workflow-section .step-header-thumb-box {
-  flex:0 0 34% !important;
-  width:34% !important;
-  height:176px !important;
+  flex:0 0 31% !important;
+  width:31% !important;
+  height:62px !important;
   min-width:0 !important;
-  border-radius:18px !important;
+  border-radius:10px !important;
   overflow:hidden !important;
   position:relative !important;
 }
@@ -166,121 +170,58 @@
 .resource-page .blueprint-workflow-section .step-header-info { flex:1 1 auto !important;min-width:0 !important;text-align:left !important; }
 .resource-page .blueprint-workflow-section .step-header-title {
   margin:0 !important;
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:clamp(20px,2vw,27px) !important;
+  font-family:var(--font-sans) !important;
+  font-size:15px !important;
   line-height:1.18 !important;
   font-weight:800 !important;
   color:#102342 !important;
 }
 .resource-page .blueprint-workflow-section .step-header-purpose {
-  margin:7px 0 0 !important;
-  font-family:'Plus Jakarta Sans',var(--font-sans),sans-serif !important;
-  font-size:clamp(15px,1.5vw,19px) !important;
-  line-height:1.38 !important;
+  margin:3px 0 0 !important;
+  font-family:var(--font-sans) !important;
+  font-size:12px !important;
+  line-height:1.3 !important;
+  font-weight:450 !important;
   color:#66758D !important;
 }
 .resource-page .blueprint-workflow-section .step-header-action { flex:0 0 auto !important; }
 .resource-page .blueprint-workflow-section .step-expand-chevron {
-  width:64px !important;
-  height:64px !important;
-  min-width:64px !important;
-  min-height:64px !important;
+  width:34px !important;
+  height:34px !important;
+  min-width:34px !important;
+  min-height:34px !important;
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
   border:0 !important;
-  border-radius:15px !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 5px 12px rgba(39,76,111,.07) !important;
+  border-radius:9px !important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.48),0 3px 8px rgba(39,76,111,.06) !important;
 }
-.resource-page .blueprint-workflow-section .step-theme-blue .step-expand-chevron { background:#BFDFFF !important;color:#0874D9 !important; }
-.resource-page .blueprint-workflow-section .step-theme-green .step-expand-chevron { background:#B9F0D6 !important;color:#10895B !important; }
-.resource-page .blueprint-workflow-section .step-theme-orange .step-expand-chevron { background:#FFE3A0 !important;color:#B77700 !important; }
+.resource-page .blueprint-workflow-section .step-theme-blue .step-expand-chevron { background:#C3E0FC !important;color:#0874D9 !important; }
+.resource-page .blueprint-workflow-section .step-theme-green .step-expand-chevron { background:#BEEFD9 !important;color:#10895B !important; }
+.resource-page .blueprint-workflow-section .step-theme-orange .step-expand-chevron { background:#FFE3A4 !important;color:#B77700 !important; }
 .resource-page .blueprint-workflow-section .step-theme-cyan .step-expand-chevron { background:#BDEBF1 !important;color:#07899D !important; }
 .resource-page .blueprint-workflow-section .step-theme-purple .step-expand-chevron { background:#DEC9F2 !important;color:#7543A9 !important; }
-.resource-page .blueprint-workflow-section .step-chevron-icon { width:27px !important;height:27px !important; }
+.resource-page .blueprint-workflow-section .step-chevron-icon { width:17px !important;height:17px !important; }
 
-/* The reference uses one clean stem-and-arrow connector, not a line plus a separate arrow. */
+/* Keep the existing connected workflow arrow behavior; only its spacing is adjusted. */
 .resource-page .blueprint-workflow-section .workflow-next-connector {
   display:flex !important;
   align-items:center !important;
   justify-content:center !important;
-  min-height:92px !important;
+  min-height:58px !important;
   padding:0 !important;
   margin:0 !important;
 }
-.resource-page .blueprint-workflow-section .workflow-next-connector .connector-cue {
-  width:48px !important;
-  height:48px !important;
-  padding:0 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  background:transparent !important;
-  border:0 !important;
-  box-shadow:none !important;
-  color:#1584DD !important;
-}
-.resource-page .blueprint-workflow-section .workflow-next-connector .connector-cue svg { width:38px !important;height:38px !important; }
 .resource-page .blueprint-workflow-section .stream-handoff-capsule { display:none !important; }
 
-@media (max-width:760px) {
-  .resource-page .blueprint-workflow-section .blueprint-section-title {
-    font-size:31px !important;
-    line-height:1.12 !important;
-    letter-spacing:-.03em !important;
-    margin-bottom:12px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-eyebrow {
-    min-height:54px !important;
-    padding:0 27px !important;
-    font-size:15px !important;
-    letter-spacing:.075em !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-helper-text { font-size:17px !important;gap:8px !important; }
-  .resource-page .blueprint-workflow-section .helper-chevron-cue { width:29px !important;height:29px !important;flex-basis:29px !important; }
-  .resource-page .blueprint-workflow-section .blueprint-inner-workflow-container {
-    width:calc(100% - 24px) !important;
-    margin-top:28px !important;
-    padding:72px 14px 38px !important;
-    border-radius:27px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-inner-expand-control {
-    top:20px !important;right:20px !important;width:46px !important;height:46px !important;min-width:46px !important;min-height:46px !important;border-radius:11px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-inner-expand-control svg { width:21px !important;height:21px !important; }
-  .resource-page .blueprint-workflow-section .blueprint-step-container {
-    min-height:178px !important;
-    border-radius:20px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-step-header {
-    min-height:178px !important;
-    padding:50px 14px 18px !important;
-    gap:15px !important;
-    border-radius:20px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-step-capsule {
-    width:176px !important;min-width:176px !important;height:50px !important;border-width:2px !important;
-  }
-  .resource-page .blueprint-workflow-section .blueprint-step-capsule span { font-size:13px !important;letter-spacing:.12em !important; }
-  .resource-page .blueprint-workflow-section .step-header-thumb-box {
-    flex:0 0 35% !important;width:35% !important;height:104px !important;border-radius:12px !important;
-  }
-  .resource-page .blueprint-workflow-section .step-header-title { font-size:16px !important;line-height:1.18 !important; }
-  .resource-page .blueprint-workflow-section .step-header-purpose { font-size:13px !important;line-height:1.32 !important;margin-top:5px !important; }
-  .resource-page .blueprint-workflow-section .step-expand-chevron {
-    width:48px !important;height:48px !important;min-width:48px !important;min-height:48px !important;border-radius:12px !important;
-  }
-  .resource-page .blueprint-workflow-section .step-chevron-icon { width:22px !important;height:22px !important; }
-  .resource-page .blueprint-workflow-section .workflow-next-connector { min-height:62px !important; }
-  .resource-page .blueprint-workflow-section .workflow-next-connector .connector-cue { width:40px !important;height:40px !important; }
-  .resource-page .blueprint-workflow-section .workflow-next-connector .connector-cue svg { width:32px !important;height:32px !important; }
-}
+/* Result stays permanent; this only lets it use the widened tray. */
+.resource-page .blueprint-workflow-section .blueprint-result-container { width:100% !important; }
 
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-section-title { color:#E7EEF8 !important; }
-html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-eyebrow { background:#243B58 !important;color:#82C4FF !important; }
+html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-eyebrow { background:#243B58 !important;color:#82C4FF !important;border-color:#4E789E !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-helper-text { color:#9CAEC4 !important; }
-html:not(.light-theme) .resource-page .blueprint-workflow-section .helper-chevron-cue { background:#243B58 !important;color:#82C4FF !important; }
-html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-inner-workflow-container { background:linear-gradient(180deg,#182638 0%,#121C2B 100%) !important;border-color:#293B52 !important;box-shadow:inset 0 7px 22px rgba(0,0,0,.30),0 12px 30px rgba(0,0,0,.20) !important; }
+html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-inner-workflow-container { background:linear-gradient(180deg,#182638 0%,#121C2B 100%) !important;border-color:#293B52 !important;box-shadow:inset 0 6px 18px rgba(0,0,0,.30),0 10px 26px rgba(0,0,0,.20) !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-blue { background:#203650 !important;border-color:#3F7FBA !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-green { background:#1D3B31 !important;border-color:#3E9D78 !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-step-container.step-theme-orange { background:#44391F !important;border-color:#B89543 !important; }
@@ -289,30 +230,45 @@ html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-ste
 html:not(.light-theme) .resource-page .blueprint-workflow-section .blueprint-step-capsule { background:#182638 !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .step-header-title { color:#E7EEF8 !important; }
 html:not(.light-theme) .resource-page .blueprint-workflow-section .step-header-purpose { color:#9CAEC4 !important; }
+
+@media (min-width:761px) {
+  .resource-page .blueprint-workflow-section .blueprint-section-title { font-size:40px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-eyebrow { min-height:52px !important;height:52px !important;padding:0 30px !important;font-size:16px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-helper-text { font-size:20px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-inner-workflow-container { width:calc(100% + 28px) !important;margin-left:-14px !important;padding:72px 30px 44px !important;border-radius:30px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-inner-expand-control { width:46px !important;height:46px !important;min-width:46px !important;min-height:46px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-step-container { min-height:220px !important;border-radius:24px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-step-header { min-height:220px !important;padding:54px 28px 26px !important;gap:24px !important;border-radius:24px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-step-capsule { width:156px !important;min-width:156px !important;height:48px !important;border-width:2px !important; }
+  .resource-page .blueprint-workflow-section .blueprint-step-capsule span { font-size:15px !important; }
+  .resource-page .blueprint-workflow-section .step-header-thumb-box { flex-basis:34% !important;width:34% !important;height:150px !important;border-radius:16px !important; }
+  .resource-page .blueprint-workflow-section .step-header-title { font-size:22px !important; }
+  .resource-page .blueprint-workflow-section .step-header-purpose { font-size:15px !important; }
+  .resource-page .blueprint-workflow-section .step-expand-chevron { width:52px !important;height:52px !important;min-width:52px !important;min-height:52px !important; }
+  .resource-page .blueprint-workflow-section .step-chevron-icon { width:23px !important;height:23px !important; }
+  .resource-page .blueprint-workflow-section .workflow-next-connector { min-height:78px !important; }
+}
 `;
-    document.head.appendChild(style);
+    /* Append after the page's existing styles so the reference correction wins the cascade. */
+    (document.body || document.documentElement).appendChild(style);
   };
 
   const cleanWorkflow = () => {
     document.querySelectorAll('.resource-page .blueprint-workflow-section .stream-handoff-capsule').forEach((el) => el.remove());
-    document.querySelectorAll('.resource-page .blueprint-workflow-section .workflow-next-connector .connector-cue svg').forEach((svg) => {
-      svg.innerHTML = '<path d="M12 3v15M7 13l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>';
-      svg.setAttribute('viewBox','0 0 24 24');
-    });
+  };
+
+  const apply = () => {
+    injectReferenceMatch();
+    cleanWorkflow();
   };
 
   const loadOriginal = () => {
     const script = document.createElement('script');
     script.src = ORIGINAL;
     script.onload = () => {
-      requestAnimationFrame(() => {
-        injectReferenceMatch();
-        cleanWorkflow();
-      });
-      setTimeout(() => {
-        injectReferenceMatch();
-        cleanWorkflow();
-      }, 180);
+      requestAnimationFrame(apply);
+      setTimeout(apply, 180);
+      setTimeout(apply, 700);
     };
     script.onerror = () => console.warn('Skill Foundry workflow runtime could not load.');
     document.head.appendChild(script);
