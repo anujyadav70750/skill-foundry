@@ -1185,8 +1185,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             const isVisual = isImage || isVideo;
             const mediaUrl = output.src || output.previewSrc;
 
-            const stepThemes = ['step-theme-blue', 'step-theme-green', 'step-theme-peach', 'step-theme-lavender', 'step-theme-pink', 'step-theme-orange', 'step-theme-purple'];
-            const stepThemeClass = stepThemes[index % 5] || 'step-theme-blue';
+            const stepThemeClass = 'step-theme-blue';
 
             const compactPurposes = [
               "Combine the character and outfit into one 9:16 image.",

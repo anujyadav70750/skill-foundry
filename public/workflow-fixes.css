@@ -3403,26 +3403,26 @@ html:not(.light-theme) .blueprint-final-desc {
   font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
 }
 
-/* Recessed Neutral Inner Workflow Tray */
+/* Recessed Soft Neutral Inner Workflow Tray */
 .blueprint-inner-workflow-container,
 .testing-1-theme .blueprint-inner-workflow-container {
   position: relative !important;
   width: 100% !important;
   max-width: 100% !important;
   box-sizing: border-box !important;
-  margin: 18px 0 0 !important;
-  padding: 48px 12px 16px !important;
-  border-radius: 22px !important;
-  background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%) !important;
-  border: 1.5px solid #E2E8F0 !important;
-  box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.03) !important;
+  margin: 16px 0 0 !important;
+  padding: 44px 12px 12px !important;
+  border-radius: 20px !important;
+  background: #F1F5F9 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: inset 0 2px 6px rgba(15, 23, 42, 0.05), 0 2px 8px rgba(15, 23, 42, 0.03) !important;
 }
 
 @media (min-width: 768px) {
   .blueprint-inner-workflow-container,
   .testing-1-theme .blueprint-inner-workflow-container {
-    padding: 52px 18px 18px !important;
-    border-radius: 26px !important;
+    padding: 48px 16px 14px !important;
+    border-radius: 24px !important;
   }
 }
 
@@ -3505,7 +3505,7 @@ html:not(.light-theme) .blueprint-final-desc {
   box-shadow: 0 6px 20px rgba(2, 132, 199, 0.12), inset 0 1px 0 #FFFFFF !important;
 }
 
-/* Step Capsules — Consistent Skill Foundry Brand Treatment */
+/* Step Capsules — Unified Blue Brand Treatment */
 .blueprint-step-capsule,
 .blueprint-step-container.step-theme-blue .blueprint-step-capsule,
 .blueprint-step-container.step-theme-green .blueprint-step-capsule,
@@ -3576,6 +3576,7 @@ html:not(.light-theme) .blueprint-final-desc {
   outline: none !important;
 }
 
+/* Step Thumbnails — Fill Complete Frame with No Letterboxing */
 .step-header-thumb-box {
   flex: 0 0 30% !important;
   width: 30% !important;
@@ -3586,7 +3587,24 @@ html:not(.light-theme) .blueprint-final-desc {
   position: relative !important;
   box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08) !important;
   border: 1px solid #E2E8F0 !important;
-  background: #F1F5F9 !important;
+  background: #090E17 !important;
+}
+
+.step-header-thumb-box img,
+.step-header-thumb-box .step-header-thumb-main {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  display: block !important;
+  border-radius: 9px !important;
+}
+
+.step-header-thumb-box .step-header-thumb-backdrop,
+.step-header-thumb-box .step-header-thumb-overlay {
+  display: none !important;
 }
 
 .step-header-info {
@@ -3624,7 +3642,7 @@ html:not(.light-theme) .blueprint-final-desc {
   flex: 0 0 auto !important;
 }
 
-/* Expand Button — Consistent Brand Component */
+/* Expand Chevron — Consistent Blue Brand Component */
 .step-expand-chevron,
 .blueprint-step-container.step-theme-blue .step-expand-chevron,
 .blueprint-step-container.step-theme-green .step-expand-chevron,
@@ -3752,10 +3770,10 @@ html:not(.light-theme) .blueprint-final-desc {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
-  justify-content: center !important;
-  padding: 16px 14px 14px !important;
+  justify-content: flex-start !important;
+  padding: 16px 14px 12px !important;
   box-sizing: border-box !important;
-  gap: 10px !important;
+  gap: 8px !important;
   border-radius: 16px !important;
 }
 
@@ -3872,6 +3890,16 @@ html:not(.light-theme) .blueprint-final-desc {
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+}
+
+/* Consistent Spacing below RESULT / Workflow Section */
+.blueprint-workflow-section,
+.resource-section.workflow-section {
+  margin-bottom: 0 !important;
+}
+
+.resource-section.tutorial-section {
+  margin-top: 0 !important;
 }
 
 
