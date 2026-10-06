@@ -221,9 +221,10 @@ const absoluteImage = new URL(heroImage, site).href;
 
 const rawReel = (data as any).instagramReelUrl || (data as any).finalReelUrl || (data as any).videoEmbedUrl || '';
 const isInstagramReel = typeof rawReel === 'string' && rawReel.includes('instagram.com');
-const finalReelEmbedUrl = isInstagramReel
-  ? (rawReel.includes('/embed') ? rawReel : `${rawReel.split('?')[0].replace(/\/+$/, '')}/embed/`)
+const finalReelCleanUrl = isInstagramReel
+  ? rawReel.split('?')[0].replace(/\/embed\/?$/, '').replace(/\/+$/, '') + '/'
   : '';
+const finalReelEmbedUrl = finalReelCleanUrl;
 
 const finalWorkflowStep = workflowSteps[workflowSteps.length - 1];
 const finalWorkflowOutput = finalWorkflowStep ? outputVisual(finalWorkflowStep, workflowSteps.length - 1) : null;
@@ -1594,19 +1595,21 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                           <div class="blueprint-result-media-center">
                             <div class={`media-frame ${!isVisual && !isAudio && !(output.src && output.src.includes('instagram.com')) ? 'media-frame-nonvisual' : ''}`}>
                               {output.src && output.src.includes('instagram.com') ? (
-                                <>
+                                <a
+                                  class="blueprint-final-reel-link"
+                                  href={output.src.split('?')[0].replace(/\/embed\/?$/, '').replace(/\/+$/, '') + '/'}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label={`Watch ${output.label || 'Reel'} on Instagram`}
+                                >
                                   <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
                                   <div class="media-backdrop-overlay" aria-hidden="true"></div>
-                                  <div class="blueprint-final-reel-container">
-                                    <iframe
-                                      class="blueprint-final-reel-iframe"
-                                      src={output.src.includes('/embed') ? output.src : `${output.src.split('?')[0].replace(/\/+$/, '')}/embed/`}
-                                      title={output.label}
-                                      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                                      loading="lazy"
-                                    ></iframe>
+                                  <img class="media-main blueprint-final-media" src={heroImage} alt={output.label || "Watch on Instagram"} loading="lazy" />
+                                  <div class="blueprint-final-play-badge" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
                                   </div>
-                                </>
+                                  <span class="blueprint-final-ig-label">Watch on Instagram</span>
+                                </a>
                               ) : isImage ? (
                                 <>
                                   <img class="media-backdrop" src={mediaUrl} alt="" aria-hidden="true" />
@@ -1688,24 +1691,23 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
               <div class="blueprint-result-inner">
                 <div class="blueprint-final-preview-wrap">
-                  {finalReelEmbedUrl ? (
+                  {finalReelCleanUrl ? (
                     <div class="blueprint-final-media-frame media-frame is-square-frame">
-                      <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
-                      <div class="media-backdrop-overlay" aria-hidden="true"></div>
-                      <div class="blueprint-final-reel-viewport">
-                        <div class="blueprint-final-reel-container">
-                          <iframe
-                            class="blueprint-final-reel-iframe"
-                            src={finalReelEmbedUrl}
-                            title="Final edited Instagram Reel"
-                            allowtransparency="true"
-                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                            loading="lazy"
-                            scrolling="no"
-                            frameborder="0"
-                          ></iframe>
+                      <a
+                        class="blueprint-final-reel-link"
+                        href={finalReelCleanUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Watch on Instagram"
+                      >
+                        <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
+                        <div class="media-backdrop-overlay" aria-hidden="true"></div>
+                        <img class="media-main blueprint-final-media" src={heroImage} alt={imageAlt || "Final edited video"} loading="lazy" />
+                        <div class="blueprint-final-play-badge" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" width="36" height="36" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
                         </div>
-                      </div>
+                        <span class="blueprint-final-ig-label">Watch on Instagram</span>
+                      </a>
                     </div>
                   ) : finalWorkflowMediaUrl ? (
                     <div class="blueprint-final-media-frame media-frame is-square-frame">
@@ -1750,7 +1752,44 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         </div>
       </section>}
 
-      {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class="video-frame"><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
+      {(data.videoEmbedUrl || data.originalVideoUrl) && (
+        <section class="resource-section tutorial-section" id="tutorial">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TUTORIAL</p>
+              <h2>Watch it in action</h2>
+              <p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p>
+            </div>
+          </div>
+          {data.videoEmbedUrl && (
+            <div class={`video-frame ${data.videoEmbedUrl.includes('instagram.com') ? 'is-instagram-embed' : ''}`}>
+              {data.videoEmbedUrl.includes('instagram.com') ? (
+                <blockquote
+                  class="instagram-media"
+                  data-instgrm-permalink={rawReel || data.videoEmbedUrl.replace(/\/embed\/?$/, '/')}
+                  data-instgrm-version="14"
+                  style="width:100%; margin:0;"
+                ></blockquote>
+              ) : (
+                <iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" allowfullscreen></iframe>
+              )}
+            </div>
+          )}
+          {data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}
+        </section>
+      )}
+
+      <script async src="https://www.instagram.com/embed.js"></script>
+      <script is:inline>
+        function processInstagramEmbeds() {
+          if (window.instgrm && window.instgrm.Embeds) {
+            window.instgrm.Embeds.process();
+          }
+        }
+        document.addEventListener('DOMContentLoaded', processInstagramEmbeds);
+        window.addEventListener('load', processInstagramEmbeds);
+        document.addEventListener('astro:page-load', processInstagramEmbeds);
+      </script>
 
       {data.tips.length > 0 && <section class="resource-section tips-section"><div class="section-heading"><div><p class="eyebrow">BETTER RESULTS</p><h2>Tips for better results</h2></div></div><ul class="tips-list">{data.tips.map((tip)=><li>{tip}</li>)}</ul></section>}
       {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag)=><a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}

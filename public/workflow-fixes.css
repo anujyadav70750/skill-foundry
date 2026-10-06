@@ -3771,7 +3771,7 @@ html:not(.light-theme) .blueprint-final-desc {
   flex-direction: column !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  padding: 16px 14px 12px !important;
+  padding: 16px 12px 14px !important;
   box-sizing: border-box !important;
   gap: 8px !important;
   border-radius: 16px !important;
@@ -3787,12 +3787,12 @@ html:not(.light-theme) .blueprint-final-desc {
   margin: 0 !important;
 }
 
-/* 1:1 Large Square Media Box with Blurred Background */
+/* 1:1 Responsive Square Media Box with Blurred Background */
 .blueprint-result-block .blueprint-final-media-frame,
 .blueprint-result-block .blueprint-final-media-frame.is-square-frame {
   position: relative !important;
-  width: 100% !important;
-  max-width: 348px !important;
+  width: min(94%, 480px) !important;
+  max-width: 480px !important;
   aspect-ratio: 1 / 1 !important;
   height: auto !important;
   border-radius: 12px !important;
@@ -3825,46 +3825,114 @@ html:not(.light-theme) .blueprint-final-desc {
   display: block !important;
 }
 
-/* Foreground Reel Viewport — Scaled and Zoomed to Fill from Top to Bottom Boundary */
-.blueprint-result-block .blueprint-final-reel-viewport {
+/* Static Linked Thumbnail for Instagram Reel */
+.blueprint-final-reel-link {
   position: absolute !important;
   inset: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  border-radius: 0 !important;
-  overflow: hidden !important;
-  z-index: 3 !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  pointer-events: auto !important;
-}
-
-.blueprint-result-block .blueprint-final-reel-container {
-  position: absolute !important;
-  top: -56px !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: calc(100% + 240px) !important;
+  text-decoration: none !important;
   overflow: hidden !important;
-  transform-origin: top center !important;
-  transform: scale(1.04) !important;
+  cursor: pointer !important;
+  z-index: 3 !important;
 }
 
-.blueprint-result-block .blueprint-final-reel-iframe {
+.blueprint-final-reel-link .media-main,
+.blueprint-final-reel-link .blueprint-final-media {
+  position: relative !important;
+  z-index: 2 !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
   width: 100% !important;
   height: 100% !important;
-  border: none !important;
-  overflow: hidden !important;
-  pointer-events: auto !important;
+  object-fit: cover !important;
+  object-position: center !important;
   display: block !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.blueprint-final-reel-link:hover .media-main,
+.blueprint-final-reel-link:hover .blueprint-final-media {
+  transform: scale(1.03) !important;
+}
+
+.blueprint-final-play-badge {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 4 !important;
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 9999px !important;
+  background: rgba(15, 23, 42, 0.68) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.35) !important;
+  color: #FFFFFF !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease, border-color 0.2s ease !important;
+  pointer-events: none !important;
+}
+
+.blueprint-final-play-badge svg {
+  margin-left: 3px !important;
+}
+
+.blueprint-final-reel-link:hover .blueprint-final-play-badge {
+  transform: translate(-50%, -50%) scale(1.1) !important;
+  background: #0284C7 !important;
+  border-color: #38BDF8 !important;
+}
+
+.blueprint-final-ig-label {
+  position: absolute !important;
+  bottom: 14px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 4 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  border-radius: 9999px !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #FFFFFF !important;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+  pointer-events: none !important;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease !important;
+}
+
+.blueprint-final-reel-link:hover .blueprint-final-ig-label {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  transform: translateX(-50%) translateY(-2px) !important;
 }
 
 .blueprint-result-block .blueprint-final-meta {
   flex: 0 0 auto !important;
   text-align: center !important;
-  width: 100% !important;
-  margin-top: 0 !important;
+  width: min(94%, 480px) !important;
+  max-width: 480px !important;
+  margin: 4px auto 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
 }
 
 .blueprint-result-block .blueprint-final-title {
@@ -3900,6 +3968,70 @@ html:not(.light-theme) .blueprint-final-desc {
 
 .resource-section.tutorial-section {
   margin-top: 0 !important;
+}
+
+/* Tutorial Section Video Frame — Full Height Instagram Embed Card without Vertical Clipping */
+.tutorial-section .video-frame,
+.resource-page .tutorial-section .video-frame {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 540px !important;
+  margin: 20px auto 0 !important;
+  aspect-ratio: unset !important;
+  height: auto !important;
+  min-height: 560px !important;
+  overflow: visible !important;
+  border: none !important;
+  border-radius: 16px !important;
+  background: transparent !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.tutorial-section .video-frame iframe,
+.resource-page .tutorial-section .video-frame iframe {
+  width: 100% !important;
+  min-width: 326px !important;
+  max-width: 540px !important;
+  height: 600px !important;
+  min-height: 560px !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+.tutorial-section .video-frame .instagram-media,
+.resource-page .tutorial-section .video-frame .instagram-media {
+  min-width: 326px !important;
+  max-width: 540px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* If standard 16:9 video embed (e.g. YouTube, Vimeo) */
+.tutorial-section .video-frame:not(.is-instagram-embed):has(iframe[src*="youtube.com"], iframe[src*="youtu.be"], iframe[src*="vimeo.com"]),
+.resource-page .tutorial-section .video-frame:not(.is-instagram-embed):has(iframe[src*="youtube.com"], iframe[src*="youtu.be"], iframe[src*="vimeo.com"]) {
+  aspect-ratio: 16 / 9 !important;
+  max-width: 760px !important;
+  min-height: auto !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 16px !important;
+  background: #000000 !important;
+  overflow: hidden !important;
+}
+
+.tutorial-section .video-frame:not(.is-instagram-embed):has(iframe[src*="youtube.com"], iframe[src*="youtu.be"], iframe[src*="vimeo.com"]) iframe,
+.resource-page .tutorial-section .video-frame:not(.is-instagram-embed):has(iframe[src*="youtube.com"], iframe[src*="youtu.be"], iframe[src*="vimeo.com"]) iframe {
+  width: 100% !important;
+  height: 100% !important;
+  min-height: auto !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 
