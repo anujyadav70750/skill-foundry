@@ -82,37 +82,9 @@
     });
   };
 
-  const injectMobileResultFix = () => {
-    if (document.getElementById('sf-mobile-result-viewport-fix')) return;
-    const style = document.createElement('style');
-    style.id = 'sf-mobile-result-viewport-fix';
-    style.textContent = `
-      @media (max-width: 640px) {
-        /* Mobile-only correction for the existing Instagram result viewport. */
-        .resource-page .blueprint-result-media-center .media-frame {
-          aspect-ratio: auto !important;
-          height: 600px !important;
-          max-height: 600px !important;
-          overflow: hidden !important;
-          align-items: flex-start !important;
-          justify-content: center !important;
-        }
-
-        .resource-page .blueprint-result-media-center .media-frame > .instagram-media,
-        .resource-page .blueprint-result-media-center .media-frame > iframe,
-        .resource-page .blueprint-result-media-center .media-frame .instagram-media,
-        .resource-page .blueprint-result-media-center .media-frame iframe {
-          margin-top: 0 !important;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-  };
-
   const init = () => {
     replaceFlowLogos();
     replaceExpandHandlers();
-    injectMobileResultFix();
   };
 
   if (document.readyState === 'loading') {
