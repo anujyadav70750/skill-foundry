@@ -141,7 +141,15 @@ const outputVisual = (step, index) => {
     /audio/i.test(raw) ? 'audio' :
     /document|pdf/i.test(raw) ? 'document' : 'text'
   );
-  if (step.outputSrc) return { type, src: step.outputSrc, previewSrc: '', label: step.outputLabel || raw || 'Output from this step' };
+  if (step.outputSrc) {
+    const isEmbedUrl = /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(step.outputSrc);
+    return {
+      type: isEmbedUrl ? 'video' : type,
+      src: step.outputSrc,
+      previewSrc: step.outputPreviewSrc || (isEmbedUrl ? (resultImages[0] || heroImage || '') : ''),
+      label: step.outputLabel || raw || 'Output from this step'
+    };
+  }
   if (step.outputPreviewSrc) return { type, src: '', previewSrc: step.outputPreviewSrc, label: step.outputLabel || raw || 'Output from this step' };
   if (/^https?:\/\//i.test(raw)) return { type: mediaTypeFromUrl(raw), src: raw, previewSrc: '', label: raw };
   const next = workflowSteps[index + 1];
@@ -1141,9 +1149,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       {workflowSteps.length > 0 && <section class="resource-section workflow-section blueprint-workflow-section" id="workflow">
         <div class="section-heading blueprint-main-heading">
           <div>
-            <p class="eyebrow blueprint-eyebrow">WORKFLOW BLUEPRINT</p>
-            <h2 class="blueprint-section-title">{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
-            <p class="section-subcopy blueprint-helper-text">Tap <span class="helper-chevron-cue" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span> on a step to see how it works.</p>
+            <p class="eyebrow">WORKFLOW BLUEPRINT</p>
+            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
+            <p class="section-subcopy">Tap <span class="helper-chevron-cue" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span> on a step to see how it works.</p>
           </div>
         </div>
 
@@ -1177,8 +1185,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             const isVisual = isImage || isVideo;
             const mediaUrl = output.src || output.previewSrc;
 
-            const stepThemes = ['step-theme-blue', 'step-theme-green', 'step-theme-orange', 'step-theme-cyan', 'step-theme-purple'];
-            const stepThemeClass = isFinal ? 'step-theme-purple' : (stepThemes[index % stepThemes.length] || 'step-theme-blue');
+            const stepThemes = ['step-theme-blue', 'step-theme-green', 'step-theme-peach', 'step-theme-lavender', 'step-theme-pink', 'step-theme-orange', 'step-theme-purple'];
+            const stepThemeClass = stepThemes[index % 5] || 'step-theme-blue';
 
             const compactPurposes = [
               "Combine the character and outfit into one 9:16 image.",
@@ -1190,7 +1198,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             const stepPurpose = isTesting1
               ? (compactPurposes[index] || step.purpose || step.outputDescription || step.description || '')
               : (step.purpose || step.outputDescription || step.description || '');
-            const thumbUrl = mediaUrl || (isFinal ? heroImage : '') || (step.inputs?.[0]?.src || '');
+            const isEmbedSrc = (src) => /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(String(src || ''));
+            const validImageSrc = (src) => (src && !isEmbedSrc(src) && !/\.(mp4|webm|mov|m4v)(?:\?|$)/i.test(src)) ? src : '';
+            const thumbUrl = validImageSrc(output.previewSrc) ||
+                             validImageSrc(step.outputPreviewSrc) ||
+                             validImageSrc(output.type === 'image' ? output.src : '') ||
+                             (isFinal ? (resultImages[0] || heroImage) : '') ||
+                             validImageSrc(step.inputs?.[0]?.src) ||
+                             heroImage ||
+                             '';
 
             const stepOutputNames = [
               "Dressed character image",
@@ -1649,26 +1665,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                         </div>
                       </div>
                     </div>
-                    </div>
-                  </div>
-
-                  <!-- Downward flow arrow to the next step / result in stream -->
-                  <div class="blueprint-stream-connector">
-                    <div class="stream-line" aria-hidden="true"></div>
-                    {!isFinal && handoffText && (
-                      <div class="stream-handoff-capsule" role="note" aria-label="Step handoff transition">
-                        <svg class="stream-handoff-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M7 13l5 5 5-5M12 4v14"/>
-                        </svg>
-                        <span class="stream-handoff-text">{handoffText}</span>
-                      </div>
-                    )}
-                    <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="16" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <line x1="12" y1="2" x2="12" y2="18"></line>
-                      <polyline points="6 12 12 18 18 12"></polyline>
-                    </svg>
                   </div>
                 </div>
+
+                <!-- Downward flow arrow to the next step / result in stream -->
+                <div class="blueprint-stream-connector" aria-hidden="true">
+                  <div class="stream-stem"></div>
+                  <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="14" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="2" x2="12" y2="18"></line>
+                    <polyline points="7 13 12 18 17 13"></polyline>
+                  </svg>
+                </div>
+              </div>
               );
             })}
 
@@ -1682,22 +1690,26 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               <div class="blueprint-result-inner">
                 <div class="blueprint-final-preview-wrap">
                   {finalReelEmbedUrl ? (
-                    <div class="blueprint-final-media-frame media-frame">
+                    <div class="blueprint-final-media-frame media-frame is-square-frame">
                       <img class="media-backdrop" src={heroImage} alt="" aria-hidden="true" />
                       <div class="media-backdrop-overlay" aria-hidden="true"></div>
-                      <div class="blueprint-final-reel-container">
-                        <iframe
-                          class="blueprint-final-reel-iframe"
-                          src={finalReelEmbedUrl}
-                          title="Final edited Instagram Reel"
-                          allowtransparency="true"
-                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                          loading="lazy"
-                        ></iframe>
+                      <div class="blueprint-final-reel-viewport">
+                        <div class="blueprint-final-reel-container">
+                          <iframe
+                            class="blueprint-final-reel-iframe"
+                            src={finalReelEmbedUrl}
+                            title="Final edited Instagram Reel"
+                            allowtransparency="true"
+                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                            loading="lazy"
+                            scrolling="no"
+                            frameborder="0"
+                          ></iframe>
+                        </div>
                       </div>
                     </div>
                   ) : finalWorkflowMediaUrl ? (
-                    <div class="blueprint-final-media-frame media-frame">
+                    <div class="blueprint-final-media-frame media-frame is-square-frame">
                       {isFinalWorkflowVideoDirect ? (
                         <>
                           <video class="media-backdrop" src={finalWorkflowMediaUrl} muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
@@ -1730,8 +1742,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 </div>
 
                 <div class="blueprint-final-meta">
-                  <h3 class="blueprint-final-title">{isTesting1 ? "Ready-to-post video" : (data.finalTitle || "Final edited video")}</h3>
-                  <p class="blueprint-final-desc">{isTesting1 ? "Ready to post, save, share, or remix with suitable audio before publishing." : (data.finalDescription || "Ready to export and share.")}</p>
+                  <h3 class="blueprint-final-title">{data.finalTitle || "Final Edited Video"}</h3>
+                  <p class="blueprint-final-desc">{data.finalDescription || "Your finished video, ready to share."}</p>
                 </div>
               </div>
             </div>
@@ -3518,31 +3530,36 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         position: relative;
         width: 100%;
         box-sizing: border-box;
-        margin-top: 36px;
-        margin-bottom: 12px;
-        background: linear-gradient(180deg, rgba(16, 25, 44, 0.94) 0%, rgba(9, 15, 26, 0.98) 100%);
-        border: 1.5px solid rgba(168, 85, 247, 0.4);
-        border-radius: 24px;
-        padding: 38px 28px 32px;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 35px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        margin: 0;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 16px;
+        padding: 0;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9);
       }
 
       .blueprint-result-capsule {
         position: absolute;
-        top: -14px;
+        top: 0;
         left: 50%;
-        transform: translateX(-50%);
-        background: #0D1626;
-        border: 1.5px solid #A855F7;
-        color: #FFFFFF;
+        transform: translate(-50%, -50%);
+        background: #FFFFFF;
+        border: 1px solid #06B6D4;
+        color: #0891B2;
         font-family: 'JetBrains Mono', monospace;
-        font-size: 11.5px;
+        font-size: 9.5px;
         font-weight: 800;
-        letter-spacing: 0.14em;
-        padding: 6px 22px;
+        letter-spacing: 0.1em;
+        padding: 0 14px;
+        height: 25px;
+        min-height: 25px;
+        min-width: 70px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 9999px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5), 0 0 16px rgba(168, 85, 247, 0.2);
-        z-index: 5;
+        box-shadow: 0 2px 6px rgba(6, 182, 212, 0.14);
+        z-index: 25;
       }
 
       .blueprint-result-inner {
@@ -3569,20 +3586,29 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
       }
 
-      .blueprint-final-reel-container {
-        position: relative;
-        z-index: 2;
+      .blueprint-final-reel-viewport {
+        position: absolute;
+        inset: 0;
+        width: 100%;
         height: 100%;
-        max-height: 100%;
-        aspect-ratio: 9 / 16;
-        max-width: 100%;
+        border-radius: 0;
+        overflow: hidden;
+        z-index: 3;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
+        pointer-events: auto;
+      }
+
+      .blueprint-final-reel-container {
+        position: absolute;
+        top: -56px;
+        left: 0;
+        width: 100%;
+        height: calc(100% + 240px);
         overflow: hidden;
-        margin: 0 auto;
+        transform-origin: top center;
+        transform: scale(1.04);
       }
 
       .blueprint-final-reel-iframe {
@@ -4424,54 +4450,27 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         justify-content: center !important;
       }
 
-      .testing-1-theme .blueprint-step-container.step-theme-blue {
-        background: #D9EAFE !important;
-        border: 1px solid #BFDBFE !important;
-        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.06) !important;
-        --step-accent: #2563EB;
-        --step-accent-dark: #1D4ED8;
-        --step-accent-text: #2563EB;
-        --step-accent-bg: #BFDBFE;
+      .testing-1-theme .blueprint-step-container,
+      .testing-1-theme .blueprint-step-container.step-theme-blue,
+      .testing-1-theme .blueprint-step-container.step-theme-green,
+      .testing-1-theme .blueprint-step-container.step-theme-peach,
+      .testing-1-theme .blueprint-step-container.step-theme-orange,
+      .testing-1-theme .blueprint-step-container.step-theme-cyan,
+      .testing-1-theme .blueprint-step-container.step-theme-lavender,
+      .testing-1-theme .blueprint-step-container.step-theme-purple,
+      .testing-1-theme .blueprint-step-container.step-theme-pink {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+        --step-accent: #0284C7;
+        --step-accent-dark: #0369A1;
+        --step-accent-text: #0284C7;
+        --step-accent-bg: #F1F5F9;
       }
 
-      .testing-1-theme .blueprint-step-container.step-theme-green {
-        background: #D1FAE5 !important;
-        border: 1px solid #A7F3D0 !important;
-        box-shadow: 0 3px 10px rgba(16, 185, 129, 0.06) !important;
-        --step-accent: #059669;
-        --step-accent-dark: #047857;
-        --step-accent-text: #059669;
-        --step-accent-bg: #A7F3D0;
-      }
-
-      .testing-1-theme .blueprint-step-container.step-theme-orange {
-        background: #FEF3C7 !important;
-        border: 1px solid #FDE68A !important;
-        box-shadow: 0 3px 10px rgba(245, 158, 11, 0.06) !important;
-        --step-accent: #D97706;
-        --step-accent-dark: #B45309;
-        --step-accent-text: #D97706;
-        --step-accent-bg: #FDE68A;
-      }
-
-      .testing-1-theme .blueprint-step-container.step-theme-cyan {
-        background: #CFFAFE !important;
-        border: 1px solid #BAE6FD !important;
-        box-shadow: 0 3px 10px rgba(6, 182, 212, 0.06) !important;
-        --step-accent: #0891B2;
-        --step-accent-dark: #0E7490;
-        --step-accent-text: #0891B2;
-        --step-accent-bg: #BAE6FD;
-      }
-
-      .testing-1-theme .blueprint-step-container.step-theme-purple {
-        background: #EDE9FE !important;
-        border: 1px solid #DDD6FE !important;
-        box-shadow: 0 3px 10px rgba(139, 92, 246, 0.06) !important;
-        --step-accent: #7C3AED;
-        --step-accent-dark: #6D28D9;
-        --step-accent-text: #7C3AED;
-        --step-accent-bg: #DDD6FE;
+      .testing-1-theme .blueprint-step-container.is-expanded {
+        border-color: #0284C7 !important;
+        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.12) !important;
       }
 
       .testing-1-theme .blueprint-step-capsule {
@@ -5017,8 +5016,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center !important;
         justify-content: center !important;
         position: relative !important;
-        padding: 18px 0 22px !important;
-        gap: 6px !important;
+        padding: 2px 0 3px !important;
+        gap: 2px !important;
       }
 
       .testing-1-theme .stream-handoff-capsule {
@@ -6016,19 +6015,34 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .blueprint-result-block,
       html.light-theme .testing-1-theme .blueprint-result-block {
         background: #FFFFFF !important;
-        border: 1px solid #0284C7 !important;
-        box-shadow: 0 12px 36px rgba(2, 132, 199, 0.12) !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule,
       html.light-theme .testing-1-theme .blueprint-result-capsule {
-        background: #0284C7 !important;
-        border: 1px solid #0284C7 !important;
-        color: #FFFFFF !important;
-        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
+        background: #FFFFFF !important;
+        border: 1px solid #06B6D4 !important;
+        color: #0891B2 !important;
+        box-shadow: 0 2px 6px rgba(6, 182, 212, 0.14) !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        min-width: 70px !important;
+        padding: 0 14px !important;
+        border-radius: 9999px !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.1em !important;
+        line-height: 1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule span,
       html.light-theme .testing-1-theme .blueprint-result-capsule span {
-        color: #FFFFFF !important;
+        color: #0891B2 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 9.5px !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.1em !important;
+        line-height: 1 !important;
       }
       :root[data-theme="light"] .testing-1-theme .blueprint-final-media-frame,
       html.light-theme .testing-1-theme .blueprint-final-media-frame {

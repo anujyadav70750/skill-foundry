@@ -44,8 +44,9 @@ toolsUsed:
 prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
-  - title: "Create Character Reference"
-    purpose: "Create the exact four-frame knight character reference that controls the character identity and outfit."
+  - title: "Create Character Sheet"
+    purpose: "Create your knight character using the prompt."
+    description: "Create your knight character using the prompt."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "4-frame character reference"
@@ -177,8 +178,9 @@ steps:
     next: "Use this Character Sheet as the reference input for Step 02."
     handoff: "Use this Character Sheet as the reference input for Step 02."
 
-  - title: "Create Helmet & Sword Prop Reference"
-    purpose: "Create the exact helmet and sword prop reference matching the character's armor language."
+  - title: "Create Helmet & Sword"
+    purpose: "Create the matching helmet and sword reference."
+    description: "Create the matching helmet and sword reference."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Helmet + Sword Reference"
@@ -366,8 +368,9 @@ steps:
     next: "Use this Helmet + Sword Reference as the prop reference for Step 04."
     handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."
 
-  - title: "Create Location Reference"
-    purpose: "Create the vast misty poppy-field environment reference at pre-sunrise dawn."
+  - title: "Create Location"
+    purpose: "Create the misty poppy-field location using the prompt."
+    description: "Create the misty poppy-field location using the prompt."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Location Reference"
@@ -446,8 +449,9 @@ steps:
     next: "Use this Location Reference as the environment reference for Step 04."
     handoff: "Use this Location Reference as the environment reference for Step 04."
 
-  - title: "Generate Cinematic Video in Google Flow"
-    purpose: "Generate the 10-second continuous 9:16 cinematic video using all three reference assets."
+  - title: "Generate Video"
+    purpose: "Generate the video using these reference images."
+    description: "Generate the video using these reference images."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
@@ -676,7 +680,7 @@ steps:
       The camera completes its smooth arc around his left shoulder.
       It swings from rear-left to the front of him.
       It settles at FACE LEVEL.
-      The camera stops in a locked waist-up front three-quarter shot.
+      It stops in a locked waist-up front three-quarter shot.
       He slows and comes to a stop among the dense flowers.
       The field behind him is misty, red, green, and blue-violet.
       His face is clearly visible.
@@ -822,7 +826,8 @@ steps:
     handoff: "Download the generated video in 1080p, then use it in Step 05."
 
   - title: "Finish in Instagram"
-    purpose: "Slow the generated video to 0.6×, optionally add available music or remix elements, then download and share it."
+    purpose: "Remix the video with matching sound and beat."
+    description: "Remix the video with matching sound and beat."
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Final edited video"
@@ -833,6 +838,7 @@ steps:
       - type: "video"
         label: "Step 04 — Downloaded 1080p video"
         role: "Video to edit"
+        src: "/images/knight-poppies-thumbnail.png"
     settings:
       - label: "SPEED"
         value: "0.6×"
@@ -848,9 +854,11 @@ steps:
       9. Review the finished Reel.
       10. Download the finished video, or share/post it directly.
     outputSrc: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
-    outputPreviewSrc: ""
+    outputPreviewSrc: "/images/knight-poppies-thumbnail.png"
     next: ""
     handoff: ""
+finalTitle: "Final Edited Video"
+finalDescription: "Your finished video, ready to share."
 tips:
   - "Use the Step 1 character reference as the identity anchor for the entire workflow."
   - "Use Step 1 only as material and design reference when creating the helmet and sword in Step 2."
