@@ -11,13 +11,13 @@
     color: #17324d !important;
   }
 
-  /* Keep the outer Result layout fixed. Reveal a little more of the Instagram profile header while tightening the unused space below the comment row. */
+  /* Keep the outer Result layout fixed. Give the Instagram card more inner height so both the profile header and comment row have breathing room. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
-    height: 540px !important;
-    min-height: 540px !important;
-    max-height: 540px !important;
+    height: 590px !important;
+    min-height: 590px !important;
+    max-height: 590px !important;
     margin: -22px auto 0 !important;
     overflow: hidden !important;
     border-radius: 18px !important;
@@ -42,7 +42,7 @@
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
     position: relative !important;
-    top: 66px !important;
+    top: 78px !important;
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
