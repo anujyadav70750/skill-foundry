@@ -42,7 +42,7 @@
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
     position: relative !important;
-    top: 54px !important;
+    top: 60px !important;
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
