@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Reveal more of the Instagram header at the top and crop the unused bottom area. */
+  /* Keep the card position fixed, but reveal more of the Instagram header inside it. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -46,7 +46,7 @@
     min-height: 590px !important;
     max-height: 590px !important;
     margin: 0 auto !important;
-    transform: translateY(28px) !important;
+    transform: translateY(58px) !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
