@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Shift the complete Instagram card slightly upward: more visible area above, less unused area below. */
+  /* Keep the outer Result layout fixed. Only the visible Instagram content is framed slightly lower so the profile header gets a small breathing gap while the unused bottom area is cropped. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -48,7 +48,7 @@
     min-height: 640px !important;
     max-height: 640px !important;
     margin: 0 auto !important;
-    transform: translateY(45px) !important;
+    transform: translateY(52px) !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
