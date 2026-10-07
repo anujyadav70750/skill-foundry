@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Keep the outer Result layout fixed. Only the visible Instagram content is framed slightly lower so the profile header gets a small breathing gap while the unused bottom area is cropped. */
+  /* Keep the outer Result layout fixed. The Instagram card itself gets a very small internal top breathing room, while the fixed outer crop trims the unused area below the comment row. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -31,6 +31,8 @@
     min-height: 640px !important;
     max-height: 640px !important;
     margin: 0 auto !important;
+    padding-top: 7px !important;
+    box-sizing: border-box !important;
     overflow: hidden !important;
     align-items: flex-start !important;
     justify-content: center !important;
@@ -48,7 +50,7 @@
     min-height: 640px !important;
     max-height: 640px !important;
     margin: 0 auto !important;
-    transform: translateY(52px) !important;
+    transform: none !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
