@@ -5,12 +5,13 @@
 @media (max-width: 479px) {
   .resource-page .blueprint-result-block .blueprint-result-inner {
     padding: 18px 12px 18px !important;
-    gap: 8px !important;
+    gap: 6px !important;
     background: #eaf4ff !important;
     border-radius: 22px !important;
+    color: #17324d !important;
   }
 
-  /* Keep the full Instagram profile header visible while clipping excess space below the comment row. */
+  /* Keep the Instagram profile header visible and keep the result metadata immediately below the embed. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 350px !important;
@@ -45,5 +46,34 @@
     margin: 0 auto !important;
     transform: translateY(16px) !important;
     transform-origin: top center !important;
+  }
+
+  /* The light-blue result panel needs dark readable metadata, not the site's dark-theme white text. */
+  .resource-page .blueprint-result-block .blueprint-final-meta {
+    width: 100% !important;
+    max-width: 350px !important;
+    margin: 0 auto !important;
+    padding: 4px 6px 0 !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  .resource-page .blueprint-result-block .blueprint-final-title {
+    margin: 0 0 4px !important;
+    color: #17324d !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.01em !important;
+    text-shadow: none !important;
+  }
+
+  .resource-page .blueprint-result-block .blueprint-final-desc {
+    margin: 0 !important;
+    color: #60758a !important;
+    font-size: 12.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.45 !important;
+    text-shadow: none !important;
   }
 }
