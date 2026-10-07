@@ -4,7 +4,7 @@
    Desktop and Tutorial remain unchanged. */
 @media (max-width: 479px) {
   .resource-page .blueprint-result-block .blueprint-result-inner {
-    padding: 48px 14px 34px !important;
+    padding: 24px 14px 34px !important;
     gap: 8px !important;
     background: #eaf4ff !important;
     border-radius: 22px !important;
