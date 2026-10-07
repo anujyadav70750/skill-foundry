@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Keep the card position fixed, but reveal more of the Instagram header inside it. */
+  /* Keep the outer Result-to-card spacing unchanged. The Instagram viewport itself is framed lower so the full profile header is visible. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -27,9 +27,9 @@
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
-    height: 590px !important;
-    min-height: 590px !important;
-    max-height: 590px !important;
+    height: 620px !important;
+    min-height: 620px !important;
+    max-height: 620px !important;
     margin: 0 auto !important;
     overflow: hidden !important;
     align-items: flex-start !important;
@@ -39,14 +39,16 @@
 
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
+    position: relative !important;
+    top: 80px !important;
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
-    height: 590px !important;
-    min-height: 590px !important;
-    max-height: 590px !important;
+    height: 620px !important;
+    min-height: 620px !important;
+    max-height: 620px !important;
     margin: 0 auto !important;
-    transform: translateY(58px) !important;
+    transform: none !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
