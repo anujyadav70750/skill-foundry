@@ -1,21 +1,22 @@
 @import url('/workflow-fixes-base.css');
 
-/* Mobile-only RESULT Instagram viewport correction.
-   Keep desktop behavior unchanged. Match the mobile Tutorial Instagram viewport. */
+/* Mobile-only RESULT Instagram framing correction.
+   Desktop and Tutorial remain unchanged. */
 @media (max-width: 479px) {
   .resource-page .blueprint-result-block .blueprint-result-inner {
     padding-top: 18px !important;
-    padding-bottom: 10px !important;
-    gap: 10px !important;
+    padding-bottom: 8px !important;
+    gap: 8px !important;
   }
 
+  /* Drop the Instagram card slightly below the RESULT capsule so the full profile header is visible. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 350px !important;
-    height: 590px !important;
-    min-height: 590px !important;
-    max-height: 590px !important;
-    margin: 2px auto 0 !important;
+    height: 555px !important;
+    min-height: 555px !important;
+    max-height: 555px !important;
+    margin: 14px auto 0 !important;
     overflow: hidden !important;
   }
 
