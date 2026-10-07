@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Keep the outer Result-to-card spacing unchanged. The Instagram viewport itself is framed lower so the full profile header is visible. */
+  /* Keep the outer Result-to-card spacing unchanged. The Instagram viewport itself is framed from its true top so the profile header and lower comment row remain visible together. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -40,7 +40,7 @@
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
     position: relative !important;
-    top: 80px !important;
+    top: 0 !important;
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
