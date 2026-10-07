@@ -5,28 +5,40 @@
 @media (max-width: 479px) {
   .resource-page .blueprint-result-block .blueprint-result-inner {
     padding-top: 18px !important;
-    padding-bottom: 14px !important;
+    padding-bottom: 10px !important;
     gap: 10px !important;
   }
 
-  .resource-page .blueprint-result-block .video-frame {
+  .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 350px !important;
-    height: 580px !important;
-    min-height: 580px !important;
-    max-height: 580px !important;
+    height: 590px !important;
+    min-height: 590px !important;
+    max-height: 590px !important;
     margin: 2px auto 0 !important;
+    overflow: hidden !important;
+  }
+
+  .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed {
+    width: 100% !important;
+    max-width: 350px !important;
+    min-width: 0 !important;
+    height: 590px !important;
+    min-height: 590px !important;
+    max-height: 590px !important;
+    margin: 0 auto !important;
     overflow: hidden !important;
     align-items: flex-start !important;
     justify-content: center !important;
   }
 
-  .resource-page .blueprint-result-block .video-frame iframe {
+  .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
+  .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
     width: 100% !important;
     max-width: 350px !important;
     min-width: 0 !important;
     height: 590px !important;
-    min-height: 580px !important;
+    min-height: 590px !important;
     max-height: 590px !important;
     margin: 0 auto !important;
     transform: none !important;
