@@ -1691,49 +1691,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               </div>
 
               <div class="blueprint-result-inner">
-                <div class="blueprint-final-preview-wrap">
-                  {resultEmbedUrl ? (
-                    <div class={`video-frame ${resultEmbedUrl.includes('instagram.com') ? 'is-instagram-embed' : ''}`}>
+                {(resultEmbedUrl || data.videoEmbedUrl) && (
+                  <div class="blueprint-result-card-scale-wrapper">
+                    <div class={`video-frame ${(resultEmbedUrl || data.videoEmbedUrl).includes('instagram.com') ? 'is-instagram-embed' : ''}`}>
                       <iframe
-                        src={resultEmbedUrl}
+                        src={resultEmbedUrl || data.videoEmbedUrl}
                         title={`Result: ${data.finalTitle || data.title}`}
                         loading="lazy"
                         scrolling="no"
                         allowfullscreen
                       ></iframe>
                     </div>
-                  ) : finalWorkflowMediaUrl ? (
-                    <div class="blueprint-final-media-frame media-frame is-square-frame">
-                      {isFinalWorkflowVideoDirect ? (
-                        <>
-                          <video class="media-backdrop" src={finalWorkflowMediaUrl} muted playsinline autoplay loop aria-hidden="true" tabindex="-1"></video>
-                          <div class="media-backdrop-overlay" aria-hidden="true"></div>
-                          <video class="blueprint-final-video media-main" src={finalWorkflowMediaUrl} controls playsinline preload="metadata"></video>
-                        </>
-                      ) : (
-                        <>
-                          <img class="media-backdrop" src={finalWorkflowMediaUrl} alt="" aria-hidden="true" />
-                          <div class="media-backdrop-overlay" aria-hidden="true"></div>
-                          <img class="blueprint-final-media media-main" src={finalWorkflowMediaUrl} alt={imageAlt || "Final edited video"} loading="lazy" />
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div class="blueprint-final-placeholder media-frame-nonvisual">
-                      <div class="blueprint-final-placeholder-content">
-                        <div class="blueprint-final-placeholder-icon-wrap" aria-hidden="true">
-                          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                          </svg>
-                        </div>
-                        <span class="blueprint-final-placeholder-badge">FINAL EXPORT</span>
-                        <strong class="blueprint-final-placeholder-title">Ready-to-share 9:16 video</strong>
-                        <p class="blueprint-final-placeholder-sub">Follow Steps 01 to 05 to create and export your final edited Reel.</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 <div class="blueprint-final-meta">
                   <h3 class="blueprint-final-title">{data.finalTitle || "Final Edited Video"}</h3>
@@ -3561,6 +3531,48 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: flex;
         flex-direction: column;
         align-items: center;
+      }
+
+      @media (max-width: 639.98px) {
+        .blueprint-result-card-scale-wrapper {
+          --card-base-w: 330px;
+          --card-base-h: 590px;
+          --card-scale-x: 0.89;
+          --card-scale-y: 0.81;
+          width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
+          height: calc(var(--card-base-h) * var(--card-scale-y)) !important;
+          display: block !important;
+          margin: 0 auto !important;
+          position: relative !important;
+          flex-shrink: 0 !important;
+          overflow: visible !important;
+        }
+
+        .blueprint-result-card-scale-wrapper .video-frame {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: auto !important;
+          bottom: auto !important;
+          width: var(--card-base-w) !important;
+          min-width: var(--card-base-w) !important;
+          max-width: var(--card-base-w) !important;
+          height: var(--card-base-h) !important;
+          min-height: var(--card-base-h) !important;
+          max-height: var(--card-base-h) !important;
+          transform: scale(var(--card-scale-x), var(--card-scale-y)) !important;
+          transform-origin: 0 0 !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: transparent !important;
+          box-shadow: none !important;
+          flex-shrink: 0 !important;
+          overflow: visible !important;
+        }
       }
 
       .blueprint-final-preview-wrap {
