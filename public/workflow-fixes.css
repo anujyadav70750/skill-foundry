@@ -11,7 +11,7 @@
     color: #17324d !important;
   }
 
-  /* Keep the outer Result-to-card spacing unchanged. The Instagram viewport itself is framed from its true top so the profile header and lower comment row remain visible together. */
+  /* Keep the outer Result-to-card spacing unchanged. The Instagram viewport is shifted only inside its existing frame so more of the profile header is visible while the lower blank area is cropped. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
@@ -48,7 +48,7 @@
     min-height: 620px !important;
     max-height: 620px !important;
     margin: 0 auto !important;
-    transform: none !important;
+    transform: translateY(55px) !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
