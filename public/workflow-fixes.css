@@ -15,9 +15,9 @@
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
-    height: 690px !important;
-    min-height: 690px !important;
-    max-height: 690px !important;
+    height: 700px !important;
+    min-height: 700px !important;
+    max-height: 700px !important;
     margin: -22px auto 0 !important;
     overflow: hidden !important;
     border-radius: 18px !important;
@@ -42,7 +42,7 @@
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed iframe,
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap .video-frame.is-instagram-embed > iframe {
     position: relative !important;
-    top: 100px !important;
+    top: 110px !important;
     width: 100% !important;
     max-width: 392px !important;
     min-width: 0 !important;
