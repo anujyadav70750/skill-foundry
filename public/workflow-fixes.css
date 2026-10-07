@@ -11,14 +11,14 @@
     color: #17324d !important;
   }
 
-  /* Match the Tutorial Instagram card proportions while keeping it inside the RESULT panel. */
+  /* Slightly extend the visible card upward while clipping the unused bottom area at the comment row. */
   .resource-page .blueprint-result-block .blueprint-final-preview-wrap {
     width: 100% !important;
     max-width: 392px !important;
-    height: 590px !important;
-    min-height: 590px !important;
-    max-height: 590px !important;
-    margin: 14px auto 0 !important;
+    height: 560px !important;
+    min-height: 560px !important;
+    max-height: 560px !important;
+    margin: 8px auto 0 !important;
     overflow: hidden !important;
     border-radius: 18px !important;
   }
@@ -46,7 +46,7 @@
     min-height: 590px !important;
     max-height: 590px !important;
     margin: 0 auto !important;
-    transform: translateY(16px) !important;
+    transform: translateY(8px) !important;
     transform-origin: top center !important;
     border-radius: 18px !important;
   }
