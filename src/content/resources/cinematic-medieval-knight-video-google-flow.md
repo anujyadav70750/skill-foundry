@@ -191,9 +191,6 @@ steps:
         src: "/images/knight-character-sheet.png"
     settings: []
     process: |
-      MEDIEVAL KNIGHT — HELMET + SWORD PROP REFERENCE
-      16:9 HORIZONTAL
-
       Create a photorealistic professional medieval armor-prop reference image containing exactly TWO objects: one knight's helmet and one medieval arming sword.
 
       REFERENCE USE:
@@ -377,8 +374,6 @@ steps:
     inputs: []
     settings: []
     process: |
-      MEDIEVAL CINEMATIC LOCATION REFERENCE — MISTY POPPY FIELD — 16:9
-
       Create a highly realistic cinematic environmental reference photograph of a vast untouched wildflower field at misty pre-sunrise dawn.
 
       The entire scene is a natural open meadow densely covered with tall red poppies mixed with smaller blue-violet wildflowers and tall green grass stems.
@@ -478,8 +473,6 @@ steps:
       - label: "RESOLUTION"
         value: "1080p"
     process: |
-      VIDEO GENERATION PROMPT
-
       @KNIGHT_REF (uploaded character reference image) — controls the exact identity and appearance of the male knight. Use the uploaded character reference as the primary character identity reference in every frame. Preserve his exact face, facial structure, eyes, nose, lips, jawline, hairstyle, skin appearance, body proportions, armor design, clothing, cloak design, colors, textures, and overall character appearance. Strict identity lock: the same man must remain recognizable and visually consistent throughout the entire video. Do not redesign, beautify, age, de-age, or reinterpret his face or character.
 
       @PROPS_REF (uploaded helmet and sword reference) — controls the exact helmet and sword. Use the uploaded helmet exactly as the helmet design and use the uploaded sword exactly as the sword design. The helmet has realistic steel construction with the black chainmail aventail shown in the reference. The sword is a standard-length medieval arming sword, proportioned naturally to his body. He carries the sword unsheathed in one hand. The scabbard does not appear in this shot. The shield from the character reference is NOT carried and does not appear.
