@@ -60,9 +60,6 @@ steps:
         src: "/images/knight-face-reference.png"
     settings: []
     process: |
-      CHARACTER SHEET PROMPT
-      CHARACTER SHEET — EXACT 4-FRAME PORTRAIT FORMAT — 9:16
-
       Use the uploaded person/reference photo as the STRICT IDENTITY REFERENCE.
 
       Create a highly realistic medieval knight character sheet of the EXACT SAME PERSON from the uploaded reference image.
