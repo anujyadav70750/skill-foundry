@@ -121,7 +121,7 @@ const platformLinks = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/workflow-fixes.css?v=20261007-center-perfect" />
+    <link rel="stylesheet" href="/workflow-fixes.css?v=20261007-result-integrated" />
     <script src="/workflow-fixes.js?v=20260916-final" defer></script>
     <script is:inline>
       (function() {
@@ -1068,50 +1068,90 @@ const platformLinks = [
       }
       :global([data-theme="light"]) .site-footer,
       :global(html.light-theme) .site-footer {
-        background: #F8FAFC;
-        border-top-color: #E2E8F0;
-        color: #64748B;
+        background: #F8FAFC !important;
+        border-top-color: #E2E8F0 !important;
+        color: #334155 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-brand-wrap .footer-brand,
+      :global(html.light-theme) .site-footer .footer-brand-wrap .footer-brand,
       :global([data-theme="light"]) .footer-brand-wrap .brand-name,
-      :global(html.light-theme) .footer-brand-wrap .brand-name {
-        color: #0F172A;
+      :global(html.light-theme) .footer-brand-wrap .brand-name,
+      :global([data-theme="light"]) .site-footer .brand-name,
+      :global(html.light-theme) .site-footer .brand-name,
+      :global([data-theme="light"]) .site-footer .footer-brand,
+      :global(html.light-theme) .site-footer .footer-brand {
+        color: #0F172A !important;
       }
+      :global([data-theme="light"]) .site-footer .descriptor-item,
+      :global(html.light-theme) .site-footer .descriptor-item,
       :global([data-theme="light"]) .descriptor-item,
       :global(html.light-theme) .descriptor-item {
-        color: #475569;
+        color: #0F172A !important;
+        font-weight: 700 !important;
       }
+      :global([data-theme="light"]) .site-footer .descriptor-dot,
+      :global(html.light-theme) .site-footer .descriptor-dot {
+        color: #0284C7 !important;
+      }
+      :global([data-theme="light"]) .site-footer .footer-divider,
+      :global(html.light-theme) .site-footer .footer-divider,
       :global([data-theme="light"]) .footer-divider,
       :global(html.light-theme) .footer-divider {
-        background: #E2E8F0;
+        background: #CBD5E1 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-nav a,
+      :global(html.light-theme) .site-footer .footer-nav a,
       :global([data-theme="light"]) .footer-nav a,
       :global(html.light-theme) .footer-nav a {
-        color: #334155;
+        color: #0F172A !important;
+        font-weight: 600 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-nav a:hover,
+      :global(html.light-theme) .site-footer .footer-nav a:hover,
       :global([data-theme="light"]) .footer-nav a:hover,
       :global(html.light-theme) .footer-nav a:hover {
-        color: #0284C7;
+        color: #0284C7 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-platform-btn,
+      :global(html.light-theme) .site-footer .footer-platform-btn,
       :global([data-theme="light"]) .footer-platform-btn,
       :global(html.light-theme) .footer-platform-btn {
-        background: #FFFFFF;
-        border-color: #E2E8F0;
-        color: #475569;
-        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        background: #FFFFFF !important;
+        border-color: #CBD5E1 !important;
+        color: #1E293B !important;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-platform-btn:hover,
+      :global(html.light-theme) .site-footer .footer-platform-btn:hover,
       :global([data-theme="light"]) .footer-platform-btn:hover,
       :global(html.light-theme) .footer-platform-btn:hover {
-        background: #F1F5F9;
-        border-color: #CBD5E1;
-        color: #0F172A;
+        background: #F1F5F9 !important;
+        border-color: #0284C7 !important;
+        color: #0284C7 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-legal a,
+      :global(html.light-theme) .site-footer .footer-legal a,
       :global([data-theme="light"]) .footer-legal a,
       :global(html.light-theme) .footer-legal a {
-        color: #64748B;
+        color: #334155 !important;
+        font-weight: 600 !important;
       }
+      :global([data-theme="light"]) .site-footer .footer-legal a:hover,
+      :global(html.light-theme) .site-footer .footer-legal a:hover {
+        color: #0284C7 !important;
+      }
+      :global([data-theme="light"]) .site-footer .legal-separator,
+      :global(html.light-theme) .site-footer .legal-separator {
+        color: #64748B !important;
+      }
+      :global([data-theme="light"]) .site-footer .footer-copyright,
+      :global(html.light-theme) .site-footer .footer-copyright,
+      :global([data-theme="light"]) .site-footer .footer-copyright span,
+      :global(html.light-theme) .site-footer .footer-copyright span,
       :global([data-theme="light"]) .footer-copyright,
       :global(html.light-theme) .footer-copyright {
-        color: #94A3B8;
+        color: #334155 !important;
+        font-weight: 500 !important;
       }
 
       /* Search Modal in Light Theme */
@@ -1868,6 +1908,10 @@ const platformLinks = [
           font-size: 14px;
           color: #C0C9D3;
           margin-top: 22px;
+        }
+        :global([data-theme="light"]) .footer-copyright,
+        :global(html.light-theme) .footer-copyright {
+          color: #334155 !important;
         }
       }
     

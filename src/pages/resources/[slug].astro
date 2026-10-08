@@ -3332,7 +3332,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-weight: 700;
         line-height: 1.25;
         letter-spacing: -0.015em;
-        color: #081534;
         margin: 0 0 4px 0;
         transition: color 0.15s ease;
       }
@@ -3340,6 +3339,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .step-header-title,
       html.light-theme .step-header-title {
         color: #081534;
+      }
+
+      :root:not([data-theme="light"]) .step-header-title,
+      :root[data-theme="dark"] .step-header-title,
+      html:not(.light-theme) .step-header-title {
+        color: #F8FAFC;
       }
 
       .blueprint-step-header:hover .step-header-title {
@@ -3368,13 +3373,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 13px;
         font-weight: 400;
         line-height: 1.35;
-        color: #52637A;
         margin: 0;
       }
 
       :root[data-theme="light"] .step-header-purpose,
       html.light-theme .step-header-purpose {
         color: #52637A;
+      }
+
+      :root:not([data-theme="light"]) .step-header-purpose,
+      :root[data-theme="dark"] .step-header-purpose,
+      html:not(.light-theme) .step-header-purpose {
+        color: #CBD5E1;
       }
 
       .blueprint-step-container.is-collapsed .step-header-purpose {
@@ -3536,7 +3546,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       @media (max-width: 639.98px) {
         .blueprint-result-card-scale-wrapper {
           --card-base-w: 330px;
-          --card-base-h: 590px;
+          --card-base-h: 596px;
           --card-scale-x: 0.89;
           --card-scale-y: 0.81;
           width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
@@ -3544,6 +3554,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           display: block !important;
           margin: 0 auto !important;
           position: relative !important;
+          left: -3px !important;
           flex-shrink: 0 !important;
           overflow: visible !important;
         }
@@ -4434,9 +4445,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 16px !important;
         font-weight: 700 !important;
         line-height: 1.25 !important;
-        color: #081534 !important;
+        color: #F8FAFC !important;
         letter-spacing: -0.015em !important;
         margin: 0 0 4px 0 !important;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .step-header-title,
+      :global(html.light-theme) .testing-1-theme .step-header-title {
+        color: #081534 !important;
+      }
+
+      :global(:not([data-theme="light"])) .testing-1-theme .step-header-title,
+      :global([data-theme="dark"]) .testing-1-theme .step-header-title,
+      :global(html:not(.light-theme)) .testing-1-theme .step-header-title {
+        color: #F8FAFC !important;
       }
 
       .testing-1-theme .step-header-purpose {
@@ -4444,8 +4466,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 13px !important;
         font-weight: 400 !important;
         line-height: 1.35 !important;
-        color: #52637A !important;
+        color: #CBD5E1 !important;
         margin: 0 !important;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .step-header-purpose,
+      :global(html.light-theme) .testing-1-theme .step-header-purpose {
+        color: #52637A !important;
+      }
+
+      :global(:not([data-theme="light"])) .testing-1-theme .step-header-purpose,
+      :global([data-theme="dark"]) .testing-1-theme .step-header-purpose,
+      :global(html:not(.light-theme)) .testing-1-theme .step-header-purpose {
+        color: #CBD5E1 !important;
       }
 
       .testing-1-theme .step-expand-chevron {
@@ -4459,6 +4492,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         justify-content: center !important;
       }
 
+      /* Step container styling: Dark / Night mode (default) */
       .testing-1-theme .blueprint-step-container,
       .testing-1-theme .blueprint-step-container.step-theme-blue,
       .testing-1-theme .blueprint-step-container.step-theme-green,
@@ -4468,18 +4502,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .blueprint-step-container.step-theme-lavender,
       .testing-1-theme .blueprint-step-container.step-theme-purple,
       .testing-1-theme .blueprint-step-container.step-theme-pink {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05) !important;
+        background: linear-gradient(180deg, rgba(15, 24, 42, 0.85) 0%, rgba(10, 16, 28, 0.95) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.09) !important;
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
         --step-accent: #0284C7;
         --step-accent-dark: #0369A1;
-        --step-accent-text: #0284C7;
-        --step-accent-bg: #F1F5F9;
+        --step-accent-text: #38BDF8;
+        --step-accent-bg: rgba(2, 132, 199, 0.15);
       }
 
       .testing-1-theme .blueprint-step-container.is-expanded {
-        border-color: #0284C7 !important;
-        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.12) !important;
+        border-color: rgba(56, 189, 248, 0.6) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
       }
 
       .testing-1-theme .blueprint-step-capsule {
@@ -4487,10 +4521,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         top: 0 !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        background: #FFFFFF !important;
-        border: 1px solid var(--step-accent, #0084FF) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
-        color: var(--step-accent, #0084FF) !important;
+        background: rgba(14, 22, 38, 0.95) !important;
+        border: 1px solid rgba(56, 189, 248, 0.45) !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+        color: #38BDF8 !important;
         font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
         font-size: 10px !important;
         font-weight: 700 !important;
@@ -4504,7 +4538,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-step-capsule span {
-        color: var(--step-accent, #0084FF) !important;
+        color: #38BDF8 !important;
         font-weight: 700 !important;
         line-height: 1.1 !important;
       }
@@ -4513,9 +4547,61 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
         font-size: 22px !important;
         font-weight: 500 !important;
-        color: #FFFFFF !important;
+        color: #F8FAFC !important;
         margin: 6px 0 22px !important;
         text-align: center !important;
+      }
+
+      /* Step container styling: Day / Light mode */
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-blue,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-blue,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-green,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-green,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-peach,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-peach,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-orange,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-orange,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-cyan,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-cyan,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-lavender,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-lavender,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-purple,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-purple,
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.step-theme-pink,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.step-theme-pink {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+        --step-accent: #0284C7;
+        --step-accent-dark: #0369A1;
+        --step-accent-text: #0284C7;
+        --step-accent-bg: #F1F5F9;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-container.is-expanded,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-container.is-expanded {
+        border-color: #0284C7 !important;
+        box-shadow: 0 6px 20px rgba(2, 132, 199, 0.12), inset 0 1px 0 #FFFFFF !important;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-capsule,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-capsule {
+        background: #FFFFFF !important;
+        border: 1px solid #0284C7 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+        color: #0284C7 !important;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-capsule span,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-capsule span {
+        color: #0284C7 !important;
+      }
+
+      :global([data-theme="light"]) .testing-1-theme .blueprint-step-title,
+      :global(html.light-theme) .testing-1-theme .blueprint-step-title {
+        color: #0F172A !important;
       }
 
       /* 3. INNER BLUEPRINT CARDS — DARK LAYERED SYSTEM */
@@ -5315,12 +5401,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           font-size: 12.5px !important;
           line-height: 1.2 !important;
           margin-bottom: 2px !important;
+          color: #F8FAFC !important;
+        }
+
+        :global([data-theme="light"]) .testing-1-theme .step-header-title,
+        :global(html.light-theme) .testing-1-theme .step-header-title {
           color: #081534 !important;
         }
 
         .testing-1-theme .step-header-purpose {
           font-size: 10.5px !important;
           line-height: 1.25 !important;
+          color: #CBD5E1 !important;
+        }
+
+        :global([data-theme="light"]) .testing-1-theme .step-header-purpose,
+        :global(html.light-theme) .testing-1-theme .step-header-purpose {
           color: #52637A !important;
         }
 
@@ -5771,6 +5867,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       :root[data-theme="light"] .testing-1-theme .step-header-purpose,
       html.light-theme .testing-1-theme .step-header-purpose {
         color: #52637A !important;
+        font-weight: 400 !important;
+      }
+
+      :root:not([data-theme="light"]) .testing-1-theme .step-header-title,
+      :root[data-theme="dark"] .testing-1-theme .step-header-title,
+      html:not(.light-theme) .testing-1-theme .step-header-title {
+        color: #F8FAFC !important;
+        font-weight: 700 !important;
+      }
+      :root:not([data-theme="light"]) .testing-1-theme .step-header-purpose,
+      :root[data-theme="dark"] .testing-1-theme .step-header-purpose,
+      html:not(.light-theme) .testing-1-theme .step-header-purpose {
+        color: #CBD5E1 !important;
         font-weight: 400 !important;
       }
       :root[data-theme="light"] .testing-1-theme .step-expand-chevron,
