@@ -1826,17 +1826,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       const expand = box.querySelector('[data-expand-step]');
       const download = box.querySelector('[data-download-step]');
 
-      const syncWidth = () => {
-        if (copy && expand) {
-          requestAnimationFrame(() => {
-            const w = expand.getBoundingClientRect().width;
-            if (w > 0) {
-              copy.style.width = w + 'px';
-              copy.style.minWidth = w + 'px';
-            }
-          });
-        }
-      };
+      const syncWidth = () => {};
       syncWidth();
       let resizeTimer;
       window.addEventListener('resize', () => {
@@ -4845,7 +4835,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           padding: 0 !important;
           margin: 0 !important;
           display: grid !important;
-          grid-template-columns: 64px 1fr 72px !important;
+          grid-template-columns: 1fr 1fr 1fr !important;
           background: #0D1726 !important;
           border-bottom: 1px solid #263449 !important;
         }

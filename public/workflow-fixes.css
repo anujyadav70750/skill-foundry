@@ -1879,7 +1879,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   /* Keep Copy / FULL PROMPT / Expand attached directly to the prompt box/viewer on mobile (matching desktop) */
   .testing-1-theme .workflow-prompt-head {
     display: grid !important;
-    grid-template-columns: 64px 1fr 72px !important;
+    grid-template-columns: 1fr 1fr 1fr !important;
     height: 46px !important;
     min-height: 46px !important;
     max-height: 46px !important;
