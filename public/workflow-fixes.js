@@ -1,6 +1,7 @@
 (() => {
-  const FLOW_ICON = '/google-flow-icon.svg';
+  const FLOW_ICON = '/logos/google-flow.png';
   const CAPCUT_ICON = '/capcut-icon.svg';
+  const CHATGPT_ICON = '/logos/chatgpt.png';
 
   const downloadPdf = (text, name = 'skill-foundry-prompt') => {
     const clean = (s) => String(s).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
@@ -22,11 +23,14 @@
   };
 
   const replaceFlowLogos = () => {
-    document.querySelectorAll('a[href*="flow.google"] img, img[alt*="Flow"]').forEach((img) => {
+    document.querySelectorAll('a[href*="flow.google"] img, a[href*="labs.google"] img, img[alt*="Flow" i], img[alt*="Google Flow" i]').forEach((img) => {
       if (img.getAttribute('src') !== FLOW_ICON) img.setAttribute('src', FLOW_ICON);
     });
-    document.querySelectorAll('a[href*="capcut.com"] img, img[alt*="CapCut"]').forEach((img) => {
+    document.querySelectorAll('a[href*="capcut.com"] img, img[alt*="CapCut" i]').forEach((img) => {
       if (img.getAttribute('src') !== CAPCUT_ICON) img.setAttribute('src', CAPCUT_ICON);
+    });
+    document.querySelectorAll('a[href*="chatgpt.com"] img, a[href*="openai.com"] img, img[alt*="ChatGPT" i], img[alt*="Chat GPT" i], img[alt*="OpenAI" i]').forEach((img) => {
+      if (img.getAttribute('src') !== CHATGPT_ICON) img.setAttribute('src', CHATGPT_ICON);
     });
   };
 

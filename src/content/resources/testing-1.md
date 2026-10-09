@@ -7,7 +7,7 @@ tool: "Google Flow"
 toolUrl: "https://flow.google/"
 toolAffiliate: false
 date: "2026-09-10"
-thumbnail: "/images/1000069054-input-16x9-1788985501045.jpg"
+thumbnail: "/images/1000069055-thumbnail-16x9-1788985430602.jpg"
 thumbnailRatio: "16:9"
 heroImage: "/images/1000068513-hero-16x9-1788985443598.jpg"
 inputImage: "/images/1000069054-input-16x9-1788985501045.jpg"

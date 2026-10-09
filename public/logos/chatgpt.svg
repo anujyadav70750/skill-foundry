@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="ChatGPT">
+  <defs>
+    <linearGradient id="chatgptBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10A37F"/>
+      <stop offset="50%" stop-color="#0E9372"/>
+      <stop offset="100%" stop-color="#0A755A"/>
+    </linearGradient>
+
+    <radialGradient id="bgHighlight" cx="30%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#1AD1A5" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="symbolShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Container -->
+  <rect width="512" height="512" rx="112" fill="url(#chatgptBgGrad)"/>
+  <rect width="512" height="512" rx="112" fill="url(#bgHighlight)"/>
+  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="rgba(255, 255, 255, 0.22)" stroke-width="4"/>
+
+  <!-- Official OpenAI Swirl / Hexagon Rosette Icon -->
+  <g transform="translate(256, 256) scale(3.2)" filter="url(#symbolShadow)">
+    <path fill="#FFFFFF" fill-rule="evenodd" clip-rule="evenodd" d="M28.5 16a13.5 13.5 0 0 0-1.5-12.7 18.2 18.2 0 0 0-11-8.7 18 18 0 0 0-15-2.2 18 18 0 0 0-12.8-6A18.2 18.2 0 0 0 -28.5 -2.4a18 18 0 0 0-12 8.7 18.2 18.2 0 0 0 2.2 19.8 18 18 0 0 0 1.5 12.7 18.2 18.2 0 0 0 11 8.7 18 18 0 0 0 15 2.2 18 18 0 0 0 12.8 6A18.2 18.2 0 0 0 28.5 22.4a18 18 0 0 0 12-8.7 18.2 18.2 0 0 0-2.2-19.8zm-32 32.5a13.5 13.5 0 0 1-10.2-4.6l1.2-2.1 11.5-6.6a2.2 2.2 0 0 0 1.1-1.9V17l4.9 2.8v15.2a13.5 13.5 0 0 1-8.5 13.5zm-22.3-11.8a13.5 13.5 0 0 1-2.4-11l1.2.7 11.5 6.6a2.2 2.2 0 0 0 2.2 0l14.1-8.1v5.6l-13.2 7.6a13.5 13.5 0 0 1-13.4-1.4zm-4-24.8a13.5 13.5 0 0 1 7.8-6.4v14.8a2.2 2.2 0 0 0 1.1 1.9l14.1 8.1-4.9 2.8-13.2-7.6a13.5 13.5 0 0 1-4.9-13.6zm40.4-3.5-14.1-8.1v-5.6l13.2-7.6a13.5 13.5 0 0 1 15.8 12.4l-1.2-.7-11.5-6.6a2.2 2.2 0 0 0-2.2 0zm10.7 17.5a13.5 13.5 0 0 1-7.8 6.4v-14.8a2.2 2.2 0 0 0-1.1-1.9l-14.1-8.1 4.9-2.8 13.2 7.6a13.5 13.5 0 0 1 4.9 13.6zm-20.8-3.4-6-3.5 6-3.5 6 3.5z"/>
+  </g>
+</svg>

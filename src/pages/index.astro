@@ -4,59 +4,55 @@ import { getCollection } from 'astro:content';
 import { resourceSlug, resourceThumbnail, resourceImageAlt } from '../lib/resource';
 import { FAQ_DATA } from '../data/faqs';
 
-// 1. DYNAMIC PUBLISHED RESOURCES (Newest first)
-const allResources = await getCollection('resources');
-const publishedResources = allResources
-  .filter((r) => !('draft' in r.data && r.data.draft === true))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Show approximately 10 important questions on the homepage
+const homepageFaqs = FAQ_DATA.slice(0, 10);
 
-const recentWorkResources = publishedResources.slice(0, 4);
+// 1. DYNAMIC PUBLISHED RESOURCES
+const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = resources.filter((item) => item.data.featured);
+const displayResources = featured.length > 0 ? featured : resources.slice(0, 3);
 
-// 2. DISCIPLINE / SKILL TRACKS
-const learningTracks = [
-  {
-    title: 'AI & Emerging Tools',
-    desc: 'Generative prompt architectures, model parameters, LLM systems, and emerging tool stacks.',
-    categoryName: 'AI Tools',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'
-  },
-  {
-    title: 'Content Creation',
-    desc: 'Structured storytelling, visual messaging, brand assets, and multi-format media production.',
-    categoryName: 'Content Creation',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>'
-  },
-  {
-    title: 'Video & Visuals',
-    desc: 'Multi-clip video assembly, character continuity, motion pacing, and visual editing pipelines.',
-    categoryName: 'AI Video',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>'
-  },
-  {
-    title: 'Design',
-    desc: 'Layout hierarchy, visual balance, UI component patterns, and digital design systems.',
-    categoryName: 'Design',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l7.5 14.5L13 18l5-5z"></path><path d="M2 2l7.58 7.58"></path><circle cx="11" cy="11" r="2"></circle></svg>'
-  },
-  {
-    title: 'Automation',
-    desc: 'Workflow orchestration, tool API connections, automated triggers, and repeatable production.',
-    categoryName: 'AI Automation',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>'
-  },
-  {
-    title: 'Productivity',
-    desc: 'Execution systems, smart organization shortcuts, knowledge management, and task efficiency.',
-    categoryName: 'Productivity',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
-  },
-  {
-    title: 'Digital Skills',
-    desc: 'Practical web tools, asset pipelines, prompt engineering, and independent digital capability.',
-    categoryName: 'Prompt Systems',
-    iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"></path><path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"></path></svg>'
+// 2. DYNAMIC CATEGORIES (Display ONLY categories containing at least ONE published resource)
+const categoryDescriptions = new Map<string, string>([
+  ['AI Video', 'Character continuity, scene motion, multi-clip generation, and video assembly.'],
+  ['AI Image', 'Character references, styling, outfit modification, and asset generation.'],
+  ['Prompt Engineering', 'Step-by-step prompt structures, camera parameters, and scene directions.'],
+  ['AI Tools', 'Verified official tools, recommended setups, and direct access links.'],
+  ['Workflows', 'Connected end-to-end pipelines from raw input to final deliverable.'],
+  ['Projects', 'Real-world creative assets and practical outputs built with modern digital stacks.']
+]);
+
+const categoryColors = new Map<string, { bg: string; border: string; text: string; lightBg: string; lightBorder: string; lightText: string }>([
+  ['AI Video', { bg: 'rgba(6, 182, 212, 0.12)', border: 'rgba(6, 182, 212, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' }],
+  ['AI Image', { bg: 'rgba(129, 140, 248, 0.12)', border: 'rgba(129, 140, 248, 0.35)', text: '#A5B4FC', lightBg: 'rgba(99, 102, 241, 0.08)', lightBorder: 'rgba(99, 102, 241, 0.28)', lightText: '#4F46E5' }],
+  ['Prompt Engineering', { bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.35)', text: '#FBBF24', lightBg: 'rgba(217, 119, 6, 0.08)', lightBorder: 'rgba(217, 119, 6, 0.28)', lightText: '#D97706' }],
+  ['AI Tools', { bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)', text: '#34D399', lightBg: 'rgba(16, 185, 129, 0.08)', lightBorder: 'rgba(16, 185, 129, 0.28)', lightText: '#059669' }],
+  ['Workflows', { bg: 'rgba(56, 189, 248, 0.12)', border: 'rgba(56, 189, 248, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' }],
+  ['Projects', { bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.35)', text: '#FB7185', lightBg: 'rgba(225, 29, 72, 0.08)', lightBorder: 'rgba(225, 29, 72, 0.28)', lightText: '#E11D48' }]
+]);
+
+const defaultColor = { bg: 'rgba(56, 189, 248, 0.12)', border: 'rgba(56, 189, 248, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' };
+
+const categoryCounts = new Map<string, number>();
+resources.forEach((resource) => {
+  const cat = resource.data.category?.trim();
+  if (cat) {
+    categoryCounts.set(cat, (categoryCounts.get(cat) || 0) + 1);
   }
-];
+});
+
+const dynamicCategories = Array.from(categoryCounts.entries())
+  .filter(([_, count]) => count > 0)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([name, count]) => {
+    let description = categoryDescriptions.get(name);
+    if (!description) {
+      const sample = resources.find((r) => r.data.category?.trim() === name);
+      description = sample?.data.description || `Practical skills and workflows for ${name}.`;
+    }
+    const color = categoryColors.get(name) || defaultColor;
+    return { name, count, description, color };
+  });
 
 const formatUploadDate = (d: Date | string | undefined) => {
   if (!d) return '';
@@ -69,322 +65,333 @@ const formatUploadDate = (d: Date | string | undefined) => {
 };
 ---
 
-<BaseLayout
-  title="Skill Foundry — Learn Practical Skills. Make Them Your Own."
-  description="Skill Foundry helps people understand modern tools, workflows, and practical skills so they can use them independently, adapt them to their own needs, and create with them."
+<BaseLayout 
+  title="Skill Foundry — Learn Practical Skills, Workflows & Tools"
+  description="Skill Foundry is a practical learning platform for building useful skills through structured resources, tutorials, and real-world workflows."
 >
   <div class="home-page">
-    <!-- 1. HERO — WHAT SKILL FOUNDRY IS & WHY IT EXISTS -->
+    <!-- SECTION 1 — WHAT SKILL FOUNDRY IS (HERO) -->
     <section class="home-hero">
       <div class="container narrow hero-content">
         <div class="hero-capsule-row">
           <span class="home-capsule">PRACTICAL SKILLS PLATFORM</span>
         </div>
-        
         <h1 class="hero-title">
-          Learn practical skills. Make them your own.
+          Build practical skills that work in the <span class="hero-highlight">real world.</span>
         </h1>
-
         <p class="hero-lead">
-          Skill Foundry helps people understand modern tools, workflows, and practical skills so they can use them for their own ideas — whether they are starting from zero or already know the basics.
+          Skill Foundry is a practical learning platform for building useful skills through structured resources, tutorials, and real-world workflows.
         </p>
-
-        <p class="hero-subline">
-          Understand it. Try it. Adapt it. Create with it.
-        </p>
-
         <div class="hero-actions">
-          <a class="home-button home-button-primary" href="/resources/">
-            <span>Explore Resources</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+          <a class="home-button home-button-primary" href="/resources/">Explore Resources</a>
+        </div>
+        <div class="hero-pillars-strip" aria-label="Key highlights">
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Beginner friendly</span>
+          <span class="pillar-dot" aria-hidden="true">•</span>
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Step-by-step blueprints</span>
+          <span class="pillar-dot" aria-hidden="true">•</span>
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Direct tool access</span>
+          <span class="pillar-dot" aria-hidden="true">•</span>
+          <span class="pillar-item" title="All resources are tested and verified before publication"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Verified resources</span>
         </div>
       </div>
     </section>
 
-    <!-- 2. RECENT WORK — MOVED DIRECTLY AFTER HERO -->
-    <section class="home-section recent-work-section" id="recent-work">
+    <!-- SECTION 2 — RECENT WORK -->
+    <section class="home-section featured-section recent-work-section" id="recent-work">
       <div class="container narrow">
-        <div class="section-head section-head-flex">
-          <div>
-            <p class="home-capsule">RECENT WORK</p>
-            <h2>SEE WHAT WE'RE BUILDING.</h2>
-            <p class="section-subcopy">
-              Real projects, experiments, and practical workflows.
-            </p>
-          </div>
-          <a class="view-all-link-btn" href="/resources/">
-            <span>View all recent work</span>
-            <span aria-hidden="true">→</span>
-          </a>
+        <div class="section-head">
+          <p class="home-capsule">RECENT WORK</p>
+          <h2>What we're currently building</h2>
+          <p class="section-subcopy">
+            Real, practical resources and workflows recently built and verified by Skill Foundry.
+          </p>
         </div>
 
-        {recentWorkResources.length > 0 ? (
-          <div class="recent-work-scroll-wrapper">
-            {recentWorkResources.map((resource) => {
-              const slug = resourceSlug(resource);
-              const thumbnail = resourceThumbnail(resource);
-              const alt = resourceImageAlt(resource);
+        {displayResources.length > 0 ? (
+          <div class="featured-wrap">
+            <div class="featured-grid">
+              {displayResources.map((resource) => {
+                const slug = resourceSlug(resource);
+                const thumbnail = resourceThumbnail(resource);
+                const alt = resourceImageAlt(resource);
 
-              return (
-                <a
-                  class="home-card recent-work-card"
-                  href={`/resources/${slug}/`}
-                  aria-label={`Open ${resource.data.title}`}
-                >
-                  <div class="recent-thumb-wrap">
-                    <img class="recent-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
-                  </div>
-
-                  <div class="recent-card-body">
-                    <div class="recent-card-meta">
-                      <span class="recent-meta-category">{resource.data.category}</span>
-                      <span class="recent-meta-date">{formatUploadDate(resource.data.date)}</span>
+                return (
+                  <a class="home-card resource-display-card resource-card-clickable" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
+                    <div class="resource-thumb-wrap">
+                      <img class="resource-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
                     </div>
 
-                    <h3 class="recent-card-title">{resource.data.title}</h3>
-                    <p class="recent-card-desc">{resource.data.description}</p>
-                  </div>
-                </a>
-              );
-            })}
+                    <div class="resource-card-body">
+                      <div class="resource-card-meta">
+                        <span class="resource-meta-category">{resource.data.category}</span>
+                        <span class="resource-meta-date">{formatUploadDate(resource.data.date)}</span>
+                      </div>
+
+                      <h3 class="resource-card-title">
+                        {resource.data.title}
+                      </h3>
+                      <p class="resource-card-desc">{resource.data.description}</p>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+
+            <!-- Right-aligned "View all recent work →" capsule button -->
+            <div class="featured-bottom-bar">
+              <a class="all-resources-capsule-btn" href="/resources/">
+                <span>View all recent work</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
           </div>
         ) : (
           <div class="empty-state-box">
-            <p class="empty-state-title">No published work yet</p>
+            <p class="empty-state-title">No published resources yet</p>
             <p class="empty-state-text">New step-by-step tutorials and verified workflows are currently being crafted. Check back soon.</p>
           </div>
         )}
       </div>
     </section>
 
-    <!-- 3. WHY WE ARE DIFFERENT — REBUILD -->
-    <section class="home-section why-different-section" id="why-different">
+    <!-- SECTION 3 — WHY SKILL FOUNDRY & WHY IT EXISTS -->
+    <section class="home-section why-section" id="why-it-exists">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">OUR APPROACH</p>
-          <h2>Not another copy-paste resource site.</h2>
+          <p class="home-capsule">WHY IT EXISTS</p>
+          <h2>Skills you can understand, apply, and make your own</h2>
           <p class="section-subcopy">
-            We do not simply give visitors something to copy and paste. We explain what they are doing, how it works, and why it works. Once they understand the idea, they can use it for their own project, solve their own problem, or take it somewhere different.
+            Skill Foundry exists to help people learn useful skills, apply those skills in real projects, and make work and life easier. We teach practical workflows that you can genuinely understand and adapt — not simply copy-paste without knowing how they work.
           </p>
         </div>
 
-        <div class="different-editorial-grid">
-          <!-- Featured Principle Card (Large Lead) -->
-          <article class="home-card editorial-card editorial-card-hero">
-            <div class="editorial-card-header">
-              <span class="editorial-number">01</span>
-              <span class="editorial-tag">FOUNDATION</span>
+        <div class="promise-grid">
+          <article class="home-card promise-card">
+            <div class="promise-card-capsule">01 • UNDERSTAND THE LOGIC</div>
+            <h3 class="card-title">Understand how it works</h3>
+            <p class="card-description">
+              Learn the core principles, tool mechanics, and prompt logic behind each workflow so you gain genuine, reusable skills.
+            </p>
+          </article>
+
+          <article class="home-card promise-card">
+            <div class="promise-card-capsule">02 • REAL APPLICATION</div>
+            <h3 class="card-title">Apply in everyday work</h3>
+            <p class="card-description">
+              Put what you learn directly into practice on real projects, creative deliverables, and daily tasks to make work easier.
+            </p>
+          </article>
+
+          <article class="home-card promise-card">
+            <div class="promise-card-capsule">03 • FLEXIBLE ADAPTATION</div>
+            <h3 class="card-title">Adapt to your own needs</h3>
+            <p class="card-description">
+              Take proven workflows and customize them to your specific goals, different tools, and unique project requirements.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 — WHAT YOU CAN LEARN / BUILD -->
+    <section class="home-section skills-section" id="what-you-can-build">
+      <div class="container narrow">
+        <div class="section-head">
+          <p class="home-capsule">SKILLS &amp; DISCIPLINES</p>
+          <h2>What you can learn and build</h2>
+          <p class="section-subcopy">
+            Understand the core capabilities and practical skill sets you can master and apply across digital disciplines, from video and motion to content creation and automation.
+          </p>
+        </div>
+
+        <div class="skills-tracks-grid">
+          <div class="home-card skill-track-card">
+            <div class="skill-track-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+              </svg>
             </div>
-            <h3 class="card-title">UNDERSTAND</h3>
+            <h3 class="card-title">Video Editing &amp; Motion</h3>
             <p class="card-description">
-              Learn the core logic, tool mechanics, and prompt principles behind each workflow. When you understand why something works, you gain a reusable skill rather than a one-time shortcut.
+              Multi-clip assembly, pacing, audio synchronization, motion control, and professional editing workflows.
             </p>
-          </article>
+          </div>
 
-          <!-- Standard Principle Cards Stack -->
-          <div class="editorial-cards-stack">
-            <article class="home-card editorial-card">
-              <div class="editorial-card-header">
-                <span class="editorial-number">02</span>
-                <span class="editorial-tag">PRACTICE</span>
-              </div>
-              <h3 class="card-title">APPLY</h3>
-              <p class="card-description">
-                Put what you learn directly into practice on real examples, guided blueprints, and real-world projects.
-              </p>
-            </article>
+          <div class="home-card skill-track-card">
+            <div class="skill-track-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">Content Creation &amp; Visuals</h3>
+            <p class="card-description">
+              Consistent character styling, visual assets, brand imagery, and multi-format digital media production.
+            </p>
+          </div>
 
-            <article class="home-card editorial-card">
-              <div class="editorial-card-header">
-                <span class="editorial-number">03</span>
-                <span class="editorial-tag">CUSTOMIZE</span>
-              </div>
-              <h3 class="card-title">ADAPT</h3>
-              <p class="card-description">
-                Change and tailor proven workflows to your specific goals, different software stacks, or unique project situations.
-              </p>
-            </article>
+          <div class="home-card skill-track-card">
+            <div class="skill-track-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+              </svg>
+            </div>
+            <h3 class="card-title">AI Workflows &amp; Prompting</h3>
+            <p class="card-description">
+              Structured prompt blueprints, model parameters, generative tools, and connected creative pipelines.
+            </p>
+          </div>
 
-            <article class="home-card editorial-card">
-              <div class="editorial-card-header">
-                <span class="editorial-number">04</span>
-                <span class="editorial-tag">INNOVATE</span>
-              </div>
-              <h3 class="card-title">CREATE</h3>
-              <p class="card-description">
-                Take the idea further. Combine tools, build new workflows, and create original work that is entirely your own.
-              </p>
-            </article>
+          <div class="home-card skill-track-card">
+            <div class="skill-track-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <h3 class="card-title">Automation &amp; Productivity</h3>
+            <p class="card-description">
+              Workflow orchestration, tool integration, execution shortcuts, and repeatable digital production systems.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 4. WHAT YOU CAN LEARN — ONE MERGED SECTION -->
-    <section class="home-section learn-section" id="what-you-can-learn">
+    <!-- SECTION 5 — HOW IT WORKS -->
+    <section class="home-section method-section" id="how-it-works">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">KNOWLEDGE &amp; SKILLS</p>
-          <h2>What you can learn</h2>
+          <p class="home-capsule">HOW IT WORKS</p>
+          <h2>A clear path from idea to result</h2>
           <p class="section-subcopy">
-            Explore practical capabilities across emerging tech, creative software, video production, design, automation, and productivity.
+            Follow a simple, beginner-friendly process designed to help you learn, execute, and adapt any workflow.
           </p>
         </div>
 
-        <div class="learn-grid">
-          {learningTracks.map((track) => (
-            <a
-              class="home-card learn-track-card"
-              href={`/resources/?category=${encodeURIComponent(track.categoryName)}`}
-            >
-              <div class="track-icon-box" set:html={track.iconSvg} />
-              <div class="track-content">
-                <h3 class="card-title track-title">{track.title}</h3>
-                <p class="card-description track-desc">{track.desc}</p>
-              </div>
-              <span class="track-link-arrow" aria-hidden="true">→</span>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. HOW WE TEACH — REBUILD (Understand -> Apply -> Adapt -> Create) -->
-    <section class="home-section method-section" id="how-we-teach">
-      <div class="container narrow">
-        <div class="section-head">
-          <p class="home-capsule">THE LEARNING JOURNEY</p>
-          <h2>How We Teach</h2>
-          <p class="section-subcopy">
-            A clear progression designed to take you from foundational understanding to creative independence.
-          </p>
-        </div>
-
-        <div class="method-timeline-grid">
-          <article class="home-card method-step-card">
-            <div class="method-step-num">01</div>
-            <div class="method-step-capsule">UNDERSTAND</div>
-            <h3 class="card-title">Learn the reasoning</h3>
+        <div class="steps-grid">
+          <article class="home-card method-card">
+            <div class="method-step-badge">01</div>
+            <div class="method-subcapsule">FIND</div>
+            <h3 class="card-title">Find a practical topic or workflow</h3>
             <p class="card-description">
-              Learn the idea, tool mechanics, prompt logic, and workflow reasoning behind each practical deliverable.
+              Find a practical topic, skill or workflow relevant to what you want to create.
             </p>
           </article>
 
-          <article class="home-card method-step-card">
-            <div class="method-step-num">02</div>
-            <div class="method-step-capsule">APPLY</div>
-            <h3 class="card-title">Try it on a real project</h3>
+          <article class="home-card method-card">
+            <div class="method-step-badge">02</div>
+            <div class="method-subcapsule">FOLLOW</div>
+            <h3 class="card-title">Follow the instructions</h3>
             <p class="card-description">
-              Execute step-by-step blueprints on a concrete example to verify the output and master the workflow.
+              Follow clear instructions, examples, prompts, and tool settings.
             </p>
           </article>
 
-          <article class="home-card method-step-card">
-            <div class="method-step-num">03</div>
-            <div class="method-step-capsule">ADAPT</div>
-            <h3 class="card-title">Tailor to your goals</h3>
+          <article class="home-card method-card">
+            <div class="method-step-badge">03</div>
+            <div class="method-subcapsule">BUILD</div>
+            <h3 class="card-title">Apply and create a real result</h3>
             <p class="card-description">
-              Modify prompts, settings, and step sequences to solve your own specific problems and fit your software stack.
-            </p>
-          </article>
-
-          <article class="home-card method-step-card">
-            <div class="method-step-num">04</div>
-            <div class="method-step-capsule">CREATE</div>
-            <h3 class="card-title">Build something original</h3>
-            <p class="card-description">
-              Take the idea further, synthesize multiple techniques, and create unique, independent projects.
+              Apply what you learned and create a real, practical result for your own project.
             </p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 6. RESOURCE LIBRARY — REFRAME, DO NOT BREAK -->
-    <section class="home-section library-section" id="resource-library">
-      <div class="container narrow">
-        <div class="section-head section-head-flex">
-          <div>
-            <p class="home-capsule">RESOURCE LIBRARY</p>
-            <h2>Start with an idea.</h2>
+    <!-- SECTION 6 — EXPLORE BY CATEGORY (Capsule Tags) -->
+    {dynamicCategories.length > 0 && (
+      <section class="home-section categories-section" id="categories">
+        <div class="container narrow">
+          <div class="section-head">
+            <p class="home-capsule">EXPLORE BY CATEGORY</p>
+            <h2>Find what you want to build</h2>
             <p class="section-subcopy">
-              Explore practical learning materials that explain the process behind real results. Browse blueprints, workflows, and prompts ready to execute and adapt.
+              Browse practical resources, tutorials, and blueprints organized by creative domain and production discipline.
             </p>
           </div>
-          <a class="view-all-link-btn" href="/resources/">
-            <span>Browse full library</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        </div>
 
-        <div class="library-preview-banner home-card">
-          <div class="banner-text">
-            <h3 class="banner-title">Executable Blueprints &amp; Guided Workflows</h3>
-            <p class="banner-desc">
-              Search by tool, filter by category, or discover verified prompt blueprints designed for hands-on learning.
-            </p>
-          </div>
-          <div class="banner-action">
-            <a class="home-button home-button-secondary" href="/resources/">
-              <span>Search &amp; Filter Resources</span>
-            </a>
+          <div class="categories-grid">
+            {dynamicCategories.map((cat) => (
+              <a class="home-card category-card" href={`/resources/?category=${encodeURIComponent(cat.name)}`}>
+                <div class="category-card-top">
+                  <span
+                    class="category-capsule-tag"
+                    style={`--cat-bg: ${cat.color.bg}; --cat-border: ${cat.color.border}; --cat-text: ${cat.color.text}; --cat-light-bg: ${cat.color.lightBg}; --cat-light-border: ${cat.color.lightBorder}; --cat-light-text: ${cat.color.lightText};`}
+                  >
+                    {cat.name}
+                  </span>
+                  <span class="category-tag-count">{cat.count} resource{cat.count === 1 ? '' : 's'}</span>
+                </div>
+                <p class="category-desc">{cat.description}</p>
+                <div class="category-card-bottom">
+                  <span class="category-explore-capsule-btn">
+                    <span>Explore category</span>
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                  </span>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    )}
 
-    <!-- 7. WHY TRUST US -->
-    <section class="home-section trust-section" id="why-trust-us">
+    <!-- SECTION 7 — WHY TRUST THE RESOURCES -->
+    <section class="home-section trust-section" id="why-trust-the-resources">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">QUALITY &amp; INTEGRITY</p>
-          <h2>Why Trust Us</h2>
+          <p class="home-capsule">VERIFIED QUALITY</p>
+          <h2>Why trust Skill Foundry resources</h2>
           <p class="section-subcopy">
-            Built for execution. Every guide in our library is created for reliable, reproducible learning.
+            Every blueprint and tutorial in our library is built for reliable, reproducible execution.
           </p>
         </div>
 
-        <div class="trust-grid">
+        <div class="promise-grid">
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">01 • HANDS-ON TESTING</div>
+            <div class="trust-card-capsule">01 • HANDS-ON VERIFIED</div>
             <h3 class="card-title">Tested before publication</h3>
             <p class="card-description">
-              Every workflow and blueprint is tested end-to-end through actual execution before release so steps, prompts, and settings work reliably.
+              Every blueprint is tested end-to-end to ensure prompts, settings, and step sequences work as described.
             </p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">02 • FULL TRANSPARENCY</div>
-            <h3 class="card-title">Tool transparency</h3>
+            <div class="trust-card-capsule">02 • TOOL TRANSPARENCY</div>
+            <h3 class="card-title">Clear tool access</h3>
             <p class="card-description">
-              We clearly show which tools are used, where they fit in the process, free tier availability, and recommended software alternatives upfront.
+              We clearly specify required tools, free tiers, and alternatives so you know exact requirements upfront.
             </p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">03 • ACTIONABLE FOCUS</div>
-            <h3 class="card-title">No unnecessary fluff</h3>
+            <div class="trust-card-capsule">03 • ZERO FLUFF</div>
+            <h3 class="card-title">Built for execution</h3>
             <p class="card-description">
-              Zero filler or vague claims. Direct, practical instructions designed to help you genuinely understand and build real deliverables.
+              No filler or endless theory. Clean, actionable instructions designed to help you finish real projects.
             </p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- 8. FAQ SECTION (REINFORCING POSITIONING) -->
+    <!-- SECTION 8 — FREQUENTLY ASKED QUESTIONS (ACCORDION LAYOUT WITH PLUS CONTROLS) -->
     <section class="home-section faq-section" id="faq">
       <div class="container narrow">
         <div class="section-head">
           <p class="home-capsule">FREQUENTLY ASKED</p>
-          <h2>Frequently Asked Questions</h2>
+          <h2>Questions you might have</h2>
           <p class="section-subcopy">
-            Quick answers about Skill Foundry, beginner friendliness, prompt adaptation, and practical learning.
+            Quick answers to common questions about Skill Foundry, our resources, and how to use them.
           </p>
         </div>
 
-        <!-- FAQ Search Input -->
+        <!-- FAQ Search -->
         <div class="faq-search-wrap">
           <label for="faq-search-input" class="sr-only">Search for a question or topic</label>
           <div class="faq-search-field">
@@ -417,7 +424,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </div>
         </div>
 
-        <!-- FAQ Accordion List -->
+        <!-- FAQ Accordion List (Complete FAQ dataset: first 10 shown by default, all searchable) -->
         <div class="faq-accordion-list" id="faq-list">
           {FAQ_DATA.map((faq, index) => {
             const isDefaultPreview = index < 10;
@@ -459,7 +466,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           })}
         </div>
 
-        <!-- More FAQs Button -->
+        <!-- More FAQs Link -->
         <div class="faq-more-wrap" id="faq-more-wrap">
           <a href="/faq/" class="home-button home-button-secondary faq-more-btn">
             <span>More FAQs</span>
@@ -467,7 +474,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </a>
         </div>
 
-        <!-- Compact No-results -->
+        <!-- Compact No-result State -->
         <div class="faq-no-results" id="faq-no-results" style="display: none;">
           <p class="faq-no-results-title">We couldn’t find an answer to that.</p>
           <p class="faq-no-results-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
@@ -488,7 +495,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                   id="faq-question-input"
                   name="question"
                   class="faq-textarea"
-                  rows="4"
+                  rows="5"
                   placeholder="Type your question…"
                   required
                 ></textarea>
@@ -509,6 +516,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                     <polyline points="9 21 3 21 3 15"></polyline>
                     <line x1="10" y1="14" x2="3" y2="21"></line>
                   </svg>
+                  <span class="sr-only">Expand editor</span>
                 </button>
               </div>
               <p id="faq-validation-msg" class="faq-validation-msg" role="alert" style="display: none;"></p>
@@ -527,28 +535,25 @@ const formatUploadDate = (d: Date | string | undefined) => {
       </div>
     </section>
 
-    <!-- 9. FINAL CTA -->
+    <!-- SECTION 9 — FINAL CTA -->
     <section class="home-section final-cta-section">
       <div class="container narrow">
         <div class="home-cta-card">
           <div class="cta-text-content">
             <p class="home-capsule cta-capsule">START BUILDING</p>
-            <h2 class="cta-title">Don’t just use the tools. Learn how to use them.</h2>
+            <h2 class="cta-title">Build the skill. Then make it your own.</h2>
             <p class="cta-desc">
-              Technology will keep changing. The valuable skill is knowing how to understand it, adapt to it, and create with it.
+              Explore practical resources, build useful skills, and put what you learn into practice.
             </p>
           </div>
           <div class="cta-action-wrap">
-            <a class="home-button home-button-cta" href="/resources/">
-              <span>Explore Resources</span>
-              <span aria-hidden="true">→</span>
-            </a>
+            <a class="home-button home-button-cta" href="/resources/">Explore Resources →</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Expanded Question Submission Modal -->
+    <!-- Expanded Question Submission Modal (Tall Vertical Writing Panel) -->
     <div id="faq-modal-overlay" class="faq-modal-overlay" aria-hidden="true" style="display: none;">
       <div class="faq-modal-backdrop" id="faq-modal-backdrop"></div>
       <div
@@ -557,6 +562,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         aria-modal="true"
         aria-labelledby="faq-modal-title"
       >
+        <!-- Top Row: Collapse Button Aligned Right -->
         <div class="faq-modal-nav-row">
           <button
             type="button"
@@ -578,6 +584,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </button>
         </div>
 
+        <!-- Title / Subtitle -->
         <div class="faq-modal-header-text">
           <h2 id="faq-modal-title" class="faq-modal-title">Ask a Question</h2>
           <p class="faq-modal-subtitle">Submit a question or workflow request to be considered for the FAQ.</p>
@@ -612,18 +619,18 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
 <style>
   /* ==========================================================================
-     SKILL FOUNDRY HOMEPAGE REDESIGN STYLES
+     SKILL FOUNDRY HOME PAGE STYLES — Scoped to .home-page
      ========================================================================== */
 
   .home-page {
     background:
-      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.06) 0%, transparent 40%),
+      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.15) 0%, transparent 60%),
+      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.08) 0%, transparent 40%),
       #080D14;
     color: #F8FAFC;
     min-height: 100vh;
-    padding-top: var(--header-height, 80px);
-    margin-top: calc(-1 * var(--header-height, 80px));
+    padding-top: var(--header-height);
+    margin-top: calc(-1 * var(--header-height));
     padding-bottom: 0;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
@@ -640,31 +647,31 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   /* Shared Section Layout */
   .home-section {
-    padding: 36px 0 28px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 28px 0 20px 0;
   }
 
-  :global([data-theme="light"]) .home-section,
-  :global(html.light-theme) .home-section {
-    border-bottom-color: rgba(15, 23, 42, 0.06);
+  @media (max-width: 640px) {
+    .home-section {
+      padding: 20px 0 16px 0;
+    }
   }
 
-  /* Eyebrow Capsule */
+  /* Shared Capsule Eyebrow */
   .home-capsule {
     display: inline-flex;
     align-items: center;
     background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     color: #38BDF8;
-    border-radius: 6px;
+    border-radius: 9999px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    padding: 4px 12px;
-    margin: 0 0 14px 0;
-    line-height: 1.2;
+    padding: 5px 14px;
+    margin: 0 0 16px 0;
+    line-height: 1;
     user-select: none;
   }
 
@@ -675,17 +682,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #0284C7;
   }
 
-  /* Section Headings */
+  /* Shared Section Head Typography */
   .section-head {
-    margin-bottom: 28px;
-  }
-
-  .section-head-flex {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 20px;
-    flex-wrap: wrap;
+    margin-bottom: 30px;
   }
 
   .section-head h2 {
@@ -695,7 +694,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     line-height: 1.2;
     letter-spacing: -0.02em;
     color: #FFFFFF;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
   }
 
   :global([data-theme="light"]) .section-head h2,
@@ -705,8 +704,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   .section-subcopy {
     color: #CBD5E1;
-    font-size: 15.5px;
-    line-height: 1.6;
+    font-size: 16px;
+    line-height: 1.65;
     margin: 0;
     max-width: 680px;
   }
@@ -716,50 +715,13 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #475569;
   }
 
-  .view-all-link-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: #38BDF8;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    font-weight: 700;
-    text-decoration: none;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    padding: 6px 14px;
-    border-radius: 6px;
-    transition: all 0.18s ease;
-    white-space: nowrap;
-  }
-
-  :global([data-theme="light"]) .view-all-link-btn,
-  :global(html.light-theme) .view-all-link-btn {
-    color: #0284C7;
-    background: #FFFFFF;
-    border-color: #CBD5E1;
-  }
-
-  .view-all-link-btn:hover {
-    background: rgba(56, 189, 248, 0.16);
-    border-color: rgba(56, 189, 248, 0.5);
-    color: #7DD3FC;
-  }
-
-  :global([data-theme="light"]) .view-all-link-btn:hover,
-  :global(html.light-theme) .view-all-link-btn:hover {
-    background: #F1F5F9;
-    border-color: #0284C7;
-    color: #0369A1;
-  }
-
-  /* Shared Card Base */
+  /* Shared Card Styling */
   .home-card {
     background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 24px 22px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border-radius: 24px;
+    padding: 32px 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
     transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
   }
@@ -768,26 +730,26 @@ const formatUploadDate = (d: Date | string | undefined) => {
   :global(html.light-theme) .home-card {
     background: #FFFFFF;
     border-color: #E2E8F0;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
   .home-card:hover {
-    border-color: rgba(56, 189, 248, 0.32);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.08);
   }
 
   :global([data-theme="light"]) .home-card:hover,
   :global(html.light-theme) .home-card:hover {
     border-color: rgba(2, 132, 199, 0.35);
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.09);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.1);
   }
 
   .card-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 22px;
+    font-size: 24px;
     font-weight: 500;
     color: #FFFFFF;
-    margin: 0 0 10px 0;
+    margin: 0 0 12px 0;
     line-height: 1.25;
     letter-spacing: -0.015em;
   }
@@ -799,8 +761,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   .card-description {
     color: #CBD5E1;
-    font-size: 14.5px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.65;
     margin: 0;
   }
 
@@ -813,31 +775,45 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .empty-state-box {
     background: linear-gradient(180deg, rgba(16, 26, 44, 0.5) 0%, rgba(9, 15, 27, 0.7) 100%);
     border: 1px dashed rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding: 36px 24px;
+    border-radius: 20px;
+    padding: 40px 24px;
     text-align: center;
+  }
+
+  :global([data-theme="light"]) .empty-state-box,
+  :global(html.light-theme) .empty-state-box {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
   }
 
   .empty-state-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 500;
     color: #FFFFFF;
-    margin: 0 0 6px 0;
+    margin: 0 0 8px 0;
+  }
+
+  :global([data-theme="light"]) .empty-state-title,
+  :global(html.light-theme) .empty-state-title {
+    color: #0F172A;
   }
 
   .empty-state-text {
     color: #94A3B8;
-    font-size: 14px;
+    font-size: 15px;
     margin: 0;
   }
 
   /* ==========================================================================
-     1. HERO SECTION (SOLID HIGH-CONTRAST TYPOGRAPHY — NO GRADIENT TEXT)
+     SECTION 1 — HERO
      ========================================================================== */
   .home-hero {
-    padding: clamp(64px, 8vw, 92px) 0 clamp(32px, 4vw, 48px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    padding: clamp(56px, 7vw, 84px) 0 clamp(24px, 3.2vw, 32px);
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
   }
 
   :global([data-theme="light"]) .home-hero,
@@ -853,10 +829,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .hero-capsule-row {
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
-  /* Solid typography per Section 12 rule */
   .hero-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
     font-size: clamp(34px, 5.2vw, 56px);
@@ -864,8 +839,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
     line-height: 1.12;
     letter-spacing: -0.025em;
     color: #FFFFFF;
-    margin: 0 0 18px 0;
+    margin: 0 0 16px 0;
     max-width: 820px;
+    text-wrap: balance;
   }
 
   :global([data-theme="light"]) .hero-title,
@@ -873,12 +849,29 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #0F172A;
   }
 
+  .hero-highlight {
+    background: linear-gradient(180deg, #FF9E44 0%, #FF6600 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-style: italic;
+  }
+
+  :global([data-theme="light"]) .hero-highlight,
+  :global(html.light-theme) .hero-highlight {
+    background: linear-gradient(180deg, #EA580C 0%, #C2410C 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .hero-lead {
     color: #CBD5E1;
-    font-size: clamp(16px, 2vw, 18.5px);
+    font-size: clamp(16px, 2.1vw, 18.5px);
     line-height: 1.65;
-    max-width: 720px;
-    margin: 0 0 16px 0;
+    max-width: 680px;
+    margin: 0 0 30px 0;
+    text-wrap: balance;
   }
 
   :global([data-theme="light"]) .hero-lead,
@@ -886,25 +879,14 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #475569;
   }
 
-  .hero-subline {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 13.5px;
-    font-weight: 600;
-    color: #38BDF8;
-    letter-spacing: 0.04em;
-    margin: 0 0 28px 0;
-  }
-
-  :global([data-theme="light"]) .hero-subline,
-  :global(html.light-theme) .hero-subline {
-    color: #0284C7;
-  }
-
   .hero-actions {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 0 !important;
+    margin-bottom: 12px;
   }
 
   .home-button {
@@ -917,7 +899,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     font-size: 15px;
     font-weight: 700;
     text-decoration: none;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     white-space: nowrap;
     cursor: pointer;
     box-sizing: border-box;
@@ -927,13 +909,13 @@ const formatUploadDate = (d: Date | string | undefined) => {
     background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
     color: #FFFFFF;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 13px 32px;
-    box-shadow: 0 8px 24px rgba(234, 85, 0, 0.4);
+    padding: 13px 30px;
+    box-shadow: 0 8px 24px rgba(234, 85, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
   .home-button-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 30px rgba(234, 85, 0, 0.55);
+    box-shadow: 0 12px 30px rgba(234, 85, 0, 0.55), 0 0 24px rgba(255, 102, 0, 0.4);
     color: #FFFFFF;
   }
 
@@ -941,7 +923,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     background: rgba(255, 255, 255, 0.05);
     color: #F8FAFC;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    padding: 12px 24px;
+    padding: 13px 26px;
   }
 
   :global([data-theme="light"]) .home-button-secondary,
@@ -949,53 +931,371 @@ const formatUploadDate = (d: Date | string | undefined) => {
     background: #FFFFFF;
     border-color: #CBD5E1;
     color: #0F172A;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
   }
 
   .home-button-secondary:hover {
     background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
     color: #FFFFFF;
   }
 
   :global([data-theme="light"]) .home-button-secondary:hover,
   :global(html.light-theme) .home-button-secondary:hover {
     background: #F1F5F9;
+    border-color: #94A3B8;
     color: #0F172A;
   }
 
+  .hero-pillars-strip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    color: #94A3B8;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+
+  :global([data-theme="light"]) .hero-pillars-strip,
+  :global(html.light-theme) .hero-pillars-strip {
+    color: #475569;
+  }
+
+  .pillar-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .pillar-check {
+    color: #38BDF8;
+    flex-shrink: 0;
+  }
+
+  :global([data-theme="light"]) .pillar-check,
+  :global(html.light-theme) .pillar-check {
+    color: #0284C7;
+  }
+
+  .pillar-dot {
+    color: rgba(255, 255, 255, 0.2);
+    user-select: none;
+  }
+
+  :global([data-theme="light"]) .pillar-dot,
+  :global(html.light-theme) .pillar-dot {
+    color: rgba(15, 23, 42, 0.2);
+  }
+
   /* ==========================================================================
-     2. RECENT WORK SECTION
+     SECTION 2 — WHY SKILL FOUNDRY
      ========================================================================== */
-  .recent-work-scroll-wrapper {
+  .why-section {
+    padding-top: 28px;
+    padding-bottom: 20px;
+  }
+
+  .promise-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .promise-card, .trust-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .promise-card-capsule, .trust-card-capsule {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #38BDF8;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  :global([data-theme="light"]) .promise-card-capsule,
+  :global(html.light-theme) .promise-card-capsule,
+  :global([data-theme="light"]) .trust-card-capsule,
+  :global(html.light-theme) .trust-card-capsule {
+    color: #0284C7;
+  }
+
+  /* ==========================================================================
+     SECTION 6 — SKILLS & DISCIPLINES
+     ========================================================================== */
+  .skills-section {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .skills-tracks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 20px;
+  }
+
+  .skill-track-card {
+    display: flex;
+    flex-direction: column;
+    padding: 28px 24px;
+  }
+
+  .skill-track-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    color: #38BDF8;
+    display: grid;
+    place-items: center;
+    margin-bottom: 18px;
+  }
+
+  :global([data-theme="light"]) .skill-track-icon,
+  :global(html.light-theme) .skill-track-icon {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0284C7;
+  }
+
+  /* ==========================================================================
+     SECTION 4 — HOW IT WORKS
+     ========================================================================== */
+  .method-section {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .method-card {
+    position: relative;
+    padding: 36px 28px 30px;
+  }
+
+  .method-step-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+    color: rgba(56, 189, 248, 0.2);
+    margin-bottom: 12px;
+  }
+
+  :global([data-theme="light"]) .method-step-badge,
+  :global(html.light-theme) .method-step-badge {
+    color: rgba(2, 132, 199, 0.25);
+  }
+
+  .method-subcapsule {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: #38BDF8;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  :global([data-theme="light"]) .method-subcapsule,
+  :global(html.light-theme) .method-subcapsule {
+    color: #0284C7;
+  }
+
+  /* ==========================================================================
+     SECTION 5 — EXPLORE BY CATEGORY (Capsule Tags)
+     ========================================================================== */
+  .categories-section {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 18px;
   }
 
-  .recent-work-card {
+  .category-card {
     display: flex;
     flex-direction: column;
     text-decoration: none;
-    padding: 14px;
+    padding: 24px 22px;
+    border-radius: 20px;
+  }
+
+  .category-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .category-capsule-tag {
+    display: inline-flex;
+    align-items: center;
+    background: var(--cat-bg, rgba(56, 189, 248, 0.12));
+    border: 1px solid var(--cat-border, rgba(56, 189, 248, 0.35));
+    color: var(--cat-text, #38BDF8);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    line-height: 1.2;
+    transition: transform 0.15s ease;
+  }
+
+  :global([data-theme="light"]) .category-capsule-tag,
+  :global(html.light-theme) .category-capsule-tag {
+    background: var(--cat-light-bg, rgba(2, 132, 199, 0.08));
+    border-color: var(--cat-light-border, rgba(2, 132, 199, 0.28));
+    color: var(--cat-light-text, #0284C7);
+  }
+
+  .category-card:hover .category-capsule-tag {
+    transform: translateY(-1px);
+  }
+
+  .category-tag-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: #94A3B8;
+  }
+
+  :global([data-theme="light"]) .category-tag-count,
+  :global(html.light-theme) .category-tag-count {
+    color: #64748B;
+  }
+
+  .category-desc {
+    color: #94A3B8;
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 16px 0;
+    flex: 1 1 auto;
+  }
+
+  :global([data-theme="light"]) .category-desc,
+  :global(html.light-theme) .category-desc {
+    color: #475569;
+  }
+
+  .category-card-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  :global([data-theme="light"]) .category-card-bottom,
+  :global(html.light-theme) .category-card-bottom {
+    border-top-color: #F1F5F9;
+  }
+
+  .category-explore-capsule-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    color: #38BDF8;
+    background: rgba(56, 189, 248, 0.08);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    padding: 6px 14px;
+    border-radius: 9999px;
+    transition: all 0.18s ease;
+  }
+
+  :global([data-theme="light"]) .category-explore-capsule-btn,
+  :global(html.light-theme) .category-explore-capsule-btn {
+    background: #FFFFFF;
+    border-color: rgba(2, 132, 199, 0.3);
+    color: #0284C7;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  }
+
+  .category-card:hover .category-explore-capsule-btn {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #7DD3FC;
+    transform: translateX(2px);
+  }
+
+  :global([data-theme="light"]) .category-card:hover .category-explore-capsule-btn,
+  :global(html.light-theme) .category-card:hover .category-explore-capsule-btn {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: #0284C7;
+    color: #0369A1;
+  }
+
+  /* ==========================================================================
+     SECTION 3 — FEATURED RESOURCES (Entire Card Clickable + Right-aligned All Resources button)
+     ========================================================================== */
+  .featured-section {
+    padding-top: 24px;
+    padding-bottom: 20px;
+  }
+
+  .featured-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 24px;
+  }
+
+  .resource-card-clickable {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 22px;
+    text-decoration: none;
+    cursor: pointer;
     overflow: hidden;
   }
 
-  .recent-thumb-wrap {
+  .resource-thumb-wrap {
     position: relative;
+    display: block;
     width: 100%;
     aspect-ratio: 16 / 9;
-    border-radius: 10px;
     overflow: hidden;
     background: #04070D;
     border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
   }
 
-  :global([data-theme="light"]) .recent-thumb-wrap,
-  :global(html.light-theme) .recent-thumb-wrap {
+  :global([data-theme="light"]) .resource-thumb-wrap,
+  :global(html.light-theme) .resource-thumb-wrap {
     background: #F1F5F9;
     border-color: #E2E8F0;
   }
 
-  .recent-thumb-img {
+  .resource-thumb-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1003,343 +1303,177 @@ const formatUploadDate = (d: Date | string | undefined) => {
     transition: transform 0.3s ease;
   }
 
-  .recent-work-card:hover .recent-thumb-img {
+  .resource-card-clickable:hover .resource-thumb-img {
     transform: scale(1.03);
   }
 
-  .recent-card-body {
-    padding: 12px 4px 4px 4px;
+  .resource-card-body {
+    padding: 16px 0 0 0;
     display: flex;
     flex-direction: column;
     flex: 1 1 auto;
   }
 
-  .recent-card-meta {
+  .resource-card-meta {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
+    gap: 12px;
+    margin-bottom: 12px;
   }
 
-  .recent-meta-category {
+  .resource-meta-category {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #38BDF8;
     background: rgba(56, 189, 248, 0.08);
     border: 1px solid rgba(56, 189, 248, 0.28);
-    padding: 2px 8px;
-    border-radius: 4px;
+    padding: 3px 9px;
+    border-radius: 9999px;
+    line-height: 1.2;
   }
 
-  :global([data-theme="light"]) .recent-meta-category,
-  :global(html.light-theme) .recent-meta-category {
+  :global([data-theme="light"]) .resource-meta-category,
+  :global(html.light-theme) .resource-meta-category {
     color: #0284C7;
     background: rgba(2, 132, 199, 0.08);
     border-color: rgba(2, 132, 199, 0.28);
   }
 
-  .recent-meta-date {
+  .resource-meta-date {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
+    font-size: 11.5px;
+    font-weight: 500;
     color: #94A3B8;
+    white-space: nowrap;
   }
 
-  :global([data-theme="light"]) .recent-meta-date,
-  :global(html.light-theme) .recent-meta-date {
+  :global([data-theme="light"]) .resource-meta-date,
+  :global(html.light-theme) .resource-meta-date {
     color: #64748B;
   }
 
-  .recent-card-title {
+  .resource-card-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 18px;
+    font-size: 21px;
     font-weight: 500;
     color: #FFFFFF;
-    margin: 0 0 6px 0;
-    line-height: 1.28;
+    margin: 0 0 10px 0;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: color 0.15s ease;
   }
 
-  :global([data-theme="light"]) .recent-card-title,
-  :global(html.light-theme) .recent-card-title {
+  :global([data-theme="light"]) .resource-card-title,
+  :global(html.light-theme) .resource-card-title {
     color: #0F172A;
   }
 
-  .recent-work-card:hover .recent-card-title {
+  .resource-card-clickable:hover .resource-card-title {
     color: #38BDF8;
   }
 
-  :global([data-theme="light"]) .recent-work-card:hover .recent-card-title,
-  :global(html.light-theme) .recent-work-card:hover .recent-card-title {
+  :global([data-theme="light"]) .resource-card-clickable:hover .resource-card-title,
+  :global(html.light-theme) .resource-card-clickable:hover .resource-card-title {
     color: #0284C7;
   }
 
-  .recent-card-desc {
+  .resource-card-desc {
     color: #94A3B8;
-    font-size: 13px;
-    line-height: 1.5;
+    font-size: 14px;
+    line-height: 1.55;
     margin: 0;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1 1 auto;
   }
 
-  :global([data-theme="light"]) .recent-card-desc,
-  :global(html.light-theme) .recent-card-desc {
+  :global([data-theme="light"]) .resource-card-desc,
+  :global(html.light-theme) .resource-card-desc {
     color: #475569;
   }
 
-  /* ==========================================================================
-     3. WHY WE ARE DIFFERENT SECTION (EDITORIAL ASYMMETRIC COMPOSITION)
-     ========================================================================== */
-  .different-editorial-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 20px;
-    align-items: stretch;
-  }
-
-  .editorial-card-hero {
-    background: linear-gradient(180deg, rgba(18, 30, 52, 0.9) 0%, rgba(9, 16, 28, 0.95) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    padding: 32px 28px;
+  /* Right-aligned All Resources capsule button */
+  .featured-bottom-bar {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  :global([data-theme="light"]) .editorial-card-hero,
-  :global(html.light-theme) .editorial-card-hero {
-    background: #FFFFFF;
-    border-color: rgba(2, 132, 199, 0.35);
-  }
-
-  .editorial-card-header {
-    display: flex;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    margin-top: 4px;
   }
 
-  .editorial-number {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28px;
-    font-weight: 800;
-    color: #38BDF8;
-  }
-
-  :global([data-theme="light"]) .editorial-number,
-  :global(html.light-theme) .editorial-number {
-    color: #0284C7;
-  }
-
-  .editorial-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    color: #94A3B8;
-    text-transform: uppercase;
-  }
-
-  .editorial-cards-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .editorial-cards-stack .editorial-card {
-    padding: 20px 22px;
-  }
-
-  /* ==========================================================================
-     4. WHAT YOU CAN LEARN SECTION
-     ========================================================================== */
-  .learn-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
-    gap: 16px;
-  }
-
-  .learn-track-card {
-    display: flex;
+  .all-resources-capsule-btn {
+    display: inline-flex;
     align-items: center;
-    gap: 16px;
-    text-decoration: none;
-    padding: 20px 20px;
-  }
-
-  .track-icon-box {
-    width: 42px;
-    height: 42px;
-    min-width: 42px;
-    border-radius: 10px;
+    gap: 8px;
     background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.25);
+    border: 1px solid rgba(56, 189, 248, 0.28);
     color: #38BDF8;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    text-decoration: none;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  :global([data-theme="light"]) .track-icon-box,
-  :global(html.light-theme) .track-icon-box {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.25);
+  :global([data-theme="light"]) .all-resources-capsule-btn,
+  :global(html.light-theme) .all-resources-capsule-btn {
+    background: #FFFFFF;
+    border-color: rgba(2, 132, 199, 0.3);
     color: #0284C7;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
   }
 
-  .track-content {
-    flex: 1 1 auto;
-    min-width: 0;
+  .all-resources-capsule-btn:hover {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #7DD3FC;
+    transform: translateX(2px);
   }
 
-  .track-title {
-    font-size: 18px;
-    margin: 0 0 4px 0;
+  :global([data-theme="light"]) .all-resources-capsule-btn:hover,
+  :global(html.light-theme) .all-resources-capsule-btn:hover {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: #0284C7;
+    color: #0369A1;
   }
 
-  .track-desc {
-    font-size: 13px;
-    line-height: 1.48;
-    margin: 0;
+  .btn-arrow {
+    transition: transform 0.15s ease;
   }
-
-  .track-link-arrow {
-    color: #64748B;
-    transition: transform 0.15s ease, color 0.15s ease;
-    flex-shrink: 0;
-  }
-
-  .learn-track-card:hover .track-link-arrow {
-    color: #38BDF8;
+  .all-resources-capsule-btn:hover .btn-arrow {
     transform: translateX(3px);
   }
 
-  :global([data-theme="light"]) .learn-track-card:hover .track-link-arrow,
-  :global(html.light-theme) .learn-track-card:hover .track-link-arrow {
-    color: #0284C7;
+  /* ==========================================================================
+     SECTION 7 — WHY TRUST THE RESOURCES
+     ========================================================================== */
+  .trust-section {
+    padding-top: 24px;
+    padding-bottom: 20px;
   }
 
   /* ==========================================================================
-     5. HOW WE TEACH SECTION (4 STEPS PROGRESSION)
+     SECTION 8 — FAQ ACCORDION WITH PLUS CONTROLS
      ========================================================================== */
-  .method-timeline-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+  .faq-section {
+    scroll-margin-top: calc(var(--header-height, 94px) + 20px);
+    padding-top: 24px;
+    padding-bottom: 18px;
   }
 
-  .method-step-card {
-    display: flex;
-    flex-direction: column;
-    padding: 24px 20px;
-  }
-
-  .method-step-num {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 28px;
-    font-weight: 800;
-    color: rgba(56, 189, 248, 0.25);
-    margin-bottom: 8px;
-  }
-
-  :global([data-theme="light"]) .method-step-num,
-  :global(html.light-theme) .method-step-num {
-    color: rgba(2, 132, 199, 0.28);
-  }
-
-  .method-step-capsule {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: #38BDF8;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-  }
-
-  :global([data-theme="light"]) .method-step-capsule,
-  :global(html.light-theme) .method-step-capsule {
-    color: #0284C7;
-  }
-
-  /* ==========================================================================
-     6. RESOURCE LIBRARY BANNER
-     ========================================================================== */
-  .library-preview-banner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 32px 32px;
-  }
-
-  .banner-title {
-    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 24px;
-    font-weight: 500;
-    color: #FFFFFF;
-    margin: 0 0 6px 0;
-  }
-
-  :global([data-theme="light"]) .banner-title,
-  :global(html.light-theme) .banner-title {
-    color: #0F172A;
-  }
-
-  .banner-desc {
-    color: #94A3B8;
-    font-size: 14.5px;
-    margin: 0;
-    max-width: 520px;
-  }
-
-  :global([data-theme="light"]) .banner-desc,
-  :global(html.light-theme) .banner-desc {
-    color: #475569;
-  }
-
-  /* ==========================================================================
-     7. TRUST SECTION
-     ========================================================================== */
-  .trust-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .trust-card {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .trust-card-capsule {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    color: #38BDF8;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-
-  :global([data-theme="light"]) .trust-card-capsule,
-  :global(html.light-theme) .trust-card-capsule {
-    color: #0284C7;
-  }
-
-  /* ==========================================================================
-     8. FAQ SECTION & SUBMISSION FORM
-     ========================================================================== */
   .faq-accordion-list {
     display: flex;
     flex-direction: column;
@@ -1352,16 +1486,28 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .faq-accordion-item {
     background: rgba(13, 20, 34, 0.75);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
+    border-radius: 16px;
     box-sizing: border-box;
     overflow: hidden;
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   :global([data-theme="light"]) .faq-accordion-item,
   :global(html.light-theme) .faq-accordion-item {
     background: #FFFFFF;
     border-color: #E2E8F0;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  }
+
+  .faq-accordion-item:hover {
+    border-color: rgba(56, 189, 248, 0.28);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+  }
+
+  :global([data-theme="light"]) .faq-accordion-item:hover,
+  :global(html.light-theme) .faq-accordion-item:hover {
+    border-color: rgba(2, 132, 199, 0.35);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
   }
 
   .faq-accordion-trigger {
@@ -1370,7 +1516,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 16px 20px;
+    padding: 18px 22px;
     background: transparent;
     border: none;
     text-align: left;
@@ -1378,13 +1524,15 @@ const formatUploadDate = (d: Date | string | undefined) => {
     cursor: pointer;
     font: inherit;
     outline: none;
+    transition: background 0.15s ease;
   }
 
   .faq-question-text {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 16.5px;
+    font-weight: 700;
     line-height: 1.4;
     color: #F8FAFC;
+    letter-spacing: -0.01em;
     flex: 1 1 auto;
   }
 
@@ -1394,9 +1542,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .faq-plus-control {
-    width: 26px;
-    height: 26px;
-    min-width: 26px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1404,7 +1552,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     place-items: center;
     color: #38BDF8;
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   :global([data-theme="light"]) .faq-plus-control,
@@ -1418,11 +1566,19 @@ const formatUploadDate = (d: Date | string | undefined) => {
     background: rgba(56, 189, 248, 0.15);
     border-color: rgba(56, 189, 248, 0.4);
     transform: rotate(45deg);
+    color: #7DD3FC;
+  }
+
+  :global([data-theme="light"]) .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control,
+  :global(html.light-theme) .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
+    background: rgba(2, 132, 199, 0.14);
+    border-color: #0284C7;
+    color: #0369A1;
   }
 
   .faq-accordion-panel {
     border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 0 20px 16px 20px;
+    padding: 0 22px 18px 22px;
   }
 
   :global([data-theme="light"]) .faq-accordion-panel,
@@ -1430,15 +1586,19 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border-top-color: #F1F5F9;
   }
 
+  .faq-accordion-panel[hidden] {
+    display: none;
+  }
+
   .faq-answer-inner {
-    padding-top: 12px;
+    padding-top: 14px;
   }
 
   .faq-answer-text {
     margin: 0;
     font-size: 14.5px;
-    line-height: 1.6;
-    color: #CBD5E1;
+    line-height: 1.65;
+    color: #94A3B8;
   }
 
   :global([data-theme="light"]) .faq-answer-text,
@@ -1459,9 +1619,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
     align-items: center;
     background: rgba(8, 13, 22, 0.9);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
+    border-radius: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
     padding: 0 12px 0 16px;
-    min-height: 46px;
+    min-height: 48px;
     box-sizing: border-box;
   }
 
@@ -1469,13 +1630,25 @@ const formatUploadDate = (d: Date | string | undefined) => {
   :global(html.light-theme) .faq-search-field {
     background: #FFFFFF;
     border-color: #CBD5E1;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  }
+
+  .faq-search-field:focus-within {
+    border-color: rgba(56, 189, 248, 0.55);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+  }
+
+  :global([data-theme="light"]) .faq-search-field:focus-within,
+  :global(html.light-theme) .faq-search-field:focus-within {
+    border-color: #0284C7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
   }
 
   .faq-search-icon {
     color: #94A3B8;
     display: flex;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 12px;
     flex-shrink: 0;
   }
 
@@ -1485,10 +1658,14 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border: none;
     outline: none;
     color: #FFFFFF;
-    font-size: 14.5px;
+    font-size: 15px;
     font-family: inherit;
-    padding: 10px 0;
+    padding: 12px 0;
+    min-width: 0;
     width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   :global([data-theme="light"]) .faq-search-input,
@@ -1496,72 +1673,243 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #0F172A;
   }
 
+  .faq-search-input::-webkit-search-cancel-button,
+  .faq-search-input::-webkit-search-decoration,
+  .faq-search-input::-webkit-search-results-button,
+  .faq-search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+  }
+
+  .faq-search-input::placeholder {
+    color: #64748B;
+  }
+
   .faq-search-clear {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
+    border-radius: 8px;
     color: #94A3B8;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    transition: all 0.15s ease;
     padding: 0;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .faq-search-clear:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #FFFFFF;
   }
 
   .faq-more-wrap {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin: 14px auto 0 auto;
     max-width: 820px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .faq-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 36px;
-    padding: 6px 16px;
+    padding: 7px 16px;
     font-size: 13px;
+    font-weight: 700;
+    gap: 7px;
+    border-radius: 9999px;
+  }
+
+  .faq-match-mark {
+    background: rgba(56, 189, 248, 0.20);
+    color: #38BDF8;
+    border-bottom: 1.5px solid rgba(56, 189, 248, 0.65);
+    border-radius: 3px;
+    padding: 0 3px;
+    margin: 0;
+    font-weight: inherit;
+    display: inline;
+  }
+
+  .faq-no-results {
+    max-width: 820px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    padding: 26px 20px;
+    background: rgba(13, 20, 34, 0.6);
+    border: 1px dashed rgba(56, 189, 248, 0.25);
+    border-radius: 16px;
+    box-sizing: border-box;
+  }
+
+  :global([data-theme="light"]) .faq-no-results,
+  :global(html.light-theme) .faq-no-results {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+  }
+
+  .faq-no-results-title {
+    margin: 0 0 6px 0;
+    color: #F8FAFC;
+    font-size: 15.5px;
+    font-weight: 700;
+  }
+
+  :global([data-theme="light"]) .faq-no-results-title,
+  :global(html.light-theme) .faq-no-results-title {
+    color: #0F172A;
+  }
+
+  .faq-no-results-desc {
+    margin: 0 0 12px 0;
+    color: #94A3B8;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  :global([data-theme="light"]) .faq-no-results-desc,
+  :global(html.light-theme) .faq-no-results-desc {
+    color: #64748B;
+  }
+
+  .faq-no-results-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #38BDF8;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .faq-no-results-link:hover {
+    color: #7DD3FC;
+    text-decoration: underline;
   }
 
   /* Question Submission Card */
   .home-card.faq-submit-card {
     max-width: 820px;
-    margin: 24px auto 0 auto;
-    padding: 24px 26px 18px 26px;
+    margin: 18px auto 0 auto;
+    width: 100%;
+    padding: 28px 32px 20px 32px;
+    border-radius: 18px;
+    background: rgba(13, 20, 34, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-sizing: border-box;
+  }
+
+  :global([data-theme="light"]) .home-card.faq-submit-card,
+  :global(html.light-theme) .home-card.faq-submit-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+  }
+
+  .faq-submit-head {
+    margin-bottom: 14px;
+  }
+
+  .faq-submit-title {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #F8FAFC;
+    letter-spacing: -0.01em;
+  }
+
+  :global([data-theme="light"]) .faq-submit-title,
+  :global(html.light-theme) .faq-submit-title {
+    color: #0F172A;
+  }
+
+  .faq-submit-desc {
+    margin: 0;
+    font-size: 14.5px;
+    color: #94A3B8;
+    line-height: 1.5;
+  }
+
+  :global([data-theme="light"]) .faq-submit-desc,
+  :global(html.light-theme) .faq-submit-desc {
+    color: #64748B;
+  }
+
+  .home-card.faq-submit-card {
+    margin-top: 28px;
+    padding: 26px 26px 16px 26px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .faq-submit-head {
+    margin-bottom: 14px;
   }
 
   .faq-submit-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 22px;
-    font-weight: 500;
+    font-size: clamp(20px, 2.8vw, 24px);
+    font-weight: 400;
     color: #FFFFFF;
-    margin: 0 0 4px 0;
+    margin: 0 0 6px 0;
   }
 
   .faq-submit-desc {
     font-size: 14px;
     color: #94A3B8;
-    margin: 0 0 14px 0;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .faq-submit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .faq-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .faq-textarea-wrap {
     position: relative;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .faq-textarea {
     width: 100%;
     box-sizing: border-box;
-    padding: 12px 40px 12px 14px;
+    padding: 14px 44px 14px 16px;
     background: rgba(8, 13, 22, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
+    border-radius: 14px;
     color: #FFFFFF;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
     resize: none;
-    min-height: 100px;
+    min-height: 110px;
+    height: 115px;
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
   :global([data-theme="light"]) .faq-textarea,
@@ -1571,112 +1919,232 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #0F172A;
   }
 
+  .faq-textarea:focus {
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
+  }
+
+  :global([data-theme="light"]) .faq-textarea:focus,
+  :global(html.light-theme) .faq-textarea:focus {
+    border-color: #0284C7;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.12);
+  }
+
   .faq-textarea-expand-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 6px;
+    border-radius: 7px;
     background: rgba(255, 255, 255, 0.05);
     color: #94A3B8;
     cursor: pointer;
-    display: grid;
-    place-items: center;
-    padding: 0;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .faq-textarea-expand-btn:hover {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+  }
+
+  :global([data-theme="light"]) .faq-textarea-expand-btn,
+  :global(html.light-theme) .faq-textarea-expand-btn {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .faq-textarea-expand-btn:hover,
+  :global(html.light-theme) .faq-textarea-expand-btn:hover {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: #0284C7;
+    color: #0284C7;
   }
 
   .faq-form-footer {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    padding: 0;
+    margin: 0;
   }
 
   .faq-action-btn {
-    min-height: 36px;
-    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 18px;
     border-radius: 9999px;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 700;
+    font-family: inherit;
     cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     border: 1px solid transparent;
+    box-sizing: border-box;
   }
 
+  /* Clear button - Skill Foundry Blue (Active State) */
   .faq-clear-btn {
-    background: rgba(56, 189, 248, 0.1);
-    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(14, 165, 233, 0.15);
+    border-color: rgba(56, 189, 248, 0.45);
     color: #38BDF8;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
   }
 
+  .faq-clear-btn:not(:disabled):hover {
+    background: rgba(14, 165, 233, 0.25);
+    border-color: rgba(56, 189, 248, 0.75);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+  }
+
+  /* Clear button - Softened / Inactive State (when textarea is empty) */
   .faq-clear-btn:disabled {
-    opacity: 0.4;
+    background: rgba(14, 165, 233, 0.07);
+    border-color: rgba(56, 189, 248, 0.2);
+    color: rgba(56, 189, 248, 0.48);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
   }
 
+  /* Submit button - Skill Foundry Orange (Active State) */
   .faq-submit-btn {
     background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+    border-color: rgba(255, 255, 255, 0.2);
     color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(234, 85, 0, 0.38);
   }
 
+  .faq-submit-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(234, 85, 0, 0.55);
+  }
+
+  /* Submit button - Softened / Inactive State (when textarea is empty) */
   .faq-submit-btn:disabled {
-    opacity: 0.5;
+    background: linear-gradient(180deg, rgba(255, 119, 17, 0.35) 0%, rgba(234, 85, 0, 0.35) 100%);
+    border-color: rgba(234, 85, 0, 0.25);
+    color: rgba(255, 255, 255, 0.55);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn,
+  :global(html.light-theme) .faq-clear-btn {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: rgba(2, 132, 199, 0.38);
+    color: #0284C7;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn:not(:disabled):hover,
+  :global(html.light-theme) .faq-clear-btn:not(:disabled):hover {
+    background: #0284C7;
+    border-color: #0284C7;
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn:disabled,
+  :global(html.light-theme) .faq-clear-btn:disabled {
+    background: rgba(2, 132, 199, 0.05);
+    border-color: rgba(2, 132, 199, 0.18);
+    color: rgba(2, 132, 199, 0.45);
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-submit-btn:disabled,
+  :global(html.light-theme) .faq-submit-btn:disabled {
+    background: linear-gradient(180deg, rgba(255, 119, 17, 0.32) 0%, rgba(234, 85, 0, 0.32) 100%);
+    border-color: rgba(234, 85, 0, 0.2);
+    color: rgba(255, 255, 255, 0.65);
+    box-shadow: none;
   }
 
   .faq-validation-msg {
-    font-size: 12px;
+    font-size: 12.5px;
     color: #FB7185;
     margin: 4px 0 0 0;
   }
 
   .faq-form-status {
+    margin: 0;
     font-size: 13px;
     font-weight: 600;
-    margin-top: 8px;
   }
 
-  .faq-form-status.success { color: #34D399; }
-  .faq-form-status.error { color: #FB7185; }
+  .faq-form-status:empty {
+    display: none;
+    min-height: 0;
+    margin: 0;
+  }
+
+  .faq-form-status:not(:empty) {
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
+  .faq-form-status.success {
+    color: #34D399;
+  }
+
+  .faq-form-status.error {
+    color: #FB7185;
+  }
 
   /* ==========================================================================
-     9. FINAL CTA SECTION
+     SECTION 9 — FINAL CTA CARD
      ========================================================================== */
   .final-cta-section {
-    padding-top: 28px;
+    padding-top: 20px;
     padding-bottom: 48px;
-    border-bottom: none;
   }
 
   .home-cta-card {
-    background: linear-gradient(180deg, rgba(16, 26, 44, 0.85) 0%, rgba(9, 15, 27, 0.95) 100%);
+    background: radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.12) 0%, transparent 45%), linear-gradient(180deg, rgba(16, 26, 44, 0.85) 0%, rgba(9, 15, 27, 0.95) 100%);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 20px;
-    padding: 40px 36px;
+    border-radius: 24px;
+    padding: 44px 38px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 28px;
+    gap: 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
   }
 
   :global([data-theme="light"]) .home-cta-card,
   :global(html.light-theme) .home-cta-card {
-    background: #FFFFFF;
+    background: radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.08) 0%, transparent 45%), #FFFFFF;
     border-color: #E2E8F0;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   }
 
   .cta-text-content {
-    max-width: 500px;
+    max-width: 520px;
   }
 
   .cta-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: clamp(24px, 3.2vw, 34px);
+    font-size: clamp(26px, 3.5vw, 36px);
     font-weight: 500;
     color: #FFFFFF;
     margin: 0 0 10px 0;
-    line-height: 1.22;
+    line-height: 1.2;
   }
 
   :global([data-theme="light"]) .cta-title,
@@ -1686,7 +2154,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   .cta-desc {
     color: #CBD5E1;
-    font-size: 15px;
+    font-size: 15.5px;
     line-height: 1.6;
     margin: 0;
   }
@@ -1699,29 +2167,43 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .home-button-cta {
     background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
     color: #FFFFFF;
-    padding: 13px 28px;
+    padding: 14px 28px;
     font-size: 15px;
     font-weight: 700;
     box-shadow: 0 8px 24px rgba(234, 85, 0, 0.4);
     white-space: nowrap;
   }
 
+  .home-button-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(234, 85, 0, 0.55);
+    color: #FFFFFF;
+  }
+
   /* Expanded Modal */
   .faq-modal-overlay {
     position: fixed;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 16px;
+    padding: clamp(20px, 3.5vh, 36px) 16px;
+    box-sizing: border-box;
   }
 
   .faq-modal-backdrop {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(3, 7, 18, 0.82);
     backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
   }
 
   .faq-modal-dialog {
@@ -1729,122 +2211,274 @@ const formatUploadDate = (d: Date | string | undefined) => {
     z-index: 10;
     width: 100%;
     max-width: 440px;
+    max-height: min(78vh, 660px);
+    height: auto;
+    display: flex;
+    flex-direction: column;
     background: #0D1422;
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 18px;
-    padding: 18px 20px 16px 20px;
+    border-radius: 20px;
+    padding: 16px 18px 14px 18px;
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+    box-sizing: border-box;
+    overflow-y: auto;
   }
 
   :global([data-theme="light"]) .faq-modal-dialog,
   :global(html.light-theme) .faq-modal-dialog {
     background: #FFFFFF;
     border-color: #CBD5E1;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
   }
 
   .faq-modal-nav-row {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 4px;
+    align-items: center;
+    margin-bottom: 2px;
+    flex-shrink: 0;
   }
 
   .faq-modal-collapse-btn {
-    width: 30px;
-    height: 30px;
-    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
     color: #94A3B8;
     cursor: pointer;
-    display: grid;
-    place-items: center;
-    padding: 0;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+  }
+
+  .faq-modal-collapse-btn:hover {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #38BDF8;
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme="light"]) .faq-modal-collapse-btn,
+  :global(html.light-theme) .faq-modal-collapse-btn {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .faq-modal-collapse-btn:hover,
+  :global(html.light-theme) .faq-modal-collapse-btn:hover {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: #0284C7;
+    color: #0284C7;
+  }
+
+  .faq-modal-header-text {
+    margin-bottom: 8px;
+    flex-shrink: 0;
   }
 
   .faq-modal-title {
     font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 500;
     color: #FFFFFF;
     margin: 0 0 3px 0;
+    line-height: 1.2;
+  }
+
+  :global([data-theme="light"]) .faq-modal-title,
+  :global(html.light-theme) .faq-modal-title {
+    color: #0F172A;
   }
 
   .faq-modal-subtitle {
     color: #94A3B8;
     font-size: 13px;
-    margin: 0 0 10px 0;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .faq-modal-subtitle,
+  :global(html.light-theme) .faq-modal-subtitle {
+    color: #64748B;
+  }
+
+  .faq-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .faq-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
   }
 
   .faq-modal-textarea {
     width: 100%;
-    min-height: 260px;
+    min-height: 280px;
+    height: clamp(300px, 42vh, 420px);
     box-sizing: border-box;
-    padding: 12px 14px;
+    padding: 14px 16px;
     background: rgba(6, 11, 20, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 12px;
+    border-radius: 14px;
     color: #FFFFFF;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 14.5px;
+    line-height: 1.6;
     resize: none;
     outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  :global([data-theme="light"]) .faq-modal-textarea,
+  :global(html.light-theme) .faq-modal-textarea {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
+    color: #0F172A;
+  }
+
+  .faq-modal-textarea:focus {
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  }
+
+  :global([data-theme="light"]) .faq-modal-textarea:focus,
+  :global(html.light-theme) .faq-modal-textarea:focus {
+    border-color: #0284C7;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
   }
 
   .faq-modal-footer {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     gap: 10px;
-    margin-top: 10px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    margin: 0;
   }
 
   .faq-modal-action-btn {
-    min-height: 36px;
-    padding: 0 16px;
+    min-height: 38px;
+    padding: 0 18px;
     border-radius: 9999px;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 700;
     cursor: pointer;
     border: 1px solid transparent;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
   }
 
   .faq-modal-clear-btn {
-    background: rgba(56, 189, 248, 0.1);
-    border-color: rgba(56, 189, 248, 0.3);
+    background: rgba(14, 165, 233, 0.15);
+    border-color: rgba(56, 189, 248, 0.45);
     color: #38BDF8;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+  }
+
+  .faq-modal-clear-btn:not(:disabled):hover {
+    background: rgba(14, 165, 233, 0.25);
+    border-color: rgba(56, 189, 248, 0.75);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
   }
 
   .faq-modal-clear-btn:disabled {
-    opacity: 0.4;
+    background: rgba(14, 165, 233, 0.07);
+    border-color: rgba(56, 189, 248, 0.2);
+    color: rgba(56, 189, 248, 0.48);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
   }
 
   .faq-modal-submit-btn {
     background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+    border-color: rgba(255, 255, 255, 0.2);
     color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(234, 85, 0, 0.38);
+  }
+
+  .faq-modal-submit-btn:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(234, 85, 0, 0.55);
   }
 
   .faq-modal-submit-btn:disabled {
-    opacity: 0.5;
+    background: linear-gradient(180deg, rgba(255, 119, 17, 0.35) 0%, rgba(234, 85, 0, 0.35) 100%);
+    border-color: rgba(234, 85, 0, 0.25);
+    color: rgba(255, 255, 255, 0.55);
     cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn,
+  :global(html.light-theme) .faq-modal-clear-btn {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: rgba(2, 132, 199, 0.38);
+    color: #0284C7;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.15);
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn:not(:disabled):hover,
+  :global(html.light-theme) .faq-modal-clear-btn:not(:disabled):hover {
+    background: #0284C7;
+    border-color: #0284C7;
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn:disabled,
+  :global(html.light-theme) .faq-modal-clear-btn:disabled {
+    background: rgba(2, 132, 199, 0.05);
+    border-color: rgba(2, 132, 199, 0.18);
+    color: rgba(2, 132, 199, 0.45);
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-modal-submit-btn:disabled,
+  :global(html.light-theme) .faq-modal-submit-btn:disabled {
+    background: linear-gradient(180deg, rgba(255, 119, 17, 0.32) 0%, rgba(234, 85, 0, 0.32) 100%);
+    border-color: rgba(234, 85, 0, 0.2);
+    color: rgba(255, 255, 255, 0.65);
+    box-shadow: none;
+  }
+
+  .faq-modal-status {
+    margin: 0;
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+
+  .faq-modal-status:empty {
+    display: none;
+    min-height: 0;
   }
 
   /* ==========================================================================
-     RESPONSIVE BREAKPOINTS (MOBILE-FIRST DRIVEN)
+     RESPONSIVE BREAKPOINTS
      ========================================================================== */
   @media (max-width: 900px) {
-    .different-editorial-grid {
-      grid-template-columns: 1fr;
-    }
-    .method-timeline-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .trust-grid {
+    .promise-grid, .steps-grid {
       grid-template-columns: 1fr;
     }
     .home-cta-card {
       flex-direction: column;
       align-items: flex-start;
-      padding: 30px 24px;
+      padding: 32px 24px;
     }
     .cta-action-wrap {
       width: 100%;
@@ -1856,52 +2490,65 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   @media (max-width: 640px) {
     .home-section {
-      padding: 24px 0 20px 0;
+      padding: 20px 0 16px 0;
     }
-    .section-head-flex {
+    .why-section,
+    .featured-section,
+    .method-section,
+    .categories-section,
+    .skills-section,
+    .trust-section,
+    .faq-section {
+      padding-top: 20px;
+      padding-bottom: 16px;
+    }
+    .final-cta-section {
+      padding-top: 16px;
+      padding-bottom: 32px;
+    }
+    .hero-actions {
+      margin-bottom: 12px;
+    }
+    .hero-pillars-strip {
       flex-direction: column;
-      align-items: flex-start;
-      gap: 12px;
+      gap: 8px;
     }
-
-    /* Mobile Compact Horizontal Scroll Row for Recent Work */
-    .recent-work-scroll-wrapper {
-      display: flex !important;
-      flex-direction: row !important;
-      overflow-x: auto !important;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      gap: 12px !important;
-      padding: 4px 16px 12px 16px !important;
-      margin-left: -16px !important;
-      margin-right: -16px !important;
-      scroll-padding-left: 16px;
-      scrollbar-width: none;
+    .pillar-dot {
+      display: none;
     }
-
-    .recent-work-scroll-wrapper::-webkit-scrollbar {
-      display: none !important;
+    .home-card {
+      padding: 22px 18px;
     }
-
-    .recent-work-card {
-      flex: 0 0 clamp(160px, 46vw, 210px) !important;
-      width: clamp(160px, 46vw, 210px) !important;
-      scroll-snap-align: start;
-      padding: 8px !important;
+    .home-card.faq-submit-card {
+      padding: 20px 16px 14px;
     }
-
-    .method-timeline-grid {
-      grid-template-columns: 1fr;
+    .faq-modal-overlay {
+      padding: clamp(16px, 2.8vh, 26px) 14px;
     }
-
-    .library-preview-banner {
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 24px 20px;
+    .faq-modal-dialog {
+      width: calc(100% - 24px);
+      max-width: 375px;
+      max-height: 76vh;
+      height: auto;
+      padding: 16px 16px 14px 16px;
+      border-radius: 18px;
     }
-
-    .banner-action, .home-button-secondary {
-      width: 100%;
+    .faq-modal-title {
+      font-size: 19px;
+    }
+    .faq-modal-subtitle {
+      font-size: 12px;
+    }
+    .faq-modal-textarea {
+      min-height: 270px;
+      height: clamp(280px, 40vh, 370px);
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+    .faq-modal-action-btn {
+      min-height: 36px;
+      padding: 0 16px;
+      font-size: 13px;
     }
   }
 </style>
@@ -1917,6 +2564,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         const panelId = btn.getAttribute('aria-controls');
         const panel = panelId ? document.getElementById(panelId) : null;
 
+        // Close all other open accordions so only ONE remains open
         accordionTriggers.forEach((otherBtn) => {
           if (otherBtn !== btn) {
             otherBtn.setAttribute('aria-expanded', 'false');
@@ -1955,6 +2603,28 @@ const formatUploadDate = (d: Date | string | undefined) => {
         return { item, trigger, qEl, aEl, panel, isDefaultPreview, rawQuestion, rawAnswer };
       });
 
+      function escapeHtml(str: string): string {
+        return str
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function highlightContent(text: string, terms: string[]): string {
+        if (!terms.length || !text) return escapeHtml(text);
+        const escaped = terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).filter(Boolean);
+        if (!escaped.length) return escapeHtml(text);
+        const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+        return text.split(regex).map((part) => {
+          if (escaped.some((t) => new RegExp(`^${t}$`, 'i').test(part))) {
+            return `<mark class="faq-match-mark">${escapeHtml(part)}</mark>`;
+          }
+          return escapeHtml(part);
+        }).join('');
+      }
+
       const handleSearch = () => {
         const query = searchInput.value.trim().toLowerCase();
 
@@ -1963,8 +2633,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
         }
 
         if (!query) {
-          itemsData.forEach(({ item, trigger, panel, isDefaultPreview }) => {
+          itemsData.forEach(({ item, trigger, panel, qEl, aEl, isDefaultPreview, rawQuestion, rawAnswer }) => {
             item.style.display = isDefaultPreview ? '' : 'none';
+            if (qEl) qEl.innerHTML = escapeHtml(rawQuestion);
+            if (aEl) aEl.innerHTML = escapeHtml(rawAnswer);
             if (trigger) trigger.setAttribute('aria-expanded', 'false');
             if (panel) panel.hidden = true;
           });
@@ -1976,18 +2648,25 @@ const formatUploadDate = (d: Date | string | undefined) => {
         const terms = query.split(/\s+/).filter(Boolean);
         let matchCount = 0;
 
-        itemsData.forEach(({ item, trigger, panel, rawQuestion, rawAnswer }) => {
+        itemsData.forEach(({ item, trigger, panel, qEl, aEl, rawQuestion, rawAnswer }) => {
           const qLower = rawQuestion.toLowerCase();
           const aLower = rawAnswer.toLowerCase();
-          const isMatch = terms.every((t) => qLower.includes(t) || aLower.includes(t));
+          const combined = `${qLower} ${aLower}`;
+          const isMatch = terms.every((t) => combined.includes(t));
 
           if (isMatch) {
             item.style.display = '';
+            if (qEl) qEl.innerHTML = highlightContent(rawQuestion, terms);
+            if (aEl) aEl.innerHTML = highlightContent(rawAnswer, terms);
+            if (trigger) trigger.setAttribute('aria-expanded', 'true');
+            if (panel) panel.hidden = false;
             matchCount++;
-            if (trigger) trigger.setAttribute('aria-expanded', 'false');
-            if (panel) panel.hidden = true;
           } else {
             item.style.display = 'none';
+            if (qEl) qEl.innerHTML = escapeHtml(rawQuestion);
+            if (aEl) aEl.innerHTML = escapeHtml(rawAnswer);
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+            if (panel) panel.hidden = true;
           }
         });
 
@@ -1997,151 +2676,265 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
       searchInput.addEventListener('input', handleSearch);
 
-      clearBtn?.addEventListener('click', () => {
-        searchInput.value = '';
-        handleSearch();
-        searchInput.focus();
-      });
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          searchInput.value = '';
+          handleSearch();
+          searchInput.focus();
+        });
+      }
     }
 
-    // 3. Question Submission Forms & Expanded Modal
-    const form = document.getElementById('faq-submit-form') as HTMLFormElement | null;
-    const input = document.getElementById('faq-question-input') as HTMLTextAreaElement | null;
-    const clearFormBtn = document.getElementById('faq-clear-btn') as HTMLButtonElement | null;
-    const submitFormBtn = document.getElementById('faq-submit-btn') as HTMLButtonElement | null;
-    const statusEl = document.getElementById('faq-form-status');
-    const valMsg = document.getElementById('faq-validation-msg');
+    // 3. Question Submission Forms (Inline & Modal)
+    const submitForm = document.getElementById('faq-submit-form') as HTMLFormElement | null;
+    const questionInput = document.getElementById('faq-question-input') as HTMLTextAreaElement | null;
+    const validationMsg = document.getElementById('faq-validation-msg');
+    const inlineClearBtn = document.getElementById('faq-clear-btn') as HTMLButtonElement | null;
+    const submitBtn = document.getElementById('faq-submit-btn') as HTMLButtonElement | null;
     const expandBtn = document.getElementById('faq-expand-btn') as HTMLButtonElement | null;
+    const formStatus = document.getElementById('faq-form-status');
 
     const modalOverlay = document.getElementById('faq-modal-overlay');
     const modalBackdrop = document.getElementById('faq-modal-backdrop');
-    const modalCollapseBtn = document.getElementById('faq-modal-collapse-btn');
+    const modalCollapseBtn = document.getElementById('faq-modal-collapse-btn') as HTMLButtonElement | null;
+    const modalBackBtn = document.getElementById('faq-modal-back-btn') as HTMLButtonElement | null;
+    const modalClearBtn = document.getElementById('faq-modal-clear-btn') as HTMLButtonElement | null;
     const modalForm = document.getElementById('faq-modal-form') as HTMLFormElement | null;
     const modalInput = document.getElementById('faq-modal-question-input') as HTMLTextAreaElement | null;
-    const modalClearBtn = document.getElementById('faq-modal-clear-btn') as HTMLButtonElement | null;
+    const modalValidationMsg = document.getElementById('faq-modal-validation-msg');
     const modalSubmitBtn = document.getElementById('faq-modal-submit-btn') as HTMLButtonElement | null;
     const modalStatus = document.getElementById('faq-modal-status');
-    const modalValMsg = document.getElementById('faq-modal-validation-msg');
 
-    const updateBtns = () => {
-      const val = input ? input.value.trim() : '';
-      if (clearFormBtn) clearFormBtn.disabled = !val;
-      if (submitFormBtn) submitFormBtn.disabled = !val;
+    let isModalOpen = false;
 
-      const mVal = modalInput ? modalInput.value.trim() : '';
-      if (modalClearBtn) modalClearBtn.disabled = !mVal;
-      if (modalSubmitBtn) modalSubmitBtn.disabled = !mVal;
+    const updateInlineButtonState = () => {
+      if (!questionInput) return;
+      const hasText = questionInput.value.trim().length > 0;
+      if (submitBtn) submitBtn.disabled = !hasText;
+      if (inlineClearBtn) inlineClearBtn.disabled = !hasText;
     };
 
-    input?.addEventListener('input', () => {
-      updateBtns();
-      if (valMsg) valMsg.style.display = 'none';
-      if (statusEl) statusEl.textContent = '';
-    });
+    const updateModalButtonState = () => {
+      if (!modalInput) return;
+      const hasText = modalInput.value.trim().length > 0;
+      if (modalSubmitBtn) modalSubmitBtn.disabled = !hasText;
+      if (modalClearBtn) modalClearBtn.disabled = !hasText;
+    };
 
-    modalInput?.addEventListener('input', () => {
-      updateBtns();
-      if (modalValMsg) modalValMsg.style.display = 'none';
-      if (modalStatus) modalStatus.textContent = '';
-    });
-
-    clearFormBtn?.addEventListener('click', () => {
-      if (input) input.value = '';
-      updateBtns();
-      if (valMsg) valMsg.style.display = 'none';
-      if (statusEl) statusEl.textContent = '';
-      input?.focus();
-    });
-
-    modalClearBtn?.addEventListener('click', () => {
-      if (modalInput) modalInput.value = '';
-      updateBtns();
-      if (modalValMsg) modalValMsg.style.display = 'none';
-      if (modalStatus) modalStatus.textContent = '';
-      modalInput?.focus();
-    });
+    updateInlineButtonState();
+    updateModalButtonState();
 
     const openModal = () => {
-      if (modalOverlay) {
-        modalOverlay.style.display = 'flex';
-        modalOverlay.setAttribute('aria-hidden', 'false');
-      }
-      if (input && modalInput) {
-        modalInput.value = input.value;
-      }
-      updateBtns();
-      setTimeout(() => modalInput?.focus(), 50);
+      if (!modalOverlay || !modalInput || !questionInput) return;
+      isModalOpen = true;
+      modalInput.value = questionInput.value;
+      updateModalButtonState();
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
+      modalOverlay.style.display = 'flex';
+      modalOverlay.setAttribute('aria-hidden', 'false');
+      setTimeout(() => {
+        modalInput.focus();
+        modalInput.selectionStart = modalInput.selectionEnd = modalInput.value.length;
+      }, 50);
     };
 
     const closeModal = () => {
-      if (modalOverlay) {
-        modalOverlay.style.display = 'none';
-        modalOverlay.setAttribute('aria-hidden', 'true');
-      }
-      if (input && modalInput) {
-        input.value = modalInput.value;
-      }
-      updateBtns();
+      if (!modalOverlay || !modalInput || !questionInput) return;
+      isModalOpen = false;
+      questionInput.value = modalInput.value;
+      updateInlineButtonState();
+      modalOverlay.style.display = 'none';
+      modalOverlay.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
+      if (expandBtn) expandBtn.focus();
     };
 
-    expandBtn?.addEventListener('click', openModal);
-    modalCollapseBtn?.addEventListener('click', closeModal);
-    modalBackdrop?.addEventListener('click', closeModal);
+    if (expandBtn) expandBtn.addEventListener('click', openModal);
+    if (modalCollapseBtn) modalCollapseBtn.addEventListener('click', closeModal);
+    if (modalBackBtn) modalBackBtn.addEventListener('click', closeModal);
+    if (modalBackdrop) {
+      modalBackdrop.addEventListener('click', () => {
+        if (!modalInput || modalInput.value.trim().length === 0) closeModal();
+      });
+    }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modalOverlay && modalOverlay.style.display === 'flex') {
-        closeModal();
-      }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isModalOpen) closeModal();
     });
 
-    // Form Submissions
-    const handleFormSubmit = (
-      e: Event,
-      textarea: HTMLTextAreaElement | null,
-      valEl: HTMLElement | null,
-      statEl: HTMLElement | null,
-      btn: HTMLButtonElement | null,
-      isModal = false
-    ) => {
-      e.preventDefault();
-      const value = textarea ? textarea.value.trim() : '';
-
-      if (!value) {
-        if (valEl) {
-          valEl.textContent = 'Please enter a question or topic before submitting.';
-          valEl.style.display = 'block';
+    if (questionInput) {
+      questionInput.addEventListener('input', () => {
+        updateInlineButtonState();
+        if (validationMsg) {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
         }
-        return;
-      }
+      });
+    }
 
-      if (btn) btn.disabled = true;
-      if (statEl) {
-        statEl.textContent = 'Submitting your question...';
-        statEl.className = 'faq-form-status';
-      }
-
-      setTimeout(() => {
-        if (statEl) {
-          statEl.textContent = 'Thank you! Your question has been submitted and will be reviewed for the FAQ.';
-          statEl.className = 'faq-form-status success';
+    if (modalInput) {
+      modalInput.addEventListener('input', () => {
+        updateModalButtonState();
+        if (questionInput) {
+          questionInput.value = modalInput.value;
+          updateInlineButtonState();
         }
-        if (textarea) textarea.value = '';
-        if (input) input.value = '';
-        if (modalInput) modalInput.value = '';
-        updateBtns();
-
-        if (isModal) {
-          setTimeout(() => closeModal(), 1800);
+        if (modalValidationMsg) {
+          modalValidationMsg.style.display = 'none';
+          modalValidationMsg.textContent = '';
         }
-      }, 600);
-    };
+      });
+    }
 
-    form?.addEventListener('submit', (e) => handleFormSubmit(e, input, valMsg, statusEl, submitFormBtn));
-    modalForm?.addEventListener('submit', (e) => handleFormSubmit(e, modalInput, modalValMsg, modalStatus, modalSubmitBtn, true));
+    if (inlineClearBtn && questionInput) {
+      inlineClearBtn.addEventListener('click', () => {
+        questionInput.value = '';
+        updateInlineButtonState();
+        if (modalInput) {
+          modalInput.value = '';
+          updateModalButtonState();
+        }
+        if (validationMsg) {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
+        }
+        questionInput.focus();
+      });
+    }
 
-    updateBtns();
+    if (modalClearBtn && modalInput) {
+      modalClearBtn.addEventListener('click', () => {
+        modalInput.value = '';
+        updateModalButtonState();
+        if (questionInput) {
+          questionInput.value = '';
+          updateInlineButtonState();
+        }
+        modalInput.focus();
+      });
+    }
+
+    // Submit inline form
+    if (submitForm && questionInput && submitBtn && formStatus) {
+      submitForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = questionInput.value.trim();
+
+        if (validationMsg) {
+          validationMsg.style.display = 'none';
+          validationMsg.textContent = '';
+        }
+        formStatus.className = 'faq-form-status';
+        formStatus.textContent = '';
+
+        if (!question) {
+          if (validationMsg) {
+            validationMsg.textContent = 'Please enter your question before submitting.';
+            validationMsg.style.display = 'block';
+          }
+          questionInput.focus();
+          return;
+        }
+
+        if (question.length < 5) {
+          if (validationMsg) {
+            validationMsg.textContent = 'Please provide a little more detail in your question (at least 5 characters).';
+            validationMsg.style.display = 'block';
+          }
+          questionInput.focus();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        if (inlineClearBtn) inlineClearBtn.disabled = true;
+        const btnText = submitBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'Submitting…';
+
+        try {
+          const response = await fetch('/api/faq-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || 'We could not submit your question right now.');
+          }
+          questionInput.value = '';
+          if (modalInput) modalInput.value = '';
+          formStatus.className = 'faq-form-status success';
+          formStatus.textContent = 'Thanks — your question has been received.';
+        } catch (error: any) {
+          formStatus.className = 'faq-form-status error';
+          formStatus.textContent = error?.message && error.message !== 'Failed to fetch'
+            ? error.message
+            : 'We could not submit your question right now. Please try again later.';
+        } finally {
+          if (btnText) btnText.textContent = 'Submit';
+          updateInlineButtonState();
+          updateModalButtonState();
+        }
+      });
+    }
+
+    // Submit modal form
+    if (modalForm && modalInput && modalSubmitBtn && modalStatus) {
+      modalForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const question = modalInput.value.trim();
+
+        if (modalValidationMsg) {
+          modalValidationMsg.style.display = 'none';
+          modalValidationMsg.textContent = '';
+        }
+        modalStatus.className = 'faq-form-status';
+        modalStatus.textContent = '';
+
+        if (!question || question.length < 5) {
+          if (modalValidationMsg) {
+            modalValidationMsg.textContent = 'Please provide at least 5 characters in your question.';
+            modalValidationMsg.style.display = 'block';
+          }
+          modalInput.focus();
+          return;
+        }
+
+        modalSubmitBtn.disabled = true;
+        if (modalClearBtn) modalClearBtn.disabled = true;
+        const modalBtnText = modalSubmitBtn.querySelector('.btn-text');
+        if (modalBtnText) modalBtnText.textContent = 'Submitting…';
+
+        try {
+          const response = await fetch('/api/faq-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question })
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || 'We could not submit your question right now.');
+          }
+          modalInput.value = '';
+          if (questionInput) questionInput.value = '';
+          modalStatus.className = 'faq-form-status success';
+          modalStatus.textContent = 'Thanks — your question has been received.';
+          setTimeout(() => {
+            if (isModalOpen) closeModal();
+          }, 1200);
+        } catch (error: any) {
+          modalStatus.className = 'faq-form-status error';
+          modalStatus.textContent = error?.message && error.message !== 'Failed to fetch'
+            ? error.message
+            : 'We could not submit your question right now. Please try again later.';
+        } finally {
+          if (modalBtnText) modalBtnText.textContent = 'Submit';
+          updateModalButtonState();
+          updateInlineButtonState();
+        }
+      });
+    }
   }
 
   if (document.readyState === 'loading') {
@@ -2149,4 +2942,5 @@ const formatUploadDate = (d: Date | string | undefined) => {
   } else {
     initHomepageInteractive();
   }
+  document.addEventListener('astro:page-load', initHomepageInteractive);
 </script>

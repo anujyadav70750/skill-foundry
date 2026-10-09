@@ -116,7 +116,20 @@ const tools = workflowSteps
 
 const toolLogo = (tool) => {
   try {
-    const rawUrl = String(tool?.url || '').trim();
+    const name = String(tool?.name || '').trim().toLowerCase();
+    const rawUrl = String(tool?.url || '').trim().toLowerCase();
+    if (name.includes('google flow') || name.includes('flow') || name.includes('google labs') || rawUrl.includes('flow.google') || rawUrl.includes('labs.google')) {
+      return '/logos/google-flow.png';
+    }
+    if (name.includes('capcut') || rawUrl.includes('capcut.com')) {
+      return '/capcut-icon.svg';
+    }
+    if (name.includes('chatgpt') || name.includes('chat gpt') || name.includes('openai') || rawUrl.includes('chatgpt.com') || rawUrl.includes('openai.com')) {
+      return '/logos/chatgpt.png';
+    }
+    if (name.includes('instagram') || rawUrl.includes('instagram.com')) {
+      return '/instagram-icon.svg';
+    }
     if (!rawUrl) return '/skill-foundry-resource-icon.svg';
     const host = new URL(rawUrl).hostname;
     return host ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128` : '/skill-foundry-resource-icon.svg';
