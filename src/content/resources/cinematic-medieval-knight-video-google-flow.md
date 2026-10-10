@@ -45,8 +45,8 @@ prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
   - title: "Create Character Sheet"
-    purpose: "Create your knight character using the prompt."
-    description: "Create your knight character using the prompt."
+    purpose: "Generate your main character using the prompt."
+    description: "Generate your main character using the prompt."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "4-frame character reference"
@@ -63,7 +63,6 @@ steps:
       Use the uploaded person/reference photo as the STRICT IDENTITY REFERENCE.
 
       Create a highly realistic medieval knight character sheet of the EXACT SAME PERSON from the uploaded reference image.
-
       IDENTITY LOCK — ABSOLUTE PRIORITY:
       Preserve the person's exact recognizable identity from the uploaded reference.
       Keep the same facial structure, face shape, jawline, eyes, eyebrows, nose, lips, ears, hairline, hairstyle, skin tone, natural facial proportions, and overall appearance.
@@ -176,8 +175,8 @@ steps:
     handoff: "Use this Character Sheet as the reference input for Step 02."
 
   - title: "Create Helmet & Sword"
-    purpose: "Create the matching helmet and sword reference."
-    description: "Create the matching helmet and sword reference."
+    purpose: "Generate the matching helmet and sword reference using the character from Step 01."
+    description: "Generate the matching helmet and sword reference using the character from Step 01."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Helmet + Sword Reference"

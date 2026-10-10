@@ -209,6 +209,17 @@ const getHandoffText = (currentStep, nextStep, stepIndex) => {
   return `Use this output in Step ${nextStepNum}`;
 };
 
+const formatUploadDate = (d: Date | string | undefined) => {
+  if (!d) return '';
+  const date = new Date(d);
+  if (isNaN(date.getTime())) return '';
+  const day = date.getDate();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+  return `${day} ${month} ${year}`;
+};
+
 const allResources = await getCollection('resources');
 const related = (data.relatedResources.length > 0
   ? data.relatedResources.flatMap((relatedSlug) => {
@@ -222,7 +233,7 @@ const related = (data.relatedResources.length > 0
       .filter(({ score }) => score > 0)
       .sort((a, b) => b.score - a.score)
       .map(({ item }) => item)
-).slice(0, 3);
+).slice(0, 6);
 
 const getRelatedThumbnail = (item: any) => {
   const thumb = resourceThumbnail(item);
@@ -1073,11 +1084,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       margin: 0 !important;
     }
     .testing-1-theme .cta-card {
-      background: radial-gradient(ellipse 90% 80% at 50% -20%, rgba(255, 102, 0, 0.25) 0%, rgba(13, 21, 35, 0.95) 70%) !important;
-      border: 1px solid rgba(255, 102, 0, 0.35) !important;
-      border-radius: 28px !important;
-      padding: 48px 36px !important;
-      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 60px rgba(255, 102, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      border-radius: 20px !important;
+      padding: 32px 28px !important;
+      box-shadow: none !important;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
       display: flex !important;
       align-items: center !important;
       justify-content: space-between !important;
@@ -1221,16 +1234,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             <p class="editorial-subcopy">Which tools you will need for this workflow. Tap any tool to open it.</p>
           </div>
           <div class="tools-scroll-wrapper">
-            <button
-              type="button"
-              class="tools-scroll-nav-btn tools-scroll-prev"
-              aria-label="Scroll tools left"
-              tabindex="-1"
-            >
-              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-            </button>
             <div class="tools-horizontal-row" id="tools-scroll-track" role="region" aria-label="Tools used list">
               {tools.map((tool) => {
                 const purpose = getConciseToolPurpose(tool);
@@ -1249,16 +1252,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 );
               })}
             </div>
-            <button
-              type="button"
-              class="tools-scroll-nav-btn tools-scroll-next"
-              aria-label="Scroll tools right"
-              tabindex="-1"
-            >
-              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-              </svg>
-            </button>
           </div>
         </section>
       )}
@@ -1928,44 +1921,42 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     </div>
   </article>
 
-  {/* 8. RELATED RESOURCES (COMPACT DISCOVERY RAIL) */}
-  <section class="section section-muted related-section" id="related-resources">
-    <div class="container narrow">
-      <div class="section-heading related-heading">
-        <div>
-          <p class="eyebrow">KEEP EXPLORING</p>
-          <h2>Related resources</h2>
-        </div>
-        <a class="view-library-link" href="/resources/">View library →</a>
+  {/* 8. RELATED RESOURCES (RECENT WORKS-STYLE COMPACT ROW) */}
+  {related.length > 0 && (
+    <section class="resource-editorial-section related-section" id="related-resources">
+      <div class="related-works-header">
+        <a class="related-works-header-link" href="/resources/" aria-label="View all related resources">
+          <h2 class="related-works-title">Related Resources</h2>
+          <span class="related-works-chevron" aria-hidden="true">›</span>
+        </a>
       </div>
-      {related.length > 0 ? (
-        <div class="related-discovery-rail related-shelf-rail" role="region" aria-label="Related resources rail">
-          {related.map((item) => {
-            const relatedSlug = resourceSlug(item);
-            const thumb = getRelatedThumbnail(item);
-            return (
-              <a class="related-compact-card related-shelf-card" href={`/resources/${relatedSlug}/`}>
-                <div class="related-thumb-wrap related-shelf-thumb-wrap">
-                  <img class="related-thumb-img related-shelf-thumb" src={thumb} alt={resourceImageAlt(item)} loading="lazy" />
-                  <span class="related-category-badge related-shelf-tag">{item.data.category}</span>
+
+      <div class="related-horizontal-row" id="related-scroll-track" role="region" aria-label="Related resources list">
+        {related.map((item) => {
+          const relatedSlug = resourceSlug(item);
+          const thumb = getRelatedThumbnail(item);
+          const alt = resourceImageAlt(item);
+          const dateStr = formatUploadDate(item.data.date);
+
+          return (
+            <a class="related-work-card" href={`/resources/${relatedSlug}/`} aria-label={`Open ${item.data.title}`}>
+              <div class="related-work-thumb-wrap">
+                <img class="related-work-thumb-img" src={thumb} alt={alt} loading="lazy" />
+              </div>
+
+              <div class="related-work-card-body">
+                <div class="related-work-meta-row">
+                  <span class="related-work-meta-category">{item.data.category}</span>
+                  {dateStr && <span class="related-work-meta-date">{dateStr}</span>}
                 </div>
-                <div class="related-card-content related-shelf-content">
-                  <h3 class="related-card-title related-shelf-title">{item.data.title}</h3>
-                  <p class="related-card-desc related-shelf-desc">{item.data.description}</p>
-                  <span class="related-card-link related-shelf-action">Open workflow →</span>
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      ) : (
-        <div class="related-empty-state">
-          <p>More step-by-step workflows coming soon to the library.</p>
-          <a class="button button-secondary" href="/resources/">Explore library →</a>
-        </div>
-      )}
-    </div>
-  </section>
+                <h3 class="related-work-card-title">{item.data.title}</h3>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
 
   {/* 9. CTA */}
   <section class="section section-cta resource-cta">
@@ -5476,12 +5467,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       /* 6. CTA — DARK LUXURY WITH ATMOSPHERIC GLOW & ORANGE ACCENTS */
       .testing-1-theme .resource-cta .cta-card {
-        background:
-          radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 102, 0, 0.18) 0%, rgba(13, 20, 34, 0.95) 65%) !important;
-        border: 1px solid rgba(255, 102, 0, 0.32) !important;
+        background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.07) !important;
         border-radius: 20px !important;
-        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-        padding: 28px 32px !important;
+        box-shadow: none !important;
+        outline: none !important;
+        -webkit-tap-highlight-color: transparent !important;
+        padding: 32px 28px !important;
       }
 
       .testing-1-theme .resource-cta .cta-card h2 {
@@ -6970,17 +6962,283 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       padding-left: 24px !important;
     }
 
-    /* Related Resources Discovery Rail */
-    .related-section {
-      padding-top: 0 !important;
-      padding-bottom: 0 !important;
-      background: transparent !important;
-      border: none !important;
+    /* Permanently hide tool scroll navigation buttons */
+    .tools-scroll-nav-btn {
+      display: none !important;
     }
 
-    .resource-cta {
-      padding-top: 0 !important;
-      padding-bottom: 36px !important;
+    /* Related Resources Header (Matching Homepage Recent Works) */
+    .related-works-header {
+      margin-bottom: 16px;
+    }
+
+    .related-works-header-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: #F8FAFC;
+      transition: color 0.18s ease;
+    }
+
+    .related-works-title {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+      font-size: clamp(22px, 3.2vw, 30px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.15;
+      color: #F8FAFC;
+    }
+
+    .related-works-chevron {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 400;
+      color: #F8FAFC;
+      transition: transform 0.2s ease, color 0.2s ease;
+      line-height: 1;
+      margin-top: -2px;
+    }
+
+    .related-works-header-link:hover .related-works-title,
+    .related-works-header-link:hover .related-works-chevron {
+      color: #38BDF8;
+    }
+
+    .related-works-header-link:hover .related-works-chevron {
+      transform: translateX(4px);
+    }
+
+    /* Light Theme for Related Header */
+    :root[data-theme="light"] .related-works-title,
+    :root[data-theme="light"] .related-works-chevron,
+    html.light-theme .related-works-title,
+    html.light-theme .related-works-chevron {
+      color: #0F172A;
+    }
+
+    :root[data-theme="light"] .related-works-header-link:hover .related-works-title,
+    :root[data-theme="light"] .related-works-header-link:hover .related-works-chevron,
+    html.light-theme .related-works-header-link:hover .related-works-title,
+    html.light-theme .related-works-header-link:hover .related-works-chevron {
+      color: #0284C7;
+    }
+
+    /* Related Horizontal Scroll Track */
+    .related-horizontal-row {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: normal;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 4px 2px 12px 2px;
+      width: 100%;
+    }
+
+    .related-horizontal-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Related Work Cards */
+    .related-work-card {
+      flex: 0 0 calc((100% - 32px) / 3);
+      min-width: 260px;
+      max-width: 360px;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(17, 23, 34, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .related-work-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.35);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    :root[data-theme="light"] .related-work-card,
+    html.light-theme .related-work-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+    }
+
+    :root[data-theme="light"] .related-work-card:hover,
+    html.light-theme .related-work-card:hover {
+      border-color: #0284C7;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.12);
+    }
+
+    .related-work-thumb-wrap {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #04070D;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      flex-shrink: 0;
+    }
+
+    :root[data-theme="light"] .related-work-thumb-wrap,
+    html.light-theme .related-work-thumb-wrap {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    .related-work-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .related-work-card:hover .related-work-thumb-img {
+      transform: scale(1.03);
+    }
+
+    .related-work-card-body {
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .related-work-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .related-work-meta-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #CBD5E1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 3px 9px;
+      border-radius: 9999px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .related-work-meta-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: #94A3B8;
+      white-space: nowrap;
+    }
+
+    :root[data-theme="light"] .related-work-meta-category,
+    html.light-theme .related-work-meta-category {
+      color: #475569;
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+    }
+
+    :root[data-theme="light"] .related-work-meta-date,
+    html.light-theme .related-work-meta-date {
+      color: #64748B;
+    }
+
+    .related-work-card-title {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #F8FAFC;
+      line-height: 1.35;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.18s ease;
+    }
+
+    :root[data-theme="light"] .related-work-card-title,
+    html.light-theme .related-work-card-title {
+      color: #0F172A;
+    }
+
+    .related-work-card:hover .related-work-card-title {
+      color: #38BDF8;
+    }
+
+    :root[data-theme="light"] .related-work-card:hover .related-work-card-title,
+    html.light-theme .related-work-card:hover .related-work-card-title {
+      color: #0284C7;
+    }
+
+    @media (max-width: 640px) {
+      .related-work-card {
+        flex: 0 0 80vw;
+        width: 80vw;
+        min-width: 240px;
+        max-width: 320px;
+        padding: 12px;
+        border-radius: 16px;
+      }
+      .related-work-card-title {
+        font-size: 14px;
+      }
+    }
+
+    /* CTA Section Container Overrides (Neutral Dark Surface) */
+    .cta-card,
+    .resource-cta .cta-card,
+    .testing-1-theme .cta-card,
+    .testing-1-theme .resource-cta .cta-card {
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      border-radius: 20px !important;
+      padding: 32px 28px !important;
+      box-shadow: none !important;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
+    .cta-card:hover,
+    .cta-card:focus,
+    .cta-card:active,
+    .cta-card:focus-within,
+    .resource-cta .cta-card:hover,
+    .resource-cta .cta-card:focus,
+    .resource-cta .cta-card:active,
+    .resource-cta .cta-card:focus-within,
+    .testing-1-theme .cta-card:hover,
+    .testing-1-theme .cta-card:focus,
+    .testing-1-theme .cta-card:active,
+    .testing-1-theme .cta-card:focus-within,
+    .testing-1-theme .resource-cta .cta-card:hover,
+    .testing-1-theme .resource-cta .cta-card:focus,
+    .testing-1-theme .resource-cta .cta-card:active,
+    .testing-1-theme .resource-cta .cta-card:focus-within {
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border-color: rgba(255, 255, 255, 0.07) !important;
+      box-shadow: none !important;
+      outline: none !important;
     }
 
     /* ==========================================================================
