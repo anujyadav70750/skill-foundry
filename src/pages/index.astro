@@ -7,52 +7,52 @@ import { FAQ_DATA } from '../data/faqs';
 // Show approximately 10 important questions on the homepage
 const homepageFaqs = FAQ_DATA.slice(0, 10);
 
-// 1. DYNAMIC PUBLISHED RESOURCES
-const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const featured = resources.filter((item) => item.data.featured);
-const displayResources = resources;
+// 1. DYNAMIC PUBLISHED RESOURCES (Show all published resources in horizontal carousel)
+const allResources = await getCollection('resources');
+const displayResources = allResources
+  .filter((r) => !('draft' in r.data && r.data.draft === true))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const resources = displayResources;
 
-// 2. DYNAMIC CATEGORIES (Display ONLY categories containing at least ONE published resource)
-const categoryDescriptions = new Map<string, string>([
-  ['AI Video', 'Character continuity, scene motion, multi-clip generation, and video assembly.'],
-  ['AI Image', 'Character references, styling, outfit modification, and asset generation.'],
-  ['Prompt Engineering', 'Step-by-step prompt structures, camera parameters, and scene directions.'],
-  ['AI Tools', 'Verified official tools, recommended setups, and direct access links.'],
-  ['Workflows', 'Connected end-to-end pipelines from raw input to final deliverable.'],
-  ['Projects', 'Real-world creative assets and practical outputs built with modern digital stacks.']
-]);
-
-const categoryColors = new Map<string, { bg: string; border: string; text: string; lightBg: string; lightBorder: string; lightText: string }>([
-  ['AI Video', { bg: 'rgba(6, 182, 212, 0.12)', border: 'rgba(6, 182, 212, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' }],
-  ['AI Image', { bg: 'rgba(129, 140, 248, 0.12)', border: 'rgba(129, 140, 248, 0.35)', text: '#A5B4FC', lightBg: 'rgba(99, 102, 241, 0.08)', lightBorder: 'rgba(99, 102, 241, 0.28)', lightText: '#4F46E5' }],
-  ['Prompt Engineering', { bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.35)', text: '#FBBF24', lightBg: 'rgba(217, 119, 6, 0.08)', lightBorder: 'rgba(217, 119, 6, 0.28)', lightText: '#D97706' }],
-  ['AI Tools', { bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.35)', text: '#34D399', lightBg: 'rgba(16, 185, 129, 0.08)', lightBorder: 'rgba(16, 185, 129, 0.28)', lightText: '#059669' }],
-  ['Workflows', { bg: 'rgba(56, 189, 248, 0.12)', border: 'rgba(56, 189, 248, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' }],
-  ['Projects', { bg: 'rgba(244, 63, 94, 0.12)', border: 'rgba(244, 63, 94, 0.35)', text: '#FB7185', lightBg: 'rgba(225, 29, 72, 0.08)', lightBorder: 'rgba(225, 29, 72, 0.28)', lightText: '#E11D48' }]
-]);
-
-const defaultColor = { bg: 'rgba(56, 189, 248, 0.12)', border: 'rgba(56, 189, 248, 0.35)', text: '#38BDF8', lightBg: 'rgba(2, 132, 199, 0.08)', lightBorder: 'rgba(2, 132, 199, 0.28)', lightText: '#0284C7' };
-
-const categoryCounts = new Map<string, number>();
-resources.forEach((resource) => {
-  const cat = resource.data.category?.trim();
-  if (cat) {
-    categoryCounts.set(cat, (categoryCounts.get(cat) || 0) + 1);
+// 2. SKILLS & DISCIPLINES (Broad evergreen learning taxonomy based on content)
+const skillsDisciplines = [
+  {
+    name: 'AI Video',
+    filterCategory: 'AI Video',
+    description: 'Generating cinematic motion, camera dynamics, and visual character continuity.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`
+  },
+  {
+    name: 'AI Image Creation',
+    filterCategory: 'AI Image',
+    description: 'Crafting consistent character references, visual styling, and asset generation.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`
+  },
+  {
+    name: 'Prompt Systems',
+    filterCategory: 'Prompt Engineering',
+    description: 'Structuring reusable prompt blueprints, model parameters, and scene directions.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`
+  },
+  {
+    name: 'Creative Workflows',
+    filterCategory: 'Workflows',
+    description: 'Connecting multi-stage pipelines from raw concept to final media deliverable.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="6" rx="1"></rect><rect x="16" y="3" width="6" height="6" rx="1"></rect><rect x="9" y="15" width="6" height="6" rx="1"></rect><path d="M5 9v3a2 2 0 0 0 2 2h5m0 0h5a2 2 0 0 0 2-2V9"></path><path d="M12 14v1"></path></svg>`
+  },
+  {
+    name: 'AI Tools & Setup',
+    filterCategory: 'AI Tools',
+    description: 'Selecting and configuring verified creative software stacks and production environments.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`
+  },
+  {
+    name: 'Automation & Productivity',
+    filterCategory: 'Projects',
+    description: 'Streamlining repeatable production tasks and accelerating creative output.',
+    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
   }
-});
-
-const dynamicCategories = Array.from(categoryCounts.entries())
-  .filter(([_, count]) => count > 0)
-  .sort(([a], [b]) => a.localeCompare(b))
-  .map(([name, count]) => {
-    let description = categoryDescriptions.get(name);
-    if (!description) {
-      const sample = resources.find((r) => r.data.category?.trim() === name);
-      description = sample?.data.description || `Practical skills and workflows for ${name}.`;
-    }
-    const color = categoryColors.get(name) || defaultColor;
-    return { name, count, description, color };
-  });
+];
 
 const formatUploadDate = (d: Date | string | undefined) => {
   if (!d) return '';
@@ -99,52 +99,62 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
     <!-- SECTION 2 — RECENT WORK -->
     <section class="home-section featured-section recent-work-section" id="recent-work">
-      <div class="container narrow">
-        <div class="section-head">
-          <p class="home-capsule">RECENT WORK</p>
-          <h2>What we're currently building</h2>
-          <p class="section-subcopy">
-            Real, practical resources and workflows recently built and verified by Skill Foundry.
-          </p>
+      <div class="recent-work-container">
+        <div class="recent-works-header">
+          <a class="recent-works-header-link" href="/resources/" aria-label="View all recent works">
+            <h2 class="recent-works-title">Recent Works</h2>
+            <span class="recent-works-chevron" aria-hidden="true">›</span>
+          </a>
         </div>
 
         {displayResources.length > 0 ? (
-          <div class="featured-wrap">
-            <div class="featured-grid">
+          <div class="recent-work-carousel-wrapper">
+            <button
+              type="button"
+              class="recent-work-nav-btn recent-work-prev"
+              aria-label="Scroll recent works left"
+              tabindex="-1"
+            >
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+
+            <div class="recent-work-carousel-track" id="recent-work-track" role="region" aria-label="Recent Works carousel">
               {displayResources.map((resource) => {
                 const slug = resourceSlug(resource);
                 const thumbnail = resourceThumbnail(resource);
                 const alt = resourceImageAlt(resource);
+                const dateStr = formatUploadDate(resource.data.date);
 
                 return (
-                  <a class="home-card resource-display-card resource-card-clickable" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
-                    <div class="resource-thumb-wrap">
-                      <img class="resource-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
+                  <a class="recent-work-card" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
+                    <div class="recent-work-thumb-wrap">
+                      <img class="recent-work-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
                     </div>
 
-                    <div class="resource-card-body">
-                      <div class="resource-card-meta">
-                        <span class="resource-meta-category">{resource.data.category}</span>
-                        <span class="resource-meta-date">{formatUploadDate(resource.data.date)}</span>
+                    <div class="recent-work-card-body">
+                      <div class="recent-work-meta-row">
+                        <span class="recent-work-meta-category">{resource.data.category}</span>
+                        <span class="recent-work-meta-date">{dateStr}</span>
                       </div>
-
-                      <h3 class="resource-card-title">
-                        {resource.data.title}
-                      </h3>
-                      <p class="resource-card-desc">{resource.data.description}</p>
+                      <h3 class="recent-work-card-title">{resource.data.title}</h3>
                     </div>
                   </a>
                 );
               })}
             </div>
 
-            <!-- Right-aligned "View all recent work →" capsule button -->
-            <div class="featured-bottom-bar">
-              <a class="all-resources-capsule-btn" href="/resources/">
-                <span>View all recent work</span>
-                <span class="btn-arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
+            <button
+              type="button"
+              class="recent-work-nav-btn recent-work-next"
+              aria-label="Scroll recent works right"
+              tabindex="-1"
+            >
+              <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
           </div>
         ) : (
           <div class="empty-state-box">
@@ -194,19 +204,19 @@ const formatUploadDate = (d: Date | string | undefined) => {
       </div>
     </section>
 
-    <!-- SECTION 4 — WHAT YOU CAN LEARN / BUILD -->
+    <!-- SECTION 4 — SKILLS & DISCIPLINES -->
     <section class="home-section skills-section" id="what-you-can-build">
       <div class="container narrow">
         <div class="section-head">
           <p class="home-capsule">SKILLS &amp; DISCIPLINES</p>
           <h2>What you can learn and build</h2>
           <p class="section-subcopy">
-            Understand the core capabilities and practical skill sets you can master and apply across digital disciplines, from video and motion to content creation and automation.
+            Understand the core capabilities and skill sets you can master and apply across digital disciplines, from motion to automation.
           </p>
         </div>
 
         <div class="skills-tracks-grid">
-          <div class="home-card skill-track-card">
+          <a class="home-card skill-track-card" href="/resources/?category=AI%20Video" aria-label="Explore Video Editing & Motion resources">
             <div class="skill-track-icon">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="23 7 16 12 23 17 23 7"></polygon>
@@ -217,9 +227,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <p class="card-description">
               Multi-clip assembly, pacing, audio synchronization, motion control, and professional editing workflows.
             </p>
-          </div>
+          </a>
 
-          <div class="home-card skill-track-card">
+          <a class="home-card skill-track-card" href="/resources/?category=AI%20Image" aria-label="Explore Content Creation & Visuals resources">
             <div class="skill-track-icon">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -231,21 +241,21 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <p class="card-description">
               Consistent character styling, visual assets, brand imagery, and multi-format digital media production.
             </p>
-          </div>
+          </a>
 
-          <div class="home-card skill-track-card">
+          <a class="home-card skill-track-card" href="/resources/?category=Prompt%20Engineering" aria-label="Explore AI Workflows & Prompting resources">
             <div class="skill-track-icon">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83"/>
               </svg>
             </div>
             <h3 class="card-title">AI Workflows &amp; Prompting</h3>
             <p class="card-description">
               Structured prompt blueprints, model parameters, generative tools, and connected creative pipelines.
             </p>
-          </div>
+          </a>
 
-          <div class="home-card skill-track-card">
+          <a class="home-card skill-track-card" href="/resources/?category=Workflows" aria-label="Explore Automation & Productivity resources">
             <div class="skill-track-icon">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="16 18 22 12 16 6"></polyline>
@@ -256,7 +266,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <p class="card-description">
               Workflow orchestration, tool integration, execution shortcuts, and repeatable digital production systems.
             </p>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -303,43 +313,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
       </div>
     </section>
 
-    <!-- SECTION 6 — EXPLORE BY CATEGORY (Capsule Tags) -->
-    {dynamicCategories.length > 0 && (
-      <section class="home-section categories-section" id="categories">
-        <div class="container narrow">
-          <div class="section-head">
-            <p class="home-capsule">EXPLORE BY CATEGORY</p>
-            <h2>Find what you want to build</h2>
-            <p class="section-subcopy">
-              Browse practical resources, tutorials, and blueprints organized by creative domain and production discipline.
-            </p>
-          </div>
 
-          <div class="categories-grid">
-            {dynamicCategories.map((cat) => (
-              <a class="home-card category-card" href={`/resources/?category=${encodeURIComponent(cat.name)}`}>
-                <div class="category-card-top">
-                  <span
-                    class="category-capsule-tag"
-                    style={`--cat-bg: ${cat.color.bg}; --cat-border: ${cat.color.border}; --cat-text: ${cat.color.text}; --cat-light-bg: ${cat.color.lightBg}; --cat-light-border: ${cat.color.lightBorder}; --cat-light-text: ${cat.color.lightText};`}
-                  >
-                    {cat.name}
-                  </span>
-                  <span class="category-tag-count">{cat.count} resource{cat.count === 1 ? '' : 's'}</span>
-                </div>
-                <p class="category-desc">{cat.description}</p>
-                <div class="category-card-bottom">
-                  <span class="category-explore-capsule-btn">
-                    <span>Explore category</span>
-                    <span class="btn-arrow" aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-    )}
 
     <!-- SECTION 7 — WHY TRUST THE RESOURCES -->
     <section class="home-section trust-section" id="why-trust-the-resources">
@@ -660,9 +634,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .home-capsule {
     display: inline-flex;
     align-items: center;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    color: #38BDF8;
+    background: var(--badge-bg, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--badge-border, rgba(255, 255, 255, 0.12));
+    color: var(--badge-text, #CBD5E1);
     border-radius: 9999px;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
@@ -677,9 +651,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   :global([data-theme="light"]) .home-capsule,
   :global(html.light-theme) .home-capsule {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.28);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
   }
 
   /* Shared Section Head Typography */
@@ -972,13 +946,13 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .pillar-check {
-    color: #38BDF8;
+    color: var(--icon-default, #94A3B8);
     flex-shrink: 0;
   }
 
   :global([data-theme="light"]) .pillar-check,
   :global(html.light-theme) .pillar-check {
-    color: #0284C7;
+    color: var(--icon-default, #64748B);
   }
 
   .pillar-dot {
@@ -1015,7 +989,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.14em;
-    color: #38BDF8;
+    color: var(--badge-text, #CBD5E1);
     text-transform: uppercase;
     margin-bottom: 16px;
   }
@@ -1024,7 +998,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
   :global(html.light-theme) .promise-card-capsule,
   :global([data-theme="light"]) .trust-card-capsule,
   :global(html.light-theme) .trust-card-capsule {
-    color: #0284C7;
+    color: #475569;
   }
 
   /* ==========================================================================
@@ -1051,9 +1025,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    color: #38BDF8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #CBD5E1;
     display: grid;
     place-items: center;
     margin-bottom: 18px;
@@ -1061,9 +1035,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   :global([data-theme="light"]) .skill-track-icon,
   :global(html.light-theme) .skill-track-icon {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.25);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #334155;
   }
 
   /* ==========================================================================
@@ -1090,13 +1064,13 @@ const formatUploadDate = (d: Date | string | undefined) => {
     font-size: 38px;
     font-weight: 800;
     line-height: 1;
-    color: rgba(56, 189, 248, 0.2);
+    color: rgba(255, 255, 255, 0.12);
     margin-bottom: 12px;
   }
 
   :global([data-theme="light"]) .method-step-badge,
   :global(html.light-theme) .method-step-badge {
-    color: rgba(2, 132, 199, 0.25);
+    color: rgba(15, 23, 42, 0.1);
   }
 
   .method-subcapsule {
@@ -1104,198 +1078,485 @@ const formatUploadDate = (d: Date | string | undefined) => {
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.14em;
-    color: #38BDF8;
+    color: var(--badge-text, #CBD5E1);
     text-transform: uppercase;
     margin-bottom: 10px;
   }
 
   :global([data-theme="light"]) .method-subcapsule,
   :global(html.light-theme) .method-subcapsule {
-    color: #0284C7;
-  }
-
-  /* ==========================================================================
-     SECTION 5 — EXPLORE BY CATEGORY (Capsule Tags)
-     ========================================================================== */
-  .categories-section {
-    padding-top: 24px;
-    padding-bottom: 20px;
-  }
-
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 18px;
-  }
-
-  .category-card {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    padding: 24px 22px;
-    border-radius: 20px;
-  }
-
-  .category-card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 14px;
-  }
-
-  .category-capsule-tag {
-    display: inline-flex;
-    align-items: center;
-    background: var(--cat-bg, rgba(56, 189, 248, 0.12));
-    border: 1px solid var(--cat-border, rgba(56, 189, 248, 0.35));
-    color: var(--cat-text, #38BDF8);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 9999px;
-    line-height: 1.2;
-    transition: transform 0.15s ease;
-  }
-
-  :global([data-theme="light"]) .category-capsule-tag,
-  :global(html.light-theme) .category-capsule-tag {
-    background: var(--cat-light-bg, rgba(2, 132, 199, 0.08));
-    border-color: var(--cat-light-border, rgba(2, 132, 199, 0.28));
-    color: var(--cat-light-text, #0284C7);
-  }
-
-  .category-card:hover .category-capsule-tag {
-    transform: translateY(-1px);
-  }
-
-  .category-tag-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: #94A3B8;
-  }
-
-  :global([data-theme="light"]) .category-tag-count,
-  :global(html.light-theme) .category-tag-count {
-    color: #64748B;
-  }
-
-  .category-desc {
-    color: #94A3B8;
-    font-size: 13.5px;
-    line-height: 1.55;
-    margin: 0 0 16px 0;
-    flex: 1 1 auto;
-  }
-
-  :global([data-theme="light"]) .category-desc,
-  :global(html.light-theme) .category-desc {
     color: #475569;
   }
 
-  .category-card-bottom {
+  /* ==========================================================================
+     SECTION — SKILLS & DISCIPLINES CAROUSEL
+     ========================================================================== */
+  .skills-disciplines-section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+    overflow: hidden;
+  }
+
+  .skills-disciplines-container {
+    width: min(var(--max, 1180px), calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  @media (max-width: 600px) {
+    .skills-disciplines-container {
+      width: calc(100% - 32px);
+    }
+  }
+
+  .skills-disciplines-header {
+    margin-bottom: 18px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-top: auto;
-    padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
   }
 
-  :global([data-theme="light"]) .category-card-bottom,
-  :global(html.light-theme) .category-card-bottom {
-    border-top-color: #F1F5F9;
-  }
-
-  .category-explore-capsule-btn {
+  .skills-disciplines-header-link {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    color: #38BDF8;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    padding: 6px 14px;
-    border-radius: 9999px;
-    transition: all 0.18s ease;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text, #F8FAFC);
+    transition: color 0.18s ease;
   }
 
-  :global([data-theme="light"]) .category-explore-capsule-btn,
-  :global(html.light-theme) .category-explore-capsule-btn {
-    background: #FFFFFF;
-    border-color: rgba(2, 132, 199, 0.3);
+  :global([data-theme="light"]) .skills-disciplines-header-link,
+  :global(html.light-theme) .skills-disciplines-header-link {
+    color: #0F172A;
+  }
+
+  .skills-disciplines-header-link:hover {
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  :global([data-theme="light"]) .skills-disciplines-header-link:hover,
+  :global(html.light-theme) .skills-disciplines-header-link:hover {
     color: #0284C7;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
   }
 
-  .category-card:hover .category-explore-capsule-btn {
-    background: rgba(56, 189, 248, 0.16);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #7DD3FC;
-    transform: translateX(2px);
+  .skills-disciplines-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.15;
   }
 
-  :global([data-theme="light"]) .category-card:hover .category-explore-capsule-btn,
-  :global(html.light-theme) .category-card:hover .category-explore-capsule-btn {
-    background: rgba(2, 132, 199, 0.1);
+  .skills-disciplines-chevron {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 400;
+    color: var(--text, #F8FAFC);
+    transition: transform 0.2s ease, color 0.2s ease;
+    line-height: 1;
+    margin-top: -1px;
+  }
+
+  :global([data-theme="light"]) .skills-disciplines-chevron,
+  :global(html.light-theme) .skills-disciplines-chevron {
+    color: #0F172A;
+  }
+
+  .skills-disciplines-header-link:hover .skills-disciplines-chevron {
+    transform: translateX(4px);
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  :global([data-theme="light"]) .skills-disciplines-header-link:hover .skills-disciplines-chevron,
+  :global(html.light-theme) .skills-disciplines-header-link:hover .skills-disciplines-chevron {
+    color: #0284C7;
+  }
+
+  .skills-disciplines-carousel-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .skills-disciplines-carousel-track {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: normal;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 2px 12px 2px;
+    width: 100%;
+  }
+
+  .skills-disciplines-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* PORTRAIT CARDS */
+  .skill-discipline-card {
+    flex: 0 0 calc((100% - 36px) / 3);
+    min-width: 250px;
+    max-width: 340px;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 18px;
+    background: rgba(17, 23, 34, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card,
+  :global(html.light-theme) .skill-discipline-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  }
+
+  .skill-discipline-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, 0.3);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card:hover,
+  :global(html.light-theme) .skill-discipline-card:hover {
     border-color: #0284C7;
-    color: #0369A1;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.08);
+  }
+
+  /* ICON CONTAINER */
+  .skill-discipline-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #38BDF8;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+
+  :global([data-theme="light"]) .skill-discipline-icon-wrap,
+  :global(html.light-theme) .skill-discipline-icon-wrap {
+    background: #F1F5F9;
+    border-color: #E2E8F0;
+    color: #0284C7;
+  }
+
+  .skill-discipline-card:hover .skill-discipline-icon-wrap {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.3);
+    color: #38BDF8;
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card:hover .skill-discipline-icon-wrap,
+  :global(html.light-theme) .skill-discipline-card:hover .skill-discipline-icon-wrap {
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.25);
+    color: #0284C7;
+  }
+
+  .skill-discipline-card-title {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #F8FAFC;
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+    transition: color 0.18s ease;
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card-title,
+  :global(html.light-theme) .skill-discipline-card-title {
+    color: #0F172A;
+  }
+
+  .skill-discipline-card:hover .skill-discipline-card-title {
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card:hover .skill-discipline-card-title,
+  :global(html.light-theme) .skill-discipline-card:hover .skill-discipline-card-title {
+    color: #0284C7;
+  }
+
+  .skill-discipline-card-desc {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: #94A3B8;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  :global([data-theme="light"]) .skill-discipline-card-desc,
+  :global(html.light-theme) .skill-discipline-card-desc {
+    color: #64748B;
+  }
+
+  /* DESKTOP NAV BUTTONS */
+  .skills-disciplines-nav-btn {
+    position: absolute;
+    top: calc(50% - 16px);
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #CBD5E1;
+    display: none;
+    place-items: center;
+    cursor: pointer;
+    z-index: 5;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.18s ease;
+    padding: 0;
+  }
+
+  .skills-disciplines-nav-btn:hover {
+    background: rgba(30, 41, 59, 1);
+    color: #FFFFFF;
+    border-color: rgba(56, 189, 248, 0.4);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  .skills-disciplines-prev {
+    left: -18px;
+  }
+
+  .skills-disciplines-next {
+    right: -18px;
+  }
+
+  :global([data-theme="light"]) .skills-disciplines-nav-btn,
+  :global(html.light-theme) .skills-disciplines-nav-btn {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+  }
+
+  :global([data-theme="light"]) .skills-disciplines-nav-btn:hover,
+  :global(html.light-theme) .skills-disciplines-nav-btn:hover {
+    background: #F1F5F9;
+    color: #0F172A;
+    border-color: #0284C7;
+  }
+
+  /* MOBILE RESPONSIVE BEHAVIOR */
+  @media (max-width: 640px) {
+    .skills-disciplines-nav-btn {
+      display: none !important;
+    }
+
+    .skills-disciplines-carousel-track {
+      gap: 14px;
+      padding-bottom: 8px;
+    }
+
+    .skill-discipline-card {
+      flex: 0 0 80vw;
+      width: 80vw;
+      min-width: 250px;
+      max-width: 320px;
+      padding: 20px;
+      border-radius: 16px;
+    }
+
+    .skill-discipline-card-title {
+      font-size: 16px;
+    }
+
+    .skill-discipline-card-desc {
+      font-size: 13px;
+    }
   }
 
   /* ==========================================================================
-     SECTION 3 — FEATURED RESOURCES (Entire Card Clickable + Right-aligned All Resources button)
+     SECTION 2 — RECENT WORKS CAROUSEL (YouTube-style Content Discovery Row)
      ========================================================================== */
-  .featured-section {
-    padding-top: 24px;
-    padding-bottom: 20px;
-  }
-
-  .featured-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .featured-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-    gap: 24px;
-  }
-
-  .resource-card-clickable {
-    display: flex;
-    flex-direction: column;
-    padding: 20px 20px 22px;
-    text-decoration: none;
-    cursor: pointer;
+  .recent-work-section {
+    padding-top: 32px;
+    padding-bottom: 32px;
     overflow: hidden;
   }
 
-  .resource-thumb-wrap {
+  .recent-work-container {
+    width: min(var(--max, 1180px), calc(100% - 48px));
+    margin-inline: auto;
+  }
+
+  @media (max-width: 600px) {
+    .recent-work-container {
+      width: calc(100% - 32px);
+    }
+  }
+
+  .recent-works-header {
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+  }
+
+  .recent-works-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--text, #F8FAFC);
+    transition: color 0.18s ease;
+  }
+
+  :global([data-theme="light"]) .recent-works-header-link,
+  :global(html.light-theme) .recent-works-header-link {
+    color: #0F172A;
+  }
+
+  .recent-works-title {
+    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.15;
+  }
+
+  .recent-works-chevron {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: clamp(24px, 3.2vw, 32px);
+    font-weight: 400;
+    color: var(--text, #F8FAFC);
+    transition: transform 0.2s ease, color 0.2s ease;
+    line-height: 1;
+    margin-top: -2px;
+  }
+
+  :global([data-theme="light"]) .recent-works-chevron,
+  :global(html.light-theme) .recent-works-chevron {
+    color: #0F172A;
+  }
+
+  .recent-works-header-link:hover {
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  :global([data-theme="light"]) .recent-works-header-link:hover,
+  :global(html.light-theme) .recent-works-header-link:hover {
+    color: #0284C7;
+  }
+
+  .recent-works-header-link:hover .recent-works-chevron {
+    transform: translateX(4px);
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  :global([data-theme="light"]) .recent-works-header-link:hover .recent-works-chevron,
+  :global(html.light-theme) .recent-works-header-link:hover .recent-works-chevron {
+    color: #0284C7;
+  }
+
+  /* CAROUSEL TRACK & WRAPPER */
+  .recent-work-carousel-wrapper {
     position: relative;
-    display: block;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .recent-work-carousel-track {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: normal;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 2px 12px 2px;
+    width: 100%;
+  }
+
+  .recent-work-carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* CARDS */
+  .recent-work-card {
+    flex: 0 0 calc((100% - 40px) / 3.25);
+    min-width: 280px;
+    max-width: 380px;
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(17, 23, 34, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  :global([data-theme="light"]) .recent-work-card,
+  :global(html.light-theme) .recent-work-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+  }
+
+  .recent-work-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, 0.35);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  :global([data-theme="light"]) .recent-work-card:hover,
+  :global(html.light-theme) .recent-work-card:hover {
+    border-color: #0284C7;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.12);
+  }
+
+  .recent-work-thumb-wrap {
     width: 100%;
     aspect-ratio: 16 / 9;
+    border-radius: 12px;
     overflow: hidden;
     background: #04070D;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
   }
 
-  :global([data-theme="light"]) .resource-thumb-wrap,
-  :global(html.light-theme) .resource-thumb-wrap {
+  :global([data-theme="light"]) .recent-work-thumb-wrap,
+  :global(html.light-theme) .recent-work-thumb-wrap {
     background: #F1F5F9;
-    border-color: #E2E8F0;
+    border-color: #CBD5E1;
   }
 
-  .resource-thumb-img {
+  .recent-work-thumb-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1303,158 +1564,165 @@ const formatUploadDate = (d: Date | string | undefined) => {
     transition: transform 0.3s ease;
   }
 
-  .resource-card-clickable:hover .resource-thumb-img {
+  .recent-work-card:hover .recent-work-thumb-img {
     transform: scale(1.03);
   }
 
-  .resource-card-body {
-    padding: 16px 0 0 0;
+  .recent-work-card-body {
+    padding-top: 14px;
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto;
+    flex: 1;
   }
 
-  .resource-card-meta {
+  .recent-work-meta-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 8px;
+    margin-bottom: 10px;
+    width: 100%;
   }
 
-  .resource-meta-category {
+  .recent-work-meta-category {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #38BDF8;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
+    color: var(--badge-text, #CBD5E1);
+    background: var(--badge-bg, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--badge-border, rgba(255, 255, 255, 0.12));
     padding: 3px 9px;
     border-radius: 9999px;
     line-height: 1.2;
+    white-space: nowrap;
   }
 
-  :global([data-theme="light"]) .resource-meta-category,
-  :global(html.light-theme) .resource-meta-category {
-    color: #0284C7;
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.28);
+  :global([data-theme="light"]) .recent-work-meta-category,
+  :global(html.light-theme) .recent-work-meta-category {
+    color: #475569;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
   }
 
-  .resource-meta-date {
+  .recent-work-meta-date {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11.5px;
     font-weight: 500;
     color: #94A3B8;
     white-space: nowrap;
+    margin: 0;
+    line-height: 1.2;
   }
 
-  :global([data-theme="light"]) .resource-meta-date,
-  :global(html.light-theme) .resource-meta-date {
+  :global([data-theme="light"]) .recent-work-meta-date,
+  :global(html.light-theme) .recent-work-meta-date {
     color: #64748B;
   }
 
-  .resource-card-title {
-    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: 21px;
-    font-weight: 500;
-    color: #FFFFFF;
-    margin: 0 0 10px 0;
-    line-height: 1.25;
-    letter-spacing: -0.015em;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    transition: color 0.15s ease;
-  }
-
-  :global([data-theme="light"]) .resource-card-title,
-  :global(html.light-theme) .resource-card-title {
-    color: #0F172A;
-  }
-
-  .resource-card-clickable:hover .resource-card-title {
-    color: #38BDF8;
-  }
-
-  :global([data-theme="light"]) .resource-card-clickable:hover .resource-card-title,
-  :global(html.light-theme) .resource-card-clickable:hover .resource-card-title {
-    color: #0284C7;
-  }
-
-  .resource-card-desc {
-    color: #94A3B8;
-    font-size: 14px;
-    line-height: 1.55;
+  .recent-work-card-title {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #F8FAFC;
+    line-height: 1.35;
     margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1 1 auto;
+    transition: color 0.18s ease;
   }
 
-  :global([data-theme="light"]) .resource-card-desc,
-  :global(html.light-theme) .resource-card-desc {
-    color: #475569;
+  :global([data-theme="light"]) .recent-work-card-title,
+  :global(html.light-theme) .recent-work-card-title {
+    color: #0F172A;
   }
 
-  /* Right-aligned All Resources capsule button */
-  .featured-bottom-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 4px;
+  .recent-work-card:hover .recent-work-card-title {
+    color: var(--brand-accent, #38BDF8);
   }
 
-  .all-resources-capsule-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    color: #38BDF8;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 8px 18px;
-    border-radius: 9999px;
-    text-decoration: none;
-    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  :global([data-theme="light"]) .all-resources-capsule-btn,
-  :global(html.light-theme) .all-resources-capsule-btn {
-    background: #FFFFFF;
-    border-color: rgba(2, 132, 199, 0.3);
+  :global([data-theme="light"]) .recent-work-card:hover .recent-work-card-title,
+  :global(html.light-theme) .recent-work-card:hover .recent-work-card-title {
     color: #0284C7;
-    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
   }
 
-  .all-resources-capsule-btn:hover {
-    background: rgba(56, 189, 248, 0.16);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #7DD3FC;
-    transform: translateX(2px);
+  /* DESKTOP NAVIGATION ARROWS */
+  .recent-work-nav-btn {
+    position: absolute;
+    top: calc(50% - 16px);
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #CBD5E1;
+    display: none;
+    place-items: center;
+    cursor: pointer;
+    z-index: 5;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.18s ease;
+    padding: 0;
   }
 
-  :global([data-theme="light"]) .all-resources-capsule-btn:hover,
-  :global(html.light-theme) .all-resources-capsule-btn:hover {
-    background: rgba(2, 132, 199, 0.1);
+  .recent-work-nav-btn:hover {
+    background: rgba(30, 41, 59, 1);
+    color: #FFFFFF;
+    border-color: rgba(56, 189, 248, 0.4);
+    transform: translateY(-50%) scale(1.08);
+  }
+
+  .recent-work-prev {
+    left: -18px;
+  }
+
+  .recent-work-next {
+    right: -18px;
+  }
+
+  :global([data-theme="light"]) .recent-work-nav-btn,
+  :global(html.light-theme) .recent-work-nav-btn {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: #475569;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
+  }
+
+  :global([data-theme="light"]) .recent-work-nav-btn:hover,
+  :global(html.light-theme) .recent-work-nav-btn:hover {
+    background: #F1F5F9;
+    color: #0F172A;
     border-color: #0284C7;
-    color: #0369A1;
   }
 
-  .btn-arrow {
-    transition: transform 0.15s ease;
-  }
-  .all-resources-capsule-btn:hover .btn-arrow {
-    transform: translateX(3px);
+  /* MOBILE RESPONSIVE BEHAVIOR */
+  @media (max-width: 640px) {
+    .recent-work-nav-btn {
+      display: none !important;
+    }
+
+    .recent-work-carousel-track {
+      gap: 14px;
+      padding-bottom: 8px;
+    }
+
+    .recent-work-card {
+      flex: 0 0 84vw;
+      width: 84vw;
+      min-width: 260px;
+      max-width: 360px;
+      padding: 12px;
+      border-radius: 16px;
+    }
+
+    .recent-work-card-title {
+      font-size: 14.5px;
+    }
   }
 
   /* ==========================================================================
@@ -1550,30 +1818,30 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border: 1px solid rgba(255, 255, 255, 0.12);
     display: grid;
     place-items: center;
-    color: #38BDF8;
+    color: var(--icon-default, #94A3B8);
     flex-shrink: 0;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   :global([data-theme="light"]) .faq-plus-control,
   :global(html.light-theme) .faq-plus-control {
-    background: rgba(2, 132, 199, 0.06);
-    border-color: rgba(2, 132, 199, 0.22);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: var(--icon-default, #64748B);
   }
 
   .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
     background: rgba(56, 189, 248, 0.15);
     border-color: rgba(56, 189, 248, 0.4);
     transform: rotate(45deg);
-    color: #7DD3FC;
+    color: #38BDF8;
   }
 
   :global([data-theme="light"]) .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control,
   :global(html.light-theme) .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
-    background: rgba(2, 132, 199, 0.14);
+    background: rgba(2, 132, 199, 0.12);
     border-color: #0284C7;
-    color: #0369A1;
+    color: #0284C7;
   }
 
   .faq-accordion-panel {
@@ -1995,30 +2263,53 @@ const formatUploadDate = (d: Date | string | undefined) => {
     box-sizing: border-box;
   }
 
-  /* Clear button - Skill Foundry Blue (Active State) */
+  /* Clear button - Neutral Secondary Action */
   .faq-clear-btn {
-    background: rgba(14, 165, 233, 0.15);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #38BDF8;
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: #CBD5E1;
+    box-shadow: none;
   }
 
   .faq-clear-btn:not(:disabled):hover {
-    background: rgba(14, 165, 233, 0.25);
-    border-color: rgba(56, 189, 248, 0.75);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.28);
     color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+    box-shadow: none;
   }
 
   /* Clear button - Softened / Inactive State (when textarea is empty) */
   .faq-clear-btn:disabled {
-    background: rgba(14, 165, 233, 0.07);
-    border-color: rgba(56, 189, 248, 0.2);
-    color: rgba(56, 189, 248, 0.48);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.07);
+    color: #475569;
     cursor: not-allowed;
     box-shadow: none;
     transform: none;
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn,
+  :global(html.light-theme) .faq-clear-btn {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn:not(:disabled):hover,
+  :global(html.light-theme) .faq-clear-btn:not(:disabled):hover {
+    background: #E2E8F0;
+    border-color: #94A3B8;
+    color: #0F172A;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-clear-btn:disabled,
+  :global(html.light-theme) .faq-clear-btn:disabled {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+    color: #94A3B8;
   }
 
   /* Submit button - Skill Foundry Orange (Active State) */
@@ -2381,27 +2672,49 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .faq-modal-clear-btn {
-    background: rgba(14, 165, 233, 0.15);
-    border-color: rgba(56, 189, 248, 0.45);
-    color: #38BDF8;
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: #CBD5E1;
+    box-shadow: none;
   }
 
   .faq-modal-clear-btn:not(:disabled):hover {
-    background: rgba(14, 165, 233, 0.25);
-    border-color: rgba(56, 189, 248, 0.75);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.28);
     color: #FFFFFF;
     transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+    box-shadow: none;
   }
 
   .faq-modal-clear-btn:disabled {
-    background: rgba(14, 165, 233, 0.07);
-    border-color: rgba(56, 189, 248, 0.2);
-    color: rgba(56, 189, 248, 0.48);
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(255, 255, 255, 0.07);
+    color: #475569;
     cursor: not-allowed;
     box-shadow: none;
-    transform: none;
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn,
+  :global(html.light-theme) .faq-modal-clear-btn {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn:not(:disabled):hover,
+  :global(html.light-theme) .faq-modal-clear-btn:not(:disabled):hover {
+    background: #E2E8F0;
+    border-color: #94A3B8;
+    color: #0F172A;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .faq-modal-clear-btn:disabled,
+  :global(html.light-theme) .faq-modal-clear-btn:disabled {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+    color: #94A3B8;
   }
 
   .faq-modal-submit-btn {
@@ -2937,10 +3250,50 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
+  const initRecentWorkScroll = () => {
+    const track = document.getElementById('recent-work-track');
+    const prevBtn = document.querySelector('.recent-work-prev');
+    const nextBtn = document.querySelector('.recent-work-next');
+    if (!track || !prevBtn || !nextBtn) return;
+
+    const updateButtons = () => {
+      if (window.innerWidth <= 640) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        return;
+      }
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll <= 4) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        return;
+      }
+      prevBtn.style.display = track.scrollLeft > 6 ? 'grid' : 'none';
+      nextBtn.style.display = track.scrollLeft < maxScroll - 6 ? 'grid' : 'none';
+    };
+
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -320, behavior: 'smooth' });
+    });
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: 320, behavior: 'smooth' });
+    });
+    track.addEventListener('scroll', updateButtons, { passive: true });
+    window.addEventListener('resize', updateButtons, { passive: true });
+    updateButtons();
+  };
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHomepageInteractive);
+    document.addEventListener('DOMContentLoaded', () => {
+      initHomepageInteractive();
+      initRecentWorkScroll();
+    });
   } else {
     initHomepageInteractive();
+    initRecentWorkScroll();
   }
-  document.addEventListener('astro:page-load', initHomepageInteractive);
+  document.addEventListener('astro:page-load', () => {
+    initHomepageInteractive();
+    initRecentWorkScroll();
+  });
 </script>
