@@ -10,7 +10,7 @@ const homepageFaqs = FAQ_DATA.slice(0, 10);
 // 1. DYNAMIC PUBLISHED RESOURCES
 const resources = (await getCollection('resources')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = resources.filter((item) => item.data.featured);
-const displayResources = featured.length > 0 ? featured : resources.slice(0, 3);
+const displayResources = resources;
 
 // 2. DYNAMIC CATEGORIES (Display ONLY categories containing at least ONE published resource)
 const categoryDescriptions = new Map<string, string>([
