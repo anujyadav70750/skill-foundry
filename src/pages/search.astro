@@ -240,9 +240,14 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #38BDF8;
+    color: var(--icon-default, #94A3B8);
     flex-shrink: 0;
     margin-right: 8px;
+  }
+
+  :global([data-theme="light"]) .search-icon-box,
+  :global(html.light-theme) .search-icon-box {
+    color: var(--icon-default, #64748B);
   }
 
   .search-bar-form input {
@@ -433,9 +438,9 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
   }
 
   .empty-clear-action {
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    color: #38BDF8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    color: #CBD5E1;
     font-size: 12px;
     font-weight: 700;
     padding: 6px 14px;
@@ -445,9 +450,9 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
   }
 
   .empty-clear-action:hover {
-    background: rgba(56, 189, 248, 0.18);
-    border-color: rgba(56, 189, 248, 0.6);
-    color: #7DD3FC;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #FFFFFF;
   }
 
   /* Search Highlight */
@@ -608,7 +613,7 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
     background: #F8FAFC;
     border-color: #0284C7;
     color: #0284C7;
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 0 8px rgba(2, 132, 199, 0.15);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
   }
   :global([data-theme="light"]) .search-clear-action-btn,
   :global(html.light-theme) .search-clear-action-btn {
@@ -634,15 +639,15 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
   }
   :global([data-theme="light"]) .empty-clear-action,
   :global(html.light-theme) .empty-clear-action {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.35);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
   }
   :global([data-theme="light"]) .empty-clear-action:hover,
   :global(html.light-theme) .empty-clear-action:hover {
-    background: rgba(2, 132, 199, 0.16);
-    border-color: #0284C7;
-    color: #0369A1;
+    background: #E2E8F0;
+    border-color: #94A3B8;
+    color: #0F172A;
   }
   :global([data-theme="light"]) .search-hl,
   :global(html.light-theme) .search-hl {

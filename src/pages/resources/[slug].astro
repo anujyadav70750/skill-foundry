@@ -224,6 +224,35 @@ const related = (data.relatedResources.length > 0
       .map(({ item }) => item)
 ).slice(0, 3);
 
+const getRelatedThumbnail = (item: any) => {
+  const thumb = resourceThumbnail(item);
+  if (thumb && thumb !== '/images/placeholder.svg' && !thumb.includes('placeholder')) {
+    return thumb;
+  }
+  const hero = item.data?.heroImage || item.data?.thumbnail || item.data?.inputImage;
+  if (hero && hero !== '/images/placeholder.svg' && !hero.includes('placeholder')) {
+    return hero;
+  }
+  return resourceSlug(item) === 'testing-1'
+    ? '/images/1000069055-thumbnail-16x9-1788985430602.jpg'
+    : '/images/knight-poppies-thumbnail.png';
+};
+
+const getConciseToolPurpose = (tool: any) => {
+  const name = String(tool?.name || '').trim().toLowerCase();
+  if (name.includes('chatgpt') || name.includes('openai')) return 'Planning & prompt preparation';
+  if (name.includes('flow') || name.includes('google flow')) return 'Image and video generation';
+  if (name.includes('instagram')) return 'Final editing / publishing';
+  if (name.includes('capcut')) return 'Timeline assembly & editing';
+  if (tool?.purpose) {
+    const raw = String(tool.purpose).trim();
+    if (raw.length <= 42) return raw;
+    const firstSentence = raw.split('.')[0].trim();
+    return firstSentence.length <= 45 ? firstSentence : firstSentence.slice(0, 42) + '…';
+  }
+  return '';
+};
+
 const site = Astro.site ?? Astro.url;
 const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
@@ -239,6 +268,15 @@ const finalReelCleanUrl = isInstagramReel
   : '';
 const resultEmbedUrl = (data.videoEmbedUrl || (finalReelCleanUrl ? `${finalReelCleanUrl}embed` : '')) as string;
 const finalReelEmbedUrl = finalReelCleanUrl;
+
+const isInstagramTutorial = Boolean(
+  isInstagramReel ||
+  (data.videoEmbedUrl && data.videoEmbedUrl.includes('instagram.com')) ||
+  (data as any).instagramReelUrl ||
+  (data as any).finalReelUrl
+);
+const igReelUrl = finalReelCleanUrl || (data as any).instagramReelUrl || (data as any).finalReelUrl || (data.originalVideoUrl || '');
+const igTutorialThumbnail = (data as any).outputPreviewSrc || heroImage || data.thumbnail || '/images/knight-poppies-thumbnail.png';
 
 const finalWorkflowStep = workflowSteps[workflowSteps.length - 1];
 const finalWorkflowOutput = finalWorkflowStep ? outputVisual(finalWorkflowStep, workflowSteps.length - 1) : null;
@@ -603,7 +641,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       justify-content: center !important;
       gap: 7px !important;
       background: linear-gradient(180deg, rgba(16, 26, 44, 0.95) 0%, rgba(10, 16, 28, 0.98) 100%) !important;
-      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
       color: #F8FAFC !important;
       border-radius: 9999px !important;
       padding: 14px 22px !important;
@@ -614,19 +652,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       font-weight: 700 !important;
       letter-spacing: 0.08em !important;
       text-decoration: none !important;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
       white-space: nowrap !important;
       box-sizing: border-box !important;
     }
     .testing-1-theme .guide-cue:hover {
       transform: translateY(-2px) !important;
-      border-color: rgba(56, 189, 248, 0.6) !important;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+      border-color: rgba(255, 255, 255, 0.28) !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
     }
     .testing-1-theme .guide-cue-icon {
-      color: #38BDF8 !important;
-      stroke: #38BDF8 !important;
+      color: #94A3B8 !important;
+      stroke: #94A3B8 !important;
       width: 13.5px !important;
       height: 13.5px !important;
       flex-shrink: 0 !important;
@@ -642,19 +680,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     /* 3. SECTION WRAPPERS (INTRODUCTION, AT A GLANCE, TOOLS & RESOURCES) */
     .testing-1-theme .resource-section {
-      background: linear-gradient(180deg, rgba(16, 26, 44, 0.7) 0%, rgba(9, 15, 27, 0.85) 100%) !important;
-      border: 1px solid rgba(255, 255, 255, 0.08) !important;
-      border-radius: 24px !important;
-      padding: 36px 40px !important;
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-      backdrop-filter: blur(16px) !important;
-      margin-bottom: 24px !important;
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      border-radius: 20px !important;
+      padding: 24px 28px !important;
+      box-shadow: none !important;
+      margin-bottom: 0 !important;
       box-sizing: border-box !important;
     }
     @media (max-width: 640px) {
       .testing-1-theme .resource-section {
-        padding: 24px 20px !important;
-        border-radius: 20px !important;
+        padding: 20px 18px !important;
+        border-radius: 18px !important;
       }
     }
     .testing-1-theme .resource-section .section-heading {
@@ -749,20 +786,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .testing-1-theme .blueprint-workflow-container {
       background: linear-gradient(180deg, rgba(13, 21, 37, 0.92) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
       border: 1px solid rgba(59, 130, 246, 0.25) !important;
-      border-radius: 28px !important;
-      padding: 48px 28px 40px !important;
-      box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), 0 0 60px rgba(59, 130, 246, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+      border-radius: 20px !important;
+      padding: 24px 28px !important;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
       backdrop-filter: blur(20px) !important;
       position: relative !important;
       width: 100% !important;
       max-width: 1080px !important;
-      margin: 20px auto 0 !important;
+      margin: 0 auto !important;
       box-sizing: border-box !important;
     }
     @media (max-width: 640px) {
       .testing-1-theme .blueprint-workflow-container {
-        padding: 36px 14px 28px !important;
-        border-radius: 22px !important;
+        padding: 20px 18px !important;
+        border-radius: 18px !important;
       }
     }
     .testing-1-theme .blueprint-header-capsule {
@@ -785,7 +822,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: flex !important;
       align-items: center !important;
       gap: 6px !important;
-      color: #38BDF8 !important;
+      color: #94A3B8 !important;
       font-size: 11px !important;
       font-weight: 800 !important;
       letter-spacing: 0.14em !important;
@@ -814,24 +851,24 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     /* Step accent themes */
     .testing-1-theme .blueprint-step-container.step-theme-blue {
-      border-color: rgba(59, 130, 246, 0.35) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(59, 130, 246, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(59, 130, 246, 0.3) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
     .testing-1-theme .blueprint-step-container.step-theme-green {
-      border-color: rgba(16, 185, 129, 0.35) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(16, 185, 129, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(16, 185, 129, 0.3) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
     .testing-1-theme .blueprint-step-container.step-theme-orange {
-      border-color: rgba(249, 115, 22, 0.35) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(249, 115, 22, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(249, 115, 22, 0.3) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
     .testing-1-theme .blueprint-step-container.step-theme-cyan {
-      border-color: rgba(6, 182, 212, 0.35) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 35px rgba(6, 182, 212, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(6, 182, 212, 0.3) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
     }
     .testing-1-theme .blueprint-step-container.step-theme-purple {
-      border-color: rgba(168, 85, 247, 0.4) !important;
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), 0 0 40px rgba(168, 85, 247, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+      border-color: rgba(168, 85, 247, 0.3) !important;
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
     }
     .testing-1-theme .blueprint-step-capsule {
       position: absolute !important;
@@ -881,9 +918,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       width: 26px !important;
       height: 26px !important;
       border-radius: 50% !important;
-      background: rgba(59, 130, 246, 0.15) !important;
-      border: 1px solid rgba(59, 130, 246, 0.4) !important;
-      color: #38BDF8 !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #CBD5E1 !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -923,7 +960,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .testing-1-theme .blueprint-sub-arrow {
       display: flex !important;
       justify-content: center !important;
-      color: #38BDF8 !important;
+      color: #64748B !important;
       margin: 10px 0 !important;
     }
     .testing-1-theme .blueprint-step-transition {
@@ -937,7 +974,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .testing-1-theme .blueprint-instruction-container {
       position: relative !important;
       background: linear-gradient(180deg, rgba(17, 26, 42, 0.92) 0%, rgba(10, 17, 29, 0.98) 100%) !important;
-      border: 1px solid rgba(59, 130, 246, 0.3) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
       border-radius: 18px !important;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
       padding: 22px 24px 18px !important;
@@ -951,8 +988,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       left: 50% !important;
       transform: translateX(-50%) !important;
       background: #0C1628 !important;
-      border: 1px solid rgba(59, 130, 246, 0.4) !important;
-      color: #38BDF8 !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      color: #CBD5E1 !important;
       font: 800 10.5px/1 'JetBrains Mono', monospace !important;
       letter-spacing: 0.14em !important;
       padding: 4px 14px !important;
@@ -967,8 +1004,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       width: 22px !important;
       height: 22px !important;
       border-radius: 50% !important;
-      background: rgba(59, 130, 246, 0.2) !important;
-      color: #38BDF8 !important;
+      background: rgba(255, 255, 255, 0.08) !important;
+      color: #CBD5E1 !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -1120,8 +1157,6 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     <article class="resource-page">
       <section class="resource-hero-unified-section">
         <div class="container narrow hero-unified-header">
-          <div class="breadcrumbs"><a href="/">Home</a><span>/</span><a href="/resources/">Resources</a><span>/</span><span>{data.category}</span></div>
-          <p class="eyebrow">{data.tool} • {data.category}</p>
           <h1>{data.title}</h1>
           <div class="publisher-identity">
             <div class="publisher-avatar-box">
@@ -1155,23 +1190,93 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         </a>
       </div>
 
-      {introText && <section class="resource-section intro-section" id="intro"><div class="section-heading"><div><p class="eyebrow">INTRODUCTION</p><h2>Before you begin</h2></div></div><p class="section-lead">{introText}</p></section>}
-
-      {whatItDoesText && <section class="resource-section"><div class="section-heading"><div><p class="eyebrow">AT A GLANCE</p><h2>What this resource does</h2></div></div><p class="section-lead">{whatItDoesText}</p></section>}
-
-      {tools.length > 0 && <section class="resource-section tools-section" id="tools"><div class="section-heading"><div><p class="eyebrow">TOOLS &amp; RESOURCES</p><h2>Tools used</h2><p class="section-subcopy">Tool logos are clickable throughout the workflow. Tap a logo to open the tool used for that step.</p></div></div><div class="tools-list">{tools.map((tool) => <a class="tool-card" href={tool.url || '#'} target={tool.url ? '_blank' : undefined} rel={tool.url ? 'noopener noreferrer' : undefined} aria-label={`Open ${tool.name}`} title={tool.name}><img class="tool-logo" src={toolLogo(tool)} alt={`${tool.name} logo`} width="64" height="64" loading="lazy"/></a>)}</div></section>}
-
-      {workflowSteps.length > 0 && <section class="resource-section workflow-section blueprint-workflow-section" id="workflow">
-        <div class="section-heading blueprint-main-heading">
-          <div>
-            <p class="eyebrow">WORKFLOW BLUEPRINT</p>
-            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
-            <p class="section-subcopy">Tap <span class="helper-chevron-cue" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></span> on a step to see how it works.</p>
+      {/* ROADMAP (BEFORE YOU BEGIN) */}
+      {introText && (
+        <section class="resource-editorial-section intro-section" id="intro">
+          <div class="editorial-heading">
+            <span class="editorial-eyebrow">ROADMAP</span>
+            <h2>Before you begin</h2>
           </div>
-        </div>
+          <p class="editorial-lead">{introText}</p>
+        </section>
+      )}
 
-        <!-- RECESSED INNER WORKFLOW CONTAINER -->
-        <div class="blueprint-inner-workflow-container" id="blueprint-inner-workflow-tray">
+      {/* PRACTICAL VALUE (WHAT THIS RESOURCE DOES) */}
+      {whatItDoesText && (
+        <section class="resource-editorial-section what-it-does-section" id="what-it-does">
+          <div class="editorial-heading">
+            <span class="editorial-eyebrow">PRACTICAL VALUE</span>
+            <h2>What this resource does</h2>
+          </div>
+          <p class="editorial-lead">{whatItDoesText}</p>
+        </section>
+      )}
+
+      {/* REQUIRED TOOLS */}
+      {tools.length > 0 && (
+        <section class="resource-editorial-section tools-section" id="tools">
+          <div class="editorial-heading">
+            <span class="editorial-eyebrow">REQUIRED TOOLS</span>
+            <h2>Tools used</h2>
+            <p class="editorial-subcopy">Which tools you will need for this workflow. Tap any tool to open it.</p>
+          </div>
+          <div class="tools-scroll-wrapper">
+            <button
+              type="button"
+              class="tools-scroll-nav-btn tools-scroll-prev"
+              aria-label="Scroll tools left"
+              tabindex="-1"
+            >
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div class="tools-horizontal-row" id="tools-scroll-track" role="region" aria-label="Tools used list">
+              {tools.map((tool) => {
+                const purpose = getConciseToolPurpose(tool);
+                return (
+                  <a
+                    class="tool-item-card"
+                    href={tool.url || '#'}
+                    target={tool.url ? '_blank' : undefined}
+                    rel={tool.url ? 'noopener noreferrer' : undefined}
+                    aria-label={`Open ${tool.name}${purpose ? `: ${purpose}` : ''}`}
+                    title={purpose ? `${tool.name} — ${purpose}` : `Open ${tool.name}`}
+                  >
+                    <img class="tool-app-logo" src={toolLogo(tool)} alt="" width="48" height="48" loading="lazy"/>
+                    <span class="tool-item-name">{tool.name}</span>
+                  </a>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              class="tools-scroll-nav-btn tools-scroll-next"
+              aria-label="Scroll tools right"
+              tabindex="-1"
+            >
+              <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* 1. WORKFLOW BLUEPRINT INTRO (NORMAL SECTION ABOVE WORKFLOW) */}
+      {workflowSteps.length > 0 && (
+        <section class="resource-editorial-section workflow-intro-section" id="workflow">
+          <div class="editorial-heading">
+            <span class="editorial-eyebrow">WORKFLOW BLUEPRINT</span>
+            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
+            <p class="editorial-subcopy">Tap a step to see the inputs, prompt, settings and result.</p>
+          </div>
+        </section>
+      )}
+
+      {/* 2. DEDICATED LARGE WORKFLOW CONTAINER */}
+      {workflowSteps.length > 0 && (
+        <section class="blueprint-workflow-container blueprint-inner-workflow-container" id="blueprint-inner-workflow-tray" aria-label="Workflow Blueprint sequence">
           <button
             type="button"
             class="blueprint-inner-expand-control"
@@ -1188,6 +1293,19 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           </button>
 
           <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+            <!-- CONTINUOUS PROCESS: START -->
+            <div class="workflow-process-terminal workflow-process-start" aria-label="Workflow Start">
+              <span class="workflow-process-pill">START</span>
+            </div>
+
+            <!-- Downward stream connector to Step 01 -->
+            <div class="blueprint-stream-connector" aria-hidden="true">
+              <div class="stream-stem"></div>
+              <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="14" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="2" x2="12" y2="18"></line>
+                <polyline points="7 13 12 18 17 13"></polyline>
+              </svg>
+            </div>
           {workflowSteps.map((step, index) => {
             const output = outputVisual(step, index);
             const actionText = String(step.process || '').trim();
@@ -1677,6 +1795,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                             {step.outputDescription && (
                               <p class="blueprint-result-desc">{step.outputDescription}</p>
                             )}
+                            {handoffText && !isFinal && (
+                              <div class="blueprint-step-continuity-hint">
+                                <span class="continuity-icon-wrap" aria-hidden="true">
+                                  <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5-4-5-4"/></svg>
+                                </span>
+                                <span class="continuity-text">{handoffText}</span>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1704,7 +1830,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               </div>
 
               <div class="blueprint-result-inner">
-                {(resultEmbedUrl || data.videoEmbedUrl) && (
+                {(resultEmbedUrl || data.videoEmbedUrl) ? (
                   <div class="blueprint-result-card-scale-wrapper">
                     <div class={`video-frame ${(resultEmbedUrl || data.videoEmbedUrl).includes('instagram.com') ? 'is-instagram-embed' : ''}`}>
                       <iframe
@@ -1716,7 +1842,17 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                       ></iframe>
                     </div>
                   </div>
-                )}
+                ) : finalWorkflowMediaUrl ? (
+                  <div class="blueprint-result-card-scale-wrapper">
+                    <div class="media-frame">
+                      {isFinalWorkflowVideo ? (
+                        <video class="media-main" src={finalWorkflowMediaUrl} controls playsinline preload="metadata" />
+                      ) : (
+                        <img class="media-main" src={finalWorkflowMediaUrl} alt={data.finalTitle || "Workflow final result"} loading="lazy" />
+                      )}
+                    </div>
+                  </div>
+                ) : null}
 
                 <div class="blueprint-final-meta">
                   <h3 class="blueprint-final-title">{data.finalTitle || "Final Edited Video"}</h3>
@@ -1724,19 +1860,125 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 </div>
               </div>
             </div>
+
+            <!-- Downward stream connector to END -->
+            <div class="blueprint-stream-connector" aria-hidden="true">
+              <div class="stream-stem"></div>
+              <svg class="stream-arrow-icon" viewBox="0 0 24 24" width="14" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="2" x2="12" y2="18"></line>
+                <polyline points="7 13 12 18 17 13"></polyline>
+              </svg>
+            </div>
+
+            <!-- CONTINUOUS PROCESS: END -->
+            <div class="workflow-process-terminal workflow-process-end" aria-label="Workflow End">
+              <span class="workflow-process-pill">END</span>
+            </div>
           </div>
-        </div>
-      </section>}
+        </section>
+      )}
 
-      {(data.videoEmbedUrl || data.originalVideoUrl) && <section class="resource-section tutorial-section" id="tutorial"><div class="section-heading"><div><p class="eyebrow">TUTORIAL</p><h2>Watch it in action</h2><p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p></div></div>{data.videoEmbedUrl && <div class={`video-frame ${data.videoEmbedUrl.includes('instagram.com') ? 'is-instagram-embed' : ''}`}><iframe src={data.videoEmbedUrl} title={`Tutorial: ${data.title}`} loading="lazy" scrolling="no" allowfullscreen></iframe></div>}{data.originalVideoUrl && <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">Watch the original video →</a>}</section>}
+      {/* BETTER RESULTS */}
+      {data.tips.length > 0 && (
+        <section class="resource-section tips-section" id="tips">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">BETTER RESULTS</p>
+              <h2>Tips for better results</h2>
+            </div>
+          </div>
+          <ul class="tips-list">
+            {data.tips.map((tip) => (
+              <li>{tip}</li>
+            ))}
+          </ul>
+        </section>
+      )}
 
-      {data.tips.length > 0 && <section class="resource-section tips-section"><div class="section-heading"><div><p class="eyebrow">BETTER RESULTS</p><h2>Tips for better results</h2></div></div><ul class="tips-list">{data.tips.map((tip)=><li>{tip}</li>)}</ul></section>}
+      {/* TUTORIAL / WATCH IT IN ACTION */}
+      {(data.videoEmbedUrl || data.originalVideoUrl) && (
+        <section class="resource-section tutorial-section" id="tutorial">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">TUTORIAL</p>
+              <h2>Watch it in action</h2>
+              <p class="section-subcopy">Follow the walkthrough, then return here to use the workflow.</p>
+            </div>
+          </div>
+          {data.videoEmbedUrl && (
+            <div class={`video-frame ${data.videoEmbedUrl.includes('instagram.com') ? 'is-instagram-embed' : ''}`}>
+              <iframe
+                src={data.videoEmbedUrl}
+                title={`Tutorial: ${data.title}`}
+                loading="lazy"
+                scrolling="no"
+                allowfullscreen
+              ></iframe>
+            </div>
+          )}
+          {data.originalVideoUrl && (
+            <a class="text-link" href={data.originalVideoUrl} target="_blank" rel="noopener noreferrer">
+              Watch the original video →
+            </a>
+          )}
+        </section>
+      )}
+
       {data.tags.length > 0 && <div class="tags" aria-label="Resource tags">{data.tags.map((tag)=><a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}</div>}
     </div>
   </article>
 
-  {related.length > 0 && <section class="section section-muted related-section"><div class="container"><div class="section-heading"><div><p class="eyebrow">KEEP EXPLORING</p><h2>Related resources</h2></div><a href="/resources/">View library →</a></div><div class="resource-grid">{related.map((item)=>{const relatedSlug=resourceSlug(item);return <a class="resource-card" href={`/resources/${relatedSlug}/`}><img src={resourceThumbnail(item)} alt={resourceImageAlt(item)}/><div class="card-body"><span class="tag">{item.data.category}</span><h3>{item.data.title}</h3><p>{item.data.description}</p><span class="card-link">Open resource →</span></div></a>})}</div></div></section>}
-  <section class="section section-cta resource-cta"><div class="container"><div class="cta-card"><div><h2>Build the skill, then make it your own.</h2><p>Explore practical resources, build useful skills, and put what you learn into practice.</p></div><a class="button button-primary" href="/resources/">Explore resources →</a></div></div></section>
+  {/* 8. RELATED RESOURCES (COMPACT DISCOVERY RAIL) */}
+  <section class="section section-muted related-section" id="related-resources">
+    <div class="container narrow">
+      <div class="section-heading related-heading">
+        <div>
+          <p class="eyebrow">KEEP EXPLORING</p>
+          <h2>Related resources</h2>
+        </div>
+        <a class="view-library-link" href="/resources/">View library →</a>
+      </div>
+      {related.length > 0 ? (
+        <div class="related-discovery-rail related-shelf-rail" role="region" aria-label="Related resources rail">
+          {related.map((item) => {
+            const relatedSlug = resourceSlug(item);
+            const thumb = getRelatedThumbnail(item);
+            return (
+              <a class="related-compact-card related-shelf-card" href={`/resources/${relatedSlug}/`}>
+                <div class="related-thumb-wrap related-shelf-thumb-wrap">
+                  <img class="related-thumb-img related-shelf-thumb" src={thumb} alt={resourceImageAlt(item)} loading="lazy" />
+                  <span class="related-category-badge related-shelf-tag">{item.data.category}</span>
+                </div>
+                <div class="related-card-content related-shelf-content">
+                  <h3 class="related-card-title related-shelf-title">{item.data.title}</h3>
+                  <p class="related-card-desc related-shelf-desc">{item.data.description}</p>
+                  <span class="related-card-link related-shelf-action">Open workflow →</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="related-empty-state">
+          <p>More step-by-step workflows coming soon to the library.</p>
+          <a class="button button-secondary" href="/resources/">Explore library →</a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  {/* 9. CTA */}
+  <section class="section section-cta resource-cta">
+    <div class="container narrow">
+      <div class="cta-card">
+        <div>
+          <h2>Build the skill, then make it your own.</h2>
+          <p>Explore practical resources, build useful skills, and put what you learn into practice.</p>
+        </div>
+        <a class="button button-primary" href="/resources/">Explore resources →</a>
+      </div>
+    </div>
+  </section>
   </div>
 
   <script>
@@ -2048,9 +2290,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .tool-card:hover {
-      border-color: #38BDF8;
+      border-color: rgba(255, 255, 255, 0.22);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
     }
     .tool-card .tool-logo {
       display: block;
@@ -2937,9 +3179,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: block !important;
     }
     .testing-1-theme .tools-list .tool-card:hover {
-      border-color: #38BDF8 !important;
+      border-color: rgba(255, 255, 255, 0.22) !important;
       transform: translateY(-2px) !important;
-      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.2) !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
     }
     body:has(.testing-1-theme) [data-prompt-modal] .prompt-modal-dialog,
     .testing-1-theme [data-prompt-modal] .prompt-modal-dialog {
@@ -3033,7 +3275,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-weight: 800;
         letter-spacing: 0.14em;
         text-transform: uppercase;
-        color: #38BDF8;
+        color: #94A3B8;
         line-height: 1.2;
       }
       .blueprint-capsule-label svg.blueprint-stack-icon {
@@ -3052,7 +3294,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
       .blueprint-top-arrow {
         margin: 4px 0 12px;
-        color: #38BDF8;
+        color: #64748B;
       }
       .blueprint-workflow-stream {
         display: flex;
@@ -3487,14 +3729,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center;
         justify-content: center;
         padding: 10px 0;
-        color: #38BDF8;
+        color: #64748B;
         opacity: 0.85;
       }
 
       .stream-line {
         width: 2px;
         height: 10px;
-        background: rgba(56, 189, 248, 0.4);
+        background: rgba(148, 163, 184, 0.3);
         margin-bottom: 2px;
       }
 
@@ -3842,9 +4084,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-weight: 700;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        background: rgba(14, 165, 233, 0.12);
-        color: #38BDF8;
-        border: 1px solid rgba(14, 165, 233, 0.4);
+        background: rgba(255, 255, 255, 0.05);
+        color: #CBD5E1;
+        border: 1px solid rgba(255, 255, 255, 0.12);
         line-height: 1.2;
         width: fit-content;
       }
@@ -3920,7 +4162,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .blueprint-setting-chip .setting-icon {
         width: 13px;
         height: 13px;
-        color: #38BDF8;
+        color: #94A3B8;
         flex-shrink: 0;
       }
       .blueprint-setting-chip .setting-val {
@@ -4167,10 +4409,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center !important;
         padding: 5px 16px !important;
         border-radius: 9999px !important;
-        background: rgba(56, 189, 248, 0.08) !important;
-        border: 1px solid rgba(56, 189, 248, 0.28) !important;
-        color: #38BDF8 !important;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.12) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #94A3B8 !important;
+        box-shadow: none !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
         font-weight: 700 !important;
@@ -4278,8 +4520,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .guide-cue:hover {
-        border-color: rgba(56, 189, 248, 0.6) !important;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 30px rgba(56, 189, 248, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+        border-color: rgba(255, 255, 255, 0.28) !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
         transform: translateY(-2px) !important;
       }
 
@@ -4300,7 +4542,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         height: 13.5px !important;
         flex-shrink: 0 !important;
         fill: none !important;
-        stroke: #38BDF8 !important;
+        stroke: #94A3B8 !important;
         stroke-width: 2.2 !important;
         stroke-linecap: round !important;
         stroke-linejoin: round !important;
@@ -4347,9 +4589,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         width: 24px !important;
         height: 24px !important;
         border-radius: 50% !important;
-        border: 1px solid rgba(56, 189, 248, 0.4) !important;
-        background: rgba(56, 189, 248, 0.12) !important;
-        color: #38BDF8 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        color: #CBD5E1 !important;
         font: 700 11px/1 'JetBrains Mono', monospace !important;
       }
       .testing-1-theme .instruction-line p {
@@ -4363,10 +4605,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .blueprint-workflow-container {
         margin-top: 48px !important;
         background: linear-gradient(180deg, rgba(12, 19, 34, 0.96) 0%, rgba(7, 11, 20, 0.98) 100%) !important;
-        border: 1px solid rgba(56, 189, 248, 0.25) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 26px !important;
         padding: 42px 28px 32px !important;
-        box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), 0 0 60px rgba(56, 189, 248, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
         overflow: visible !important;
       }
 
@@ -4376,13 +4618,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         padding: 8px 24px !important;
         border-radius: 9999px !important;
         background: rgba(10, 16, 28, 0.98) !important;
-        border: 1px solid rgba(56, 189, 248, 0.4) !important;
-        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 24px rgba(56, 189, 248, 0.18) !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5) !important;
         box-sizing: border-box !important;
       }
 
       .testing-1-theme .blueprint-capsule-label {
-        color: #38BDF8 !important;
+        color: #94A3B8 !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
         font-weight: 800 !important;
@@ -4515,8 +4757,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-step-container.is-expanded {
-        border-color: rgba(56, 189, 248, 0.6) !important;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        border-color: rgba(255, 255, 255, 0.22) !important;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
       }
 
       .testing-1-theme .blueprint-step-capsule {
@@ -4525,9 +4767,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
         background: rgba(14, 22, 38, 0.95) !important;
-        border: 1px solid rgba(56, 189, 248, 0.45) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-        color: #38BDF8 !important;
+        color: #CBD5E1 !important;
         font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
         font-size: 10px !important;
         font-weight: 700 !important;
@@ -4541,7 +4783,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-step-capsule span {
-        color: #38BDF8 !important;
+        color: #CBD5E1 !important;
         font-weight: 700 !important;
         line-height: 1.1 !important;
       }
@@ -4617,9 +4859,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-node-badge {
-        background: rgba(56, 189, 248, 0.15) !important;
-        border: 1px solid rgba(56, 189, 248, 0.35) !important;
-        color: #38BDF8 !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        color: #CBD5E1 !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-weight: 800 !important;
         border-radius: 50% !important;
@@ -4640,7 +4882,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       .testing-1-theme .blueprint-sub-arrow {
         padding: 8px 0 !important;
-        color: var(--step-accent, #38BDF8) !important;
+        color: #64748B !important;
         opacity: 0.75 !important;
       }
 
@@ -4659,9 +4901,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .workflow-input-rail .input-card .media-type {
-        background: rgba(56, 189, 248, 0.12) !important;
-        border: 1px solid rgba(56, 189, 248, 0.3) !important;
-        color: #38BDF8 !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #94A3B8 !important;
         font-family: 'JetBrains Mono', monospace !important;
       }
 
@@ -4723,7 +4965,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .workflow-prompt-head span {
-        color: #38BDF8 !important;
+        color: #CBD5E1 !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
         font-weight: 800 !important;
@@ -4968,9 +5210,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-purpose-pill {
-        background: rgba(14, 165, 233, 0.12) !important;
-        color: #38BDF8 !important;
-        border: 1px solid rgba(14, 165, 233, 0.4) !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        color: #CBD5E1 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-size: 11px !important;
         font-weight: 700 !important;
@@ -5065,7 +5307,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme .blueprint-setting-chip .setting-icon {
         width: 13px !important;
         height: 13px !important;
-        color: #38BDF8 !important;
+        color: #94A3B8 !important;
         flex-shrink: 0 !important;
       }
 
@@ -5128,7 +5370,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border: 1px solid rgba(56, 189, 248, 0.35) !important;
         border-radius: 9999px !important;
         color: #E2E8F0 !important;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45), 0 0 16px rgba(56, 189, 248, 0.08) !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important;
         backdrop-filter: blur(10px) !important;
         max-width: min(520px, calc(100% - 24px)) !important;
         box-sizing: border-box !important;
@@ -5138,8 +5380,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .stream-handoff-icon {
-        color: #38BDF8 !important;
-        stroke: #38BDF8 !important;
+        color: #94A3B8 !important;
+        stroke: #94A3B8 !important;
         flex-shrink: 0 !important;
       }
 
@@ -5153,28 +5395,28 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .blueprint-flow-arrow {
-        color: #38BDF8 !important;
+        color: #64748B !important;
         opacity: 0.8 !important;
       }
 
       .testing-1-theme .blueprint-instruction-container {
         background: linear-gradient(180deg, rgba(16, 25, 42, 0.92) 0%, rgba(10, 17, 29, 0.98) 100%) !important;
-        border: 1px solid rgba(56, 189, 248, 0.3) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 18px !important;
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
       }
 
       .testing-1-theme .blueprint-instruction-capsule {
         background: #0B1424 !important;
-        border: 1px solid rgba(56, 189, 248, 0.4) !important;
-        color: #38BDF8 !important;
+        border: 1px solid rgba(255, 255, 255, 0.14) !important;
+        color: #CBD5E1 !important;
         font-family: 'JetBrains Mono', monospace !important;
         font-weight: 800 !important;
       }
 
       .testing-1-theme .blueprint-instruction-badge {
-        background: rgba(56, 189, 248, 0.2) !important;
-        color: #38BDF8 !important;
+        background: rgba(255, 255, 255, 0.08) !important;
+        color: #CBD5E1 !important;
         font-weight: 800 !important;
       }
 
@@ -5186,11 +5428,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       /* 4. TIPS — DARK LAYERED PANEL */
       .testing-1-theme .tips-section {
-        background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 24px !important;
-        padding: 36px 32px !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.07) !important;
+        border-radius: 20px !important;
+        padding: 24px 28px !important;
+        box-shadow: none !important;
       }
 
       .testing-1-theme .tips-section .section-heading h2 {
@@ -5201,35 +5443,35 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .tips-section .section-heading .eyebrow {
-        color: #38BDF8 !important;
+        color: #94A3B8 !important;
         font-family: 'JetBrains Mono', monospace !important;
       }
 
       .testing-1-theme .tips-list {
         background: rgba(8, 13, 23, 0.9) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 18px !important;
-        padding: 22px 28px 22px 48px !important;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-        margin: 0 !important;
+        border-radius: 14px !important;
+        padding: 16px 20px 16px 38px !important;
+        box-shadow: none !important;
+        margin: 12px 0 0 0 !important;
         box-sizing: border-box !important;
       }
 
       .testing-1-theme .tips-list li {
         color: #CBD5E1 !important;
-        font-size: 15px !important;
-        line-height: 1.68 !important;
+        font-size: 14.5px !important;
+        line-height: 1.6 !important;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-        padding: 13px 0 13px 6px !important;
+        padding: 10px 0 10px 4px !important;
       }
 
       .testing-1-theme .tips-list li:first-child {
-        padding-top: 4px !important;
+        padding-top: 2px !important;
       }
 
       .testing-1-theme .tips-list li:last-child {
         border-bottom: none !important;
-        padding-bottom: 4px !important;
+        padding-bottom: 2px !important;
       }
 
       /* 6. CTA — DARK LUXURY WITH ATMOSPHERIC GLOW & ORANGE ACCENTS */
@@ -5237,24 +5479,24 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         background:
           radial-gradient(ellipse 90% 70% at 50% -10%, rgba(255, 102, 0, 0.18) 0%, rgba(13, 20, 34, 0.95) 65%) !important;
         border: 1px solid rgba(255, 102, 0, 0.32) !important;
-        border-radius: 28px !important;
-        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(255, 102, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-        padding: 44px 38px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+        padding: 28px 32px !important;
       }
 
       .testing-1-theme .resource-cta .cta-card h2 {
         font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
-        font-size: clamp(28px, 4vw, 38px) !important;
+        font-size: clamp(24px, 3.5vw, 32px) !important;
         font-weight: 500 !important;
         color: #FFFFFF !important;
         letter-spacing: -0.02em !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 8px !important;
       }
 
       .testing-1-theme .resource-cta .cta-card p {
         color: #CBD5E1 !important;
-        font-size: 16px !important;
-        line-height: 1.65 !important;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
         max-width: 600px !important;
       }
 
@@ -5264,9 +5506,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border: 1px solid rgba(255, 255, 255, 0.8) !important;
         font-weight: 800 !important;
         border-radius: 9999px !important;
-        padding: 14px 32px !important;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 102, 0, 0.25) !important;
-        font-size: 15px !important;
+        padding: 12px 28px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+        font-size: 14.5px !important;
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
         white-space: nowrap !important;
       }
@@ -5275,17 +5517,17 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         background: #FFF7ED !important;
         color: #C2410C !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 28px rgba(255, 102, 0, 0.35) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
       }
 
       /* 7. CONSISTENCY ACROSS OTHER SECTIONS */
       .testing-1-theme .intro-section,
       .testing-1-theme .resource-section:not(.workflow-section):not(.tips-section) {
-        background: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.08) !important;
-        border-radius: 24px !important;
-        padding: 36px 32px !important;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.07) !important;
+        border-radius: 20px !important;
+        padding: 24px 28px !important;
+        box-shadow: none !important;
       }
 
       .testing-1-theme .section-heading h2 {
@@ -5296,7 +5538,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       }
 
       .testing-1-theme .section-heading .eyebrow {
-        color: #38BDF8 !important;
+        color: #94A3B8 !important;
         font-family: 'JetBrains Mono', monospace !important;
       }
 
@@ -6186,6 +6428,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       html.light-theme .testing-1-theme .tutorial-section {
         background: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tutorial-section .section-heading h2,
+      html.light-theme .testing-1-theme .tutorial-section .section-heading h2 {
+        color: #0F172A !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tutorial-section .section-heading .eyebrow,
+      html.light-theme .testing-1-theme .tutorial-section .section-heading .eyebrow {
+        background: #EFF6FF !important;
+        color: #0284C7 !important;
+        border: 1px solid #BAE6FD !important;
+        box-shadow: 0 1px 4px rgba(2, 132, 199, 0.08) !important;
+      }
+      :root[data-theme="light"] .testing-1-theme .tutorial-section .section-subcopy,
+      html.light-theme .testing-1-theme .tutorial-section .section-subcopy {
+        color: #475569 !important;
       }
       :root[data-theme="light"] .testing-1-theme .tutorial-section .text-link,
       html.light-theme .testing-1-theme .tutorial-section .text-link {
@@ -6368,5 +6626,677 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border-color: #CBD5E1;
         color: #1E293B;
       }
+
+    /* ==========================================================================
+       RESOURCE PAGE REFINED COHESIVE SYSTEM (POLISH, FLOW & HIERARCHY)
+       ========================================================================== */
+    /* ==========================================================================
+       PERMANENT SECTION SPACING SYSTEM (CONSISTENT EQUAL GAPS)
+       Every consecutive major section following the guide cue line
+       ("FOLLOW THE STEP-BY-STEP GUIDE BELOW") shares the exact same vertical rhythm:
+       Section -> equal gap -> Section -> equal gap -> Section
+       ========================================================================== */
+    :root {
+      --resource-major-section-gap: 24px;
+    }
+    @media (max-width: 640px) {
+      :root {
+        --resource-major-section-gap: 20px;
+      }
+    }
+
+    /* Major sections following the guide cue line */
+    .intro-section,
+    .what-it-does-section,
+    .resource-briefing-flow,
+    .resource-editorial-section,
+    .tools-section,
+    .resource-section.workflow-section,
+    .blueprint-workflow-section,
+    .resource-section.tips-section,
+    .tips-section,
+    .resource-section.tutorial-section,
+    .tutorial-section,
+    .resource-page .tags,
+    .testing-1-theme .tags,
+    .related-section,
+    .resource-cta {
+      margin-top: var(--resource-major-section-gap, 24px) !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Structural fallback: any consecutive section inside resource-content gets identical gap */
+    .resource-page .resource-content > * + *,
+    .testing-1-theme .resource-content > * + * {
+      margin-top: var(--resource-major-section-gap, 24px) !important;
+      margin-bottom: 0 !important;
+    }
+
+    .resource-briefing-flow {
+      display: contents !important;
+    }
+
+    .resource-editorial-section {
+      position: relative;
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      border-radius: 20px !important;
+      padding: 24px 28px !important;
+      box-sizing: border-box !important;
+      box-shadow: none !important;
+      transition: border-color 0.2s ease;
+    }
+
+    /* Tutorial Section Container & Content Alignment */
+    .resource-section.tutorial-section,
+    .tutorial-section {
+      position: relative;
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.45) 0%, rgba(8, 14, 25, 0.55) 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.07) !important;
+      border-radius: 20px !important;
+      padding: 24px 28px !important;
+      box-sizing: border-box !important;
+      box-shadow: none !important;
+      text-align: left !important;
+    }
+
+    .editorial-heading {
+      margin-bottom: 12px;
+    }
+
+    .editorial-eyebrow {
+      display: inline-flex !important;
+      align-items: center !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #CBD5E1 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      font: 700 11px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.1em !important;
+      text-transform: uppercase !important;
+      border-radius: 9999px !important;
+      padding: 4px 14px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .editorial-heading h2 {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(22px, 3vw, 28px) !important;
+      font-weight: 500 !important;
+      line-height: 1.25 !important;
+      color: #FFFFFF !important;
+      margin: 0 0 6px !important;
+      letter-spacing: -0.015em !important;
+      text-align: left !important;
+    }
+
+    /* Tutorial Section Heading & Hierarchy */
+    .tutorial-section .section-heading {
+      display: block !important;
+      width: 100% !important;
+      margin-bottom: 0 !important;
+      text-align: left !important;
+    }
+
+    .tutorial-section .section-heading .eyebrow {
+      display: inline-flex !important;
+      align-items: center !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #CBD5E1 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      font: 700 11px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.1em !important;
+      text-transform: uppercase !important;
+      border-radius: 9999px !important;
+      padding: 4px 14px !important;
+      margin: 0 0 10px 0 !important;
+    }
+
+    .tutorial-section .section-heading h2 {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(22px, 3vw, 28px) !important;
+      font-weight: 500 !important;
+      line-height: 1.25 !important;
+      color: #FFFFFF !important;
+      margin: 0 0 6px 0 !important;
+      letter-spacing: -0.015em !important;
+      text-align: left !important;
+    }
+
+    .tutorial-section .section-subcopy {
+      color: #94A3B8 !important;
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+      font-size: 13.5px !important;
+      line-height: 1.5 !important;
+      margin: 0 0 18px 0 !important;
+      text-align: left !important;
+    }
+
+    .editorial-lead {
+      color: #CBD5E1 !important;
+      font-size: 15px !important;
+      line-height: 1.65 !important;
+      margin: 0 !important;
+    }
+
+    .editorial-subcopy {
+      color: #94A3B8 !important;
+      font-size: 13.5px !important;
+      line-height: 1.5 !important;
+      margin: 4px 0 0 !important;
+    }
+
+    /* Compact horizontal scrollable vertical tool cards */
+    .tools-scroll-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .tools-horizontal-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      flex-wrap: nowrap;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 4px 2px 8px 2px;
+      width: 100%;
+    }
+
+    .tools-horizontal-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* VERTICAL TOOL CARDS (Slightly Elevated Surface & Direct 3D Logo) */
+    .tool-item-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 18px 14px 14px;
+      border-radius: 16px;
+      background: rgba(18, 28, 48, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+      min-width: 115px;
+      max-width: 135px;
+      min-height: 118px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .tool-item-card:hover {
+      background: rgba(26, 40, 68, 0.85);
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    /* APP LOGO (Direct 3D appearance, no inner container) */
+    .tool-app-logo {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+      border-radius: 11px;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.45));
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), filter 0.2s ease;
+      display: block;
+    }
+
+    .tool-item-card:hover .tool-app-logo {
+      transform: scale(1.06);
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.55));
+    }
+
+    /* TOOL NAME (Centered directly below logo) */
+    .tool-item-name {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: #F1F5F9;
+      line-height: 1.25;
+      text-align: center;
+      white-space: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tools-scroll-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #CBD5E1;
+      display: none;
+      place-items: center;
+      cursor: pointer;
+      z-index: 2;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+      transition: all 0.15s ease;
+      padding: 0;
+    }
+
+    .tools-scroll-nav-btn:hover {
+      background: rgba(30, 41, 59, 1);
+      color: #FFFFFF;
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .tools-scroll-prev {
+      left: -10px;
+    }
+
+    .tools-scroll-next {
+      right: -10px;
+    }
+
+    /* Continuous Process START and END Terminals */
+    .workflow-process-terminal {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 4px 0;
+    }
+
+    .workflow-process-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 20px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94A3B8;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    .workflow-process-terminal.workflow-process-start .workflow-process-pill,
+    .workflow-process-terminal.workflow-process-end .workflow-process-pill {
+      border-color: rgba(56, 189, 248, 0.25);
+      color: #CBD5E1;
+    }
+
+    /* Continuity Hint on Step Output */
+    .blueprint-step-continuity-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      color: #7DD3FC;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .continuity-icon-wrap {
+      display: grid;
+      place-items: center;
+      color: var(--icon-default, #94A3B8);
+      flex-shrink: 0;
+    }
+
+    /* Better Results Tips List */
+    .tips-list {
+      list-style: disc !important;
+      padding-left: 24px !important;
+    }
+
+    /* Related Resources Discovery Rail */
+    .related-section {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      background: transparent !important;
+      border: none !important;
+    }
+
+    .resource-cta {
+      padding-top: 0 !important;
+      padding-bottom: 36px !important;
+    }
+
+    /* ==========================================================================
+       DAY MODE (LIGHT THEME) SYSTEM FOR EDITORIAL & TOOLS SECTIONS
+       Follows existing day-mode tokens (--surface, --line, --text, --muted, --accent)
+       ========================================================================== */
+    :root[data-theme="light"] .resource-editorial-section,
+    html.light-theme .resource-editorial-section {
+      background: #FFFFFF !important;
+      border: 1px solid #E2E8F0 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    }
+    :root[data-theme="light"] .editorial-eyebrow,
+    html.light-theme .editorial-eyebrow {
+      color: #0284C7 !important;
+    }
+    :root[data-theme="light"] .editorial-heading h2,
+    html.light-theme .editorial-heading h2 {
+      color: #0F172A !important;
+    }
+    :root[data-theme="light"] .editorial-lead,
+    html.light-theme .editorial-lead {
+      color: #334155 !important;
+    }
+    :root[data-theme="light"] .editorial-subcopy,
+    html.light-theme .editorial-subcopy {
+      color: #64748B !important;
+    }
+    :root[data-theme="light"] .tool-item-card,
+    html.light-theme .tool-item-card {
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+    }
+    :root[data-theme="light"] .tool-item-card:hover,
+    html.light-theme .tool-item-card:hover {
+      background: #F1F5F9 !important;
+      border-color: #0284C7 !important;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.1) !important;
+    }
+    :root[data-theme="light"] .tool-item-icon,
+    html.light-theme .tool-item-icon {
+      background: #FFFFFF !important;
+      border: 1px solid #E2E8F0 !important;
+    }
+    :root[data-theme="light"] .tool-item-name,
+    html.light-theme .tool-item-name {
+      color: #0F172A !important;
+    }
+    :root[data-theme="light"] .tools-scroll-nav-btn,
+    html.light-theme .tools-scroll-nav-btn {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #475569 !important;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1) !important;
+    }
+    :root[data-theme="light"] .tools-scroll-nav-btn:hover,
+    html.light-theme .tools-scroll-nav-btn:hover {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border-color: #0284C7 !important;
+    }
+    :root[data-theme="light"] .blueprint-step-continuity-hint,
+    html.light-theme .blueprint-step-continuity-hint {
+      background: #F0F9FF !important;
+      border: 1px solid #BAE6FD !important;
+      color: #0369A1 !important;
+    }
+    :root[data-theme="light"] .workflow-process-pill,
+    html.light-theme .workflow-process-pill {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #334155 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+    }
+    :root[data-theme="light"] .workflow-process-terminal.workflow-process-start .workflow-process-pill,
+    html.light-theme .workflow-process-terminal.workflow-process-start .workflow-process-pill,
+    :root[data-theme="light"] .workflow-process-terminal.workflow-process-end .workflow-process-pill,
+    html.light-theme .workflow-process-terminal.workflow-process-end .workflow-process-pill {
+      border-color: #BAE6FD !important;
+      color: #0369A1 !important;
+      background: #F0F9FF !important;
+    }
+    :root[data-theme="light"] .continuity-icon-wrap,
+    html.light-theme .continuity-icon-wrap {
+      color: #0284C7 !important;
+    }
+    :root[data-theme="light"] .related-heading h2,
+    html.light-theme .related-heading h2 {
+      color: #0F172A !important;
+    }
+    :root[data-theme="light"] .related-heading .eyebrow,
+    html.light-theme .related-heading .eyebrow {
+      color: #0284C7 !important;
+    }
+    :root[data-theme="light"] .view-library-link,
+    html.light-theme .view-library-link {
+      color: #0284C7 !important;
+    }
+    :root[data-theme="light"] .related-shelf-card,
+    html.light-theme .related-shelf-card {
+      background: #FFFFFF !important;
+      border-color: #E2E8F0 !important;
+    }
+    :root[data-theme="light"] .related-shelf-title,
+    html.light-theme .related-shelf-title {
+      color: #0F172A !important;
+    }
+    :root[data-theme="light"] .related-shelf-desc,
+    html.light-theme .related-shelf-desc {
+      color: #64748B !important;
+    }
+    :root[data-theme="light"] .related-shelf-thumb-wrap,
+    html.light-theme .related-shelf-thumb-wrap {
+      background: #F1F5F9 !important;
+    }
+
+    .related-heading {
+      margin-bottom: 18px;
+    }
+
+    .view-library-link {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #38BDF8;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .view-library-link:hover {
+      color: #7DD3FC;
+    }
+
+    .related-discovery-rail {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 4px 2px 14px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .related-compact-card {
+      flex: 0 0 280px;
+      max-width: 320px;
+      min-width: 250px;
+      scroll-snap-align: start;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #080E1A;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .related-compact-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+    }
+
+    .related-thumb-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #05080E;
+      overflow: hidden;
+    }
+
+    .related-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .related-compact-card:hover .related-thumb-img {
+      transform: scale(1.04);
+    }
+
+    .related-category-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font: 700 10px/1 var(--font-mono, monospace);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(9, 14, 26, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--badge-text, #CBD5E1);
+      backdrop-filter: blur(4px);
+    }
+
+    .related-card-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+
+    .related-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.35;
+      margin: 0;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .related-card-desc {
+      font-size: 12.5px;
+      color: #94A3B8;
+      line-height: 1.45;
+      margin: 0;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      flex: 1;
+    }
+
+    .related-card-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: #FB923C;
+      margin-top: 6px;
+    }
+
+    .related-empty-state {
+      padding: 24px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+      color: #94A3B8;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Mobile Responsive Polish */
+    @media (max-width: 640px) {
+      .resource-briefing-flow {
+        display: contents !important;
+      }
+      .resource-editorial-section,
+      .tutorial-section {
+        padding: 20px 18px !important;
+      }
+      .tools-horizontal-row {
+        gap: 8px;
+        padding-bottom: 2px;
+      }
+      .tutorial-sf-action-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .tutorial-sf-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .related-compact-card {
+        flex: 0 0 240px;
+        min-width: 240px;
+      }
+    }
   </style>
+
+  <script is:inline>
+    (() => {
+      const initToolsScroll = () => {
+        const track = document.getElementById('tools-scroll-track');
+        const prevBtn = document.querySelector('.tools-scroll-prev');
+        const nextBtn = document.querySelector('.tools-scroll-next');
+        if (!track || !prevBtn || !nextBtn) return;
+
+        const updateButtons = () => {
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          if (maxScroll <= 4) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            return;
+          }
+          prevBtn.style.display = track.scrollLeft > 6 ? 'grid' : 'none';
+          nextBtn.style.display = track.scrollLeft < maxScroll - 6 ? 'grid' : 'none';
+        };
+
+        prevBtn.addEventListener('click', () => {
+          track.scrollBy({ left: -220, behavior: 'smooth' });
+        });
+        nextBtn.addEventListener('click', () => {
+          track.scrollBy({ left: 220, behavior: 'smooth' });
+        });
+        track.addEventListener('scroll', updateButtons, { passive: true });
+        window.addEventListener('resize', updateButtons, { passive: true });
+        updateButtons();
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initToolsScroll, { once: true });
+      } else {
+        initToolsScroll();
+      }
+    })();
+  </script>
 </BaseLayout>

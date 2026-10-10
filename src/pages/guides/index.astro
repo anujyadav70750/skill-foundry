@@ -243,9 +243,9 @@ const guideTracks = [
   .home-capsule {
     display: inline-flex;
     align-items: center;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.32);
-    color: #38BDF8;
+    background: var(--badge-bg, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--badge-border, rgba(255, 255, 255, 0.12));
+    color: var(--badge-text, #CBD5E1);
     border-radius: 9999px;
     padding: 4px 12px;
     font-family: 'JetBrains Mono', monospace;
@@ -253,14 +253,14 @@ const guideTracks = [
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    box-shadow: 0 0 12px rgba(56, 189, 248, 0.12);
+    box-shadow: none;
   }
 
   :global([data-theme="light"]) .home-capsule,
   :global(html.light-theme) .home-capsule {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.3);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
     box-shadow: none;
   }
 
@@ -398,14 +398,14 @@ const guideTracks = [
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
-    color: #38BDF8;
+    color: var(--badge-text, #CBD5E1);
     margin-bottom: 10px;
     letter-spacing: 0.08em;
   }
 
   :global([data-theme="light"]) .method-capsule,
   :global(html.light-theme) .method-capsule {
-    color: #0284C7;
+    color: #475569;
   }
 
   .method-title {
@@ -458,9 +458,9 @@ const guideTracks = [
     width: 44px;
     height: 44px;
     border-radius: 12px;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.25);
-    color: #38BDF8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #CBD5E1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -469,9 +469,9 @@ const guideTracks = [
 
   :global([data-theme="light"]) .track-icon-wrap,
   :global(html.light-theme) .track-icon-wrap {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.25);
-    color: #0284C7;
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #334155;
   }
 
   .track-badge {
@@ -542,14 +542,14 @@ const guideTracks = [
     font-size: 10.5px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    color: #38BDF8;
+    color: var(--badge-text, #CBD5E1);
     margin-bottom: 10px;
     text-transform: uppercase;
   }
 
   :global([data-theme="light"]) .track-topics-label,
   :global(html.light-theme) .track-topics-label {
-    color: #0284C7;
+    color: #64748B;
   }
 
   .track-topics-list {
@@ -576,14 +576,14 @@ const guideTracks = [
   }
 
   .topic-check {
-    color: #38BDF8;
+    color: var(--icon-default, #94A3B8);
     flex-shrink: 0;
     margin-top: 3px;
   }
 
   :global([data-theme="light"]) .topic-check,
   :global(html.light-theme) .topic-check {
-    color: #0284C7;
+    color: var(--icon-default, #64748B);
   }
 
   .track-card-footer {
@@ -601,9 +601,9 @@ const guideTracks = [
     min-height: 42px;
     padding: 0 16px;
     border-radius: 10px;
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.28);
-    color: #38BDF8;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #F8FAFC;
     font-family: inherit;
     font-size: 13.5px;
     font-weight: 700;
@@ -614,10 +614,10 @@ const guideTracks = [
 
   :global([data-theme="light"]) .track-cta-btn,
   :global(html.light-theme) .track-cta-btn {
-    background: #F8FAFC;
-    border-color: rgba(2, 132, 199, 0.35);
-    color: #0284C7;
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+    color: #0F172A;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   }
 
   .track-cta-btn .btn-arrow {
@@ -626,19 +626,19 @@ const guideTracks = [
   }
 
   .track-cta-btn:hover {
-    background: rgba(56, 189, 248, 0.18);
-    border-color: rgba(56, 189, 248, 0.55);
-    color: #7DD3FC;
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(56, 189, 248, 0.15);
+    box-shadow: none;
   }
 
   :global([data-theme="light"]) .track-cta-btn:hover,
   :global(html.light-theme) .track-cta-btn:hover {
-    background: rgba(2, 132, 199, 0.1);
+    background: #F0F9FF;
     border-color: #0284C7;
-    color: #0369A1;
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.12);
+    color: #0284C7;
+    box-shadow: none;
   }
 
   .track-cta-btn:hover .btn-arrow {

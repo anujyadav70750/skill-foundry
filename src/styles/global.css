@@ -18,6 +18,15 @@
   --card-bg: linear-gradient(180deg, rgba(16, 26, 44, 0.75) 0%, rgba(9, 15, 27, 0.9) 100%);
   --card-border: rgba(255, 255, 255, 0.08);
   --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  /* Semantic Design Tokens: Neutral Badges, Icons & Restrained Brand Accents */
+  --badge-bg: rgba(255, 255, 255, 0.05);
+  --badge-border: rgba(255, 255, 255, 0.12);
+  --badge-text: #CBD5E1;
+  --icon-default: #94A3B8;
+  --brand-accent: #38BDF8;
+  --brand-accent-hover: #7DD3FC;
+  --brand-accent-subtle: rgba(56, 189, 248, 0.12);
+  --brand-accent-border: rgba(56, 189, 248, 0.35);
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --max: 1180px;
@@ -45,6 +54,15 @@ html.light-theme {
   --card-bg: #FFFFFF;
   --card-border: #E2E8F0;
   --card-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  /* Semantic Design Tokens: Light Theme Badges, Icons & Restrained Brand Accents */
+  --badge-bg: #F1F5F9;
+  --badge-border: #CBD5E1;
+  --badge-text: #475569;
+  --icon-default: #64748B;
+  --brand-accent: #0284C7;
+  --brand-accent-hover: #0369A1;
+  --brand-accent-subtle: rgba(2, 132, 199, 0.08);
+  --brand-accent-border: rgba(2, 132, 199, 0.28);
 }
 
 @media (max-width: 700px) {
