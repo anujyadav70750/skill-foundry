@@ -162,7 +162,6 @@
     letter-spacing:.13em!important;
   }
 
-  /* Keep the existing JS-generated dot-line graph visible. */
   html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .sf-blueprint-graph-svg{
     display:block!important;
     position:absolute!important;
@@ -174,7 +173,7 @@
     z-index:4!important;
   }
 
-  /* Do not add CSS duplicate connectors. JS owns every mobile connection. */
+  /* JS owns every mobile connection; prevent duplicate CSS lines. */
   html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]::after,
   html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]::after,
   html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result::before{
@@ -182,7 +181,12 @@
     display:none!important;
   }
 
+  /* Result must sit directly in the next grid row after Step 05. */
   html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result{
+    grid-column:1 / span 2!important;
+    grid-row:5!important;
+    width:min(calc((100% - 12px)/2),100%)!important;
+    justify-self:center!important;
     margin-top:0!important;
     position:relative!important;
   }
