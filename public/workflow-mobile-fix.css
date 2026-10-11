@@ -1,11 +1,11 @@
 /* Mobile workflow blueprint: two-column square step cards + clean dot-line connectors. */
 @media (max-width:700px){
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-inner-expand-control{display:none!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-inner-expand-control{display:none!important}
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream{
     display:grid!important;
     grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
-    grid-auto-rows:auto!important;
+    grid-template-rows:auto auto auto auto auto!important;
     align-items:start!important;
     justify-items:center!important;
     column-gap:12px!important;
@@ -17,7 +17,7 @@
     overflow:visible!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper{
     display:block!important;
     width:100%!important;
     max-width:none!important;
@@ -31,14 +31,15 @@
     box-sizing:border-box!important;
   }
 
-  /* Mobile arrangement: Step 01 + Step 03 side by side; Step 02 below Step 01; Step 04/05 centered at the same square size. */
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]{grid-column:1!important;grid-row:1!important}
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"]{grid-column:2!important;grid-row:1!important}
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"]{grid-column:1!important;grid-row:2!important}
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]{grid-column:1 / span 2!important;grid-row:3!important;width:calc((100% - 12px)/2)!important;justify-self:center!important}
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]{grid-column:1 / span 2!important;grid-row:4!important;width:calc((100% - 12px)/2)!important;justify-self:center!important}
+  /* Mobile: two columns. Step 01 + Step 03 on top, Step 02 under Step 01, then Step 04 and Step 05 centered. */
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]{grid-column:1!important;grid-row:1!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"]{grid-column:2!important;grid-row:1!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"]{grid-column:1!important;grid-row:2!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]{grid-column:1 / span 2!important;grid-row:3!important;width:calc((100% - 12px)/2)!important;justify-self:center!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]{grid-column:1 / span 2!important;grid-row:4!important;width:calc((100% - 12px)/2)!important;justify-self:center!important}
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container{
+  /* OUTER STEP CARD = square. Never use a fixed 300px size. */
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container{
     display:block!important;
     width:100%!important;
     max-width:none!important;
@@ -53,7 +54,7 @@
     border-radius:16px!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header{
     display:flex!important;
     flex-direction:column!important;
     align-items:stretch!important;
@@ -70,27 +71,31 @@
     cursor:pointer!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box{
+  /* INNER THUMBNAIL = 16:9, not square. */
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box{
     flex:0 0 auto!important;
     width:100%!important;
     height:auto!important;
     aspect-ratio:16 / 9!important;
     min-width:0!important;
     min-height:0!important;
+    max-height:none!important;
     border-radius:9px!important;
     overflow:hidden!important;
     box-sizing:border-box!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-main,
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-backdrop{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-main,
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-backdrop{
     display:block!important;
     width:100%!important;
     height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
     object-fit:cover!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-info{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-info{
     display:block!important;
     width:100%!important;
     min-width:0!important;
@@ -98,9 +103,9 @@
     overflow:hidden!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title-row{width:100%!important;min-width:0!important}
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title-row{width:100%!important;min-width:0!important}
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title{
     display:-webkit-box!important;
     -webkit-box-orient:vertical!important;
     -webkit-line-clamp:1!important;
@@ -110,14 +115,14 @@
     width:100%!important;
     max-width:100%!important;
     margin:0!important;
-    font-size:clamp(12px,3.7vw,16px)!important;
-    line-height:1.25!important;
-    max-height:1.25em!important;
+    font-size:clamp(11px,3.5vw,15px)!important;
+    line-height:1.2!important;
+    max-height:1.2em!important;
     font-weight:700!important;
     box-sizing:border-box!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose{
     display:-webkit-box!important;
     -webkit-box-orient:vertical!important;
     -webkit-line-clamp:2!important;
@@ -126,19 +131,19 @@
     width:100%!important;
     max-width:100%!important;
     margin:0!important;
-    font-size:clamp(9.5px,2.8vw,12.5px)!important;
-    line-height:1.35!important;
-    max-height:2.7em!important;
+    font-size:clamp(9px,2.65vw,11.5px)!important;
+    line-height:1.25!important;
+    max-height:2.5em!important;
     box-sizing:border-box!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-action,
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-expand-chevron,
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header::after{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-action,
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-expand-chevron,
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header::after{
     display:none!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule{
     position:absolute!important;
     top:-17px!important;
     left:50%!important;
@@ -152,13 +157,13 @@
     white-space:nowrap!important;
   }
 
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule span{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule span{
     font-size:9px!important;
     letter-spacing:.13em!important;
   }
 
-  /* Keep the existing JavaScript-generated dot-line graph visible. */
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .sf-blueprint-graph-svg{
+  /* Keep the existing JS-generated dot-line graph visible. */
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .sf-blueprint-graph-svg{
     display:block!important;
     position:absolute!important;
     inset:0!important;
@@ -169,57 +174,16 @@
     z-index:4!important;
   }
 
-  /* Step 04 -> Step 05: one centered dot-line connection. */
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:100%;
-    width:8px;
-    height:34px;
-    transform:translateX(-50%);
-    pointer-events:none;
-    z-index:3;
-    background:
-      radial-gradient(circle at 50% 4px,#27B7FF 0 3px,transparent 3.6px),
-      radial-gradient(circle at 50% calc(100% - 4px),#27B7FF 0 3px,transparent 3.6px),
-      linear-gradient(#27B7FF,#27B7FF) center/2px 100% no-repeat;
+  /* Do not add CSS duplicate connectors. JS owns every mobile connection. */
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]::after,
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]::after,
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result::before{
+    content:none!important;
+    display:none!important;
   }
 
-  /* Step 05 -> Result: one centered dot-line connection without changing the Result card. */
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]::after{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:100%;
-    width:8px;
-    height:34px;
-    transform:translateX(-50%);
-    pointer-events:none;
-    z-index:3;
-    background:
-      radial-gradient(circle at 50% 4px,#27B7FF 0 3px,transparent 3.6px),
-      radial-gradient(circle at 50% calc(100% - 4px),#27B7FF 0 3px,transparent 3.6px),
-      linear-gradient(#27B7FF,#27B7FF) center/2px 100% no-repeat;
-  }
-
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result{
+  html body .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result{
     margin-top:0!important;
     position:relative!important;
-  }
-
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result::before{
-    content:"";
-    position:absolute;
-    left:50%;
-    top:-34px;
-    width:8px;
-    height:34px;
-    transform:translateX(-50%);
-    pointer-events:none;
-    z-index:3;
-    background:
-      radial-gradient(circle at 50% 4px,#27B7FF 0 3px,transparent 3.6px),
-      linear-gradient(#27B7FF,#27B7FF) center bottom/2px 100% no-repeat;
   }
 }
