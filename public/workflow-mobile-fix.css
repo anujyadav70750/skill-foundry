@@ -39,4 +39,55 @@
 
   /* Result is not changed; only add the visible endpoint for Step 5 -> Result. */
   .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result{margin-top:0!important}
+
+  /* FINAL STEP-CARD GEOMETRY: enforce a real square outer card. */
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step] .blueprint-step-container{
+    width:min(100%,320px)!important;
+    max-width:320px!important;
+    min-width:0!important;
+    height:320px!important;
+    min-height:320px!important;
+    max-height:320px!important;
+    aspect-ratio:auto!important;
+    box-sizing:border-box!important;
+    overflow:visible!important;
+  }
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step]{
+    width:min(100%,320px)!important;
+    max-width:320px!important;
+    min-width:0!important;
+    height:320px!important;
+    flex:0 0 320px!important;
+    box-sizing:border-box!important;
+  }
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    max-height:none!important;
+    box-sizing:border-box!important;
+    padding:30px 14px 14px!important;
+    gap:9px!important;
+    overflow:hidden!important;
+  }
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box{
+    width:100%!important;
+    height:auto!important;
+    aspect-ratio:16/9!important;
+    flex:0 0 auto!important;
+    box-sizing:border-box!important;
+    overflow:hidden!important;
+  }
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title{
+    font-size:17px!important;
+    line-height:1.25!important;
+    max-height:1.25em!important;
+    margin:0!important;
+  }
+  html body.testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose{
+    font-size:12.5px!important;
+    line-height:1.35!important;
+    max-height:2.7em!important;
+    margin:1px 0 0!important;
+  }
 }
