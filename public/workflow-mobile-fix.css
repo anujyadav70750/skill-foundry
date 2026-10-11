@@ -1,0 +1,42 @@
+/* Mobile blueprint correction: compact square step cards, true 16:9 thumbnails, and clean dot-line-dot routing. */
+@media (max-width:700px){
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-inner-expand-control{display:none!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .sf-blueprint-graph-svg{display:none!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream{gap:34px!important;padding:42px 18px 36px!important;overflow:visible!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper{width:min(100%,340px)!important;max-width:340px!important;position:relative!important;z-index:5!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container{width:100%!important;height:auto!important;aspect-ratio:1/1!important;min-height:0!important;max-height:none!important;border-radius:18px!important;overflow:visible!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header{height:100%!important;min-height:0!important;padding:30px 14px 14px!important;gap:9px!important;justify-content:flex-start!important;border-radius:18px!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box{width:100%!important;aspect-ratio:16/9!important;height:auto!important;flex:none!important;border-radius:10px!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title{font-size:16px!important;line-height:1.25!important;font-weight:700!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose{font-size:12.5px!important;line-height:1.38!important;margin-top:2px!important;color:#AEBBCC!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule{top:-17px!important;padding:7px 16px!important;min-width:84px!important;height:34px!important;line-height:18px!important}
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule span{font-size:10px!important;letter-spacing:.14em!important}
+
+  /* Clean mobile dependency graph. Existing SVG routing is hidden because it crosses cards. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]::before,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]::after,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"]::before,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"]::after,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]::after,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]::after{content:"";position:absolute;display:block;pointer-events:none;z-index:2}
+
+  /* Step 1 -> Step 2: straight center dot-line-dot. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]::before{left:50%;top:100%;width:8px;height:34px;transform:translateX(-50%);background:radial-gradient(circle at 50% 4px,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at 50% calc(100% - 4px),#27B7FF 0 3.5px,transparent 4px),linear-gradient(#27B7FF,#27B7FF) center/2px 100% no-repeat}
+
+  /* Step 1 -> Step 4: right rail, ending at Step 4's right-side top dot. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"]::after{left:calc(100% - 61px);top:50%;width:71px;height:calc(100% + 68px);background:radial-gradient(circle at 61px 4px,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at 1px calc(100% - 4px),#27B7FF 0 3.5px,transparent 4px),linear-gradient(#27B7FF,#27B7FF) right top/10px 2px no-repeat,linear-gradient(#27B7FF,#27B7FF) right center/2px 100% no-repeat,linear-gradient(#27B7FF,#27B7FF) left bottom/100% 2px no-repeat}
+
+  /* Step 2 -> Step 4: left rail, ending at Step 4's left-side top dot. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"]::before{right:auto;left:-10px;top:50%;width:71px;height:calc(100% + 68px);background:radial-gradient(circle at 10px 4px,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at calc(100% - 1px) calc(100% - 4px),#27B7FF 0 3.5px,transparent 4px),linear-gradient(#27B7FF,#27B7FF) 0 0/10px 2px no-repeat,linear-gradient(#27B7FF,#27B7FF) 0 0/2px 100% no-repeat,linear-gradient(#27B7FF,#27B7FF) left bottom/100% 2px no-repeat}
+
+  /* Step 3 -> Step 4: center dot-line-dot. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"]::after,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"]::after,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"]::after{left:50%;top:100%;width:8px;height:34px;transform:translateX(-50%);background:radial-gradient(circle at 50% 4px,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at 50% calc(100% - 4px),#27B7FF 0 3.5px,transparent 4px),linear-gradient(#27B7FF,#27B7FF) center/2px 100% no-repeat}
+
+  /* Three separate incoming dots across Step 4's top edge. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"] .blueprint-step-container::before{content:"";position:absolute;left:0;top:-1px;width:100%;height:8px;transform:translateY(-50%);background:radial-gradient(circle at 18% 50%,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at 50% 50%,#27B7FF 0 3.5px,transparent 4px),radial-gradient(circle at 82% 50%,#27B7FF 0 3.5px,transparent 4px);pointer-events:none;z-index:10}
+
+  /* Result is not changed; only add the visible endpoint for Step 5 -> Result. */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result{margin-top:0!important}
+}
