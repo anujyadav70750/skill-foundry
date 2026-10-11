@@ -1,0 +1,199 @@
+name: Apply Homepage Category Redesign
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  patch-homepage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Patch homepage category section
+        shell: python
+        run: |
+          from pathlib import Path
+
+          p = Path('src/pages/index.astro')
+          s = p.read_text()
+
+          start = s.index('// 2. SKILLS & DISCIPLINES (Broad evergreen learning taxonomy based on content)')
+          end = s.index('\nconst formatUploadDate', start)
+          new = '''// 2. SKILLS & DISCIPLINES — derive homepage categories from published resource categories
+          // Only categories that currently contain published resources are shown.
+          const SKILL_CATEGORY_ORDER = [
+            'AI Image',
+            'AI Video',
+            'AI Automation',
+            'Prompt Systems',
+            'AI Tools',
+            'Creative Workflows',
+            'Productivity',
+            'Other'
+          ];
+
+          const SKILL_CATEGORY_PRESENTATION: Record<string, { name: string; description: string; iconSvg: string }> = {
+            'AI Image': {
+              name: 'AI Image & Visuals',
+              description: 'Create and refine AI-generated images, visual assets, and creative scenes.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></svg>`
+            },
+            'AI Video': {
+              name: 'AI Video & Motion',
+              description: 'Create AI-generated video, motion, camera movement, and visual continuity.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="14" rx="2"></rect><path d="m16 10 5-3v10l-5-3z"></path></svg>`
+            },
+            'AI Automation': {
+              name: 'AI Automation',
+              description: 'Build repeatable systems that connect tasks, tools, and digital workflows.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v5"></path><path d="m17 7-3-3"></path><path d="m17 7-3 3"></path><path d="M17 17H7v-5"></path><path d="m7 17 3-3"></path><path d="m7 17 3 3"></path></svg>`
+            },
+            'Prompt Systems': {
+              name: 'Prompt Systems',
+              description: 'Structure prompts and instructions so AI outputs are clearer, repeatable, and controllable.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14"></path><path d="M5 9h10"></path><path d="M5 14h14"></path><path d="M5 19h8"></path></svg>`
+            },
+            'AI Tools': {
+              name: 'AI Tools',
+              description: 'Understand and use the tools that support practical AI-powered work.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.7 6.3 3 3"></path><path d="m5 19 6.5-6.5"></path><path d="M13 5a5 5 0 0 1 6 6l-3-3-3 3-3-3z"></path><path d="m5 19-1-1 3-3 1 1z"></path></svg>`
+            },
+            'Creative Workflows': {
+              name: 'Creative Workflows',
+              description: 'Connect creative tasks into clear, repeatable processes from idea to finished result.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="6" height="5" rx="1"></rect><rect x="15" y="15" width="6" height="5" rx="1"></rect><path d="M9 6.5h3a3 3 0 0 1 3 3v5.5"></path></svg>`
+            },
+            'Productivity': {
+              name: 'Productivity',
+              description: 'Use practical digital systems to organize work, save time, and execute more efficiently.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"></path><path d="M5 7h14"></path><path d="M5 17h14"></path></svg>`
+            },
+            'Other': {
+              name: 'Other Skills',
+              description: 'Explore practical digital skills that do not fit another core discipline.',
+              iconSvg: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 12h6"></path><path d="M12 9v6"></path></svg>`
+            }
+          };
+
+          const publishedCategoryNames = new Set(
+            displayResources.map((resource) => resource.data.category?.trim()).filter(Boolean)
+          );
+
+          const skillsDisciplines = SKILL_CATEGORY_ORDER
+            .filter((category) => publishedCategoryNames.has(category))
+            .map((filterCategory) => ({
+              filterCategory,
+              ...SKILL_CATEGORY_PRESENTATION[filterCategory]
+            }));
+          '''
+          s = s[:start] + new + s[end:]
+
+          sec_start = s.index('    <!-- SECTION 4 — SKILLS & DISCIPLINES -->')
+          sec_end = s.index('    <!-- SECTION 5 — HOW IT WORKS -->', sec_start)
+          section = '''    <!-- SECTION 4 — SKILLS & DISCIPLINES -->
+          <section class="home-section skills-disciplines-section" id="what-you-can-build">
+            <div class="skills-disciplines-container">
+              <div class="skills-disciplines-header">
+                <a class="skills-disciplines-header-link" href="/resources/" aria-label="Explore skills and disciplines">
+                  <h2 class="skills-disciplines-title">Skills &amp; Disciplines</h2>
+                  <span class="skills-disciplines-chevron" aria-hidden="true">›</span>
+                </a>
+              </div>
+
+              {skillsDisciplines.length > 0 ? (
+                <div class="skills-disciplines-carousel-wrapper">
+                  <div class="skills-disciplines-carousel-track" role="region" aria-label="Skills and disciplines">
+                    {skillsDisciplines.map((skill) => (
+                      <a
+                        class="skill-discipline-card"
+                        href={`/resources/?category=${encodeURIComponent(skill.filterCategory)}`}
+                        aria-label={`Explore ${skill.name} resources`}
+                      >
+                        <div class="skill-discipline-icon-wrap" aria-hidden="true">
+                          {skill.iconSvg}
+                        </div>
+                        <h3 class="skill-discipline-card-title">{skill.name}</h3>
+                        <p class="skill-discipline-card-desc">{skill.description}</p>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </section>
+
+          '''
+          s = s[:sec_start] + section + s[sec_end:]
+
+          marker = '</style>'
+          override = '''  /* Skills & Disciplines — focused homepage category treatment */
+          .skills-disciplines-section { padding-top: 24px; padding-bottom: 24px; overflow: hidden; }
+          .skills-disciplines-header { margin-bottom: 18px; }
+          .skills-disciplines-header-link { color: #F8FAFC; }
+          :global([data-theme="light"]) .skills-disciplines-header-link,
+          :global(html.light-theme) .skills-disciplines-header-link { color: #0F172A; }
+          .skills-disciplines-header-link:hover,
+          :global([data-theme="light"]) .skills-disciplines-header-link:hover,
+          :global(html.light-theme) .skills-disciplines-header-link:hover { color: inherit; }
+          .skills-disciplines-title { font-family: 'Newsreader', 'Playfair Display', Georgia, serif; font-size: clamp(27px, 3.5vw, 36px); font-weight: 500; letter-spacing: -0.02em; }
+          .skills-disciplines-chevron { color: #64748B; font-size: 26px; }
+          :global([data-theme="light"]) .skills-disciplines-chevron,
+          :global(html.light-theme) .skills-disciplines-chevron { color: #94A3B8; }
+          .skills-disciplines-header-link:hover .skills-disciplines-chevron,
+          :global([data-theme="light"]) .skills-disciplines-header-link:hover .skills-disciplines-chevron,
+          :global(html.light-theme) .skills-disciplines-header-link:hover .skills-disciplines-chevron { color: #64748B; }
+          .skills-disciplines-carousel-track { padding: 2px 2px 10px; gap: 16px; overscroll-behavior-x: contain; }
+          .skill-discipline-card { flex: 0 0 calc((100% - 32px) / 3); min-height: 210px; padding: 22px; border-radius: 18px; background: #101722; border: 1px solid #253041; box-shadow: none; }
+          :global([data-theme="light"]) .skill-discipline-card,
+          :global(html.light-theme) .skill-discipline-card { background: #FFFFFF; border-color: #E2E8F0; box-shadow: 0 4px 16px rgba(15, 23, 42, 0.045); }
+          .skill-discipline-card:hover { transform: translateY(-2px); border-color: #475569; box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18); }
+          :global([data-theme="light"]) .skill-discipline-card:hover,
+          :global(html.light-theme) .skill-discipline-card:hover { border-color: #CBD5E1; box-shadow: 0 8px 22px rgba(15, 23, 42, 0.08); }
+          .skill-discipline-icon-wrap { width: 44px; height: 44px; margin-bottom: 22px; border-radius: 12px; background: #182231; border-color: #2D3949; color: #CBD5E1; }
+          :global([data-theme="light"]) .skill-discipline-icon-wrap,
+          :global(html.light-theme) .skill-discipline-icon-wrap { background: #F8FAFC; border-color: #E2E8F0; color: #475569; }
+          .skill-discipline-card:hover .skill-discipline-icon-wrap { background: #182231; border-color: #2D3949; color: #CBD5E1; }
+          :global([data-theme="light"]) .skill-discipline-card:hover .skill-discipline-icon-wrap,
+          :global(html.light-theme) .skill-discipline-card:hover .skill-discipline-icon-wrap { background: #F8FAFC; border-color: #E2E8F0; color: #475569; }
+          .skill-discipline-card-title { font-family: 'Newsreader', 'Playfair Display', Georgia, serif; font-size: 21px; font-weight: 500; color: #F8FAFC; margin-bottom: 9px; }
+          :global([data-theme="light"]) .skill-discipline-card-title,
+          :global(html.light-theme) .skill-discipline-card-title { color: #0F172A; }
+          .skill-discipline-card:hover .skill-discipline-card-title { color: #F8FAFC; }
+          :global([data-theme="light"]) .skill-discipline-card:hover .skill-discipline-card-title,
+          :global(html.light-theme) .skill-discipline-card:hover .skill-discipline-card-title { color: #0F172A; }
+          .skill-discipline-card-desc { font-size: 14px; line-height: 1.55; color: #94A3B8; }
+          :global([data-theme="light"]) .skill-discipline-card-desc,
+          :global(html.light-theme) .skill-discipline-card-desc { color: #64748B; }
+          @media (max-width: 640px) {
+            .skills-disciplines-section { padding-top: 20px; padding-bottom: 18px; }
+            .skills-disciplines-container { width: calc(100% - 32px); }
+            .skills-disciplines-header { margin-bottom: 14px; }
+            .skills-disciplines-carousel-track { gap: 14px; padding-right: 16vw; }
+            .skill-discipline-card { flex: 0 0 80vw; width: 80vw; min-width: 0; max-width: 320px; min-height: 205px; padding: 20px; }
+            .skill-discipline-icon-wrap { margin-bottom: 18px; }
+          }
+          '''
+          s = s.replace(marker, override + '\n' + marker, 1)
+          p.write_text(s)
+      - name: Verify Astro syntax
+        run: npm ci && npm run build
+
+      - name: Commit homepage change and remove temporary workflow
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/apply-home-category-redesign.yml
+          git add src/pages/index.astro
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Redesign homepage skills and disciplines"
+          git push origin HEAD:main
