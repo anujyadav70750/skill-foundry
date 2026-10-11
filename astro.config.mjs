@@ -42,23 +42,6 @@ export default defineConfig({
   vite: {
     server: {
       hmr: false
-    },
-    plugins: [
-      {
-        name: 'skill-foundry-workflow-ui-fix',
-        transformIndexHtml() {
-          return [
-            {
-              tag: 'script',
-              attrs: {
-                src: '/workflow-ui-fix.js?v=20261012-blueprint-ui-v1',
-                defer: true
-              },
-              injectTo: 'head'
-            }
-          ];
-        }
-      }
-    ]
+    }
   }
 });

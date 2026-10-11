@@ -6086,7 +6086,7 @@ html.light-theme .blueprint-workflow-container {
   max-width: 100% !important;
   background: transparent !important;
   background-color: transparent !important;
-  padding: 32px 32px 24px 32px !important;
+  padding: 18px 32px 20px 32px !important;
   text-align: left !important;
   box-sizing: border-box !important;
 }
@@ -6150,12 +6150,15 @@ html.light-theme .blueprint-integrated-subcopy {
 .blueprint-integrated-divider,
 .testing-1-theme .blueprint-integrated-divider {
   width: 100% !important;
+  max-width: 100% !important;
   height: 1px !important;
-  background: rgba(255, 255, 255, 0.10) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
   border: none !important;
+  position: relative !important;
+  z-index: 5 !important;
 }
 
 :root[data-theme="light"] .blueprint-integrated-divider,
@@ -6166,7 +6169,7 @@ html.light-theme .blueprint-integrated-divider {
 @media (max-width: 640px) {
   .blueprint-integrated-header,
   .testing-1-theme .blueprint-integrated-header {
-    padding: 20px 18px 16px 18px !important;
+    padding: 12px 18px 14px 18px !important;
   }
   .blueprint-integrated-eyebrow {
     font-size: 10px !important;
