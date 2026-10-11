@@ -15,22 +15,23 @@
 
       intro = document.createElement('div');
       intro.className = 'sf-blueprint-intro';
-      heading.parentNode.insertBefore(intro, heading);
-      intro.appendChild(heading);
       const divider = document.createElement('div');
       divider.className = 'sf-blueprint-intro-divider';
       divider.setAttribute('aria-hidden', 'true');
+      intro.appendChild(heading);
       intro.appendChild(divider);
       blueprint.prepend(intro);
-      introSection.style.display = 'none';
     }
+    introSection.classList.add('sf-workflow-intro-hidden');
 
     // Keep the existing expand control and its existing functionality; only move it
-    // into the professional control row. Create the reset control beside it.
+    // into the professional control row. Remove any older duplicate canvas control.
     let expand = blueprint.querySelector('#blueprint-board-expand-toggle');
-    if (!expand) {
-      expand = blueprint.querySelector('.blueprint-inner-expand-control');
-    }
+    if (!expand) expand = blueprint.querySelector('.blueprint-inner-expand-control');
+
+    blueprint.querySelectorAll('.blueprint-canvas-btn').forEach((button) => {
+      if (button !== expand && !button.classList.contains('sf-blueprint-reset')) button.remove();
+    });
 
     let controls = blueprint.querySelector('.sf-blueprint-controls');
     if (!controls) {
@@ -57,20 +58,15 @@
           <path d="M4 13a8.1 8.1 0 0 0 14.9 4A8 8 0 0 0 19 5.8"/>
           <path d="M20 19v-5h-5"/>
         </svg>`;
-      controls.insertBefore(reset, expand || null);
     }
+    controls.insertBefore(reset, expand || null);
 
-    // If an older reset button was injected elsewhere, remove duplicates so only
-    // the two intended controls remain together.
-    blueprint.querySelectorAll('button').forEach((button) => {
-      if (button === expand || button === reset) return;
-      const label = `${button.id || ''} ${button.className || ''} ${button.getAttribute('aria-label') || ''} ${button.title || ''}`.toLowerCase();
-      if (label.includes('reset blueprint') || label.includes('reset view')) button.remove();
-    });
-
-    // Reset behaviour is intentionally not assigned yet; the visual control is being
-    // established first as requested. Prevent accidental form submission.
-    reset.addEventListener('click', (event) => event.preventDefault());
+    // Reset functionality will be wired separately later; for now it is a visual
+    // control only and must not submit a form or change the blueprint.
+    if (reset.dataset.sfResetBound !== 'true') {
+      reset.dataset.sfResetBound = 'true';
+      reset.addEventListener('click', (event) => event.preventDefault());
+    }
   };
 
   const style = document.createElement('style');
@@ -91,7 +87,7 @@
       position:relative!important;
       width:100%!important;
       box-sizing:border-box!important;
-      padding:24px 48px 0!important;
+      padding:22px 48px 0!important;
       margin:0!important;
       background:#000!important;
       border:0!important;
@@ -115,7 +111,7 @@
     .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .sf-blueprint-intro-divider {
       width:calc(100% + 96px)!important;
       height:1px!important;
-      margin:20px 0 0 -48px!important;
+      margin:18px 0 0 -48px!important;
       background:rgba(255,255,255,.12)!important;
       border:0!important;
     }
@@ -129,7 +125,7 @@
       gap:8px!important;
       width:100%!important;
       box-sizing:border-box!important;
-      padding:12px 20px 0!important;
+      padding:10px 20px 0!important;
       margin:0!important;
       background:#000!important;
     }
@@ -172,21 +168,21 @@
     }
 
     .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .blueprint-workflow-stream {
-      padding-top:48px!important;
+      padding-top:46px!important;
     }
 
     @media(max-width:700px){
       .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .sf-blueprint-intro {
-        padding:22px 24px 0!important;
+        padding:20px 24px 0!important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .sf-blueprint-intro-divider {
         width:calc(100% + 48px)!important;
-        margin:18px 0 0 -24px!important;
+        margin:16px 0 0 -24px!important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .sf-blueprint-controls {
-        padding:10px 16px 0!important;
+        padding:8px 16px 0!important;
         gap:8px!important;
       }
 
@@ -201,7 +197,7 @@
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-workflow-ui-fixed .blueprint-workflow-stream {
-        padding-top:46px!important;
+        padding-top:44px!important;
       }
     }
   `;
