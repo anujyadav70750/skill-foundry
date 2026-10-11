@@ -26,7 +26,7 @@ export default defineConfig({
               tag: 'link',
               attrs: {
                 rel: 'stylesheet',
-                href: '/workflow-mobile-fix.css?v=20261011-mobile-blueprint'
+                href: '/workflow-mobile-fix.css?v=20261011-mobile-square-v2'
               },
               injectTo: 'head'
             }
