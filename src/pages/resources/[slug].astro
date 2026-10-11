@@ -795,10 +795,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     /* 4. WORKFLOW BLUEPRINT (CORE CENTERPIECE) */
     .testing-1-theme .blueprint-workflow-container {
-      background: linear-gradient(180deg, rgba(13, 21, 37, 0.92) 0%, rgba(7, 12, 22, 0.98) 100%) !important;
+      background: #000000 !important;
+      background-color: #000000 !important;
       border: 1px solid rgba(59, 130, 246, 0.25) !important;
-      border-radius: 20px !important;
-      padding: 24px 28px !important;
+      border-radius: 24px !important;
+      padding: 32px 32px 36px !important;
       box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
       backdrop-filter: blur(20px) !important;
       position: relative !important;
@@ -809,9 +810,200 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     }
     @media (max-width: 640px) {
       .testing-1-theme .blueprint-workflow-container {
-        padding: 20px 18px !important;
+        padding: 20px 16px 24px !important;
         border-radius: 18px !important;
       }
+    }
+
+    /* Integrated Header inside Single Continuous Blueprint Container */
+    .blueprint-integrated-header {
+      position: relative !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 0 16px 0 !important;
+      text-align: left !important;
+      box-sizing: border-box !important;
+    }
+
+    .blueprint-integrated-eyebrow {
+      display: inline-flex !important;
+      align-items: center !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+      color: #CBD5E1 !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      font: 700 11px/1 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.1em !important;
+      text-transform: uppercase !important;
+      border-radius: 9999px !important;
+      padding: 5px 14px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .blueprint-integrated-title {
+      font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+      font-size: clamp(22px, 3.2vw, 32px) !important;
+      font-weight: 500 !important;
+      line-height: 1.2 !important;
+      color: #FFFFFF !important;
+      margin: 0 0 8px 0 !important;
+      letter-spacing: -0.015em !important;
+      text-align: left !important;
+    }
+
+    .blueprint-integrated-subcopy {
+      color: #94A3B8 !important;
+      font-size: 14px !important;
+      line-height: 1.5 !important;
+      margin: 0 !important;
+      text-align: left !important;
+    }
+
+    :root[data-theme="light"] .blueprint-integrated-eyebrow,
+    html.light-theme .blueprint-integrated-eyebrow {
+      background: #F1F5F9 !important;
+      color: #334155 !important;
+      border-color: #CBD5E1 !important;
+    }
+
+    :root[data-theme="light"] .blueprint-integrated-title,
+    html.light-theme .blueprint-integrated-title {
+      color: #0F172A !important;
+    }
+
+    :root[data-theme="light"] .blueprint-integrated-subcopy,
+    html.light-theme .blueprint-integrated-subcopy {
+      color: #475569 !important;
+    }
+
+    /* Subtle Horizontal Divider Line */
+    .blueprint-integrated-divider {
+      width: 100% !important;
+      height: 1px !important;
+      background: rgba(255, 255, 255, 0.10) !important;
+      margin: 0 0 28px 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    :root[data-theme="light"] .blueprint-integrated-divider,
+    html.light-theme .blueprint-integrated-divider {
+      background: #E2E8F0 !important;
+    }
+
+    @media (max-width: 640px) {
+      .blueprint-integrated-header {
+        padding: 0 0 12px 0 !important;
+      }
+      .blueprint-integrated-eyebrow {
+        font-size: 10px !important;
+        padding: 4px 12px !important;
+        margin-bottom: 10px !important;
+      }
+      .blueprint-integrated-title {
+        font-size: clamp(20px, 5.5vw, 24px) !important;
+        margin-bottom: 6px !important;
+      }
+      .blueprint-integrated-subcopy {
+        font-size: 13px !important;
+      }
+      .blueprint-integrated-divider {
+        margin: 0 0 20px 0 !important;
+      }
+    }
+
+    /* Canvas Top Right Controls Bar (Reset on left, Expand on right) */
+    .blueprint-canvas-controls {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-end !important;
+      gap: 8px !important;
+      width: 100% !important;
+      margin: 0 0 20px 0 !important;
+      padding: 0 !important;
+      position: relative !important;
+      z-index: 20 !important;
+    }
+
+    .blueprint-canvas-btn,
+    .blueprint-inner-expand-control,
+    .blueprint-reset-control,
+    .testing-1-theme .blueprint-canvas-btn,
+    .testing-1-theme .blueprint-inner-expand-control,
+    .testing-1-theme .blueprint-reset-control {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      left: auto !important;
+      bottom: auto !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      min-height: 32px !important;
+      max-width: 32px !important;
+      max-height: 32px !important;
+      border-radius: 8px !important;
+      box-sizing: border-box !important;
+      cursor: pointer !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .blueprint-canvas-btn .canvas-btn-icon,
+    .blueprint-inner-expand-control .canvas-btn-icon,
+    .blueprint-reset-control .canvas-btn-icon {
+      width: 15px !important;
+      height: 15px !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Dark theme control buttons */
+    :root:not([data-theme="light"]) .blueprint-canvas-btn,
+    :root[data-theme="dark"] .blueprint-canvas-btn,
+    html:not(.light-theme) .blueprint-canvas-btn,
+    :root:not([data-theme="light"]) .testing-1-theme .blueprint-canvas-btn,
+    :root[data-theme="dark"] .testing-1-theme .blueprint-canvas-btn,
+    html:not(.light-theme) .testing-1-theme .blueprint-canvas-btn {
+      background: rgba(30, 41, 59, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.14) !important;
+      color: #94A3B8 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    :root:not([data-theme="light"]) .blueprint-canvas-btn:hover,
+    :root[data-theme="dark"] .blueprint-canvas-btn:hover,
+    html:not(.light-theme) .blueprint-canvas-btn:hover,
+    :root:not([data-theme="light"]) .testing-1-theme .blueprint-canvas-btn:hover,
+    :root[data-theme="dark"] .testing-1-theme .blueprint-canvas-btn:hover,
+    html:not(.light-theme) .testing-1-theme .blueprint-canvas-btn:hover {
+      background: rgba(51, 65, 85, 0.95) !important;
+      border-color: rgba(56, 189, 248, 0.5) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Light theme control buttons */
+    :root[data-theme="light"] .blueprint-canvas-btn,
+    html.light-theme .blueprint-canvas-btn,
+    :root[data-theme="light"] .testing-1-theme .blueprint-canvas-btn,
+    html.light-theme .testing-1-theme .blueprint-canvas-btn {
+      background: #FFFFFF !important;
+      border: 1px solid #CBD5E1 !important;
+      color: #475569 !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06) !important;
+    }
+
+    :root[data-theme="light"] .blueprint-canvas-btn:hover,
+    html.light-theme .blueprint-canvas-btn:hover,
+    :root[data-theme="light"] .testing-1-theme .blueprint-canvas-btn:hover,
+    html.light-theme .testing-1-theme .blueprint-canvas-btn:hover {
+      background: #F1F5F9 !important;
+      color: #0F172A !important;
+      border-color: #94A3B8 !important;
+      transform: translateY(-1px) !important;
     }
     .testing-1-theme .blueprint-header-capsule {
       position: absolute !important;
@@ -1166,7 +1358,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       window.addEventListener('pageshow', resetFreshResourcePosition);
     })();
   </script>
-  <div class="testing-1-theme resource-editorial-layout">
+  <div class="testing-1-theme resource-editorial-layout" data-resource-slug={slug}>
     <article class="resource-page">
       <section class="resource-hero-unified-section">
         <div class="container narrow hero-unified-header">
@@ -1256,36 +1448,63 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         </section>
       )}
 
-      {/* 1. WORKFLOW BLUEPRINT INTRO (NORMAL SECTION ABOVE WORKFLOW) */}
+      {/* SINGLE CONTINUOUS WORKFLOW BLUEPRINT CONTAINER */}
       {workflowSteps.length > 0 && (
-        <section class="resource-editorial-section workflow-intro-section" id="workflow">
-          <div class="editorial-heading">
-            <span class="editorial-eyebrow">WORKFLOW BLUEPRINT</span>
-            <h2>{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
-            <p class="editorial-subcopy">Tap a step to see the inputs, prompt, settings and result.</p>
+        <section
+          class:list={[
+            'blueprint-workflow-container',
+            'blueprint-inner-workflow-container',
+            { 'workflow-resource-knight': slug === 'cinematic-medieval-knight-video-google-flow' }
+          ]}
+          id="blueprint-inner-workflow-tray"
+          data-resource-slug={slug}
+          aria-label="Workflow Blueprint sequence"
+        >
+          {/* Integrated Header inside single continuous section */}
+          <div class="blueprint-integrated-header" id="workflow">
+            <span class="blueprint-integrated-eyebrow">WORKFLOW BLUEPRINT</span>
+            <h2 class="blueprint-integrated-title">{data.workflowTitle || (isTesting1 ? "Build the final video step by step" : "Follow the workflow step by step")}</h2>
+            <p class="blueprint-integrated-subcopy">Tap a step to see the inputs, prompt, settings and result.</p>
           </div>
-        </section>
-      )}
 
-      {/* 2. DEDICATED LARGE WORKFLOW CONTAINER */}
-      {workflowSteps.length > 0 && (
-        <section class="blueprint-workflow-container blueprint-inner-workflow-container" id="blueprint-inner-workflow-tray" aria-label="Workflow Blueprint sequence">
-          <button
-            type="button"
-            class="blueprint-inner-expand-control"
-            id="blueprint-board-expand-toggle"
-            aria-label="Toggle expand all workflow steps"
-            title="Toggle expand all workflow steps"
-          >
-            <svg class="inner-expand-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <polyline points="9 21 3 21 3 15"></polyline>
-              <line x1="21" y1="3" x2="14" y2="10"></line>
-              <line x1="3" y1="21" x2="10" y2="14"></line>
-            </svg>
-          </button>
+          {/* Thin subtle horizontal divider */}
+          <div class="blueprint-integrated-divider" aria-hidden="true"></div>
 
-          <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+          {/* Black Workflow Canvas Workspace */}
+          <div class="blueprint-canvas-workspace">
+            {/* Workflow Canvas Top Controls (Reset on Left, Expand on Right) */}
+            <div class="blueprint-canvas-controls">
+              <button
+                type="button"
+                class="blueprint-canvas-btn blueprint-reset-control"
+                id="blueprint-board-reset-toggle"
+                aria-label="Reset workflow steps"
+                title="Reset workflow steps"
+              >
+                <svg class="canvas-btn-icon reset-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M 21 12 a 9 9 0 1 1 -9 -9 a 9.75 9.75 0 0 1 6.74 2.74 L 21 8"></path>
+                  <polyline points="21 3 21 8 16 8"></polyline>
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                class="blueprint-canvas-btn blueprint-inner-expand-control"
+                id="blueprint-board-expand-toggle"
+                aria-label="Toggle expand all workflow steps"
+                title="Toggle expand all workflow steps"
+              >
+                <svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="15 3 21 3 21 9"></polyline>
+                  <polyline points="9 21 3 21 3 15"></polyline>
+                  <line x1="21" y1="3" x2="14" y2="10"></line>
+                  <line x1="3" y1="21" x2="10" y2="14"></line>
+                </svg>
+              </button>
+            </div>
+
+          <div class="blueprint-workflow-scroll-pane" id="blueprint-workflow-scroll-pane">
+            <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
             <!-- CONTINUOUS PROCESS: START -->
             <div class="workflow-process-terminal workflow-process-start" aria-label="Workflow Start">
               <span class="workflow-process-pill">START</span>
@@ -1868,7 +2087,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
               <span class="workflow-process-pill">END</span>
             </div>
           </div>
-        </section>
+          </div>
+        </div>
+      </section>
       )}
 
       {/* BETTER RESULTS */}
@@ -2063,6 +2284,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             if (body) body.hidden = true;
           }
         });
+
+        // Toggle Expand/Collapse icon & accessibility attributes
+        const expandSvg = boardExpandBtn.querySelector('svg');
+        if (expandSvg) {
+          if (shouldExpandAll) {
+            // All steps are expanded -> show Collapse symbol
+            expandSvg.innerHTML = `<polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line>`;
+            boardExpandBtn.setAttribute('title', 'Collapse all workflow steps');
+            boardExpandBtn.setAttribute('aria-label', 'Collapse all workflow steps');
+          } else {
+            // Steps are collapsed -> show Expand symbol
+            expandSvg.innerHTML = `<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>`;
+            boardExpandBtn.setAttribute('title', 'Expand all workflow steps');
+            boardExpandBtn.setAttribute('aria-label', 'Expand all workflow steps');
+          }
+        }
       });
     }
 
@@ -3738,9 +3975,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* Dedicated Final RESULT Block */
       .blueprint-result-block {
         position: relative;
-        width: 100%;
+        width: fit-content;
+        max-width: min(576px, 100%);
         box-sizing: border-box;
-        margin: 0;
+        margin: 0 auto;
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
         border-radius: 16px;
@@ -3760,10 +3998,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 9.5px;
         font-weight: 800;
         letter-spacing: 0.1em;
-        padding: 0 14px;
+        padding: 0 16px;
         height: 25px;
         min-height: 25px;
-        min-width: 70px;
+        min-width: 76px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -3779,18 +4017,32 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         align-items: center;
       }
 
+      .blueprint-result-card-scale-wrapper {
+        width: 100%;
+        max-width: 540px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+        left: 0;
+        right: 0;
+      }
+
       @media (max-width: 639.98px) {
         .blueprint-result-card-scale-wrapper {
           --card-base-w: 330px;
           --card-base-h: 596px;
-          --card-scale-x: 0.89;
-          --card-scale-y: 0.81;
+          --card-scale-x: 0.78;
+          --card-scale-y: 0.71;
           width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
           height: calc(var(--card-base-h) * var(--card-scale-y)) !important;
           display: block !important;
           margin: 0 auto !important;
           position: relative !important;
-          left: -3px !important;
+          left: 0 !important;
+          right: 0 !important;
           flex-shrink: 0 !important;
           overflow: visible !important;
         }
@@ -4595,7 +4847,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       /* 2. BLUEPRINT — COMPLETE DARK REDESIGN */
       .testing-1-theme .blueprint-workflow-container {
         margin-top: 48px !important;
-        background: linear-gradient(180deg, rgba(12, 19, 34, 0.96) 0%, rgba(7, 11, 20, 0.98) 100%) !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
         border-radius: 26px !important;
         padding: 42px 28px 32px !important;
@@ -4752,7 +5005,52 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
       }
 
-      .testing-1-theme .blueprint-step-capsule {
+      /* Result card: outer boundary tightened to snugly cover embed, title, and description like step sections */
+      .testing-1-theme .blueprint-result-block,
+      .testing-1-theme #workflow-final-result {
+        grid-column: 1 / span 2 !important;
+        width: fit-content !important;
+        max-width: min(576px, 100%) !important;
+        justify-self: center !important;
+        position: relative !important;
+        z-index: 6 !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        background: #0A1220 !important;
+        border: 1px solid rgba(94, 164, 255, 0.20) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5) !important;
+        overflow: visible !important;
+      }
+
+      .testing-1-theme .blueprint-result-block .blueprint-result-inner,
+      .testing-1-theme #workflow-final-result .blueprint-result-inner {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 20px 16px 16px !important;
+        gap: 14px !important;
+        box-sizing: border-box !important;
+      }
+
+      .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper,
+      .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper {
+        margin: 0 auto !important;
+        left: 0 !important;
+        right: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-result-block .video-frame,
+      .testing-1-theme #workflow-final-result .video-frame {
+        margin: 0 auto !important;
+        left: 0 !important;
+        right: 0 !important;
+      }
+
+      .testing-1-theme .blueprint-step-capsule,
+      .testing-1-theme .blueprint-result-capsule,
+      .testing-1-theme .blueprint-result-block .blueprint-result-capsule,
+      .testing-1-theme .blueprint-result-block .blueprint-step-capsule {
         position: absolute !important;
         top: 0 !important;
         left: 50% !important;
@@ -4761,22 +5059,45 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border: 1px solid rgba(255, 255, 255, 0.12) !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
         color: #CBD5E1 !important;
-        font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
-        font-size: 10px !important;
-        font-weight: 700 !important;
-        letter-spacing: 0.08em !important;
-        line-height: 1.1 !important;
-        text-transform: uppercase !important;
         border-radius: 9999px !important;
-        padding: 2.5px 11px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 76px !important;
+        min-width: 76px !important;
+        max-width: 76px !important;
+        height: 25px !important;
+        min-height: 25px !important;
+        max-height: 25px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
         z-index: 10 !important;
         white-space: nowrap !important;
       }
 
-      .testing-1-theme .blueprint-step-capsule span {
+      .testing-1-theme .blueprint-step-capsule span,
+      .testing-1-theme .blueprint-result-capsule span,
+      .testing-1-theme .blueprint-result-block .blueprint-result-capsule span,
+      .testing-1-theme .blueprint-result-block .blueprint-step-capsule span {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
         color: #CBD5E1 !important;
+        font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
+        font-size: 9.5px !important;
         font-weight: 700 !important;
-        line-height: 1.1 !important;
+        letter-spacing: 0.08em !important;
+        text-indent: 0.08em !important;
+        line-height: 1 !important;
+        transform: translateY(0.5px) !important;
+        text-transform: uppercase !important;
       }
 
       .testing-1-theme .blueprint-step-title {
@@ -5583,24 +5904,295 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
 
         .testing-1-theme .blueprint-workflow-container {
-          padding: 32px 14px 22px !important;
+          padding: 36px 12px 28px !important;
           border-radius: 20px !important;
           margin-top: 40px !important;
+          overflow: hidden !important;
+          box-sizing: border-box !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .testing-1-theme .blueprint-workflow-stream {
+          position: relative !important;
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          column-gap: 12px !important;
+          row-gap: 38px !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+          padding: 0 !important;
+          overflow-x: hidden !important;
+        }
+
+        .testing-1-theme .blueprint-step-wrapper {
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="1"] {
+          grid-column: 1 !important;
+          grid-row: 1 !important;
+          width: 100% !important;
+          justify-self: stretch !important;
+        }
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="3"] {
+          grid-column: 2 !important;
+          grid-row: 1 !important;
+          width: 100% !important;
+          justify-self: stretch !important;
+        }
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="2"] {
+          grid-column: 1 !important;
+          grid-row: 2 !important;
+          width: 100% !important;
+          justify-self: stretch !important;
+        }
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="4"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 3 !important;
+          width: calc((100% - 12px) / 2) !important;
+          max-width: calc((100% - 12px) / 2) !important;
+          justify-self: center !important;
+          margin: 0 auto !important;
+        }
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="5"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 4 !important;
+          width: calc((100% - 12px) / 2) !important;
+          max-width: calc((100% - 12px) / 2) !important;
+          justify-self: center !important;
+          margin: 0 auto !important;
+        }
+        .testing-1-theme .blueprint-step-wrapper[data-blueprint-step="6"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 5 !important;
+          width: calc((100% - 12px) / 2) !important;
+          max-width: calc((100% - 12px) / 2) !important;
+          justify-self: center !important;
+          margin: 0 auto !important;
+        }
+
+        /* Specific mobile dependency-driven positioning for Cinematic Medieval Knight Video — Google Flow */
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight,
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint {
+          position: relative !important;
+          overflow-x: hidden !important;
+          overflow-y: visible !important;
+        }
+
+        /* Fixed Expand Button in top-right corner of blueprint section */
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-inner-expand-control,
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container .blueprint-inner-expand-control {
+          position: absolute !important;
+          top: 10px !important;
+          right: 12px !important;
+          z-index: 50 !important;
+          pointer-events: auto !important;
+        }
+
+        /* Scrollable blueprint workflow pane */
+        .testing-1-theme .blueprint-workflow-scroll-pane,
+        .blueprint-workflow-scroll-pane {
+          position: relative !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          overflow-x: auto !important;
+          overflow-y: visible !important;
+          -webkit-overflow-scrolling: touch !important;
+          scrollbar-width: none !important;
+          -ms-overflow-style: none !important;
+          touch-action: pan-x pan-y !important;
+        }
+        .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
+        .blueprint-workflow-scroll-pane::-webkit-scrollbar {
+          display: none !important;
+          width: 0 !important;
+          height: 0 !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream,
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-workflow-stream,
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream {
+          position: relative !important;
+          display: grid !important;
+          grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          column-gap: 52px !important;
+          row-gap: 0 !important;
+          min-width: 440px !important;
+          width: 100% !important;
+          padding: 38px 18px 36px !important;
+          box-sizing: border-box !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="1"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="1"],
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 1 !important;
+          width: calc((100% - 52px) / 2) !important;
+          max-width: calc((100% - 52px) / 2) !important;
+          justify-self: center !important;
+          margin: 0 auto !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="2"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="2"],
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"] {
+          grid-column: 1 !important;
+          grid-row: 2 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          justify-self: stretch !important;
+          margin-top: 54px !important;
+          margin-bottom: 0 !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="3"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="3"],
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"] {
+          grid-column: 2 !important;
+          grid-row: 2 !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          justify-self: stretch !important;
+          margin-top: 54px !important;
+          margin-bottom: 0 !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="4"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="4"],
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 3 !important;
+          width: calc((100% - 52px) / 2) !important;
+          max-width: calc((100% - 52px) / 2) !important;
+          justify-self: center !important;
+          margin: 88px auto 0 !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="5"],
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="5"],
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"] {
+          grid-column: 1 / span 2 !important;
+          grid-row: 4 !important;
+          width: calc((100% - 52px) / 2) !important;
+          max-width: calc((100% - 52px) / 2) !important;
+          justify-self: center !important;
+          margin: 48px auto 0 !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint[data-resource-slug="cinematic-medieval-knight-video-google-flow"] #workflow-final-result,
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint.workflow-resource-knight #workflow-final-result,
+        [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result {
+          grid-column: 1 / span 2 !important;
+          grid-row: 5 !important;
+          width: fit-content !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          justify-self: center !important;
+          margin: 48px auto 0 !important;
+          box-sizing: border-box !important;
+          overflow: visible !important;
         }
 
         .testing-1-theme .blueprint-step-container {
-          border-radius: 14px !important;
-          margin-top: 20px !important;
-          margin-bottom: 6px !important;
-          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          aspect-ratio: 1 / 1 !important;
+          height: auto !important;
+          max-height: none !important;
+          min-height: 0 !important;
+          border-radius: 16px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          position: relative !important;
+          box-sizing: border-box !important;
+          overflow: visible !important;
+          background: linear-gradient(180deg, #0D1525 0%, #09111F 100%) !important;
+          border: 1px solid rgba(94, 164, 255, 0.25) !important;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4) !important;
         }
 
-        .testing-1-theme .blueprint-step-capsule {
-          padding: 2px 9px !important;
-          font-size: 9px !important;
-          letter-spacing: 0.07em !important;
+        .testing-1-theme .blueprint-step-capsule,
+        .testing-1-theme .blueprint-result-capsule,
+        .testing-1-theme .blueprint-result-block .blueprint-result-capsule,
+        .testing-1-theme .blueprint-result-block .blueprint-step-capsule {
+          position: absolute !important;
+          top: 0 !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          z-index: 12 !important;
+          white-space: nowrap !important;
+          width: 68px !important;
+          min-width: 68px !important;
+          max-width: 68px !important;
+          padding: 0 !important;
+          margin: 0 !important;
+          height: 18px !important;
+          min-height: 18px !important;
+          max-height: 18px !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          text-align: center !important;
+          border-radius: 9999px !important;
+          background: #0A1220 !important;
+          border: 1px solid rgba(94, 164, 255, 0.38) !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+          box-sizing: border-box !important;
+        }
+
+        .testing-1-theme .blueprint-step-capsule span,
+        .testing-1-theme .blueprint-result-capsule span,
+        .testing-1-theme .blueprint-result-block .blueprint-result-capsule span,
+        .testing-1-theme .blueprint-result-block .blueprint-step-capsule span {
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          text-align: center !important;
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          font-family: 'JetBrains Mono', monospace !important;
+          font-size: 8.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.06em !important;
+          text-indent: 0.06em !important;
           line-height: 1 !important;
-          border-width: 1px !important;
+          transform: translateY(0.75px) !important;
+          color: #E2E8F0 !important;
+          text-transform: uppercase !important;
+        }
+
+        :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule,
+        html.light-theme .testing-1-theme .blueprint-step-capsule,
+        :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule,
+        html.light-theme .testing-1-theme .blueprint-result-capsule,
+        :root[data-theme="light"] .testing-1-theme .blueprint-result-block .blueprint-result-capsule,
+        html.light-theme .testing-1-theme .blueprint-result-block .blueprint-result-capsule {
+          background: #FFFFFF !important;
+          border: 1px solid #CBD5E1 !important;
+          box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+        }
+
+        :root[data-theme="light"] .testing-1-theme .blueprint-step-capsule span,
+        html.light-theme .testing-1-theme .blueprint-step-capsule span,
+        :root[data-theme="light"] .testing-1-theme .blueprint-result-capsule span,
+        html.light-theme .testing-1-theme .blueprint-result-capsule span,
+        :root[data-theme="light"] .testing-1-theme .blueprint-result-block .blueprint-result-capsule span,
+        html.light-theme .testing-1-theme .blueprint-result-block .blueprint-result-capsule span {
+          color: #475569 !important;
         }
 
         .testing-1-theme .blueprint-step-container.is-collapsed {
@@ -5608,81 +6200,224 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           min-height: unset !important;
         }
 
-        .testing-1-theme .blueprint-step-container.is-expanded {
-          padding: 0 !important;
-        }
-
+        /* Header trigger button filling square card with controlled internal margins: generous top clearance prevents capsule touching image */
         .testing-1-theme .blueprint-step-header {
-          padding: 15px 12px 13px 12px !important;
-          gap: 10px !important;
-          border-radius: 14px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          justify-content: flex-start !important;
+          gap: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          max-height: 100% !important;
+          min-height: 0 !important;
+          padding: 20px 7px 5px 7px !important;
+          box-sizing: border-box !important;
+          background: transparent !important;
+          border: none !important;
+          cursor: pointer !important;
+          text-align: left !important;
+          overflow: hidden !important;
+          border-radius: 18px !important;
         }
 
         .testing-1-theme .step-header-thumb-box {
-          flex: 0 0 108px !important;
-          width: 108px !important;
-          height: 60.75px !important;
-          min-width: 108px !important;
-          max-width: 108px !important;
-          min-height: 60.75px !important;
-          max-height: 60.75px !important;
+          position: relative !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
           aspect-ratio: 16 / 9 !important;
-          border-radius: 8px !important;
+          height: auto !important;
+          min-height: 0 !important;
+          max-height: none !important;
+          flex: 0 0 auto !important;
+          border-radius: 7px !important;
+          overflow: hidden !important;
+          background: #060B14 !important;
+          border: 1px solid rgba(255, 255, 255, 0.08) !important;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
+          box-sizing: border-box !important;
+          align-self: center !important;
+        }
+
+        .testing-1-theme .step-header-thumb-main {
+          position: absolute !important;
+          inset: 0 !important;
+          width: 100% !important;
+          height: 100% !important;
+          aspect-ratio: 16 / 9 !important;
+          object-fit: cover !important;
+          display: block !important;
+          border-radius: 7px !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .testing-1-theme .step-header-thumb-backdrop,
+        .testing-1-theme .step-header-thumb-overlay {
+          display: none !important;
+        }
+
+        .testing-1-theme .step-header-thumb-play {
+          display: none !important;
         }
 
         .testing-1-theme .step-header-info {
-          height: 60.75px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: stretch !important;
+          gap: 1.5px !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          margin: 4px 0 0 0 !important;
+          padding: 0 !important;
+          flex: 1 1 auto !important;
+          min-height: 0 !important;
+          height: auto !important;
+          overflow: hidden !important;
+          box-sizing: border-box !important;
+          text-align: left !important;
+        }
+
+        .testing-1-theme .step-header-title-row {
+          width: 100% !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          display: block !important;
+          overflow: hidden !important;
+          text-align: left !important;
         }
 
         .testing-1-theme .step-header-title {
-          font-size: 12.5px !important;
-          line-height: 1.2 !important;
-          margin-bottom: 2px !important;
+          display: block !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          font-size: clamp(10px, 2.7vw, 11.5px) !important;
+          font-weight: 700 !important;
+          line-height: 1.25 !important;
           color: #F8FAFC !important;
+          white-space: nowrap !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          text-align: left !important;
         }
 
         :global([data-theme="light"]) .testing-1-theme .step-header-title,
         :global(html.light-theme) .testing-1-theme .step-header-title {
-          color: #081534 !important;
+          color: #F8FAFC !important;
         }
 
         .testing-1-theme .step-header-purpose {
-          font-size: 10.5px !important;
+          display: -webkit-box !important;
+          -webkit-line-clamp: 2 !important;
+          -webkit-box-orient: vertical !important;
+          overflow: hidden !important;
+          text-overflow: ellipsis !important;
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          font-size: clamp(8px, 2.1vw, 9.5px) !important;
           line-height: 1.25 !important;
-          color: #CBD5E1 !important;
+          color: #94A3B8 !important;
+          word-break: break-word !important;
+          text-align: left !important;
         }
 
         :global([data-theme="light"]) .testing-1-theme .step-header-purpose,
         :global(html.light-theme) .testing-1-theme .step-header-purpose {
-          color: #52637A !important;
+          color: #94A3B8 !important;
         }
 
         .testing-1-theme .step-expand-chevron {
-          width: 28px !important;
-          height: 28px !important;
-          min-width: 28px !important;
-          min-height: 28px !important;
+          display: none !important;
         }
 
-        .testing-1-theme .step-expand-chevron .step-chevron-icon {
-          width: 15px !important;
-          height: 15px !important;
+        .testing-1-theme .blueprint-step-wrapper:has(.blueprint-step-container.is-expanded) {
+          grid-column: 1 / span 2 !important;
+        }
+        .testing-1-theme .blueprint-step-container.is-expanded {
+          aspect-ratio: auto !important;
+          height: auto !important;
+        }
+        .testing-1-theme .blueprint-step-container.is-expanded .blueprint-step-header {
+          height: auto !important;
+          max-height: none !important;
         }
 
+        .testing-1-theme #workflow-final-result,
         .testing-1-theme .blueprint-result-block {
+          grid-column: 1 / span 2 !important;
+          grid-row: auto !important;
+          width: fit-content !important;
+          min-width: 0 !important;
+          max-width: 100% !important;
+          justify-self: center !important;
+          margin: 48px auto 0 !important;
           padding: 0 !important;
-          border-radius: 20px !important;
-          margin-top: 20px !important;
+          border-radius: 16px !important;
+          box-sizing: border-box !important;
+          overflow: visible !important;
+        }
+
+        .testing-1-theme #workflow-final-result .blueprint-result-inner,
+        .testing-1-theme .blueprint-result-block .blueprint-result-inner {
+          width: 100% !important;
+          max-width: 100% !important;
+          padding: 16px 8px 12px !important;
+          gap: 10px !important;
+          box-sizing: border-box !important;
+        }
+
+        .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper,
+        .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper {
+          --card-base-w: 330px !important;
+          --card-base-h: 596px !important;
+          --card-scale-x: 0.78 !important;
+          --card-scale-y: 0.71 !important;
+          width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
+          height: calc(var(--card-base-h) * var(--card-scale-y)) !important;
+          margin: 0 auto !important;
+          left: 0 !important;
+          right: 0 !important;
+        }
+
+        .testing-1-theme .blueprint-result-block .blueprint-result-capsule,
+        .testing-1-theme #workflow-final-result .blueprint-result-capsule {
+          width: 58px !important;
+          min-width: 58px !important;
+          max-width: 58px !important;
+          height: 16px !important;
+          min-height: 16px !important;
+          max-height: 16px !important;
+        }
+
+        .testing-1-theme .blueprint-result-block .blueprint-result-capsule span,
+        .testing-1-theme #workflow-final-result .blueprint-result-capsule span {
+          font-size: 7.5px !important;
+          letter-spacing: 0.05em !important;
+          text-indent: 0.05em !important;
+          transform: translateY(0.5px) !important;
         }
 
         .testing-1-theme .blueprint-final-title {
-          font-size: 15.5px !important;
+          font-size: 13.5px !important;
           margin: 0 !important;
+          line-height: 1.25 !important;
         }
 
         .testing-1-theme .blueprint-final-desc {
-          font-size: 12.5px !important;
+          font-size: 11px !important;
           margin: 0 !important;
+          line-height: 1.35 !important;
         }
 
         .testing-1-theme .blueprint-step-body {
