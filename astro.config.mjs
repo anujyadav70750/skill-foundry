@@ -16,6 +16,23 @@ export default defineConfig({
   vite: {
     server: {
       hmr: false
-    }
+    },
+    plugins: [
+      {
+        name: 'skill-foundry-mobile-workflow-css',
+        transformIndexHtml() {
+          return [
+            {
+              tag: 'link',
+              attrs: {
+                rel: 'stylesheet',
+                href: '/workflow-mobile-fix.css?v=20261011-mobile-blueprint'
+              },
+              injectTo: 'head'
+            }
+          ];
+        }
+      }
+    ]
   }
 });
