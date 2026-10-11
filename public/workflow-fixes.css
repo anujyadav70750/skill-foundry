@@ -6149,16 +6149,18 @@ html.light-theme .blueprint-integrated-subcopy {
 /* 2. Thin Horizontal Divider Line */
 .blueprint-integrated-divider,
 .testing-1-theme .blueprint-integrated-divider {
+  display: block !important;
   width: 100% !important;
   max-width: 100% !important;
+  min-width: 100% !important;
   height: 1px !important;
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.14) !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
   border: none !important;
   position: relative !important;
-  z-index: 5 !important;
+  z-index: 10 !important;
 }
 
 :root[data-theme="light"] .blueprint-integrated-divider,
