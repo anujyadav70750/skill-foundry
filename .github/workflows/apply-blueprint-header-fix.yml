@@ -1,0 +1,138 @@
+name: Apply Blueprint Header Fix
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: "!contains(github.event.head_commit.message, '[blueprint-header-fix]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Apply resource-4 blueprint header overrides
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('public/workflow-fixes.css')
+          text = path.read_text(encoding='utf-8')
+          marker = '/* RESOURCE 4 BLUEPRINT HEADER FIX - 2026-10-12 */'
+          if marker in text:
+              raise SystemExit(0)
+
+          css = r'''
+
+          /* RESOURCE 4 BLUEPRINT HEADER FIX - 2026-10-12 */
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-section {
+            position: relative !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-header {
+            box-sizing: border-box !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 24px 24px 18px !important;
+            background: inherit !important;
+            border: 0 !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-eyebrow {
+            margin-top: 0 !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-divider {
+            display: block !important;
+            width: 100% !important;
+            height: 1px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            background: rgba(148, 163, 184, 0.18) !important;
+            border: 0 !important;
+            box-sizing: border-box !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-workspace {
+            position: relative !important;
+            box-sizing: border-box !important;
+            margin-top: 0 !important;
+            padding-top: 72px !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls {
+            position: absolute !important;
+            top: 18px !important;
+            right: 20px !important;
+            left: auto !important;
+            z-index: 20 !important;
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
+            width: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > button,
+          [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > a {
+            position: static !important;
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px !important;
+            min-height: 52px !important;
+            max-width: 52px !important;
+            max-height: 52px !important;
+            flex: 0 0 52px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+          }
+
+          @media (max-width: 700px) {
+            [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-header {
+              padding: 18px 20px 14px !important;
+            }
+
+            [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-workspace {
+              padding-top: 66px !important;
+            }
+
+            [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls {
+              top: 14px !important;
+              right: 16px !important;
+              gap: 7px !important;
+            }
+
+            [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > button,
+            [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > a {
+              width: 46px !important;
+              height: 46px !important;
+              min-width: 46px !important;
+              min-height: 46px !important;
+              max-width: 46px !important;
+              max-height: 46px !important;
+              flex-basis: 46px !important;
+            }
+          }
+          '''
+
+          path.write_text(text.rstrip() + css + '\n', encoding='utf-8')
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/workflow-fixes.css
+          git diff --cached --quiet && exit 0
+          git commit -m "fix: refine resource 4 blueprint header [blueprint-header-fix]"
+          git push
