@@ -6050,10 +6050,10 @@ html.light-theme .related-shelf-action {
 .testing-1-theme .blueprint-workflow-container,
 .testing-1-theme .blueprint-inner-workflow-container,
 .blueprint-workflow-container {
-  background: transparent !important;
-  background-color: transparent !important;
+  background: #030712 !important;
+  background-color: #030712 !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 24px !important;
+  border-radius: 20px !important;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   overflow: hidden !important;
   padding: 0 !important;
@@ -6074,6 +6074,8 @@ html.light-theme .related-shelf-action {
 
 :root[data-theme="light"] .blueprint-workflow-container,
 html.light-theme .blueprint-workflow-container {
+  background: #FFFFFF !important;
+  background-color: #FFFFFF !important;
   border-color: #CBD5E1 !important;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
 }
@@ -6086,7 +6088,7 @@ html.light-theme .blueprint-workflow-container {
   max-width: 100% !important;
   background: transparent !important;
   background-color: transparent !important;
-  padding: 20px 28px 18px 28px !important;
+  padding: 22px 28px 18px 28px !important;
   text-align: left !important;
   box-sizing: border-box !important;
 }
@@ -6154,7 +6156,7 @@ html.light-theme .blueprint-integrated-subcopy {
   max-width: 100% !important;
   min-width: 100% !important;
   height: 1px !important;
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: rgba(255, 255, 255, 0.12) !important;
   margin: 0 !important;
   padding: 0 !important;
   box-sizing: border-box !important;
@@ -6171,7 +6173,7 @@ html.light-theme .blueprint-integrated-divider {
 @media (max-width: 640px) {
   .blueprint-integrated-header,
   .testing-1-theme .blueprint-integrated-header {
-    padding: 12px 18px 14px 18px !important;
+    padding: 16px 18px 14px 18px !important;
   }
   .blueprint-integrated-eyebrow {
     font-size: 10px !important;
@@ -6190,10 +6192,10 @@ html.light-theme .blueprint-integrated-divider {
 /* 3. Black Workflow Canvas Workspace Area Below Divider */
 .blueprint-canvas-workspace,
 .testing-1-theme .blueprint-canvas-workspace {
-  background: #000000 !important;
-  background-color: #000000 !important;
+  background: transparent !important;
+  background-color: transparent !important;
   width: 100% !important;
-  padding: 18px 32px 32px 32px !important;
+  padding: 18px 28px 28px 28px !important;
   box-sizing: border-box !important;
   position: relative !important;
 }
@@ -6207,8 +6209,8 @@ html.light-theme .blueprint-integrated-divider {
 
 :root[data-theme="light"] .blueprint-canvas-workspace,
 html.light-theme .blueprint-canvas-workspace {
-  background: #FFFFFF !important;
-  background-color: #FFFFFF !important;
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
 /* 4. Canvas Top Right Controls Bar (Reset on left, Expand on right) */
@@ -6246,13 +6248,13 @@ html.light-theme .blueprint-canvas-workspace {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  max-width: 32px !important;
-  max-height: 32px !important;
-  border-radius: 8px !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  border-radius: 10px !important;
   box-sizing: border-box !important;
   cursor: pointer !important;
   padding: 0 !important;
@@ -6263,8 +6265,8 @@ html.light-theme .blueprint-canvas-workspace {
 .blueprint-canvas-btn .canvas-btn-icon,
 .blueprint-inner-expand-control .canvas-btn-icon,
 .blueprint-reset-control .canvas-btn-icon {
-  width: 15px !important;
-  height: 15px !important;
+  width: 16px !important;
+  height: 16px !important;
   display: block !important;
   flex-shrink: 0 !important;
 }
@@ -6276,9 +6278,9 @@ html:not(.light-theme) .blueprint-canvas-btn,
 :root:not([data-theme="light"]) .testing-1-theme .blueprint-canvas-btn,
 :root[data-theme="dark"] .testing-1-theme .blueprint-canvas-btn,
 html:not(.light-theme) .testing-1-theme .blueprint-canvas-btn {
-  background: rgba(30, 41, 59, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
-  color: #94A3B8 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
