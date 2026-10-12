@@ -821,6 +821,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       position: relative !important;
       width: 100% !important;
       max-width: 100% !important;
+      background: linear-gradient(180deg, rgba(13, 22, 38, 0.75) 0%, rgba(8, 14, 25, 0.88) 100%) !important;
+      background-color: #09101d !important;
       padding: 20px 28px 18px 28px !important;
       text-align: left !important;
       box-sizing: border-box !important;
@@ -921,7 +923,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: flex !important;
       align-items: center !important;
       justify-content: flex-end !important;
-      gap: 8px !important;
+      gap: 6px !important;
       width: 100% !important;
       margin: 0 0 10px 0 !important;
       padding: 0 !important;
@@ -943,13 +945,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 36px !important;
-      height: 36px !important;
-      min-width: 36px !important;
-      min-height: 36px !important;
-      max-width: 36px !important;
-      max-height: 36px !important;
-      border-radius: 10px !important;
+      width: 28px !important;
+      height: 28px !important;
+      min-width: 28px !important;
+      min-height: 28px !important;
+      max-width: 28px !important;
+      max-height: 28px !important;
+      border-radius: 7px !important;
       box-sizing: border-box !important;
       cursor: pointer !important;
       padding: 0 !important;
@@ -960,8 +962,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     .blueprint-canvas-btn .canvas-btn-icon,
     .blueprint-inner-expand-control .canvas-btn-icon,
     .blueprint-reset-control .canvas-btn-icon {
-      width: 15px !important;
-      height: 15px !important;
+      width: 13px !important;
+      height: 13px !important;
       display: block !important;
       flex-shrink: 0 !important;
     }
@@ -1340,6 +1342,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
   </style>
   <script is:inline>
     (() => {
+      const getPageSlug = () => {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const resIdx = parts.indexOf('resources');
+        if (resIdx !== -1 && parts[resIdx + 1]) {
+          return parts[resIdx + 1];
+        }
+        return document.querySelector('[data-resource-slug]')?.getAttribute('data-resource-slug') || '';
+      };
       const keepAnchor = () => window.location.hash;
       const navigationType = () => {
         try {
@@ -1351,6 +1361,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       const resetFreshResourcePosition = () => {
         if (keepAnchor()) return;
         if (navigationType() === 'back_forward') return;
+        try {
+          const s = getPageSlug();
+          if (s && sessionStorage.getItem('sf_blueprint_return_scroll_' + s) !== null) return;
+        } catch {}
         window.scrollTo(0, 0);
       };
       try {
@@ -1487,7 +1501,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 aria-label="Reset workflow steps"
                 title="Reset workflow steps"
               >
-                <svg class="canvas-btn-icon reset-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="canvas-btn-icon reset-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
                   <polyline points="3 3 3 8 8 8"></polyline>
                   <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
@@ -1499,10 +1513,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 type="button"
                 class="blueprint-canvas-btn blueprint-inner-expand-control"
                 id="blueprint-board-expand-toggle"
-                aria-label="Toggle expand all workflow steps"
-                title="Toggle expand all workflow steps"
+                aria-label="Expand workflow blueprint"
+                title="Expand workflow blueprint"
               >
-                <svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polyline points="15 3 21 3 21 9"></polyline>
                   <polyline points="9 21 3 21 3 15"></polyline>
                   <line x1="21" y1="3" x2="14" y2="10"></line>
@@ -1512,7 +1526,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             </div>
 
           <div class="blueprint-workflow-scroll-pane" id="blueprint-workflow-scroll-pane">
-            <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+            <div class="blueprint-zoom-stage" id="blueprint-zoom-stage">
+              <div class="blueprint-zoom-layer" id="blueprint-zoom-layer">
+                <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
             <!-- CONTINUOUS PROCESS: START -->
             <div class="workflow-process-terminal workflow-process-start" aria-label="Workflow Start">
               <span class="workflow-process-pill">START</span>
@@ -2096,6 +2112,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             </div>
           </div>
           </div>
+          </div>
         </div>
       </section>
       )}
@@ -2269,43 +2286,237 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       });
     });
 
-    // Board expand/collapse all steps toggle
+    // Instant Full-Screen Blueprint Overlay View
+    const blueprintTray = document.getElementById('blueprint-inner-workflow-tray');
     const boardExpandBtn = document.getElementById('blueprint-board-expand-toggle');
-    if (boardExpandBtn) {
-      boardExpandBtn.addEventListener('click', () => {
-        const stepContainers = document.querySelectorAll('.blueprint-step-container');
-        const anyCollapsed = Array.from(stepContainers).some((c) => c.classList.contains('is-collapsed'));
-        const shouldExpandAll = anyCollapsed;
+    const boardResetBtn = document.getElementById('blueprint-board-reset-toggle');
+    const scrollPane = document.getElementById('blueprint-workflow-scroll-pane');
+    const zoomStage = document.getElementById('blueprint-zoom-stage');
+    const zoomLayer = document.getElementById('blueprint-zoom-layer');
+    const blueprintStream = blueprintTray ? blueprintTray.querySelector('.blueprint-workflow-stream') : null;
 
-        stepContainers.forEach((container) => {
+    const EXPAND_ICON_SVG = `<svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>`;
+    const COLLAPSE_ICON_SVG = `<svg class="canvas-btn-icon inner-collapse-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line></svg>`;
+
+    const FIXED_CANVAS_WIDTH = 640;
+    let savedScrollY = 0;
+    let currentScale = 1.0;
+    let baseScale = 1.0;
+    let unscaledHeight = 1600;
+
+    const measureUnscaledHeight = () => {
+      if (!blueprintStream) return 1600;
+      const prevTransform = blueprintStream.style.transform;
+      blueprintStream.style.transform = 'none';
+      const h = blueprintStream.scrollHeight || blueprintStream.offsetHeight || 1600;
+      blueprintStream.style.transform = prevTransform;
+      return h;
+    };
+
+    const resetBlueprintZoom = () => {
+      currentScale = baseScale;
+      if (blueprintStream) {
+        blueprintStream.style.zoom = '';
+        blueprintStream.style.transform = '';
+      }
+      if (zoomLayer) {
+        zoomLayer.style.width = '';
+        zoomLayer.style.height = '';
+      }
+    };
+
+    const applyBlueprintZoom = (scale, focalPoint) => {
+      if (!blueprintStream || !scrollPane || !zoomLayer) return;
+      if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+
+      const clamped = Math.min(2.5, Math.max(0.35, scale));
+      const prevScale = currentScale;
+      currentScale = clamped;
+
+      const paneRect = scrollPane.getBoundingClientRect();
+      const focalX = focalPoint ? (focalPoint.x - paneRect.left) : (paneRect.width / 2);
+      const focalY = focalPoint ? (focalPoint.y - paneRect.top) : (paneRect.height / 2);
+
+      const contentX = scrollPane.scrollLeft + focalX;
+      const contentY = scrollPane.scrollTop + focalY;
+
+      const scaledW = FIXED_CANVAS_WIDTH * currentScale;
+      const scaledH = unscaledHeight * currentScale;
+
+      zoomLayer.style.width = `${scaledW}px`;
+      zoomLayer.style.height = `${scaledH}px`;
+      blueprintStream.style.transform = `scale(${currentScale})`;
+      blueprintStream.style.transformOrigin = '0 0';
+
+      if (prevScale > 0) {
+        const ratio = currentScale / prevScale;
+        scrollPane.scrollLeft = contentX * ratio - focalX;
+        scrollPane.scrollTop = contentY * ratio - focalY;
+      }
+    };
+
+    // Touch gesture events (passive, non-blocking)
+    let touchStartDist = 0;
+    let touchStartScale = 1.0;
+
+    if (scrollPane) {
+      scrollPane.addEventListener('touchstart', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        if (e.touches.length === 2) {
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+          touchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+          touchStartScale = currentScale;
+        }
+      }, { passive: true });
+
+      scrollPane.addEventListener('touchmove', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        if (e.touches.length === 2 && touchStartDist > 0) {
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+          const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+          const ratio = dist / touchStartDist;
+          const focal = {
+            x: (t1.clientX + t2.clientX) / 2,
+            y: (t1.clientY + t2.clientY) / 2
+          };
+          applyBlueprintZoom(touchStartScale * ratio, focal);
+        }
+      }, { passive: true });
+
+      scrollPane.addEventListener('touchend', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        if (e.touches.length < 2) {
+          touchStartDist = 0;
+        }
+      }, { passive: true });
+
+      let gestureStartScale = 1.0;
+      scrollPane.addEventListener('gesturestart', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        gestureStartScale = currentScale;
+      });
+
+      scrollPane.addEventListener('gesturechange', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        applyBlueprintZoom(gestureStartScale * e.scale, { x: e.clientX, y: e.clientY });
+      });
+
+      scrollPane.addEventListener('wheel', (e) => {
+        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
+        if (e.ctrlKey) {
+          e.preventDefault();
+          const delta = -e.deltaY * 0.01;
+          applyBlueprintZoom(currentScale * Math.exp(delta), { x: e.clientX, y: e.clientY });
+        }
+      }, { passive: false });
+    }
+
+    const setBlueprintFullscreen = (enable, fromHistory = false) => {
+      if (!blueprintTray || !boardExpandBtn) return;
+      const isCurrentlyFullscreen = blueprintTray.classList.contains('is-blueprint-fullscreen');
+      if (enable === isCurrentlyFullscreen) return;
+
+      if (enable) {
+        savedScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        blueprintTray.classList.add('is-blueprint-fullscreen');
+        document.documentElement.classList.add('blueprint-fullscreen-open');
+        document.body.classList.add('blueprint-fullscreen-open');
+        boardExpandBtn.innerHTML = COLLAPSE_ICON_SVG;
+        boardExpandBtn.setAttribute('aria-label', 'Collapse workflow blueprint');
+        boardExpandBtn.setAttribute('title', 'Collapse workflow blueprint');
+        boardExpandBtn.classList.add('is-collapsed-state');
+
+        // Draw graph ONCE at unscaled 1.0 state for fixed 640px layout
+        if (blueprintStream) blueprintStream.style.transform = 'none';
+        if (typeof window.sfDrawBlueprintGraph === 'function') {
+          window.sfDrawBlueprintGraph();
+        }
+
+        unscaledHeight = measureUnscaledHeight();
+        const paneW = scrollPane?.clientWidth || window.innerWidth;
+        baseScale = paneW < FIXED_CANVAS_WIDTH ? Math.min(1.0, Math.max(0.55, (paneW - 28) / FIXED_CANVAS_WIDTH)) : 1.0;
+        applyBlueprintZoom(baseScale, null);
+
+        if (scrollPane) {
+          scrollPane.scrollTop = 0;
+          if (scrollPane.scrollWidth > scrollPane.clientWidth) {
+            scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
+          }
+        }
+
+        if (!fromHistory) {
+          try {
+            history.pushState({ blueprintFullscreen: true }, '');
+          } catch {}
+        }
+      } else {
+        blueprintTray.classList.remove('is-blueprint-fullscreen');
+        document.documentElement.classList.remove('blueprint-fullscreen-open');
+        document.body.classList.remove('blueprint-fullscreen-open');
+        boardExpandBtn.innerHTML = EXPAND_ICON_SVG;
+        boardExpandBtn.setAttribute('aria-label', 'Expand workflow blueprint');
+        boardExpandBtn.setAttribute('title', 'Expand workflow blueprint');
+        boardExpandBtn.classList.remove('is-collapsed-state');
+
+        resetBlueprintZoom();
+
+        if (typeof window.sfDrawBlueprintGraph === 'function') {
+          window.sfDrawBlueprintGraph();
+        }
+
+        if (typeof savedScrollY === 'number') {
+          window.scrollTo({ top: savedScrollY, behavior: 'instant' });
+        }
+
+        if (!fromHistory && history.state?.blueprintFullscreen) {
+          try {
+            history.back();
+          } catch {}
+        }
+      }
+    };
+
+    if (boardExpandBtn) {
+      boardExpandBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isFullscreen = blueprintTray?.classList.contains('is-blueprint-fullscreen');
+        setBlueprintFullscreen(!isFullscreen);
+      });
+    }
+
+    // Handle browser Back button to exit fullscreen
+    window.addEventListener('popstate', () => {
+      if (blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
+        setBlueprintFullscreen(false, true);
+      }
+    });
+
+    // Handle Escape key to exit fullscreen
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
+        setBlueprintFullscreen(false);
+      }
+    });
+
+    if (boardResetBtn) {
+      boardResetBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelectorAll('.blueprint-step-container').forEach((container) => {
+          container.classList.remove('is-expanded');
+          container.classList.add('is-collapsed');
           const toggle = container.querySelector('[data-step-toggle]');
           const body = container.querySelector('.blueprint-step-body');
-          if (shouldExpandAll) {
-            container.classList.remove('is-collapsed');
-            container.classList.add('is-expanded');
-            if (toggle) toggle.setAttribute('aria-expanded', 'true');
-            if (body) body.hidden = false;
-          } else {
-            container.classList.remove('is-expanded');
-            container.classList.add('is-collapsed');
-            if (toggle) toggle.setAttribute('aria-expanded', 'false');
-            if (body) body.hidden = true;
-          }
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
+          if (body) body.hidden = true;
         });
-
-        // Toggle Expand/Collapse icon & accessibility attributes
-        const expandSvg = boardExpandBtn.querySelector('svg');
-        if (expandSvg) {
-          if (shouldExpandAll) {
-            // All steps are expanded -> show Collapse symbol
-            expandSvg.innerHTML = `<polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line>`;
-            boardExpandBtn.setAttribute('title', 'Collapse all workflow steps');
-            boardExpandBtn.setAttribute('aria-label', 'Collapse all workflow steps');
-          } else {
-            // Steps are collapsed -> show Expand symbol
-            expandSvg.innerHTML = `<polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line>`;
-            boardExpandBtn.setAttribute('title', 'Expand all workflow steps');
-            boardExpandBtn.setAttribute('aria-label', 'Expand all workflow steps');
+        applyBlueprintZoom(baseScale, null);
+        if (scrollPane) {
+          scrollPane.scrollTop = 0;
+          if (scrollPane.scrollWidth > scrollPane.clientWidth) {
+            scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
           }
         }
       });
@@ -4857,11 +5068,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         margin-top: 48px !important;
         background: #000000 !important;
         background-color: #000000 !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 26px !important;
-        padding: 42px 28px 32px !important;
-        box-shadow: 0 32px 84px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-        overflow: visible !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 20px !important;
+        padding: 0 !important;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+        overflow: hidden !important;
       }
 
       .testing-1-theme .blueprint-header-capsule {
@@ -5013,22 +5224,22 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
       }
 
-      /* Result card: outer boundary tightened to snugly cover embed, title, and description like step sections */
+      /* Result card: scaled down proportionally, dark navy/blue-black gradient matching step sections */
       .testing-1-theme .blueprint-result-block,
       .testing-1-theme #workflow-final-result {
         grid-column: 1 / span 2 !important;
         width: fit-content !important;
-        max-width: min(576px, 100%) !important;
+        max-width: 320px !important;
         justify-self: center !important;
         position: relative !important;
         z-index: 6 !important;
-        margin: 0 auto !important;
+        margin: 48px auto 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
-        background: #0A1220 !important;
-        border: 1px solid rgba(94, 164, 255, 0.20) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5) !important;
+        background: linear-gradient(180deg, #0D1628 0%, #08101E 100%) !important;
+        border: 1px solid rgba(94, 164, 255, 0.28) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
         overflow: visible !important;
       }
 
@@ -5036,23 +5247,45 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       .testing-1-theme #workflow-final-result .blueprint-result-inner {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 20px 16px 16px !important;
-        gap: 14px !important;
+        padding: 16px 12px 14px !important;
+        gap: 10px !important;
         box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        background: transparent !important;
       }
 
       .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper,
       .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper {
+        position: relative !important;
+        --card-base-w: 328px !important;
+        --card-base-h: 590px !important;
+        --card-scale: 0.82 !important;
+        width: calc(var(--card-base-w) * var(--card-scale)) !important;
+        height: calc(var(--card-base-h) * var(--card-scale)) !important;
         margin: 0 auto !important;
         left: 0 !important;
         right: 0 !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
       }
 
       .testing-1-theme .blueprint-result-block .video-frame,
       .testing-1-theme #workflow-final-result .video-frame {
-        margin: 0 auto !important;
+        position: absolute !important;
+        top: 0 !important;
         left: 0 !important;
-        right: 0 !important;
+        width: var(--card-base-w) !important;
+        height: var(--card-base-h) !important;
+        min-height: var(--card-base-h) !important;
+        max-width: var(--card-base-w) !important;
+        transform: scale(var(--card-scale)) !important;
+        transform-origin: 0 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
       }
 
       .testing-1-theme .blueprint-step-capsule,
@@ -5063,25 +5296,24 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         top: 0 !important;
         left: 50% !important;
         transform: translate(-50%, -50%) !important;
-        background: rgba(14, 22, 38, 0.95) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
-        color: #CBD5E1 !important;
+        background: #0A1220 !important;
+        border: 1px solid rgba(94, 164, 255, 0.38) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
         border-radius: 9999px !important;
         padding: 0 !important;
         margin: 0 !important;
-        width: 76px !important;
-        min-width: 76px !important;
-        max-width: 76px !important;
-        height: 25px !important;
-        min-height: 25px !important;
-        max-height: 25px !important;
+        width: 68px !important;
+        min-width: 68px !important;
+        max-width: 68px !important;
+        height: 18px !important;
+        min-height: 18px !important;
+        max-height: 18px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
         text-align: center !important;
         box-sizing: border-box !important;
-        z-index: 10 !important;
+        z-index: 12 !important;
         white-space: nowrap !important;
       }
 
@@ -5097,14 +5329,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-        color: #CBD5E1 !important;
-        font-family: 'JetBrains Mono', 'Plus Jakarta Sans', monospace !important;
-        font-size: 9.5px !important;
+        color: #E2E8F0 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 8.5px !important;
         font-weight: 700 !important;
-        letter-spacing: 0.08em !important;
-        text-indent: 0.08em !important;
+        letter-spacing: 0.06em !important;
+        text-indent: 0.06em !important;
         line-height: 1 !important;
-        transform: translateY(0.5px) !important;
+        transform: translateY(0.75px) !important;
         text-transform: uppercase !important;
       }
 
@@ -5912,9 +6144,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         }
 
         .testing-1-theme .blueprint-workflow-container {
-          padding: 36px 12px 28px !important;
-          border-radius: 20px !important;
-          margin-top: 40px !important;
+          padding: 0 !important;
+          border-radius: 18px !important;
+          margin-top: 24px !important;
           overflow: hidden !important;
           box-sizing: border-box !important;
           width: 100% !important;
@@ -5997,13 +6229,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           overflow-y: visible !important;
         }
 
-        /* Fixed Expand Button in top-right corner of blueprint section */
+        /* Control buttons below divider in canvas controls bar */
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-inner-expand-control,
         [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container .blueprint-inner-expand-control {
-          position: absolute !important;
-          top: 10px !important;
-          right: 12px !important;
-          z-index: 50 !important;
+          position: relative !important;
+          top: auto !important;
+          right: auto !important;
+          z-index: 20 !important;
           pointer-events: auto !important;
         }
 
@@ -6018,7 +6250,15 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           -webkit-overflow-scrolling: touch !important;
           scrollbar-width: none !important;
           -ms-overflow-style: none !important;
-          touch-action: pan-x pan-y !important;
+          touch-action: auto !important;
+        }
+        .testing-1-theme .blueprint-workflow-scroll-pane,
+        .testing-1-theme .blueprint-workflow-container,
+        .testing-1-theme .blueprint-inner-workflow-container,
+        .blueprint-workflow-container,
+        .blueprint-workflow-stream,
+        .blueprint-canvas-workspace {
+          touch-action: auto !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
         .blueprint-workflow-scroll-pane::-webkit-scrollbar {
@@ -6105,7 +6345,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           grid-row: 5 !important;
           width: fit-content !important;
           min-width: 0 !important;
-          max-width: 100% !important;
+          max-width: 320px !important;
           justify-self: center !important;
           margin: 48px auto 0 !important;
           box-sizing: border-box !important;
@@ -6367,65 +6607,138 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           grid-row: auto !important;
           width: fit-content !important;
           min-width: 0 !important;
-          max-width: 100% !important;
+          max-width: 320px !important;
           justify-self: center !important;
           margin: 48px auto 0 !important;
           padding: 0 !important;
-          border-radius: 16px !important;
+          border-radius: 18px !important;
           box-sizing: border-box !important;
           overflow: visible !important;
+          position: relative !important;
+          background: linear-gradient(180deg, #0D1628 0%, #08101E 100%) !important;
+          border: 1px solid rgba(94, 164, 255, 0.28) !important;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
         }
 
         .testing-1-theme #workflow-final-result .blueprint-result-inner,
         .testing-1-theme .blueprint-result-block .blueprint-result-inner {
           width: 100% !important;
           max-width: 100% !important;
-          padding: 16px 8px 12px !important;
+          padding: 16px 12px 14px !important;
           gap: 10px !important;
           box-sizing: border-box !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
         }
 
         .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper,
         .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper {
-          --card-base-w: 330px !important;
-          --card-base-h: 596px !important;
-          --card-scale-x: 0.78 !important;
-          --card-scale-y: 0.71 !important;
-          width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
-          height: calc(var(--card-base-h) * var(--card-scale-y)) !important;
+          position: relative !important;
+          --card-base-w: 328px !important;
+          --card-base-h: 590px !important;
+          --card-scale: 0.82 !important;
+          width: calc(var(--card-base-w) * var(--card-scale)) !important;
+          height: calc(var(--card-base-h) * var(--card-scale)) !important;
           margin: 0 auto !important;
           left: 0 !important;
           right: 0 !important;
+          overflow: hidden !important;
+          border-radius: 12px !important;
+        }
+
+        .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper .video-frame,
+        .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper .video-frame {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: var(--card-base-w) !important;
+          height: var(--card-base-h) !important;
+          min-height: var(--card-base-h) !important;
+          max-width: var(--card-base-w) !important;
+          transform: scale(var(--card-scale)) !important;
+          transform-origin: 0 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: transparent !important;
         }
 
         .testing-1-theme .blueprint-result-block .blueprint-result-capsule,
         .testing-1-theme #workflow-final-result .blueprint-result-capsule {
-          width: 58px !important;
-          min-width: 58px !important;
-          max-width: 58px !important;
-          height: 16px !important;
-          min-height: 16px !important;
-          max-height: 16px !important;
+          width: 68px !important;
+          min-width: 68px !important;
+          max-width: 68px !important;
+          height: 18px !important;
+          min-height: 18px !important;
+          max-height: 18px !important;
+          border-radius: 9999px !important;
+          background: #0A1220 !important;
+          border: 1px solid rgba(94, 164, 255, 0.38) !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
         }
 
         .testing-1-theme .blueprint-result-block .blueprint-result-capsule span,
         .testing-1-theme #workflow-final-result .blueprint-result-capsule span {
-          font-size: 7.5px !important;
-          letter-spacing: 0.05em !important;
-          text-indent: 0.05em !important;
-          transform: translateY(0.5px) !important;
+          font-family: 'JetBrains Mono', monospace !important;
+          font-size: 8.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.06em !important;
+          text-indent: 0.06em !important;
+          line-height: 1 !important;
+          transform: translateY(0.75px) !important;
+          color: #E2E8F0 !important;
+          text-transform: uppercase !important;
         }
 
         .testing-1-theme .blueprint-final-title {
-          font-size: 13.5px !important;
+          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+          font-size: 15px !important;
+          font-weight: 700 !important;
           margin: 0 !important;
           line-height: 1.25 !important;
+          letter-spacing: -0.015em !important;
+          color: #F8FAFC !important;
+          text-align: center !important;
         }
 
         .testing-1-theme .blueprint-final-desc {
-          font-size: 11px !important;
+          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+          font-size: 12px !important;
+          font-weight: 400 !important;
           margin: 0 !important;
           line-height: 1.35 !important;
+          color: #94A3B8 !important;
+          text-align: center !important;
+        }
+
+        @media (max-width: 700px) {
+          .testing-1-theme #workflow-final-result,
+          .testing-1-theme .blueprint-result-block {
+            max-width: calc(100% - 24px) !important;
+            margin: 44px auto 0 !important;
+            border-radius: 16px !important;
+          }
+
+          .testing-1-theme #workflow-final-result .blueprint-result-inner,
+          .testing-1-theme .blueprint-result-block .blueprint-result-inner {
+            padding: 14px 8px 10px !important;
+            gap: 8px !important;
+          }
+
+          .testing-1-theme #workflow-final-result .blueprint-result-card-scale-wrapper,
+          .testing-1-theme .blueprint-result-block .blueprint-result-card-scale-wrapper {
+            --card-scale: 0.70 !important;
+            border-radius: 10px !important;
+          }
+
+          .testing-1-theme .blueprint-final-title {
+            font-size: clamp(11px, 2.7vw, 12.5px) !important;
+          }
+
+          .testing-1-theme .blueprint-final-desc {
+            font-size: clamp(8.5px, 2.1vw, 10px) !important;
+          }
         }
 
         .testing-1-theme .blueprint-step-body {
@@ -6453,6 +6766,136 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           padding: 28px 20px !important;
           border-radius: 22px !important;
         }
+      }
+
+      /* ==========================================================================
+         Blueprint Instant Full-Screen View Overlay
+         ========================================================================== */
+      :global(html.blueprint-fullscreen-open),
+      :global(body.blueprint-fullscreen-open) {
+        overflow: hidden !important;
+        touch-action: auto !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen,
+      .testing-1-theme #blueprint-inner-workflow-tray.is-blueprint-fullscreen,
+      .blueprint-workflow-container.is-blueprint-fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        width: 100dvw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        max-width: 100vw !important;
+        max-height: 100dvh !important;
+        z-index: 999999 !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-integrated-header,
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-integrated-divider,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-integrated-header,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-integrated-divider {
+        display: none !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-workspace,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-workspace {
+        position: relative !important;
+        flex: 1 1 100% !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls {
+        position: absolute !important;
+        top: max(16px, env(safe-area-inset-top, 16px)) !important;
+        right: max(16px, env(safe-area-inset-right, 16px)) !important;
+        left: auto !important;
+        z-index: 100 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        gap: 8px !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+        pointer-events: none !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn {
+        pointer-events: auto !important;
+        background: rgba(15, 23, 42, 0.85) !important;
+        border: 1px solid rgba(255, 255, 255, 0.22) !important;
+        color: #E2E8F0 !important;
+        backdrop-filter: blur(8px) !important;
+        -webkit-backdrop-filter: blur(8px) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn:hover,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn:hover {
+        background: rgba(30, 41, 59, 0.95) !important;
+        border-color: rgba(56, 189, 248, 0.6) !important;
+        color: #FFFFFF !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-scroll-pane,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-scroll-pane {
+        position: relative !important;
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-height: 100% !important;
+        overflow-x: auto !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        touch-action: pan-x pan-y pinch-zoom !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
+        padding-top: max(64px, calc(env(safe-area-inset-top, 16px) + 48px)) !important;
+        padding-bottom: max(56px, env(safe-area-inset-bottom, 32px)) !important;
+        padding-left: max(16px, env(safe-area-inset-left, 16px)) !important;
+        padding-right: max(16px, env(safe-area-inset-right, 16px)) !important;
+        box-sizing: border-box !important;
+      }
+
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-stream,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-stream {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        touch-action: pan-x pan-y pinch-zoom !important;
+        max-width: 960px !important;
+        overflow-x: visible !important;
+        overflow-y: visible !important;
       }
 
       /* ==========================================================================

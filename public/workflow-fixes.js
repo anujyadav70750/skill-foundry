@@ -140,18 +140,26 @@ startxref
     const style = document.createElement('style');
     style.id = 'sf-blueprint-graph-style';
     style.textContent = `
-      /* Blueprint shell: single continuous container with upper dark navy header and lower black workspace */
-      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint {
+      /* Blueprint shell: single continuous container with black background */
+      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint,
+      .blueprint-inner-workflow-container.sf-graph-blueprint,
+      .blueprint-workflow-container {
         position: relative !important;
-        background: transparent !important;
-        background-color: transparent !important;
-        border: 1px solid rgba(255,255,255,.12) !important;
-        border-radius: 24px !important;
+        background: #000000 !important;
+        background-color: #000000 !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        border-radius: 20px !important;
         box-shadow: 0 20px 60px rgba(0,0,0,.55) !important;
         overflow: hidden !important;
         padding: 0 !important;
         box-sizing: border-box !important;
         width: 100% !important;
+      }
+
+      .testing-1-theme .blueprint-integrated-header,
+      .blueprint-integrated-header {
+        background: linear-gradient(180deg, rgba(13, 22, 38, 0.75) 0%, rgba(8, 14, 25, 0.88) 100%) !important;
+        background-color: #09101d !important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream {
@@ -328,34 +336,122 @@ startxref
       .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result {
         grid-column: 1 / span 2 !important;
         width: fit-content !important;
-        max-width: min(576px, 100%) !important;
+        max-width: 320px !important;
         justify-self: center !important;
         position: relative !important;
         z-index: 6 !important;
-        margin: 0 auto !important;
+        margin: 48px auto 0 !important;
         padding: 0 !important;
         box-sizing: border-box !important;
-        background: #0A1220 !important;
-        border: 1px solid rgba(94,164,255,.20) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 20px 48px rgba(0,0,0,.5) !important;
+        background: linear-gradient(180deg, #0D1628 0%, #08101E 100%) !important;
+        border: 1px solid rgba(94, 164, 255, 0.28) !important;
+        border-radius: 18px !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
         overflow: visible !important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-inner {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 16px 12px 14px !important;
+        gap: 10px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
         background: transparent !important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-card-scale-wrapper {
+        position: relative !important;
+        --card-base-w: 328px !important;
+        --card-base-h: 590px !important;
+        --card-scale: 0.82 !important;
+        width: calc(var(--card-base-w) * var(--card-scale)) !important;
+        height: calc(var(--card-base-h) * var(--card-scale)) !important;
         margin: 0 auto !important;
         left: 0 !important;
         right: 0 !important;
+        overflow: hidden !important;
+        border-radius: 12px !important;
       }
 
       .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .video-frame {
-        margin: 0 auto !important;
+        position: absolute !important;
+        top: 0 !important;
         left: 0 !important;
-        right: 0 !important;
+        width: var(--card-base-w) !important;
+        height: var(--card-base-h) !important;
+        min-height: var(--card-base-h) !important;
+        max-width: var(--card-base-w) !important;
+        transform: scale(var(--card-scale)) !important;
+        transform-origin: 0 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+      }
+
+      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-capsule,
+      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-capsule {
+        position: absolute !important;
+        top: 0 !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) !important;
+        width: 68px !important;
+        min-width: 68px !important;
+        max-width: 68px !important;
+        height: 18px !important;
+        min-height: 18px !important;
+        max-height: 18px !important;
+        border-radius: 9999px !important;
+        background: #0A1220 !important;
+        border: 1px solid rgba(94, 164, 255, 0.38) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+        box-sizing: border-box !important;
+        z-index: 12 !important;
+      }
+
+      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-capsule span,
+      .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-capsule span {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        text-align: center !important;
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 8.5px !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.06em !important;
+        text-indent: 0.06em !important;
+        line-height: 1 !important;
+        transform: translateY(0.75px) !important;
+        color: #E2E8F0 !important;
+        text-transform: uppercase !important;
+      }
+
+      .testing-1-theme .blueprint-final-title {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+        line-height: 1.25 !important;
+        letter-spacing: -0.015em !important;
+        color: #F8FAFC !important;
+        text-align: center !important;
+      }
+
+      .testing-1-theme .blueprint-final-desc {
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        font-size: 12px !important;
+        font-weight: 400 !important;
+        margin: 0 !important;
+        line-height: 1.35 !important;
+        color: #94A3B8 !important;
+        text-align: center !important;
       }
 
       @media (max-width: 700px) {
@@ -452,7 +548,7 @@ startxref
           display: flex !important;
           align-items: center !important;
           justify-content: flex-end !important;
-          gap: 8px !important;
+          gap: 6px !important;
           width: 100% !important;
           margin: 0 0 8px 0 !important;
           padding: 0 !important;
@@ -474,13 +570,13 @@ startxref
           display: inline-flex !important;
           align-items: center !important;
           justify-content: center !important;
-          width: 36px !important;
-          height: 36px !important;
-          min-width: 36px !important;
-          min-height: 36px !important;
-          max-width: 36px !important;
-          max-height: 36px !important;
-          border-radius: 10px !important;
+          width: 28px !important;
+          height: 28px !important;
+          min-width: 28px !important;
+          min-height: 28px !important;
+          max-width: 28px !important;
+          max-height: 28px !important;
+          border-radius: 7px !important;
           box-sizing: border-box !important;
           cursor: pointer !important;
           padding: 0 !important;
@@ -499,7 +595,15 @@ startxref
           -webkit-overflow-scrolling: touch !important;
           scrollbar-width: none !important;
           -ms-overflow-style: none !important;
-          touch-action: pan-x pan-y !important;
+          touch-action: auto !important;
+        }
+        .testing-1-theme .blueprint-workflow-scroll-pane,
+        .testing-1-theme .blueprint-workflow-container,
+        .testing-1-theme .blueprint-inner-workflow-container,
+        .blueprint-workflow-container,
+        .blueprint-workflow-stream,
+        .blueprint-canvas-workspace {
+          touch-action: auto !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
         .blueprint-workflow-scroll-pane::-webkit-scrollbar {
@@ -586,7 +690,7 @@ startxref
           grid-row: 5 !important;
           width: fit-content !important;
           min-width: 0 !important;
-          max-width: 100% !important;
+          max-width: 320px !important;
           justify-self: center !important;
           margin: 48px auto 0 !important;
           box-sizing: border-box !important;
@@ -838,65 +942,123 @@ startxref
           grid-row: auto !important;
           width: fit-content !important;
           min-width: 0 !important;
-          max-width: 100% !important;
+          max-width: calc(100% - 24px) !important;
           justify-self: center !important;
-          margin: 48px auto 0 !important;
+          margin: 44px auto 0 !important;
           border-radius: 16px !important;
           box-sizing: border-box !important;
           padding: 0 !important;
           overflow: visible !important;
+          position: relative !important;
+          background: linear-gradient(180deg, #0D1628 0%, #08101E 100%) !important;
+          border: 1px solid rgba(94, 164, 255, 0.28) !important;
+          box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
         }
 
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-inner,
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-inner {
           width: 100% !important;
           max-width: 100% !important;
-          padding: 16px 8px 12px !important;
-          gap: 10px !important;
+          padding: 14px 8px 10px !important;
+          gap: 8px !important;
           box-sizing: border-box !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
         }
 
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-card-scale-wrapper,
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-card-scale-wrapper {
-          --card-base-w: 330px !important;
-          --card-base-h: 596px !important;
-          --card-scale-x: 0.78 !important;
-          --card-scale-y: 0.71 !important;
-          width: calc(var(--card-base-w) * var(--card-scale-x)) !important;
-          height: calc(var(--card-base-h) * var(--card-scale-y)) !important;
+          position: relative !important;
+          --card-base-w: 328px !important;
+          --card-base-h: 590px !important;
+          --card-scale: 0.70 !important;
+          width: calc(var(--card-base-w) * var(--card-scale)) !important;
+          height: calc(var(--card-base-h) * var(--card-scale)) !important;
           margin: 0 auto !important;
           left: 0 !important;
           right: 0 !important;
+          overflow: hidden !important;
+          border-radius: 10px !important;
+        }
+
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-card-scale-wrapper .video-frame,
+        .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-card-scale-wrapper .video-frame {
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+          width: var(--card-base-w) !important;
+          height: var(--card-base-h) !important;
+          min-height: var(--card-base-h) !important;
+          max-width: var(--card-base-w) !important;
+          transform: scale(var(--card-scale)) !important;
+          transform-origin: 0 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+          background: transparent !important;
         }
 
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-capsule,
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-capsule {
-          width: 58px !important;
-          min-width: 58px !important;
-          max-width: 58px !important;
-          height: 16px !important;
-          min-height: 16px !important;
-          max-height: 16px !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 50% !important;
+          transform: translate(-50%, -50%) !important;
+          width: 68px !important;
+          min-width: 68px !important;
+          max-width: 68px !important;
+          height: 18px !important;
+          min-height: 18px !important;
+          max-height: 18px !important;
+          border-radius: 9999px !important;
+          background: #0A1220 !important;
+          border: 1px solid rgba(94, 164, 255, 0.38) !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+          box-sizing: border-box !important;
+          z-index: 12 !important;
         }
 
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-capsule span,
         .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-capsule span {
-          font-size: 7.5px !important;
-          letter-spacing: 0.05em !important;
-          text-indent: 0.05em !important;
-          transform: translateY(0.5px) !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          text-align: center !important;
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          font-family: 'JetBrains Mono', monospace !important;
+          font-size: 8.5px !important;
+          font-weight: 700 !important;
+          letter-spacing: 0.06em !important;
+          text-indent: 0.06em !important;
+          line-height: 1 !important;
+          transform: translateY(0.75px) !important;
+          color: #E2E8F0 !important;
+          text-transform: uppercase !important;
         }
 
         .testing-1-theme .blueprint-final-title {
-          font-size: 13.5px !important;
+          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+          font-size: clamp(11px, 2.7vw, 12.5px) !important;
+          font-weight: 700 !important;
           margin: 0 !important;
           line-height: 1.25 !important;
+          letter-spacing: -0.015em !important;
+          color: #F8FAFC !important;
+          text-align: center !important;
         }
 
         .testing-1-theme .blueprint-final-desc {
-          font-size: 11px !important;
+          font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+          font-size: clamp(8.5px, 2.1vw, 10px) !important;
+          font-weight: 400 !important;
           margin: 0 !important;
           line-height: 1.35 !important;
+          color: #94A3B8 !important;
+          text-align: center !important;
         }
       }
     `;
@@ -931,6 +1093,164 @@ startxref
 
   const getStepBox = (wrapper) => wrapper?.querySelector('.blueprint-step-container');
 
+  const drawKnightConnections = (svg, steps, streamRect, result) => {
+    const getStepByNum = (n) => {
+      const wrapper = steps.find((s) => s.getAttribute('data-blueprint-step') === String(n));
+      return getStepBox(wrapper);
+    };
+
+    const step1 = getStepByNum(1);
+    const step2 = getStepByNum(2);
+    const step3 = getStepByNum(3);
+    const step4 = getStepByNum(4);
+    const step5 = getStepByNum(5);
+
+    const DOT_RADIUS = 3.5;
+    const GAP = 2.5; // tiny intentional visual gap outside the card/capsule boundary
+    const dotOffset = DOT_RADIUS + GAP; // 6px
+
+    /* 
+     * Cinematic Medieval Knight Video — Google Flow:
+     * Exactly 6 connections:
+     * 1. STEP 01 -> STEP 02 (leaves bottom left of Step 01, stepped curve into Step 02 capsule)
+     * 2. STEP 01 -> STEP 04 (leaves bottom center of Step 01, pure vertical line through enlarged gap into Step 04 center dot)
+     * 3. STEP 02 -> STEP 04 (leaves bottom center of Step 02, curved into Step 04 LEFT dot above capsule)
+     * 4. STEP 03 -> STEP 04 (leaves bottom center of Step 03, curved into Step 04 RIGHT dot above capsule)
+     * 5. STEP 04 -> STEP 05 (pure vertical line into Step 05 capsule)
+     * 6. STEP 05 -> RESULT  (pure vertical line into RESULT capsule)
+     */
+
+    if (step1) {
+      const r1 = step1.getBoundingClientRect();
+      const s1Left = r1.left - streamRect.left;
+      const s1Width = r1.width;
+      const s1BottomY = r1.top - streamRect.top + r1.height;
+
+      // Two distinct output ports on Step 01's bottom border (outside border with tiny gap):
+      // Left dot (28% width): connects to Step 02
+      // Center dot (50% width): connects straight down to Step 04
+      const s1DotLeft = { x: s1Left + s1Width * 0.28, y: s1BottomY + dotOffset };
+      const s1DotCenter = { x: s1Left + s1Width * 0.50, y: s1BottomY + dotOffset };
+
+      // 1. STEP 01 -> STEP 02:
+      if (step2) {
+        const r2 = step2.getBoundingClientRect();
+        const s2TopX = r2.left - streamRect.left + r2.width / 2;
+        const s2TopY = r2.top - streamRect.top;
+        const endPt = { x: s2TopX, y: s2TopY - 9 - dotOffset };
+
+        const cornerR = 10;
+        const midY = (s1DotLeft.y + endPt.y) / 2;
+        const d = `M ${s1DotLeft.x} ${s1DotLeft.y} ` +
+                  `L ${s1DotLeft.x} ${midY - cornerR} ` +
+                  `Q ${s1DotLeft.x} ${midY} ${s1DotLeft.x - cornerR} ${midY} ` +
+                  `L ${endPt.x + cornerR} ${midY} ` +
+                  `Q ${endPt.x} ${midY} ${endPt.x} ${midY + cornerR} ` +
+                  `L ${endPt.x} ${endPt.y}`;
+
+        svg.appendChild(makePath(d));
+        svg.appendChild(makeDot(s1DotLeft, DOT_RADIUS));
+        svg.appendChild(makeDot(endPt, DOT_RADIUS));
+      }
+
+      // Step 04 incoming connections
+      if (step4) {
+        const r4 = step4.getBoundingClientRect();
+        const s4TopY = r4.top - streamRect.top;
+        const s4Left = r4.left - streamRect.left;
+        const s4Width = r4.width;
+
+        const s4DotsY = s4TopY - 17;
+        const inPtLeft = { x: s4Left + s4Width * 0.50 - 24, y: s4DotsY };
+        const inPtCenter = { x: s4Left + s4Width * 0.50, y: s4DotsY };
+        const inPtRight = { x: s4Left + s4Width * 0.50 + 24, y: s4DotsY };
+
+        // 2. STEP 01 -> STEP 04:
+        // Perfectly straight vertical line through the enlarged central opening between Step 02 and Step 03
+        const lineX = s1DotCenter.x;
+        svg.appendChild(makePath(`M ${lineX} ${s1DotCenter.y} L ${lineX} ${inPtCenter.y}`));
+        svg.appendChild(makeDot(s1DotCenter, DOT_RADIUS));
+        svg.appendChild(makeDot(inPtCenter, DOT_RADIUS));
+
+        // 3. STEP 02 -> STEP 04:
+        // Leaves Step 02 bottom border center, curves naturally into Step 04 LEFT dot
+        if (step2) {
+          const r2 = step2.getBoundingClientRect();
+          const s2BottomX = r2.left - streamRect.left + r2.width / 2;
+          const s2BottomY = r2.top - streamRect.top + r2.height;
+          const startPt = { x: s2BottomX, y: s2BottomY + dotOffset };
+
+          const cornerR = 12;
+          const midY = (startPt.y + inPtLeft.y) / 2;
+          const d = `M ${startPt.x} ${startPt.y} ` +
+                    `L ${startPt.x} ${midY - cornerR} ` +
+                    `Q ${startPt.x} ${midY} ${startPt.x + cornerR} ${midY} ` +
+                    `L ${inPtLeft.x - cornerR} ${midY} ` +
+                    `Q ${inPtLeft.x} ${midY} ${inPtLeft.x} ${midY + cornerR} ` +
+                    `L ${inPtLeft.x} ${inPtLeft.y}`;
+
+          svg.appendChild(makePath(d));
+          svg.appendChild(makeDot(startPt, DOT_RADIUS));
+          svg.appendChild(makeDot(inPtLeft, DOT_RADIUS));
+        }
+
+        // 4. STEP 03 -> STEP 04:
+        // Leaves Step 03 bottom border center, curves naturally into Step 04 RIGHT dot
+        if (step3) {
+          const r3 = step3.getBoundingClientRect();
+          const s3BottomX = r3.left - streamRect.left + r3.width / 2;
+          const s3BottomY = r3.top - streamRect.top + r3.height;
+          const startPt = { x: s3BottomX, y: s3BottomY + dotOffset };
+
+          const cornerR = 12;
+          const midY = (startPt.y + inPtRight.y) / 2;
+          const d = `M ${startPt.x} ${startPt.y} ` +
+                    `L ${startPt.x} ${midY - cornerR} ` +
+                    `Q ${startPt.x} ${midY} ${startPt.x - cornerR} ${midY} ` +
+                    `L ${inPtRight.x + cornerR} ${midY} ` +
+                    `Q ${inPtRight.x} ${midY} ${inPtRight.x} ${midY + cornerR} ` +
+                    `L ${inPtRight.x} ${inPtRight.y}`;
+
+          svg.appendChild(makePath(d));
+          svg.appendChild(makeDot(startPt, DOT_RADIUS));
+          svg.appendChild(makeDot(inPtRight, DOT_RADIUS));
+        }
+      }
+    }
+
+    // 5. STEP 04 -> STEP 05: vertically aligned straight line into Step 05 capsule
+    if (step4 && step5) {
+      const r4 = step4.getBoundingClientRect();
+      const r5 = step5.getBoundingClientRect();
+      const s4BottomX = r4.left - streamRect.left + r4.width / 2;
+      const s4BottomY = r4.top - streamRect.top + r4.height;
+      const s5TopY = r5.top - streamRect.top;
+
+      const startPt = { x: s4BottomX, y: s4BottomY + dotOffset };
+      const endPt = { x: s4BottomX, y: s5TopY - 9 - dotOffset };
+
+      svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
+      svg.appendChild(makeDot(startPt, DOT_RADIUS));
+      svg.appendChild(makeDot(endPt, DOT_RADIUS));
+    }
+
+    // 6. STEP 05 -> RESULT: vertically aligned straight line into RESULT capsule
+    if (step5 && result) {
+      const r5 = step5.getBoundingClientRect();
+      const rRes = result.getBoundingClientRect();
+      const s5BottomX = r5.left - streamRect.left + r5.width / 2;
+      const s5BottomY = r5.top - streamRect.top + r5.height;
+      const resTopY = rRes.top - streamRect.top;
+
+      const startPt = { x: s5BottomX, y: s5BottomY + dotOffset };
+      const endPt = { x: s5BottomX, y: resTopY - 9 - dotOffset };
+
+      svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
+      svg.appendChild(makeDot(startPt, DOT_RADIUS));
+      svg.appendChild(makeDot(endPt, DOT_RADIUS));
+    }
+  };
+
   const drawMobileConnections = (svg, steps, streamRect, result) => {
     const getStepByNum = (n) => {
       const wrapper = steps.find((s) => s.getAttribute('data-blueprint-step') === String(n));
@@ -949,161 +1269,14 @@ startxref
       document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
       window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
 
-    const DOT_RADIUS = 3.5;
-    const GAP = 2.5; // tiny intentional visual gap outside the card/capsule boundary
-    const dotOffset = DOT_RADIUS + GAP; // 6px
-
     if (isKnightSlug) {
-      /* 
-       * Cinematic Medieval Knight Video — Google Flow:
-       * Exactly 6 connections:
-       * 1. STEP 01 -> STEP 02 (leaves bottom left of Step 01, stepped curve into Step 02 capsule)
-       * 2. STEP 01 -> STEP 04 (leaves bottom center of Step 01, pure vertical line through enlarged gap into Step 04 center dot)
-       * 3. STEP 02 -> STEP 04 (leaves bottom center of Step 02, curved into Step 04 LEFT dot above capsule)
-       * 4. STEP 03 -> STEP 04 (leaves bottom center of Step 03, curved into Step 04 RIGHT dot above capsule)
-       * 5. STEP 04 -> STEP 05 (pure vertical line into Step 05 capsule)
-       * 6. STEP 05 -> RESULT  (pure vertical line into RESULT capsule)
-       */
-
-      if (step1) {
-        const r1 = step1.getBoundingClientRect();
-        const s1Left = r1.left - streamRect.left;
-        const s1Width = r1.width;
-        const s1BottomY = r1.top - streamRect.top + r1.height;
-
-        // Two distinct output ports on Step 01's bottom border (outside border with tiny gap):
-        // Left dot (28% width): connects to Step 02
-        // Center dot (50% width): connects straight down to Step 04
-        const s1DotLeft = { x: s1Left + s1Width * 0.28, y: s1BottomY + dotOffset };
-        const s1DotCenter = { x: s1Left + s1Width * 0.50, y: s1BottomY + dotOffset };
-
-        // 1. STEP 01 -> STEP 02:
-        if (step2) {
-          const r2 = step2.getBoundingClientRect();
-          const s2TopX = r2.left - streamRect.left + r2.width / 2;
-          const s2TopY = r2.top - streamRect.top;
-          // Destination sits immediately above Step 02's capsule with tiny visual gap
-          const endPt = { x: s2TopX, y: s2TopY - 9 - dotOffset };
-
-          const cornerR = 10;
-          const midY = (s1DotLeft.y + endPt.y) / 2;
-          const d = `M ${s1DotLeft.x} ${s1DotLeft.y} ` +
-                    `L ${s1DotLeft.x} ${midY - cornerR} ` +
-                    `Q ${s1DotLeft.x} ${midY} ${s1DotLeft.x - cornerR} ${midY} ` +
-                    `L ${endPt.x + cornerR} ${midY} ` +
-                    `Q ${endPt.x} ${midY} ${endPt.x} ${midY + cornerR} ` +
-                    `L ${endPt.x} ${endPt.y}`;
-
-          svg.appendChild(makePath(d));
-          svg.appendChild(makeDot(s1DotLeft, DOT_RADIUS));
-          svg.appendChild(makeDot(endPt, DOT_RADIUS));
-        }
-
-        // Step 04 incoming connections
-        if (step4) {
-          const r4 = step4.getBoundingClientRect();
-          const s4TopY = r4.top - streamRect.top;
-          const s4Left = r4.left - streamRect.left;
-          const s4Width = r4.width;
-
-          // Three distinct destination dots horizontally arranged immediately ABOVE the Step 04 heading capsule:
-          // LEFT DOT   = Step 02 -> Step 04
-          // CENTER DOT = Step 01 -> Step 04
-          // RIGHT DOT  = Step 03 -> Step 04
-          // Capsule top is at s4TopY - 9px. Dots sit cleanly in open air at s4TopY - 17px.
-          const s4DotsY = s4TopY - 17;
-          const inPtLeft = { x: s4Left + s4Width * 0.50 - 24, y: s4DotsY };
-          const inPtCenter = { x: s4Left + s4Width * 0.50, y: s4DotsY };
-          const inPtRight = { x: s4Left + s4Width * 0.50 + 24, y: s4DotsY };
-
-          // 2. STEP 01 -> STEP 04:
-          // Perfectly straight vertical line through the enlarged central opening between Step 02 and Step 03
-          const lineX = s1DotCenter.x;
-          svg.appendChild(makePath(`M ${lineX} ${s1DotCenter.y} L ${lineX} ${inPtCenter.y}`));
-          svg.appendChild(makeDot(s1DotCenter, DOT_RADIUS));
-          svg.appendChild(makeDot(inPtCenter, DOT_RADIUS));
-
-          // 3. STEP 02 -> STEP 04:
-          // Leaves Step 02 bottom border center, curves naturally into Step 04 LEFT dot
-          if (step2) {
-            const r2 = step2.getBoundingClientRect();
-            const s2BottomX = r2.left - streamRect.left + r2.width / 2;
-            const s2BottomY = r2.top - streamRect.top + r2.height;
-            const startPt = { x: s2BottomX, y: s2BottomY + dotOffset };
-
-            const cornerR = 12;
-            const midY = (startPt.y + inPtLeft.y) / 2;
-            const d = `M ${startPt.x} ${startPt.y} ` +
-                      `L ${startPt.x} ${midY - cornerR} ` +
-                      `Q ${startPt.x} ${midY} ${startPt.x + cornerR} ${midY} ` +
-                      `L ${inPtLeft.x - cornerR} ${midY} ` +
-                      `Q ${inPtLeft.x} ${midY} ${inPtLeft.x} ${midY + cornerR} ` +
-                      `L ${inPtLeft.x} ${inPtLeft.y}`;
-
-            svg.appendChild(makePath(d));
-            svg.appendChild(makeDot(startPt, DOT_RADIUS));
-            svg.appendChild(makeDot(inPtLeft, DOT_RADIUS));
-          }
-
-          // 4. STEP 03 -> STEP 04:
-          // Leaves Step 03 bottom border center, curves naturally into Step 04 RIGHT dot
-          if (step3) {
-            const r3 = step3.getBoundingClientRect();
-            const s3BottomX = r3.left - streamRect.left + r3.width / 2;
-            const s3BottomY = r3.top - streamRect.top + r3.height;
-            const startPt = { x: s3BottomX, y: s3BottomY + dotOffset };
-
-            const cornerR = 12;
-            const midY = (startPt.y + inPtRight.y) / 2;
-            const d = `M ${startPt.x} ${startPt.y} ` +
-                      `L ${startPt.x} ${midY - cornerR} ` +
-                      `Q ${startPt.x} ${midY} ${startPt.x - cornerR} ${midY} ` +
-                      `L ${inPtRight.x + cornerR} ${midY} ` +
-                      `Q ${inPtRight.x} ${midY} ${inPtRight.x} ${midY + cornerR} ` +
-                      `L ${inPtRight.x} ${inPtRight.y}`;
-
-            svg.appendChild(makePath(d));
-            svg.appendChild(makeDot(startPt, DOT_RADIUS));
-            svg.appendChild(makeDot(inPtRight, DOT_RADIUS));
-          }
-        }
-      }
-
-      // 5. STEP 04 -> STEP 05: vertically aligned straight line into Step 05 capsule
-      if (step4 && step5) {
-        const r4 = step4.getBoundingClientRect();
-        const r5 = step5.getBoundingClientRect();
-        const s4BottomX = r4.left - streamRect.left + r4.width / 2;
-        const s4BottomY = r4.top - streamRect.top + r4.height;
-        const s5TopY = r5.top - streamRect.top;
-
-        const startPt = { x: s4BottomX, y: s4BottomY + dotOffset };
-        const endPt = { x: s4BottomX, y: s5TopY - 9 - dotOffset };
-
-        svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
-        svg.appendChild(makeDot(startPt, DOT_RADIUS));
-        svg.appendChild(makeDot(endPt, DOT_RADIUS));
-      }
-
-      // 6. STEP 05 -> RESULT: vertically aligned straight line into RESULT capsule
-      if (step5 && result) {
-        const r5 = step5.getBoundingClientRect();
-        const rRes = result.getBoundingClientRect();
-        const s5BottomX = r5.left - streamRect.left + r5.width / 2;
-        const s5BottomY = r5.top - streamRect.top + r5.height;
-        const resTopY = rRes.top - streamRect.top;
-
-        const startPt = { x: s5BottomX, y: s5BottomY + dotOffset };
-        const endPt = { x: s5BottomX, y: resTopY - 9 - dotOffset };
-
-        svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
-        svg.appendChild(makeDot(startPt, DOT_RADIUS));
-        svg.appendChild(makeDot(endPt, DOT_RADIUS));
-      }
+      drawKnightConnections(svg, steps, streamRect, result);
       return;
     }
 
-    /* Fallback default mobile connections for other templates */
+    const DOT_RADIUS = 3.5;
+    const GAP = 2.5;
+    const dotOffset = DOT_RADIUS + GAP;
     if (step1 && step2) {
       const p1 = pointFor(step1, streamRect, 'bottom');
       const p2 = pointFor(step2, streamRect, 'top');
@@ -1303,11 +1476,27 @@ startxref
     svg.setAttribute('height', String(streamRect.height));
     svg.replaceChildren();
 
-    const isMobile = window.matchMedia('(max-width: 700px)').matches;
-    if (isMobile) {
-      drawMobileConnections(svg, steps, streamRect, result);
+    const isFullscreen = container.classList.contains('is-blueprint-fullscreen');
+    // If scaled in fullscreen mode, do not recompute coordinates on scaled elements
+    if (isFullscreen && stream.style.transform && stream.style.transform !== 'none' && !stream.style.transform.includes('scale(1)')) {
+      return;
+    }
+
+    const isKnightSlug =
+      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
+        'cinematic-medieval-knight-video-google-flow' ||
+      document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
+
+    if (isKnightSlug) {
+      drawKnightConnections(svg, steps, streamRect, result);
     } else {
-      drawDesktopConnections(svg, steps, streamRect, result);
+      const isMobile = !isFullscreen && window.matchMedia('(max-width: 700px)').matches;
+      if (isMobile) {
+        drawMobileConnections(svg, steps, streamRect, result);
+      } else {
+        drawDesktopConnections(svg, steps, streamRect, result);
+      }
     }
   };
 
@@ -1352,10 +1541,18 @@ startxref
     };
 
     runInitial();
-    window.addEventListener('resize', redraw, { passive: true });
+    window.addEventListener('resize', () => {
+      if (!container.classList.contains('is-blueprint-fullscreen')) {
+        redraw();
+      }
+    }, { passive: true });
 
     if (stream && 'ResizeObserver' in window) {
-      const observer = new ResizeObserver(redraw);
+      const observer = new ResizeObserver(() => {
+        if (!container.classList.contains('is-blueprint-fullscreen')) {
+          redraw();
+        }
+      });
       observer.observe(stream);
       container._sfBlueprintObserver = observer;
     }
@@ -1363,6 +1560,7 @@ startxref
     container.querySelectorAll('[data-step-toggle]').forEach((button) => {
       button.addEventListener('click', redraw, { passive: true });
     });
+    window.sfDrawBlueprintGraph = drawBlueprintGraph;
   };
 
   const init = () => {

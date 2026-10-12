@@ -17,7 +17,11 @@ function fixDynamicRouteFilenames() {
               const srcPath = path.join(targetDir, file);
               const destPath = path.join(targetDir, decoded);
               if (srcPath !== destPath && !fs.existsSync(destPath)) {
-                fs.copyFileSync(srcPath, destPath);
+                if (fs.statSync(srcPath).isDirectory()) {
+                  fs.cpSync(srcPath, destPath, { recursive: true });
+                } else {
+                  fs.copyFileSync(srcPath, destPath);
+                }
               }
             }
           }
