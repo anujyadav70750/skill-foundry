@@ -6414,3 +6414,160 @@ html.light-theme .testing-1-theme .blueprint-canvas-btn:hover {
   }
 }
 
+/* RESOURCE 4 FINAL BLUEPRINT LAYOUT FIX - 2026-10-12 */
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-section {
+  position: relative !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-header {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 18px 20px 14px !important;
+  background: inherit !important;
+  border: 0 !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-divider {
+  display: block !important;
+  width: 100% !important;
+  height: 1px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: rgba(148, 163, 184, 0.18) !important;
+  border: 0 !important;
+  box-sizing: border-box !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-workspace {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Controls are a normal row below the divider, never floating over the graph. */
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls {
+  position: relative !important;
+  inset: auto !important;
+  z-index: 20 !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  margin: 10px 0 14px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > button,
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > a {
+  position: static !important;
+  inset: auto !important;
+  width: 86px !important;
+  height: 36px !important;
+  min-width: 86px !important;
+  min-height: 36px !important;
+  max-width: 86px !important;
+  max-height: 36px !important;
+  flex: 0 0 86px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  transform: none !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-scroll-pane {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  box-sizing: border-box !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream {
+  position: relative !important;
+  display: grid !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  row-gap: 28px !important;
+}
+
+/* The graph itself starts immediately after the control row. */
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream::before,
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream::after {
+  content: none !important;
+  display: none !important;
+}
+
+[data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-container {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 768px) {
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-integrated-header {
+    padding: 18px 20px 14px !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 18px !important;
+    row-gap: 28px !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(1) {
+    grid-column: 1 / -1 !important;
+    grid-row: 1 !important;
+    justify-self: center !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(2) {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    justify-self: stretch !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(3) {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    justify-self: stretch !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(4),
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(5),
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(6) {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+  }
+}
+
