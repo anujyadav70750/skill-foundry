@@ -1,0 +1,190 @@
+name: Fix Resource 4 Blueprint Mobile Spacing
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-resource4-blueprint-mobile-spacing.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Append Resource 4 blueprint mobile override
+        shell: bash
+        run: |
+          cat >> public/workflow-fixes.css <<'EOF'
+
+/* RESOURCE 4 FINAL MOBILE BLUEPRINT LAYOUT OVERRIDE — 2026-10-12 */
+@media (max-width: 768px) {
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-container,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px 12px 20px !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-container .blueprint-workflow-header,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container .blueprint-workflow-header {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 8px 0 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-container .blueprint-workflow-header + *,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container .blueprint-workflow-header + * {
+    margin-top: 0 !important;
+  }
+
+  /* The divider belongs to the blueprint boundary, not to a separate inner card. */
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-container hr,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container hr {
+    width: calc(100% + 24px) !important;
+    max-width: none !important;
+    margin-left: -12px !important;
+    margin-right: -12px !important;
+    margin-top: 12px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Keep Reset and Expand in one compact row immediately under the divider. */
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-workspace {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    z-index: 10 !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 10px 0 14px !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-canvas-controls > * {
+    position: relative !important;
+    inset: auto !important;
+    float: none !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    min-width: 86px !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    max-height: 36px !important;
+    margin: 0 !important;
+    transform: none !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-scroll-pane {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream {
+    position: relative !important;
+    display: grid !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    row-gap: 28px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Remove the empty canvas space above Step 01. */
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream::before,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-container {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Preserve the intended mobile graph: Step 01 centered; Step 02 + 03 below it; Step 04 + 05 centered. */
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > * {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(1) {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    grid-row: 1 !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(2) {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    justify-self: stretch !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(3) {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    justify-self: stretch !important;
+  }
+
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(4),
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(5),
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream > :nth-child(6) {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+  }
+}
+EOF
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/workflow-fixes.css
+          git diff --cached --quiet && exit 0
+          git commit -m 'Fix Resource 4 blueprint mobile spacing and controls'
+          git push
