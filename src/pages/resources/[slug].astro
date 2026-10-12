@@ -878,11 +878,16 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     /* Subtle Horizontal Divider Line */
     .blueprint-integrated-divider {
+      display: block !important;
       width: 100% !important;
+      max-width: 100% !important;
+      min-width: 100% !important;
       height: 1px !important;
-      background: rgba(255, 255, 255, 0.10) !important;
-      margin: 0 0 28px 0 !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      margin: 0 !important;
+      padding: 0 !important;
       box-sizing: border-box !important;
+      border: none !important;
     }
 
     :root[data-theme="light"] .blueprint-integrated-divider,
@@ -892,7 +897,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     @media (max-width: 640px) {
       .blueprint-integrated-header {
-        padding: 0 0 12px 0 !important;
+        padding: 16px 18px 14px 18px !important;
       }
       .blueprint-integrated-eyebrow {
         font-size: 10px !important;
@@ -907,7 +912,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         font-size: 13px !important;
       }
       .blueprint-integrated-divider {
-        margin: 0 0 20px 0 !important;
+        margin: 0 !important;
       }
     }
 
@@ -918,7 +923,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       justify-content: flex-end !important;
       gap: 8px !important;
       width: 100% !important;
-      margin: 0 0 20px 0 !important;
+      margin: 0 0 10px 0 !important;
       padding: 0 !important;
       position: relative !important;
       z-index: 20 !important;
@@ -938,13 +943,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      width: 32px !important;
-      height: 32px !important;
-      min-width: 32px !important;
-      min-height: 32px !important;
-      max-width: 32px !important;
-      max-height: 32px !important;
-      border-radius: 8px !important;
+      width: 36px !important;
+      height: 36px !important;
+      min-width: 36px !important;
+      min-height: 36px !important;
+      max-width: 36px !important;
+      max-height: 36px !important;
+      border-radius: 10px !important;
       box-sizing: border-box !important;
       cursor: pointer !important;
       padding: 0 !important;
