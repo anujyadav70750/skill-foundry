@@ -6471,10 +6471,7 @@ html.light-theme .testing-1-theme .blueprint-canvas-btn:hover {
    ========================================================================== */
 html.blueprint-fullscreen-open,
 body.blueprint-fullscreen-open {
-  background: #000000 !important;
-  background-color: #000000 !important;
-  overflow-x: auto !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
   touch-action: auto !important;
 }
 
@@ -6501,10 +6498,9 @@ body.blueprint-fullscreen-open {
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  display: block !important;
-  overflow-x: auto !important;
-  overflow-y: auto !important;
-  -webkit-overflow-scrolling: touch !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
   box-sizing: border-box !important;
   transition: opacity 0.15s ease-out;
 }
@@ -6517,12 +6513,14 @@ body.blueprint-fullscreen-open {
   display: none !important;
 }
 
-/* Canvas workspace occupies entire viewport */
+/* Canvas workspace occupies entire viewport height */
 #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-workspace,
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-workspace {
   position: relative !important;
+  flex: 1 1 100% !important;
   width: 100% !important;
-  min-height: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
   background: #000000 !important;
   background-color: #000000 !important;
   margin: 0 !important;
@@ -6530,11 +6528,12 @@ body.blueprint-fullscreen-open {
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  display: block !important;
-  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
 }
 
-/* Canvas controls sit at top-right of workspace flow */
+/* Canvas controls float in top right corner */
 #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls,
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls {
   position: absolute !important;
@@ -6550,7 +6549,7 @@ body.blueprint-fullscreen-open {
   margin: 0 !important;
   padding: 0 !important;
   background: transparent !important;
-  pointer-events: auto !important;
+  pointer-events: none !important;
 }
 
 #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn,
@@ -6571,17 +6570,87 @@ body.blueprint-fullscreen-open {
   color: #FFFFFF !important;
 }
 
-/* Stream inside fullscreen is a FIXED 660px visual diagram canvas */
+/* Scroll pane occupies full height with touch scrolling and native pinch-to-zoom */
+#blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-scroll-pane,
+.blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-scroll-pane {
+  position: relative !important;
+  flex: 1 1 auto !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-x pan-y pinch-zoom !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Non-fullscreen pass-through for zoom stage and layer */
+.blueprint-zoom-stage {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  position: relative !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.blueprint-zoom-layer {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  position: relative !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Stage container for zooming inside fullscreen */
+#blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-zoom-stage,
+.blueprint-workflow-container.is-blueprint-fullscreen .blueprint-zoom-stage {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  width: max-content !important;
+  box-sizing: border-box !important;
+  position: relative !important;
+  padding-top: max(56px, calc(env(safe-area-inset-top, 16px) + 40px)) !important;
+  padding-bottom: max(60px, env(safe-area-inset-bottom, 36px)) !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  background: #000000 !important;
+  background-color: #000000 !important;
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+#blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-zoom-layer,
+.blueprint-workflow-container.is-blueprint-fullscreen .blueprint-zoom-layer {
+  position: relative !important;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  overflow: visible !important;
+  touch-action: pan-x pan-y pinch-zoom !important;
+}
+
+/* Stream inside fullscreen is a FIXED 640px visual diagram canvas */
 #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-stream,
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-stream {
-  position: relative !important;
-  margin: 0 auto !important;
-  padding: max(60px, calc(env(safe-area-inset-top, 16px) + 40px)) 16px max(60px, env(safe-area-inset-bottom, 36px)) !important;
-  width: 660px !important;
-  min-width: 660px !important;
-  max-width: 660px !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 640px !important;
+  min-width: 640px !important;
+  max-width: 640px !important;
+  margin: 0 !important;
+  padding: 24px 18px 48px !important;
   box-sizing: border-box !important;
-  touch-action: auto !important;
+  touch-action: pan-x pan-y pinch-zoom !important;
   overflow: visible !important;
   display: grid !important;
   grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -6595,8 +6664,8 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-step-wrapper[data-blueprint-step="1"] {
   grid-column: 1 / span 2 !important;
   grid-row: 1 !important;
-  width: 284px !important;
-  max-width: 284px !important;
+  width: 276px !important;
+  max-width: 276px !important;
   justify-self: center !important;
   margin: 0 auto !important;
 }
@@ -6605,8 +6674,8 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-step-wrapper[data-blueprint-step="2"] {
   grid-column: 1 !important;
   grid-row: 2 !important;
-  width: 284px !important;
-  max-width: 284px !important;
+  width: 276px !important;
+  max-width: 276px !important;
   justify-self: stretch !important;
   margin-top: 54px !important;
   margin-bottom: 0 !important;
@@ -6616,8 +6685,8 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-step-wrapper[data-blueprint-step="3"] {
   grid-column: 2 !important;
   grid-row: 2 !important;
-  width: 284px !important;
-  max-width: 284px !important;
+  width: 276px !important;
+  max-width: 276px !important;
   justify-self: stretch !important;
   margin-top: 54px !important;
   margin-bottom: 0 !important;
@@ -6627,8 +6696,8 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-step-wrapper[data-blueprint-step="4"] {
   grid-column: 1 / span 2 !important;
   grid-row: 3 !important;
-  width: 284px !important;
-  max-width: 284px !important;
+  width: 276px !important;
+  max-width: 276px !important;
   justify-self: center !important;
   margin: 88px auto 0 !important;
 }
@@ -6637,8 +6706,8 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-step-wrapper[data-blueprint-step="5"] {
   grid-column: 1 / span 2 !important;
   grid-row: 4 !important;
-  width: 284px !important;
-  max-width: 284px !important;
+  width: 276px !important;
+  max-width: 276px !important;
   justify-self: center !important;
   margin: 48px auto 0 !important;
 }
