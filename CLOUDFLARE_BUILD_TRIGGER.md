@@ -6,3 +6,5 @@ Temporary deployment trigger for Cloudflare Workers Builds.
 2026-10-03 Finalize Resource Page structure with reusable editorial layout and step handoff continuity.
 2026-10-04 Finalize Resource Page structure, medieval knight resource workflow, and visual assets sync.
 2026-10-13 Fix expanded Workflow Blueprint uniform pinch zoom scaling and locked canvas structure.
+2026-10-13 Refine Step Details popup UI, horizontal width, setting capsules, segmented prompt header, and mobile overlay close behavior.
+

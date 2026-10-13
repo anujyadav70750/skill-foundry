@@ -1470,6 +1470,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
       {/* SINGLE CONTINUOUS WORKFLOW BLUEPRINT CONTAINER */}
       {workflowSteps.length > 0 && (
+        <>
         <section
           class:list={[
             'blueprint-workflow-container',
@@ -1526,9 +1527,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             </div>
 
           <div class="blueprint-workflow-scroll-pane" id="blueprint-workflow-scroll-pane">
-            <div class="blueprint-zoom-stage" id="blueprint-zoom-stage">
-              <div class="blueprint-zoom-layer" id="blueprint-zoom-layer">
-                <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
+            <div class="blueprint-workflow-stream" aria-label="Workflow Steps">
             <!-- CONTINUOUS PROCESS: START -->
             <div class="workflow-process-terminal workflow-process-start" aria-label="Workflow Start">
               <span class="workflow-process-pill">START</span>
@@ -1603,6 +1602,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                     aria-expanded="false"
                     aria-controls={`step-body-${index + 1}`}
                     data-step-toggle
+                    data-step-number={index + 1}
                   >
                     <div class="step-header-thumb-box">
                       {thumbUrl ? (
@@ -2112,9 +2112,292 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             </div>
           </div>
           </div>
+        {/* CONTAINED STEP DETAILS POPUP (strictly INSIDE black blueprint workspace) */}
+        <div id="step-details-modal" class="step-details-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="step-overlay-eyebrow">
+          <div class="step-details-backdrop" id="step-details-backdrop" tabindex="-1"></div>
+          <div class="step-details-container">
+            {/* Top Bar with Step Details Eyebrow and Compact X Close Button */}
+            <header class="step-details-bar">
+              <span class="step-details-bar-eyebrow" id="step-overlay-eyebrow">STEP 01 DETAILS</span>
+              <button type="button" class="step-details-close-btn" id="step-details-close" aria-label="Close step details">
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </header>
+
+            {/* Container body: NO internal vertical scrollbar */}
+            <div class="step-details-body" id="step-details-scroll-body">
+              {workflowSteps.map((step, index) => {
+                const output = outputVisual(step, index);
+                const actionText = String(step.process || step.prompt || '').trim();
+                const isInstructionStep = step.actionType === 'instructions' || (!step.actionType && (step.toolPurpose?.toLowerCase().includes('editing') || (!actionText && String(step.description || '').trim())));
+                const hasMedia = Boolean(output.src || output.previewSrc);
+                const isImage = hasMedia && (output.type === 'image' || !output.type);
+                const isVideo = hasMedia && output.type === 'video';
+                const isAudio = output.src && output.type === 'audio' && isRealAudio(output.src);
+                const isVisual = isImage || isVideo;
+                const mediaUrl = output.src || output.previewSrc;
+
+                const isEmbedSrc = (src) => /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(String(src || ''));
+                const outputAssetName = step.outputLabel || step.output || 'Output';
+                const stepDesc = step.description || step.purpose || '';
+
+                return (
+                  <article
+                    class="step-overlay-panel"
+                    data-step-overlay-panel={index + 1}
+                    hidden
+                    aria-label={`Step ${index + 1}: ${step.title}`}
+                  >
+                    {/* STEP TITLE + STEP DESCRIPTION (Directly below header) */}
+                    <div class="step-details-meta-header">
+                      <h3 class="step-details-step-title">{step.title}</h3>
+                      {stepDesc && <p class="step-details-step-desc">{stepDesc}</p>}
+                    </div>
+
+                    {/* 1. INPUT / INPUTS SECTION */}
+                    {step.inputs && step.inputs.length > 0 && (
+                      <div class="step-details-section">
+                        <span class="step-details-section-title">
+                          {step.inputs.length > 1 ? 'INPUTS' : 'INPUT'}
+                        </span>
+                        <div class="step-details-input-rail">
+                          {step.inputs.map((input) => {
+                            const isInputImage = input.type === 'image' && input.src;
+                            const isInputVideo = input.type === 'video' && input.src;
+                            const isInputAudio = input.type === 'audio' && input.src && isRealAudio(input.src);
+                            const isInputVisual = isInputImage || isInputVideo;
+                            const inputTypeLabel = (input.type || 'input').toUpperCase();
+                            const rawLabel = input.label || input.title || input.role || input.value || 'Input';
+                            const inputShortTitle = rawLabel.length > 22 ? rawLabel.split(/[:\-–—]/)[0].trim() : rawLabel;
+
+                            return (
+                              <div class="step-details-input-card">
+                                <span class="input-type-pill">{inputTypeLabel}</span>
+                                <div class={`input-media-frame ${!isInputVisual && !isInputAudio ? 'input-media-nonvisual' : ''}`}>
+                                  {isInputImage && (
+                                    <img class="input-media-img" src={input.src} alt={inputShortTitle} loading="lazy" />
+                                  )}
+                                  {isInputVideo && (
+                                    isRealVideo(input.src) ? (
+                                      <video class="input-media-video" src={input.src} muted playsinline autoplay loop preload="metadata" />
+                                    ) : (
+                                      <>
+                                        <img class="input-media-img" src={input.src} alt={inputShortTitle} loading="lazy" />
+                                        <span class="input-media-play" aria-hidden="true">▶</span>
+                                      </>
+                                    )
+                                  )}
+                                  {isInputAudio && (
+                                    <div class="input-audio-wrap">
+                                      <svg class="audio-wave-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                                      <audio class="media-audio" src={input.src} controls preload="metadata" />
+                                    </div>
+                                  )}
+                                  {!isInputVisual && !isInputAudio && (
+                                    <div class="input-nonvisual-wrap">
+                                      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                    </div>
+                                  )}
+                                </div>
+                                <div class="input-card-title" title={rawLabel}>{inputShortTitle}</div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* 2. PROMPT OR INSTRUCTIONS */}
+                    {isInstructionStep ? (
+                      <>
+                        <div class="step-details-section">
+                          <span class="step-details-section-title">TOOL / SETTINGS</span>
+                          <div class="step-details-tool-box">
+                            <div class="step-details-tool-row">
+                              {step.tool && (
+                                <a
+                                  class="step-details-tool-link"
+                                  href={step.toolMeta?.url || '#'}
+                                  target={step.toolMeta?.url ? '_blank' : undefined}
+                                  rel={step.toolMeta?.url ? 'noopener noreferrer' : undefined}
+                                  aria-label={`Open ${step.tool}`}
+                                  title={`Open ${step.tool}`}
+                                >
+                                  <img class="step-details-tool-logo" src={toolLogo(step.toolMeta)} alt={`${step.tool} logo`} width="36" height="36" loading="lazy"/>
+                                </a>
+                              )}
+                              {step.tool && <span class="step-details-tool-name">{step.tool}</span>}
+                            </div>
+                            {step.settings && step.settings.length > 0 && (
+                              <div class="step-details-settings-strip" role="region" aria-label="Step settings">
+                                {step.settings.map((setting) => {
+                                  const sLabel = String(setting.label || 'SETTING').toUpperCase();
+                                  let iconSvg = '';
+                                  if (sLabel.includes('MODEL')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+                                  } else if (sLabel.includes('ASPECT') || sLabel.includes('RATIO')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>`;
+                                  } else if (sLabel.includes('DURATION') || sLabel.includes('TIME')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+                                  } else if (sLabel.includes('RESOLUTION') || sLabel.includes('QUALITY')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+                                  } else if (sLabel.includes('FPS')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>`;
+                                  } else if (sLabel.includes('SEED')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/></svg>`;
+                                  }
+                                  return (
+                                    <div class="blueprint-setting-capsule">
+                                      {iconSvg && <Fragment set:html={iconSvg} />}
+                                      <div class="setting-capsule-body">
+                                        <span class="setting-capsule-label">{sLabel}</span>
+                                        <span class="setting-capsule-val">{setting.value}</span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div class="step-details-section">
+                          <span class="step-details-section-title">INSTRUCTIONS</span>
+                          <div class="instruction-card">
+                            {String(step.description || step.process || '').split(/\n+/).filter(Boolean).map((line, instructionIndex) => (
+                              <div class="instruction-line">
+                                <span>{instructionIndex + 1}</span>
+                                <p>{line.replace(/^\d+[.)]\s*/, '')}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {/* PROMPT SECTION */}
+                        <div class="step-details-section">
+                          <span class="step-details-section-title">PROMPT</span>
+                          <div class="workflow-prompt">
+                            <div class="workflow-prompt-head">
+                              <button type="button" data-copy-step>Copy</button>
+                              <span>FULL PROMPT</span>
+                              <button type="button" data-expand-step>Expand</button>
+                            </div>
+                            <pre data-step-prompt>{actionText}</pre>
+                            <button class="workflow-download" type="button" data-download-step>Download PDF</button>
+                          </div>
+                        </div>
+
+                        {/* TOOL / SETTINGS SECTION */}
+                        <div class="step-details-section">
+                          <span class="step-details-section-title">TOOL / SETTINGS</span>
+                          <div class="step-details-tool-box">
+                            <div class="step-details-tool-row">
+                              {step.tool && (
+                                <a
+                                  class="step-details-tool-link"
+                                  href={step.toolMeta?.url || '#'}
+                                  target={step.toolMeta?.url ? '_blank' : undefined}
+                                  rel={step.toolMeta?.url ? 'noopener noreferrer' : undefined}
+                                  aria-label={`Open ${step.tool}`}
+                                  title={`Open ${step.tool}`}
+                                >
+                                  <img class="step-details-tool-logo" src={toolLogo(step.toolMeta)} alt={`${step.tool} logo`} width="36" height="36" loading="lazy"/>
+                                </a>
+                              )}
+                              {step.tool && <span class="step-details-tool-name">{step.tool}</span>}
+                            </div>
+                            {step.settings && step.settings.length > 0 && (
+                              <div class="step-details-settings-strip" role="region" aria-label="Step settings">
+                                {step.settings.map((setting) => {
+                                  const sLabel = String(setting.label || 'SETTING').toUpperCase();
+                                  let iconSvg = '';
+                                  if (sLabel.includes('MODEL')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+                                  } else if (sLabel.includes('ASPECT') || sLabel.includes('RATIO')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>`;
+                                  } else if (sLabel.includes('DURATION') || sLabel.includes('TIME')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+                                  } else if (sLabel.includes('RESOLUTION') || sLabel.includes('QUALITY')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
+                                  } else if (sLabel.includes('FPS')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polygon points="2 17 12 22 22 17"/><polygon points="2 12 12 17 22 12"/></svg>`;
+                                  } else if (sLabel.includes('SEED')) {
+                                    iconSvg = `<svg class="setting-capsule-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/></svg>`;
+                                  }
+                                  return (
+                                    <div class="blueprint-setting-capsule">
+                                      {iconSvg && <Fragment set:html={iconSvg} />}
+                                      <div class="setting-capsule-body">
+                                        <span class="setting-capsule-label">{sLabel}</span>
+                                        <span class="setting-capsule-val">{setting.value}</span>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* 3. OUTPUT SECTION */}
+                    <div class="step-details-section">
+                      <span class="step-details-section-title">OUTPUT</span>
+                      <div class="step-details-output-card">
+                        <div class={`output-media-frame ${!isVisual && !isAudio && !(output.src && output.src.includes('instagram.com')) ? 'output-media-nonvisual' : ''}`}>
+                          {output.src && output.src.includes('instagram.com') ? (
+                            <a
+                              class="output-reel-link"
+                              href={output.src.split('?')[0].replace(/\/embed\/?$/, '').replace(/\/+$/, '') + '/'}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label={`Watch ${output.label || 'Reel'} on Instagram`}
+                            >
+                              <img class="output-media-img" src={heroImage} alt={output.label || "Watch on Instagram"} loading="lazy" />
+                              <div class="output-play-badge" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+                              </div>
+                            </a>
+                          ) : isImage ? (
+                            <img class="output-media-img" src={mediaUrl} alt={output.label || outputAssetName} loading="lazy" />
+                          ) : isVideo ? (
+                            output.src && isRealVideo(output.src) ? (
+                              <video class="output-media-video" src={output.src} muted playsinline controls preload="metadata" />
+                            ) : (
+                              <>
+                                <img class="output-media-img" src={mediaUrl} alt={output.label || outputAssetName} loading="lazy" />
+                                <span class="output-media-play" aria-hidden="true">▶</span>
+                              </>
+                            )
+                          ) : isAudio ? (
+                            <div class="output-audio-wrap">
+                              <svg class="audio-wave-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                              <audio class="media-audio" src={output.src} controls preload="metadata" />
+                            </div>
+                          ) : (
+                            <div class="output-nonvisual-wrap">
+                              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+                            </div>
+                          )}
+                        </div>
+                        <div class="output-card-title">{outputAssetName.length > 30 ? outputAssetName.split(/[:\-–—]/)[0].trim() : outputAssetName}</div>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
           </div>
         </div>
+        </div>
       </section>
+      </>
       )}
 
       {/* BETTER RESULTS */}
@@ -2235,183 +2518,190 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
-    // Step expand/collapse toggle interaction (Single-Open Accordion across all 5 steps)
-    document.querySelectorAll('[data-step-toggle]').forEach((toggleBtn) => {
-      toggleBtn.addEventListener('click', () => {
-        const container = toggleBtn.closest('.blueprint-step-container');
-        if (!container) return;
-        const body = container.querySelector('.blueprint-step-body');
-        if (!body) return;
+    // Step Details Contained Popup Management (contained inside blueprint container)
+    const blueprintTray = document.getElementById('blueprint-inner-workflow-tray');
+    const stepDetailsModal = document.getElementById('step-details-modal');
+    const stepDetailsBackdrop = document.getElementById('step-details-backdrop');
+    const stepDetailsCloseBtn = document.getElementById('step-details-close');
+    const stepDetailsScrollBody = document.getElementById('step-details-scroll-body');
+    const stepOverlayEyebrow = document.getElementById('step-overlay-eyebrow');
 
-        const isExpanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-        const nextState = !isExpanded;
+    let savedPageScrollY = 0;
 
-        // If expanding this step, close all other steps across the workflow
-        if (nextState) {
-          document.querySelectorAll('.blueprint-step-container').forEach((otherContainer) => {
-            if (otherContainer !== container) {
-              const otherToggle = otherContainer.querySelector('[data-step-toggle]');
-              const otherBody = otherContainer.querySelector('.blueprint-step-body');
-              if (otherToggle) otherToggle.setAttribute('aria-expanded', 'false');
-              otherContainer.classList.remove('is-expanded');
-              otherContainer.classList.add('is-collapsed');
-              if (otherBody) otherBody.hidden = true;
-            }
-          });
-        }
+    const positionContainedPopup = () => {
+      if (!stepDetailsModal || stepDetailsModal.hidden) return;
+      const popupCard = stepDetailsModal.querySelector('.step-details-container');
+      const workspace = blueprintTray?.querySelector('.blueprint-canvas-workspace') || blueprintTray;
+      if (!popupCard || !workspace) return;
 
-        toggleBtn.setAttribute('aria-expanded', String(nextState));
-        container.classList.toggle('is-expanded', nextState);
-        container.classList.toggle('is-collapsed', !nextState);
+      const isFullscreen = blueprintTray.classList.contains('is-blueprint-fullscreen');
+      if (!isFullscreen) {
+        popupCard.style.maxHeight = 'none';
+        popupCard.style.height = 'auto';
 
-        if (nextState) {
-          body.hidden = false;
-          // Synchronize prompt box button widths when newly visible
-          body.querySelectorAll('.workflow-prompt').forEach((box) => {
-            const copy = box.querySelector('[data-copy-step]');
-            const expand = box.querySelector('[data-expand-step]');
-            if (copy && expand) {
-              requestAnimationFrame(() => {
-                const w = expand.getBoundingClientRect().width;
-                if (w > 0) {
-                  copy.style.width = w + 'px';
-                  copy.style.minWidth = w + 'px';
-                }
-              });
-            }
-          });
+        // Naturally adapt workspace height if needed so popup is fully visible without internal scroll
+        requestAnimationFrame(() => {
+          const cardHeight = popupCard.offsetHeight || 500;
+          const requiredHeight = cardHeight + 48; // 24px top & bottom margin
+          if (workspace.offsetHeight < requiredHeight) {
+            workspace.style.minHeight = `${requiredHeight}px`;
+          }
+        });
+
+        popupCard.style.position = 'relative';
+        popupCard.style.top = '';
+        popupCard.style.left = '';
+        popupCard.style.transform = '';
+        popupCard.style.margin = '20px auto';
+      } else {
+        popupCard.style.position = 'relative';
+        popupCard.style.top = '';
+        popupCard.style.left = '';
+        popupCard.style.transform = '';
+        popupCard.style.maxHeight = 'none';
+        popupCard.style.height = 'auto';
+        popupCard.style.margin = 'auto';
+      }
+    };
+
+    window.addEventListener('resize', positionContainedPopup);
+    window.addEventListener('scroll', positionContainedPopup, { passive: true });
+
+    const openStepDetails = (stepNum) => {
+      if (!stepDetailsModal || !blueprintTray) return;
+      const numStr = String(stepNum);
+
+      let found = false;
+      stepDetailsModal.querySelectorAll('[data-step-overlay-panel]').forEach((panel) => {
+        const isTarget = panel.getAttribute('data-step-overlay-panel') === numStr;
+        panel.hidden = !isTarget;
+        if (isTarget) {
+          found = true;
+          panel.style.display = 'flex';
         } else {
-          body.hidden = true;
+          panel.style.display = 'none';
+        }
+      });
+
+      if (!found) return;
+
+      if (stepOverlayEyebrow) {
+        stepOverlayEyebrow.textContent = `STEP ${numStr.padStart(2, '0')} DETAILS`;
+      }
+
+      stepDetailsModal.hidden = false;
+      stepDetailsModal.setAttribute('aria-hidden', 'false');
+      blueprintTray.classList.add('step-details-open');
+
+      positionContainedPopup();
+    };
+
+    const closeStepDetails = () => {
+      if (!stepDetailsModal || stepDetailsModal.hidden) return;
+
+      stepDetailsModal.hidden = true;
+      stepDetailsModal.setAttribute('aria-hidden', 'true');
+      blueprintTray?.classList.remove('step-details-open');
+
+      const workspace = blueprintTray?.querySelector('.blueprint-canvas-workspace');
+      if (workspace) {
+        workspace.style.minHeight = '';
+      }
+
+      const popupCard = stepDetailsModal.querySelector('.step-details-container');
+      if (popupCard) {
+        popupCard.style.top = '';
+        popupCard.style.maxHeight = '';
+      }
+
+      // Pause all media playing inside modal
+      stepDetailsModal.querySelectorAll('video').forEach((vid) => {
+        try { vid.pause(); } catch {}
+      });
+    };
+
+    // Tap/Click ANY step card in the blueprint to open full-screen step details overlay
+    document.querySelectorAll('[data-step-toggle]').forEach((toggleBtn) => {
+      toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const container = toggleBtn.closest('.blueprint-step-container');
+        const stepNum = toggleBtn.getAttribute('data-step-number') || container?.getAttribute('data-step');
+        if (stepNum) {
+          openStepDetails(stepNum);
         }
       });
     });
 
+    document.querySelectorAll('.blueprint-step-container').forEach((container) => {
+      container.addEventListener('click', (e) => {
+        if (e.target && e.target.closest && e.target.closest('[data-step-toggle]')) return;
+        const stepNum = container.getAttribute('data-step');
+        if (stepNum) {
+          openStepDetails(stepNum);
+        }
+      });
+    });
+
+    // Close controls
+    stepDetailsCloseBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeStepDetails();
+    });
+
+    stepDetailsBackdrop?.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeStepDetails();
+    });
+
+    document.querySelectorAll('[data-overlay-close-panel]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeStepDetails();
+      });
+    });
+
+    // Copy prompt button inside the overlay
+    stepDetailsModal?.querySelectorAll('[data-copy-overlay-prompt]').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const panel = btn.closest('[data-step-overlay-panel]');
+        const promptEl = panel?.querySelector('[data-step-prompt]') || panel?.querySelector('.step-overlay-prompt-text');
+        const text = promptEl?.textContent?.trim() || '';
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => { btn.textContent = original; }, 1400);
+        } catch {}
+      });
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && stepDetailsModal && !stepDetailsModal.hidden) {
+        closeStepDetails();
+      }
+    });
+
     // Instant Full-Screen Blueprint Overlay View
-    const blueprintTray = document.getElementById('blueprint-inner-workflow-tray');
     const boardExpandBtn = document.getElementById('blueprint-board-expand-toggle');
     const boardResetBtn = document.getElementById('blueprint-board-reset-toggle');
     const scrollPane = document.getElementById('blueprint-workflow-scroll-pane');
-    const zoomStage = document.getElementById('blueprint-zoom-stage');
-    const zoomLayer = document.getElementById('blueprint-zoom-layer');
-    const blueprintStream = blueprintTray ? blueprintTray.querySelector('.blueprint-workflow-stream') : null;
 
     const EXPAND_ICON_SVG = `<svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>`;
     const COLLAPSE_ICON_SVG = `<svg class="canvas-btn-icon inner-collapse-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line></svg>`;
 
-    const FIXED_CANVAS_WIDTH = 640;
     let savedScrollY = 0;
-    let currentScale = 1.0;
-    let baseScale = 1.0;
-    let unscaledHeight = 1600;
 
-    const measureUnscaledHeight = () => {
-      if (!blueprintStream) return 1600;
-      const prevTransform = blueprintStream.style.transform;
-      blueprintStream.style.transform = 'none';
-      const h = blueprintStream.scrollHeight || blueprintStream.offsetHeight || 1600;
-      blueprintStream.style.transform = prevTransform;
-      return h;
-    };
-
-    const resetBlueprintZoom = () => {
-      currentScale = baseScale;
-      if (blueprintStream) {
-        blueprintStream.style.zoom = '';
-        blueprintStream.style.transform = '';
-      }
-      if (zoomLayer) {
-        zoomLayer.style.width = '';
-        zoomLayer.style.height = '';
+    const centerBlueprintHorizontal = () => {
+      if (!scrollPane) return;
+      if (scrollPane.scrollWidth > scrollPane.clientWidth) {
+        scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
+      } else {
+        scrollPane.scrollLeft = 0;
       }
     };
-
-    const applyBlueprintZoom = (scale, focalPoint) => {
-      if (!blueprintStream || !scrollPane || !zoomLayer) return;
-      if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-
-      const clamped = Math.min(2.5, Math.max(0.35, scale));
-      const prevScale = currentScale;
-      currentScale = clamped;
-
-      const paneRect = scrollPane.getBoundingClientRect();
-      const focalX = focalPoint ? (focalPoint.x - paneRect.left) : (paneRect.width / 2);
-      const focalY = focalPoint ? (focalPoint.y - paneRect.top) : (paneRect.height / 2);
-
-      const contentX = scrollPane.scrollLeft + focalX;
-      const contentY = scrollPane.scrollTop + focalY;
-
-      const scaledW = FIXED_CANVAS_WIDTH * currentScale;
-      const scaledH = unscaledHeight * currentScale;
-
-      zoomLayer.style.width = `${scaledW}px`;
-      zoomLayer.style.height = `${scaledH}px`;
-      blueprintStream.style.transform = `scale(${currentScale})`;
-      blueprintStream.style.transformOrigin = '0 0';
-
-      if (prevScale > 0) {
-        const ratio = currentScale / prevScale;
-        scrollPane.scrollLeft = contentX * ratio - focalX;
-        scrollPane.scrollTop = contentY * ratio - focalY;
-      }
-    };
-
-    // Touch gesture events (passive, non-blocking)
-    let touchStartDist = 0;
-    let touchStartScale = 1.0;
-
-    if (scrollPane) {
-      scrollPane.addEventListener('touchstart', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        if (e.touches.length === 2) {
-          const t1 = e.touches[0];
-          const t2 = e.touches[1];
-          touchStartDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-          touchStartScale = currentScale;
-        }
-      }, { passive: true });
-
-      scrollPane.addEventListener('touchmove', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        if (e.touches.length === 2 && touchStartDist > 0) {
-          const t1 = e.touches[0];
-          const t2 = e.touches[1];
-          const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-          const ratio = dist / touchStartDist;
-          const focal = {
-            x: (t1.clientX + t2.clientX) / 2,
-            y: (t1.clientY + t2.clientY) / 2
-          };
-          applyBlueprintZoom(touchStartScale * ratio, focal);
-        }
-      }, { passive: true });
-
-      scrollPane.addEventListener('touchend', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        if (e.touches.length < 2) {
-          touchStartDist = 0;
-        }
-      }, { passive: true });
-
-      let gestureStartScale = 1.0;
-      scrollPane.addEventListener('gesturestart', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        gestureStartScale = currentScale;
-      });
-
-      scrollPane.addEventListener('gesturechange', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        applyBlueprintZoom(gestureStartScale * e.scale, { x: e.clientX, y: e.clientY });
-      });
-
-      scrollPane.addEventListener('wheel', (e) => {
-        if (!blueprintTray?.classList.contains('is-blueprint-fullscreen')) return;
-        if (e.ctrlKey) {
-          e.preventDefault();
-          const delta = -e.deltaY * 0.01;
-          applyBlueprintZoom(currentScale * Math.exp(delta), { x: e.clientX, y: e.clientY });
-        }
-      }, { passive: false });
-    }
 
     const setBlueprintFullscreen = (enable, fromHistory = false) => {
       if (!blueprintTray || !boardExpandBtn) return;
@@ -2428,23 +2718,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         boardExpandBtn.setAttribute('title', 'Collapse workflow blueprint');
         boardExpandBtn.classList.add('is-collapsed-state');
 
-        // Draw graph ONCE at unscaled 1.0 state for fixed 640px layout
-        if (blueprintStream) blueprintStream.style.transform = 'none';
-        if (typeof window.sfDrawBlueprintGraph === 'function') {
-          window.sfDrawBlueprintGraph();
-        }
-
-        unscaledHeight = measureUnscaledHeight();
-        const paneW = scrollPane?.clientWidth || window.innerWidth;
-        baseScale = paneW < FIXED_CANVAS_WIDTH ? Math.min(1.0, Math.max(0.55, (paneW - 28) / FIXED_CANVAS_WIDTH)) : 1.0;
-        applyBlueprintZoom(baseScale, null);
-
-        if (scrollPane) {
-          scrollPane.scrollTop = 0;
-          if (scrollPane.scrollWidth > scrollPane.clientWidth) {
-            scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
+        // Initial default position: start at top vertically, centered horizontally
+        blueprintTray.scrollTop = 0;
+        requestAnimationFrame(() => {
+          centerBlueprintHorizontal();
+          if (typeof window.sfDrawBlueprintGraph === 'function') {
+            window.sfDrawBlueprintGraph();
           }
-        }
+        });
 
         if (!fromHistory) {
           try {
@@ -2452,6 +2733,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           } catch {}
         }
       } else {
+        closeStepDetails();
         blueprintTray.classList.remove('is-blueprint-fullscreen');
         document.documentElement.classList.remove('blueprint-fullscreen-open');
         document.body.classList.remove('blueprint-fullscreen-open');
@@ -2460,8 +2742,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         boardExpandBtn.setAttribute('title', 'Expand workflow blueprint');
         boardExpandBtn.classList.remove('is-collapsed-state');
 
-        resetBlueprintZoom();
-
+        // Restore resource page view and scroll position
         if (typeof window.sfDrawBlueprintGraph === 'function') {
           window.sfDrawBlueprintGraph();
         }
@@ -2487,38 +2768,52 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       });
     }
 
-    // Handle browser Back button to exit fullscreen
+    // Handle browser Back button to exit overlay or fullscreen
     window.addEventListener('popstate', () => {
+      if (stepDetailsModal && !stepDetailsModal.hidden) {
+        closeStepDetails(true);
+        return;
+      }
       if (blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
         setBlueprintFullscreen(false, true);
       }
     });
 
-    // Handle Escape key to exit fullscreen
+    // Handle Escape key to exit overlay or fullscreen
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
-        setBlueprintFullscreen(false);
+      if (e.key === 'Escape') {
+        if (stepDetailsModal && !stepDetailsModal.hidden) {
+          closeStepDetails();
+          return;
+        }
+        if (blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
+          setBlueprintFullscreen(false);
+        }
       }
     });
 
     if (boardResetBtn) {
       boardResetBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        document.querySelectorAll('.blueprint-step-container').forEach((container) => {
-          container.classList.remove('is-expanded');
-          container.classList.add('is-collapsed');
-          const toggle = container.querySelector('[data-step-toggle]');
-          const body = container.querySelector('.blueprint-step-body');
-          if (toggle) toggle.setAttribute('aria-expanded', 'false');
-          if (body) body.hidden = true;
-        });
-        applyBlueprintZoom(baseScale, null);
+        closeStepDetails();
+
+        // Reset scroll position to top and center horizontally
+        if (blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
+          blueprintTray.scrollTo({ top: 0, behavior: 'smooth' });
+        }
         if (scrollPane) {
-          scrollPane.scrollTop = 0;
           if (scrollPane.scrollWidth > scrollPane.clientWidth) {
-            scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
+            scrollPane.scrollTo({ left: (scrollPane.scrollWidth - scrollPane.clientWidth) / 2, top: 0, behavior: 'smooth' });
+          } else {
+            scrollPane.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
           }
         }
+
+        requestAnimationFrame(() => {
+          if (typeof window.sfDrawBlueprintGraph === 'function') {
+            window.sfDrawBlueprintGraph();
+          }
+        });
       });
     }
 
@@ -6800,9 +7095,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
+        display: block !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
         box-sizing: border-box !important;
       }
 
@@ -6816,42 +7112,56 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-workspace,
       .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-workspace {
         position: relative !important;
-        flex: 1 1 100% !important;
         width: 100% !important;
-        height: 100% !important;
-        max-height: 100% !important;
+        min-height: 100% !important;
+        height: auto !important;
+        max-height: none !important;
         background: #000000 !important;
         background-color: #000000 !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
+        padding-bottom: max(64px, env(safe-area-inset-bottom, 36px)) !important;
         border: none !important;
         border-radius: 0 !important;
         box-shadow: none !important;
         display: flex !important;
         flex-direction: column !important;
-        overflow: hidden !important;
+        align-items: stretch !important;
+        overflow: visible !important;
+        box-sizing: border-box !important;
       }
 
+      /* Canvas controls scroll naturally with the expanded page — never fixed/sticky over step cards */
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls,
       .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls {
-        position: absolute !important;
-        top: max(16px, env(safe-area-inset-top, 16px)) !important;
-        right: max(16px, env(safe-area-inset-right, 16px)) !important;
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
         left: auto !important;
-        z-index: 100 !important;
+        bottom: auto !important;
+        z-index: 20 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
         gap: 8px !important;
-        width: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
         margin: 0 !important;
-        padding: 0 !important;
+        padding: 0 max(16px, env(safe-area-inset-right, 16px)) 12px !important;
         background: transparent !important;
-        pointer-events: none !important;
+        pointer-events: auto !important;
+        box-sizing: border-box !important;
       }
 
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn,
       .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        min-height: 28px !important;
+        max-width: 28px !important;
+        max-height: 28px !important;
+        border-radius: 7px !important;
         pointer-events: auto !important;
         background: rgba(15, 23, 42, 0.85) !important;
         border: 1px solid rgba(255, 255, 255, 0.22) !important;
@@ -6859,6 +7169,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         backdrop-filter: blur(8px) !important;
         -webkit-backdrop-filter: blur(8px) !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }
 
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-canvas-controls .blueprint-canvas-btn:hover,
@@ -6871,31 +7187,45 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-scroll-pane,
       .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-scroll-pane {
         position: relative !important;
-        flex: 1 1 auto !important;
         width: 100% !important;
-        height: 100% !important;
-        max-height: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
         overflow-x: auto !important;
-        overflow-y: auto !important;
+        overflow-y: visible !important;
         -webkit-overflow-scrolling: touch !important;
-        touch-action: pan-x pan-y pinch-zoom !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
         background: #000000 !important;
         background-color: #000000 !important;
-        padding-top: max(64px, calc(env(safe-area-inset-top, 16px) + 48px)) !important;
-        padding-bottom: max(56px, env(safe-area-inset-bottom, 32px)) !important;
-        padding-left: max(16px, env(safe-area-inset-left, 16px)) !important;
-        padding-right: max(16px, env(safe-area-inset-right, 16px)) !important;
+        padding: 0 !important;
+        margin: 0 !important;
         box-sizing: border-box !important;
       }
 
+      #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-scroll-pane::-webkit-scrollbar,
+      .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-scroll-pane::-webkit-scrollbar {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+      }
+
+      /* Blueprint stream inside fullscreen: exact 440px size and layout matching resource page */
       #blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-workflow-stream,
       .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-workflow-stream {
-        margin-left: auto !important;
-        margin-right: auto !important;
-        touch-action: pan-x pan-y pinch-zoom !important;
-        max-width: 960px !important;
-        overflow-x: visible !important;
-        overflow-y: visible !important;
+        position: relative !important;
+        width: 440px !important;
+        min-width: 440px !important;
+        max-width: 440px !important;
+        margin: 0 auto !important;
+        padding: 12px 18px 48px !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        column-gap: 52px !important;
+        row-gap: 0 !important;
+        background: transparent !important;
       }
 
       /* ==========================================================================
