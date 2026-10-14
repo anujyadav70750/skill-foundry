@@ -2140,9 +2140,43 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 const isVisual = isImage || isVideo;
                 const mediaUrl = output.src || output.previewSrc;
 
-                const isEmbedSrc = (src) => /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(String(src || ''));
-                const outputAssetName = step.outputLabel || step.output || 'Output';
                 const stepDesc = step.description || step.purpose || '';
+
+                // Semantic short title helper for inputs
+                const getShortInputTitle = (inp: any): string => {
+                  const raw = String(inp.label || inp.title || inp.role || inp.value || '').trim();
+                  const lower = raw.toLowerCase();
+                  if (lower.includes('person') || lower.includes('face') || lower.includes('identity')) return 'Character image';
+                  if (lower.includes('helmet') && (lower.includes('sword') || lower.includes('prop'))) return 'Helmet & sword';
+                  if (lower.includes('character sheet') || lower.includes('knight_ref') || lower.includes('character reference')) return 'Character sheet';
+                  if (lower.includes('location') || lower.includes('poppy') || lower.includes('environment')) return 'Location reference';
+                  if (lower.includes('castle')) return 'Castle reference';
+                  if (lower.includes('video reference') || lower.includes('footage')) return 'Video reference';
+                  if (lower.includes('pdf')) return 'PDF reference';
+                  if (lower.includes('audio')) return 'Audio reference';
+                  let cleaned = raw.replace(/^Step\s*\d+[\s—–:-]*/i, '').replace(/\(@[A-Z0-9_]+\)/gi, '').replace(/output$/i, '').trim();
+                  if (cleaned.length > 20) {
+                    cleaned = cleaned.split(/[:\-–—\(/]/)[0].trim();
+                  }
+                  return cleaned || 'Input';
+                };
+
+                // Semantic short title helper for outputs
+                const getShortOutputTitle = (st: any, rawLabel: string): string => {
+                  const raw = String(rawLabel || st.outputLabel || st.output || '').trim();
+                  const lower = raw.toLowerCase();
+                  if (lower.includes('4-frame') || lower.includes('character sheet') || lower.includes('character reference')) return 'Character sheet';
+                  if (lower.includes('helmet') && (lower.includes('sword') || lower.includes('prop'))) return 'Helmet & sword';
+                  if (lower.includes('location')) return 'Location reference';
+                  if (lower.includes('video')) return 'Generated video';
+                  let cleaned = raw.replace(/^Step\s*\d+[\s—–:-]*/i, '').replace(/\s*\([^)]*\)/g, '').trim();
+                  if (cleaned.length > 20) {
+                    cleaned = cleaned.split(/[:\-–—]/)[0].trim();
+                  }
+                  return cleaned || 'Output';
+                };
+
+                const outputShortTitle = getShortOutputTitle(step, step.outputLabel || step.output || 'Output');
 
                 return (
                   <article
@@ -2171,7 +2205,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                             const isInputVisual = isInputImage || isInputVideo;
                             const inputTypeLabel = (input.type || 'input').toUpperCase();
                             const rawLabel = input.label || input.title || input.role || input.value || 'Input';
-                            const inputShortTitle = rawLabel.length > 22 ? rawLabel.split(/[:\-–—]/)[0].trim() : rawLabel;
+                            const inputShortTitle = getShortInputTitle(input);
 
                             return (
                               <div class="step-details-input-card">
@@ -2365,13 +2399,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                               </div>
                             </a>
                           ) : isImage ? (
-                            <img class="output-media-img" src={mediaUrl} alt={output.label || outputAssetName} loading="lazy" />
+                            <img class="output-media-img" src={mediaUrl} alt={outputShortTitle} loading="lazy" />
                           ) : isVideo ? (
                             output.src && isRealVideo(output.src) ? (
                               <video class="output-media-video" src={output.src} muted playsinline controls preload="metadata" />
                             ) : (
                               <>
-                                <img class="output-media-img" src={mediaUrl} alt={output.label || outputAssetName} loading="lazy" />
+                                <img class="output-media-img" src={mediaUrl} alt={outputShortTitle} loading="lazy" />
                                 <span class="output-media-play" aria-hidden="true">▶</span>
                               </>
                             )
@@ -2386,7 +2420,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                             </div>
                           )}
                         </div>
-                        <div class="output-card-title">{outputAssetName.length > 30 ? outputAssetName.split(/[:\-–—]/)[0].trim() : outputAssetName}</div>
+                        <div class="output-card-title">{outputShortTitle}</div>
                       </div>
                     </div>
                   </article>
