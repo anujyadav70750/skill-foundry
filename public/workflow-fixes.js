@@ -550,10 +550,11 @@ startxref
           justify-content: flex-end !important;
           gap: 6px !important;
           width: 100% !important;
-          margin: 0 0 8px 0 !important;
-          padding: 0 !important;
+          margin: 12px 0 10px 0 !important;
+          padding: 0 18px !important;
           position: relative !important;
           z-index: 20 !important;
+          box-sizing: border-box !important;
         }
 
         .testing-1-theme .blueprint-canvas-btn,
@@ -1431,7 +1432,12 @@ startxref
 
   const positionResult = (steps, result) => {
     if (!result) return;
-    result.style.gridRow = String(Math.max(4, steps.length + 1));
+    const isKnightSlug =
+      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
+        'cinematic-medieval-knight-video-google-flow' ||
+      document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
+    result.style.gridRow = isKnightSlug ? '5' : String(Math.max(4, steps.length + 1));
     result.style.gridColumn = '1 / span 2';
   };
 
@@ -1477,10 +1483,6 @@ startxref
     svg.replaceChildren();
 
     const isFullscreen = container.classList.contains('is-blueprint-fullscreen');
-    // If scaled in fullscreen mode, do not recompute coordinates on scaled elements
-    if (isFullscreen && stream.style.transform && stream.style.transform !== 'none' && !stream.style.transform.includes('scale(1)')) {
-      return;
-    }
 
     const isKnightSlug =
       document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===

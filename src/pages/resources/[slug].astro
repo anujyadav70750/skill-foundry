@@ -925,10 +925,18 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       justify-content: flex-end !important;
       gap: 6px !important;
       width: 100% !important;
-      margin: 0 0 10px 0 !important;
-      padding: 0 !important;
+      margin: 12px 0 10px 0 !important;
+      padding: 0 18px !important;
       position: relative !important;
       z-index: 20 !important;
+      box-sizing: border-box !important;
+    }
+
+    @media (max-width: 640px) {
+      .blueprint-canvas-controls {
+        margin: 10px 0 8px 0 !important;
+        padding: 0 16px !important;
+      }
     }
 
     .blueprint-canvas-btn,
@@ -1517,10 +1525,14 @@ const schema = { '@context': 'https://schema.org', '@graph': [
                 aria-label="Expand workflow blueprint"
                 title="Expand workflow blueprint"
               >
-                <svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <polyline points="15 3 21 3 21 9"></polyline>
-                  <polyline points="9 21 3 21 3 15"></polyline>
                   <line x1="21" y1="3" x2="14" y2="10"></line>
+                  <polyline points="9 3 3 3 3 9"></polyline>
+                  <line x1="3" y1="3" x2="10" y2="10"></line>
+                  <polyline points="15 21 21 21 21 15"></polyline>
+                  <line x1="21" y1="21" x2="14" y2="14"></line>
+                  <polyline points="9 21 3 21 3 15"></polyline>
                   <line x1="3" y1="21" x2="10" y2="14"></line>
                 </svg>
               </button>
@@ -2110,7 +2122,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
             <div class="workflow-process-terminal workflow-process-end" aria-label="Workflow End">
               <span class="workflow-process-pill">END</span>
             </div>
-          </div>
+            </div>
           </div>
         {/* CONTAINED STEP DETAILS POPUP (strictly INSIDE black blueprint workspace) */}
         <div id="step-details-modal" class="step-details-modal" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="step-overlay-eyebrow">
@@ -2560,50 +2572,171 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     const stepDetailsScrollBody = document.getElementById('step-details-scroll-body');
     const stepOverlayEyebrow = document.getElementById('step-overlay-eyebrow');
 
-    let savedPageScrollY = 0;
+    let activeStepNum = null;
+
+    const scrollPane = document.getElementById('blueprint-workflow-scroll-pane');
+
+    const centerBlueprintHorizontal = (smooth = false) => {
+      const pane = document.getElementById('blueprint-workflow-scroll-pane');
+      if (!pane) return;
+      const scrollWidth = pane.scrollWidth;
+      const clientWidth = pane.clientWidth;
+      if (scrollWidth > clientWidth) {
+        const targetLeft = Math.round((scrollWidth - clientWidth) / 2);
+        if (smooth) {
+          pane.scrollTo({ left: targetLeft, behavior: 'smooth' });
+        } else {
+          pane.scrollLeft = targetLeft;
+        }
+      } else {
+        if (smooth) {
+          pane.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          pane.scrollLeft = 0;
+        }
+      }
+    };
+
+    const updateBlueprintScale = () => {
+      if (!blueprintTray) return;
+      const pane = document.getElementById('blueprint-workflow-scroll-pane');
+      const stream = blueprintTray.querySelector('.blueprint-workflow-stream');
+      if (!pane || !stream) return;
+
+      const isFullscreen = blueprintTray.classList.contains('is-blueprint-fullscreen');
+      // Visual width of cards Step 02 to Step 03 in unscaled stream (from x=18px to x=422px)
+      const CARD_SPAN = 404;
+
+      let scale = 1;
+
+      if (isFullscreen) {
+        // Expanded View: balance scale to fill viewport nicely with clean, neat 15-16px breathing room on edges
+        const viewportWidth = window.innerWidth || document.documentElement.clientWidth || 390;
+        if (viewportWidth < 450) {
+          const breathingRoom = viewportWidth <= 380 ? 28 : 32;
+          const targetWidth = viewportWidth - breathingRoom;
+          scale = Math.max(0.78, Math.min(1, targetWidth / CARD_SPAN));
+        }
+      } else {
+        // Normal Resource-Page View: sit comfortably inside blueprint container box with balanced horizontal breathing room without touching borders
+        const containerWidth = blueprintTray.clientWidth || pane.clientWidth || window.innerWidth;
+        if (containerWidth < 450) {
+          const breathingRoom = containerWidth <= 360 ? 28 : 32;
+          const targetWidth = containerWidth - breathingRoom;
+          scale = Math.max(0.74, Math.min(1, targetWidth / CARD_SPAN));
+        }
+      }
+
+      scale = Math.round(scale * 1000) / 1000;
+
+      stream.style.setProperty('--bp-scale', String(scale));
+      if (scale < 1) {
+        stream.style.transform = `scale(${scale})`;
+        stream.style.transformOrigin = 'top center';
+      } else {
+        stream.style.transform = '';
+        stream.style.transformOrigin = '';
+      }
+      stream.style.marginBottom = '0';
+
+      // Natural content bottom: calculate height directly from workflow/result content
+      const resultCard = stream.querySelector('#workflow-final-result');
+      if (resultCard) {
+        // Measure real bottom of result card inside stream
+        const cardH = Math.max(resultCard.offsetHeight || 0, 460);
+        const resultBottom = resultCard.offsetTop + cardH;
+        // 36px of clean, professional bottom breathing room after the final result (48px in fullscreen)
+        const naturalHeight = Math.ceil(resultBottom * scale + (isFullscreen ? 48 : 36));
+
+        pane.style.height = `${naturalHeight}px`;
+        pane.style.maxHeight = `${naturalHeight}px`;
+        pane.style.minHeight = '0px';
+      } else {
+        pane.style.height = '';
+        pane.style.maxHeight = '';
+        pane.style.minHeight = '';
+      }
+
+      if (typeof window.sfDrawBlueprintGraph === 'function') {
+        window.sfDrawBlueprintGraph();
+      }
+      centerBlueprintHorizontal();
+    };
 
     const positionContainedPopup = () => {
-      if (!stepDetailsModal || stepDetailsModal.hidden) return;
+      if (!stepDetailsModal || !activeStepNum) return;
       const popupCard = stepDetailsModal.querySelector('.step-details-container');
       const workspace = blueprintTray?.querySelector('.blueprint-canvas-workspace') || blueprintTray;
       if (!popupCard || !workspace) return;
 
-      const isFullscreen = blueprintTray.classList.contains('is-blueprint-fullscreen');
-      if (!isFullscreen) {
-        popupCard.style.maxHeight = 'none';
-        popupCard.style.height = 'auto';
+      const numStr = String(activeStepNum);
+      const stepWrapper = blueprintTray.querySelector(`[data-blueprint-step="${numStr}"]`) ||
+                          document.getElementById(`step-item-${numStr}`) ||
+                          blueprintTray.querySelector(`[data-step="${numStr}"]`);
+      const targetCard = stepWrapper?.querySelector('.blueprint-step-container') || stepWrapper;
+      if (!targetCard) return;
 
-        // Naturally adapt workspace height if needed so popup is fully visible without internal scroll
-        requestAnimationFrame(() => {
-          const cardHeight = popupCard.offsetHeight || 500;
-          const requiredHeight = cardHeight + 48; // 24px top & bottom margin
-          if (workspace.offsetHeight < requiredHeight) {
-            workspace.style.minHeight = `${requiredHeight}px`;
-          }
-        });
+      popupCard.style.maxHeight = 'none';
+      popupCard.style.height = 'auto';
 
-        popupCard.style.position = 'relative';
-        popupCard.style.top = '';
-        popupCard.style.left = '';
-        popupCard.style.transform = '';
-        popupCard.style.margin = '20px auto';
-      } else {
-        popupCard.style.position = 'relative';
-        popupCard.style.top = '';
-        popupCard.style.left = '';
-        popupCard.style.transform = '';
-        popupCard.style.maxHeight = 'none';
-        popupCard.style.height = 'auto';
-        popupCard.style.margin = 'auto';
+      const workspaceRect = workspace.getBoundingClientRect();
+      const stepRect = targetCard.getBoundingClientRect();
+
+      // True vertical distance from workspace top to step container
+      const stepTopInWorkspace = (stepRect.top - workspaceRect.top) + (workspace.scrollTop || 0);
+      const stepHeight = stepRect.height || 80;
+      const stepCenterY = stepTopInWorkspace + (stepHeight / 2);
+
+      const cardHeight = popupCard.offsetHeight || 440;
+
+      // Center popup directly near/over the selected step
+      let targetPopupTop = Math.round(stepCenterY - (cardHeight / 2));
+      // Safe breathing room from top of workspace (at least 24px so blueprint is visible above)
+      targetPopupTop = Math.max(24, targetPopupTop);
+
+      // Adapt workspace height so popup never overflows bottom (at least 28px bottom margin)
+      const requiredHeight = targetPopupTop + cardHeight + 28;
+      if (workspace.offsetHeight < requiredHeight) {
+        workspace.style.minHeight = `${requiredHeight}px`;
       }
+
+      popupCard.style.position = 'absolute';
+      popupCard.style.top = `${targetPopupTop}px`;
+      popupCard.style.left = '50%';
+      popupCard.style.transform = 'translateX(-50%)';
+      popupCard.style.margin = '0 auto';
+
+      return { targetPopupTop, cardHeight, workspaceRect };
     };
 
-    window.addEventListener('resize', positionContainedPopup);
-    window.addEventListener('scroll', positionContainedPopup, { passive: true });
+    window.addEventListener('resize', () => {
+      updateBlueprintScale();
+      centerBlueprintHorizontal();
+      if (stepDetailsModal && !stepDetailsModal.hidden) {
+        positionContainedPopup();
+      }
+    }, { passive: true });
+
+    window.addEventListener('scroll', () => {
+      if (stepDetailsModal && !stepDetailsModal.hidden) {
+        positionContainedPopup();
+      }
+    }, { passive: true });
+
+    // Initial scale calculation on load
+    requestAnimationFrame(() => {
+      updateBlueprintScale();
+      centerBlueprintHorizontal();
+    });
+    window.addEventListener('load', () => {
+      updateBlueprintScale();
+      centerBlueprintHorizontal();
+    });
 
     const openStepDetails = (stepNum) => {
       if (!stepDetailsModal || !blueprintTray) return;
       const numStr = String(stepNum);
+      activeStepNum = stepNum;
 
       let found = false;
       stepDetailsModal.querySelectorAll('[data-step-overlay-panel]').forEach((panel) => {
@@ -2623,15 +2756,59 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         stepOverlayEyebrow.textContent = `STEP ${numStr.padStart(2, '0')} DETAILS`;
       }
 
+      // 1. Position popup directly at its final location BEFORE making modal visible
+      const pos = positionContainedPopup();
+
+      // 2. Adjust viewport smoothly so the popup is completely visible
+      if (pos) {
+        const { targetPopupTop, cardHeight, workspaceRect } = pos;
+        const isFullscreen = blueprintTray.classList.contains('is-blueprint-fullscreen');
+        const viewportHeight = window.innerHeight;
+
+        if (!isFullscreen) {
+          const currentScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
+          const workspaceTopInDoc = workspaceRect.top + currentScrollY;
+          const popupDocTop = workspaceTopInDoc + targetPopupTop;
+          const popupDocBottom = popupDocTop + cardHeight;
+
+          if (popupDocTop < currentScrollY + 36) {
+            window.scrollTo({ top: Math.max(0, popupDocTop - 36), behavior: 'instant' });
+          } else if (popupDocBottom > currentScrollY + viewportHeight - 20) {
+            const targetScroll = (cardHeight + 56 <= viewportHeight)
+              ? (popupDocBottom - viewportHeight + 24)
+              : (popupDocTop - 36);
+            window.scrollTo({ top: targetScroll, behavior: 'instant' });
+          }
+        } else {
+          const currentTrayScroll = blueprintTray.scrollTop;
+          const popupTrayTop = targetPopupTop;
+          const popupTrayBottom = popupTrayTop + cardHeight;
+          const trayHeight = blueprintTray.clientHeight || viewportHeight;
+
+          if (popupTrayTop < currentTrayScroll + 36) {
+            blueprintTray.scrollTop = Math.max(0, popupTrayTop - 36);
+          } else if (popupTrayBottom > currentTrayScroll + trayHeight - 20) {
+            const targetTrayScroll = (cardHeight + 56 <= trayHeight)
+              ? (popupTrayBottom - trayHeight + 24)
+              : (popupTrayTop - 36);
+            blueprintTray.scrollTop = targetTrayScroll;
+          }
+        }
+      }
+
+      // 3. Make modal visible directly in final position (no slide from right, no delayed movement)
       stepDetailsModal.hidden = false;
       stepDetailsModal.setAttribute('aria-hidden', 'false');
       blueprintTray.classList.add('step-details-open');
-
-      positionContainedPopup();
     };
 
-    const closeStepDetails = () => {
+    const closeStepDetails = (fromHistory = false) => {
       if (!stepDetailsModal || stepDetailsModal.hidden) return;
+
+      const isFullscreen = blueprintTray?.classList.contains('is-blueprint-fullscreen');
+      const savedScroll = isFullscreen
+        ? blueprintTray.scrollTop
+        : (window.pageYOffset || document.documentElement.scrollTop || 0);
 
       stepDetailsModal.hidden = true;
       stepDetailsModal.setAttribute('aria-hidden', 'true');
@@ -2645,7 +2822,20 @@ const schema = { '@context': 'https://schema.org', '@graph': [
       const popupCard = stepDetailsModal.querySelector('.step-details-container');
       if (popupCard) {
         popupCard.style.top = '';
+        popupCard.style.left = '';
+        popupCard.style.transform = '';
+        popupCard.style.position = '';
         popupCard.style.maxHeight = '';
+        popupCard.style.margin = '';
+      }
+
+      activeStepNum = null;
+
+      // Keep user exactly at the same scroll position without jumping
+      if (isFullscreen) {
+        blueprintTray.scrollTop = savedScroll;
+      } else {
+        window.scrollTo({ top: savedScroll, behavior: 'instant' });
       }
 
       // Pause all media playing inside modal
@@ -2721,21 +2911,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
     // Instant Full-Screen Blueprint Overlay View
     const boardExpandBtn = document.getElementById('blueprint-board-expand-toggle');
     const boardResetBtn = document.getElementById('blueprint-board-reset-toggle');
-    const scrollPane = document.getElementById('blueprint-workflow-scroll-pane');
 
-    const EXPAND_ICON_SVG = `<svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>`;
-    const COLLAPSE_ICON_SVG = `<svg class="canvas-btn-icon inner-collapse-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="10" y1="14" x2="3" y2="21"></line></svg>`;
+    const EXPAND_ICON_SVG = `<svg class="canvas-btn-icon inner-expand-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 3 21 3 21 9"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><polyline points="9 3 3 3 3 9"></polyline><line x1="3" y1="3" x2="10" y2="10"></line><polyline points="15 21 21 21 21 15"></polyline><line x1="21" y1="21" x2="14" y2="14"></line><polyline points="9 21 3 21 3 15"></polyline><line x1="3" y1="21" x2="10" y2="14"></line></svg>`;
+    const COLLAPSE_ICON_SVG = `<svg class="canvas-btn-icon inner-collapse-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 14 10 14 10 20"></polyline><line x1="10" y1="14" x2="3" y2="21"></line><polyline points="20 14 14 14 14 20"></polyline><line x1="14" y1="14" x2="21" y2="21"></line><polyline points="4 10 10 10 10 4"></polyline><line x1="10" y1="10" x2="3" y2="3"></line><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line></svg>`;
 
     let savedScrollY = 0;
-
-    const centerBlueprintHorizontal = () => {
-      if (!scrollPane) return;
-      if (scrollPane.scrollWidth > scrollPane.clientWidth) {
-        scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
-      } else {
-        scrollPane.scrollLeft = 0;
-      }
-    };
 
     const setBlueprintFullscreen = (enable, fromHistory = false) => {
       if (!blueprintTray || !boardExpandBtn) return;
@@ -2755,6 +2935,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         // Initial default position: start at top vertically, centered horizontally
         blueprintTray.scrollTop = 0;
         requestAnimationFrame(() => {
+          updateBlueprintScale();
           centerBlueprintHorizontal();
           if (typeof window.sfDrawBlueprintGraph === 'function') {
             window.sfDrawBlueprintGraph();
@@ -2777,9 +2958,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         boardExpandBtn.classList.remove('is-collapsed-state');
 
         // Restore resource page view and scroll position
-        if (typeof window.sfDrawBlueprintGraph === 'function') {
-          window.sfDrawBlueprintGraph();
-        }
+        requestAnimationFrame(() => {
+          updateBlueprintScale();
+          centerBlueprintHorizontal();
+          if (typeof window.sfDrawBlueprintGraph === 'function') {
+            window.sfDrawBlueprintGraph();
+          }
+        });
 
         if (typeof savedScrollY === 'number') {
           window.scrollTo({ top: savedScrollY, behavior: 'instant' });
@@ -2835,13 +3020,8 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         if (blueprintTray?.classList.contains('is-blueprint-fullscreen')) {
           blueprintTray.scrollTo({ top: 0, behavior: 'smooth' });
         }
-        if (scrollPane) {
-          if (scrollPane.scrollWidth > scrollPane.clientWidth) {
-            scrollPane.scrollTo({ left: (scrollPane.scrollWidth - scrollPane.clientWidth) / 2, top: 0, behavior: 'smooth' });
-          } else {
-            scrollPane.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
-          }
-        }
+        updateBlueprintScale();
+        centerBlueprintHorizontal(true);
 
         requestAnimationFrame(() => {
           if (typeof window.sfDrawBlueprintGraph === 'function') {
@@ -7177,11 +7357,11 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 8px !important;
+        gap: 6px !important;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 0 max(16px, env(safe-area-inset-right, 16px)) 12px !important;
+        padding: max(14px, env(safe-area-inset-top, 14px)) max(18px, env(safe-area-inset-right, 18px)) 10px 0 !important;
         background: transparent !important;
         pointer-events: auto !important;
         box-sizing: border-box !important;
