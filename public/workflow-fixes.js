@@ -539,7 +539,7 @@ startxref
         [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint {
           position: relative !important;
           overflow-x: hidden !important;
-          overflow-y: visible !important;
+          overflow-y: hidden !important;
         }
 
         /* Controls Bar (Reset on left, Expand on right) */
@@ -592,11 +592,13 @@ startxref
           width: 100% !important;
           max-width: 100% !important;
           overflow-x: auto !important;
-          overflow-y: visible !important;
+          overflow-y: hidden !important;
           -webkit-overflow-scrolling: touch !important;
           scrollbar-width: none !important;
           -ms-overflow-style: none !important;
-          touch-action: auto !important;
+          touch-action: pan-x pan-y !important;
+          overscroll-behavior-x: contain !important;
+          overscroll-behavior-y: auto !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane,
         .testing-1-theme .blueprint-workflow-container,
@@ -604,7 +606,7 @@ startxref
         .blueprint-workflow-container,
         .blueprint-workflow-stream,
         .blueprint-canvas-workspace {
-          touch-action: auto !important;
+          touch-action: pan-x pan-y !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
         .blueprint-workflow-scroll-pane::-webkit-scrollbar {
@@ -1533,6 +1535,11 @@ startxref
           scrollPane.scrollLeft = (scrollPane.scrollWidth - scrollPane.clientWidth) / 2;
         }
       });
+      scrollPane.addEventListener('scroll', () => {
+        if (!container.classList.contains('is-blueprint-fullscreen') && scrollPane.scrollTop !== 0) {
+          scrollPane.scrollTop = 0;
+        }
+      }, { passive: true });
     }
 
     const redraw = () => requestAnimationFrame(() => drawBlueprintGraph());

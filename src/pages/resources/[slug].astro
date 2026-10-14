@@ -2576,6 +2576,12 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 
     const scrollPane = document.getElementById('blueprint-workflow-scroll-pane');
 
+    scrollPane?.addEventListener('scroll', () => {
+      if (!blueprintTray?.classList.contains('is-blueprint-fullscreen') && scrollPane.scrollTop !== 0) {
+        scrollPane.scrollTop = 0;
+      }
+    }, { passive: true });
+
     const centerBlueprintHorizontal = (smooth = false) => {
       const pane = document.getElementById('blueprint-workflow-scroll-pane');
       if (!pane) return;
@@ -2651,6 +2657,9 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         pane.style.height = `${naturalHeight}px`;
         pane.style.maxHeight = `${naturalHeight}px`;
         pane.style.minHeight = '0px';
+        if (!isFullscreen && pane.scrollTop !== 0) {
+          pane.scrollTop = 0;
+        }
       } else {
         pane.style.height = '';
         pane.style.maxHeight = '';
@@ -6735,7 +6744,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint {
           position: relative !important;
           overflow-x: hidden !important;
-          overflow-y: visible !important;
+          overflow-y: hidden !important;
         }
 
         /* Control buttons below divider in canvas controls bar */
@@ -6755,11 +6764,13 @@ const schema = { '@context': 'https://schema.org', '@graph': [
           width: 100% !important;
           max-width: 100% !important;
           overflow-x: auto !important;
-          overflow-y: visible !important;
+          overflow-y: hidden !important;
           -webkit-overflow-scrolling: touch !important;
           scrollbar-width: none !important;
           -ms-overflow-style: none !important;
-          touch-action: auto !important;
+          touch-action: pan-x pan-y !important;
+          overscroll-behavior-x: contain !important;
+          overscroll-behavior-y: auto !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane,
         .testing-1-theme .blueprint-workflow-container,
@@ -6767,7 +6778,7 @@ const schema = { '@context': 'https://schema.org', '@graph': [
         .blueprint-workflow-container,
         .blueprint-workflow-stream,
         .blueprint-canvas-workspace {
-          touch-action: auto !important;
+          touch-action: pan-x pan-y !important;
         }
         .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
         .blueprint-workflow-scroll-pane::-webkit-scrollbar {

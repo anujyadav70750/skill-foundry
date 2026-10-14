@@ -5620,7 +5620,7 @@ html.light-theme .related-shelf-action {
   [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-inner-workflow-container.sf-graph-blueprint {
     position: relative !important;
     overflow-x: hidden !important;
-    overflow-y: visible !important;
+    overflow-y: hidden !important;
   }
 
   /* Controls Bar in top-right corner of black workflow canvas */
@@ -5640,11 +5640,14 @@ html.light-theme .related-shelf-action {
     position: relative !important;
     width: 100% !important;
     max-width: 100% !important;
-    overflow-x: hidden !important;
-    overflow-x: clip !important;
-    overflow-y: visible !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain !important;
+    overscroll-behavior-y: auto !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -5659,7 +5662,7 @@ html.light-theme .related-shelf-action {
   .blueprint-workflow-container,
   .blueprint-workflow-stream,
   .blueprint-canvas-workspace {
-    touch-action: pan-y !important;
+    touch-action: pan-x pan-y !important;
   }
   .testing-1-theme .blueprint-workflow-scroll-pane::-webkit-scrollbar,
   .blueprint-workflow-scroll-pane::-webkit-scrollbar {
