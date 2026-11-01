@@ -28,10 +28,14 @@ jobs:
               ('title: "Create a Cinematic Medieval Knight Video with Google Flow"', 'title: "Create a Cinematic Medieval Knight Video Like This"'),
               ('description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."', 'description: "Create your own cinematic medieval character video in this trending AI-generated style. Use your own character, build the world around them, and turn the idea into a cinematic video you can make your own."'),
               ('intro: "Build the video in order: lock the character first, create matching props, establish the location, generate the cinematic shot, then finish the result in Instagram."', 'intro: "Start with your character, then build the world around them. Keep the character, props, environment, and final video visually consistent from beginning to end."'),
-              ('    title: "Create Character Sheet"\n    purpose: "Generate a character sheet for your person."\n    description: "Generate a character sheet for your person."', '    title: "Create Your Character Reference"\n    purpose: "Generate a character sheet for your person."\n    description: "Turn your character into a consistent visual reference for the video."'),
-              ('    next: "Use this Character Sheet as the reference input for Step 02."\n    handoff: "Use this Character Sheet as the reference input for Step 02."', '    next: "Use this character reference in Step 02."\n    handoff: "Use this character reference in Step 02."'),
-              ('  - title: "Create Helmet & Sword"\n    purpose: "Create the props for your character."\n    description: "Create the props for your character."', '  - title: "Create Matching Props"\n    purpose: "Create the props for your character."\n    description: "Build the key props that belong to your character and match their visual style."'),
-              ('    next: "Use this Helmet + Sword Reference as the prop reference for Step 04."\n    handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."', '    next: "Keep this prop reference for the cinematic generation step."\n    handoff: "Keep this prop reference for the cinematic generation step."'),
+              ('    title: "Create Character Sheet"', '    title: "Create Your Character Reference"'),
+              ('    description: "Generate a character sheet for your person."', '    description: "Turn your character into a consistent visual reference for the video."'),
+              ('    next: "Use this Character Sheet as the reference input for Step 02."', '    next: "Use this character reference in Step 02."'),
+              ('    handoff: "Use this Character Sheet as the reference input for Step 02."', '    handoff: "Use this character reference in Step 02."'),
+              ('  - title: "Create Helmet & Sword"', '  - title: "Create Matching Props"'),
+              ('    description: "Create the props for your character."', '    description: "Build the key props that belong to your character and match their visual style."'),
+              ('    next: "Use this Helmet + Sword Reference as the prop reference for Step 04."', '    next: "Keep this prop reference for the cinematic generation step."'),
+              ('    handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."', '    handoff: "Keep this prop reference for the cinematic generation step."'),
           ]
           for old, new in replacements_r:
               r = r.replace(old, new)
