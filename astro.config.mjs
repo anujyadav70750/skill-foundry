@@ -37,7 +37,7 @@ function injectFooterStyles() {
     hooks: {
       'astro:build:done': () => {
         const targetDir = path.join(process.cwd(), 'dist');
-        const stylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v1">';
+        const stylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v2">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
