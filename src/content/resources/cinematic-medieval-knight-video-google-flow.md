@@ -47,7 +47,7 @@ prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
   - title: "Create Character Sheet"
-    purpose: "Generate a character sheet for your person."
+    purpose: "Create a consistent visual reference for your character."
     description: "Turn your character into a consistent visual reference for the video."
     actionType: "prompt"
     outputType: "image"
