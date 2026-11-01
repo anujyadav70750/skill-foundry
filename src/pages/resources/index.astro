@@ -51,11 +51,15 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   description="Browse, search, and discover practical workflows, tutorials, and step-by-step blueprints across AI, video editing, design, automation, and digital skills."
   canonical="https://hub.skillfoundry-web.workers.dev/resources/"
   hideHeaderSearch={true}
-  hideHeader={true}
-  hideFooter={true}
   hideBackButton={true}
 >
   <div class="explore-page">
+    <section class="resource-library-intro container narrow" aria-labelledby="resource-library-title">
+      <p class="resource-library-eyebrow">SKILL FOUNDRY LIBRARY</p>
+      <h1 id="resource-library-title">Explore Resources</h1>
+      <p>Practical tutorials, prompts and workflows to help you learn, build and create.</p>
+    </section>
+
     <!-- 1. PRIMARY SEARCH BAR AT TOP OF CONTENT AREA -->
     <section class="explore-toolbar-section">
       <div class="container narrow">
@@ -1706,6 +1710,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #0284C7;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12), 0 0 10px rgba(2, 132, 199, 0.15);
   }
+
+  .resource-library-intro { margin: 18px auto 18px; }
+  .resource-library-eyebrow { margin: 0 0 7px; color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+  .resource-library-intro h1 { margin: 0; color: var(--text); font-size: clamp(26px, 5vw, 38px); line-height: 1.12; letter-spacing: -.035em; }
+  .resource-library-intro > p:last-child { max-width: 650px; margin: 9px 0 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+  @media (max-width: 640px) {
+    .resource-library-intro { margin-top: 15px; margin-bottom: 14px; }
+    .resource-library-intro > p:last-child { font-size: 13px; }
+  }
+
 </style>
 
 <script>
