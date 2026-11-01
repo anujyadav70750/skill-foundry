@@ -5,8 +5,7 @@ const workflowInput = z.object({
   label: z.string().default(''),
   role: z.string().default(''),
   value: z.string().default(''),
-  src: z.string().default(''),
-  previewSrc: z.string().optional()
+  src: z.string().default('')
 });
 
 const workflowSetting = z.object({
@@ -53,7 +52,6 @@ const resources = defineCollection({
     toolUrl: z.string().url().optional(),
     toolAffiliate: z.boolean().default(false),
     date: z.coerce.date(),
-    updatedAt: z.coerce.date().optional(),
     thumbnail: z.string().nullish(),
     thumbnailRatio: z.string().default('16:9'),
     thumbnailPositionX: z.number().min(0).max(100).default(50),

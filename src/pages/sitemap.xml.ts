@@ -2,16 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { resourceSlug } from '../lib/resource';
 
-const staticPaths = [
-  '/',
-  '/resources/',
-  '/guides/',
-  '/faq/',
-  '/about/',
-  '/contact/',
-  '/terms/',
-  '/privacy/'
-];
+const staticPaths = ['/'];
 
 const escapeXml = (value: string) => value
   .replace(/&/g, '&amp;')
@@ -29,7 +20,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...staticPaths.map((path) => ({ loc: new URL(path, base).href })),
     ...resources.map((resource) => ({
       loc: new URL(`/resources/${resourceSlug(resource)}/`, base).href,
-      lastmod: (resource.data.updatedAt ?? resource.data.date).toISOString().split('T')[0]
+      lastmod: resource.data.date.toISOString().split('T')[0]
     }))
   ];
 
