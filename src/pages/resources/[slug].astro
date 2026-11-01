@@ -566,32 +566,20 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       {/* 2. EDITORIAL CONTENT BODY */}
       <div class="container narrow article-layout resource-content">
 
-        {/* WHAT YOU’LL GET */}
+        {/* WHAT’S INCLUDED */}
         <section class="resource-editorial-section what-you-get-section" id="what-you-get">
           <div class="section-title-wrap">
             <span class="section-accent-bar" aria-hidden="true"></span>
-            <h2 class="editorial-heading-title">What You’ll Get</h2>
+            <h2 class="editorial-heading-title">What’s Included</h2>
           </div>
-          <div class="what-you-get-list">
-            <div class="what-you-get-item">
-              <h3 class="what-you-get-title">Complete Workflow</h3>
-              <p class="what-you-get-desc">Everything you need to recreate this video style from start to finish.</p>
-            </div>
-            <div class="what-you-get-item">
-              <h3 class="what-you-get-title">Tools Used</h3>
-              <p class="what-you-get-desc">The tools used to create and finish the video.</p>
-            </div>
-            <div class="what-you-get-item">
-              <h3 class="what-you-get-title">Prompts and Settings</h3>
-              <p class="what-you-get-desc">Ready-to-use prompts and the key instructions for creating each part.</p>
-            </div>
+          <ul class="what-you-get-list">
+            <li class="what-you-get-item">Follow the process step by step, with clear guidance on what to do at each stage.</li>
+            <li class="what-you-get-item">Tap any app logo to open the tool directly, without searching for it yourself.</li>
+            <li class="what-you-get-item">Copy the ready-to-use prompts or download them as PDFs to use throughout the process.</li>
             {hasDownloadableResources && (
-              <div class="what-you-get-item">
-                <h3 class="what-you-get-title">Resources</h3>
-                <p class="what-you-get-desc">Reference images and other assets used throughout the creation.</p>
-              </div>
+              <li class="what-you-get-item">Tap any reference image to preview it and download a copy whenever you need it.</li>
             )}
-          </div>
+          </ul>
         </section>
 
         {/* TOOLS USED */}
@@ -2480,42 +2468,26 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: none !important;
     }
 
-    /* What You'll Get Section */
+    /* What’s Included — simple, consistent bullet list */
     .what-you-get-list {
-      margin: 14px 0 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    @media (min-width: 641px) {
-      .what-you-get-list {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px 24px;
-      }
+      margin: 12px 0 0;
+      padding: 0 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      list-style: disc;
+      color: #B0B5C0;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.6;
     }
 
     .what-you-get-item {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      padding-left: 2px;
     }
 
-    .what-you-get-title {
-      font-size: 14.5px;
-      font-weight: 600;
-      color: #F8FAFC;
-      margin: 0;
-      line-height: 1.35;
-      letter-spacing: -0.01em;
-    }
-
-    .what-you-get-desc {
-      font-size: 13px;
-      color: #94A3B8;
-      margin: 0;
-      line-height: 1.5;
+    .what-you-get-item::marker {
+      color: #9CA3AF;
     }
 
     /* Downloadable resources grid */
@@ -3330,13 +3302,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       box-shadow: none !important;
     }
 
-    html[data-theme="light"] .what-you-get-title,
-    html.light-theme .what-you-get-title {
-      color: #0F172A;
+    html[data-theme="light"] .what-you-get-list,
+    html.light-theme .what-you-get-list {
+      color: #475569;
     }
 
-    html[data-theme="light"] .what-you-get-desc,
-    html.light-theme .what-you-get-desc {
+    html[data-theme="light"] .what-you-get-item::marker,
+    html.light-theme .what-you-get-item::marker {
       color: #64748B;
     }
 
