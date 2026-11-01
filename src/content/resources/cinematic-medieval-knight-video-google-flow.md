@@ -1,12 +1,13 @@
 ---
 title: "Create a Cinematic Medieval Knight Video with Google Flow"
 slug: "cinematic-medieval-knight-video-google-flow"
-description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."
+description: "Learn how to build a consistent medieval knight character, create matching armor and weapon references, design a misty poppy-field setting, and generate a cinematic vertical video with Google Flow."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
 toolAffiliate: false
 date: "2026-10-04"
+updatedAt: "2026-11-01"
 thumbnail: "/images/knight-poppies-thumbnail.png"
 thumbnailRatio: "16:9"
 heroImage: "/images/knight-poppies-thumbnail.png"
@@ -447,7 +448,7 @@ steps:
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
-    outputDescription: "Single continuous 10-second 9:16 shot with locked 84° lens and orbital camera movement."
+    outputDescription: "A visual preview of the generated 10-second, 9:16 cinematic shot. Generate and download your own 1080p video in Google Flow."
     tool: "Google Flow"
     toolPurpose: "VIDEO GENERATION"
     inputs:
@@ -811,8 +812,8 @@ steps:
       No voiceover.
 
       After generation, download the generated video in 1080p.
-    outputPreviewSrc: ""
-    next: "Download the generated video in 1080p, then use it in Step 05."
+    outputPreviewSrc: "/images/knight-poppies-thumbnail.png"
+    next: "Download your generated video in 1080p, then upload that video in Step 05."
     handoff: "Download the generated video in 1080p, then use it in Step 05."
 
   - title: "Finish in Instagram"
@@ -825,24 +826,22 @@ steps:
     tool: "Instagram"
     toolPurpose: "VIDEO EDITING"
     inputs:
-      - type: "video"
-        label: "Step 04 — Downloaded 1080p video"
-        role: "Video to edit"
+      - type: "image"
+        label: "Video preview"
+        role: "This is a visual preview only. Download your own 1080p video from Step 04 and import that video into your editor."
         src: "/images/knight-poppies-thumbnail.png"
     settings:
-      - label: "SPEED"
-        value: "0.6×"
+      - label: "PLAYBACK SPEED"
+        value: "71.4% (0.714×)"
     process: |
-      1. Open Instagram.
-      2. Tap the + button.
-      3. Select Reel.
-      4. Add the generated video.
-      5. Open video editing controls.
-      6. Reduce playback speed to 0.6×.
-      7. Use the music available in Instagram for the edit.
-      8. Complete the required recording/shooting portion on Instagram.
-      9. Review the finished Reel.
-      10. Download the finished video, or share/post it directly.
+      1. Export your generated video from Google Flow in 1080p.
+      2. Open Instagram and tap the + button.
+      3. Select Reel, then import your actual downloaded video (not the preview image shown above).
+      4. Open the editing controls.
+      5. Set playback speed to approximately 71.4% (0.714×) to turn the 10-second generation into about 14 seconds. If your Instagram editor does not offer a custom speed value, make this adjustment in an editor that supports precise speed control before importing the video into Instagram.
+      6. Add music from Instagram's available audio library if you want music in the final edit.
+      7. Review the complete Reel, including the timing and audio.
+      8. Save the finished video to your device or publish/share it directly.
     outputSrc: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
     outputPreviewSrc: "/images/knight-poppies-thumbnail.png"
     next: ""
@@ -854,7 +853,7 @@ tips:
   - "Use Step 1 only as material and design reference when creating the helmet and sword in Step 2."
   - "Do not use the Step 3 location reference as a character or prop reference."
   - "In Google Flow, use the three reference assets as @KNIGHT_REF, @PROPS_REF, and @LOCATION_REF."
-  - "Keep the generated video at exactly 10 seconds, then use 0.6× playback in Instagram as the final edit."
+  - "Keep the Google Flow generation at exactly 10 seconds. Use approximately 71.4% (0.714×) playback speed in an editor that supports the required value to reach an approximately 14-second final duration."
 relatedResources: []
 tags:
   - "ai-video"
@@ -865,7 +864,7 @@ tags:
   - "workflow"
 featured: true
 seoTitle: "Create a Cinematic Medieval Knight Video with Google Flow | Skill Foundry"
-seoDescription: "Follow a five-step Skill Foundry workflow to create a consistent medieval knight reference, matching props, misty poppy-field location, cinematic 10-second Google Flow video, and final Instagram edit."
+seoDescription: "Create a cinematic medieval knight video with a consistent character, matching armor and sword references, a misty poppy-field setting, and a five-step Google Flow workflow."
 ---
 
 ## Workflow
