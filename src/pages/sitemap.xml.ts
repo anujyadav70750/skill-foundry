@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { resourceSlug } from '../lib/resource';
 
-const staticPaths = ['/'];
+const staticPaths = ['/', '/resources/', '/guides/', '/faq/', '/about/', '/contact/', '/privacy/', '/terms/'];
 
 const escapeXml = (value: string) => value
   .replace(/&/g, '&amp;')
@@ -14,13 +14,12 @@ const escapeXml = (value: string) => value
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://hub.skillfoundry-web.workers.dev');
   const resources = (await getCollection('resources'))
-    .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
-    .filter((resource) => resourceSlug(resource) !== 'testing-1');
+    .filter((resource) => !resource.data.draft);
   const urls = [
     ...staticPaths.map((path) => ({ loc: new URL(path, base).href })),
     ...resources.map((resource) => ({
       loc: new URL(`/resources/${resourceSlug(resource)}/`, base).href,
-      lastmod: resource.data.date.toISOString().split('T')[0]
+      lastmod: (resource.data.updatedDate ?? resource.data.date).toISOString().split('T')[0]
     }))
   ];
 
