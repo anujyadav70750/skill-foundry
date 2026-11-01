@@ -1,7 +1,7 @@
 ---
 title: "Create a Cinematic Medieval Knight Video with Google Flow"
 slug: "cinematic-medieval-knight-video-google-flow"
-description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."
+description: "Create a cinematic knight video with consistent character, props, and scenery using Google Flow."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
@@ -28,7 +28,7 @@ inputImageRatios:
 resultImages: []
 resultImageRatios: []
 imageAlt: "Cinematic medieval knight resting among red poppies"
-intro: "Build the video in order: lock the character first, create matching props, establish the location, generate the cinematic shot, then finish the result in Instagram."
+intro: "Create the character, props, and location first. Then generate the video and finish it in Instagram."
 whatItDoes: "Maintains character identity, armor, props, environment, camera movement, and visual continuity through a chained reference workflow."
 toolsUsed:
   - name: "ChatGPT"
@@ -47,8 +47,8 @@ prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
   - title: "Create Character Sheet"
-    purpose: "Generate a character sheet for your person."
-    description: "Generate a character sheet for your person."
+    purpose: "Four-view reference of the same person."
+    description: "Four-view reference of the same person."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "4-frame character reference"
@@ -177,8 +177,8 @@ steps:
       No text, labels, names, logos, weapons, helmet, shield, or additional characters.
 
   - title: "Create Helmet & Sword"
-    purpose: "Create the props for your character."
-    description: "Create the props for your character."
+    purpose: "Matching helmet and sword props."
+    description: "Matching helmet and sword props."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Helmet + Sword Reference"
@@ -364,8 +364,8 @@ steps:
       Both objects fully visible.
 
   - title: "Create Location"
-    purpose: "Create the setting for your scene."
-    description: "Create the setting for your scene."
+    purpose: "A misty poppy-field setting."
+    description: "A misty poppy-field setting."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Location Reference"
@@ -442,8 +442,8 @@ steps:
       No knight, no person, no horse, no weapons, no armor, no buildings, no road, no path, no footprints, no fence, no vehicles, no structures, no city, no mountains dominating the horizon, no sunset, no orange sunlight, no golden-hour lighting, no tropical vegetation, no desert, no dry grass, no artificial flowers, no fantasy landscape, no painting, no illustration, no text, no watermark.
 
   - title: "Generate Video"
-    purpose: "Generate the video from your previous creations."
-    description: "Generate the video from your previous creations."
+    purpose: "Generate the video from your references."
+    description: "Generate the video from your references."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
@@ -816,8 +816,8 @@ steps:
     handoff: "Download the generated video in 1080p, then use it in Step 05."
 
   - title: "Finish in Instagram"
-    purpose: "Put the finishing touches on your video and get it ready to share."
-    description: "Put the finishing touches on your video and get it ready to share."
+    purpose: "Trim, add music, and export the video."
+    description: "Trim, add music, and export the video."
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Final edited video"
