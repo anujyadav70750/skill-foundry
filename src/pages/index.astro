@@ -2402,8 +2402,15 @@ const formatUploadDate = (d: Date | string | undefined) => {
      SECTION 9 — FINAL CTA CARD
      ========================================================================== */
   .final-cta-section {
-    padding-top: 20px;
-    padding-bottom: 48px;
+    padding-top: 16px;
+    padding-bottom: 28px;
+  }
+
+  @media (max-width: 640px) {
+    .final-cta-section {
+      padding-top: 12px;
+      padding-bottom: 20px;
+    }
   }
 
   .home-cta-card {

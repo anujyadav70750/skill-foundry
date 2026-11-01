@@ -69,29 +69,14 @@ const searchHref = currentPath && currentPath !== '/search/' && currentPath !== 
 
 const platformLinks = [
   {
-    name: 'Facebook',
-    url: 'https://facebook.com',
-    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
-  },
-  {
-    name: 'X',
-    url: 'https://x.com',
-    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
-  },
-  {
     name: 'Instagram',
     url: 'https://instagram.com',
     svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>'
   },
   {
-    name: 'LinkedIn',
-    url: 'https://linkedin.com',
-    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>'
-  },
-  {
-    name: 'Pinterest',
-    url: 'https://pinterest.com',
-    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0c-6.627 0-12 5.372-12 12 0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738.098.119.112.224.083.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>'
+    name: 'Facebook',
+    url: 'https://facebook.com',
+    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'
   },
   {
     name: 'YouTube',
@@ -99,9 +84,14 @@ const platformLinks = [
     svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'
   },
   {
-    name: 'GitHub',
-    url: 'https://github.com',
-    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>'
+    name: 'LinkedIn',
+    url: 'https://linkedin.com',
+    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>'
+  },
+  {
+    name: 'X',
+    url: 'https://x.com',
+    svg: '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>'
   }
 ];
 ---
@@ -121,8 +111,8 @@ const platformLinks = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/workflow-fixes.css?v=20261012-blueprint-dedicated-v8" />
-    <script src="/workflow-fixes.js?v=20261012-blueprint-dedicated-v8" defer></script>
+    <link rel="stylesheet" href="/workflow-fixes.css?v=20261019-desktop-blueprint-v1" />
+    <script src="/workflow-fixes.js?v=20261019-desktop-blueprint-v1" defer></script>
     <script is:inline>
       (function() {
         try {
@@ -374,44 +364,52 @@ const platformLinks = [
     <!-- EMBEDDED PUBLISHED RESOURCE SEARCH DATA -->
     <script type="application/json" id="sf-search-data" set:html={JSON.stringify(publishedSearchData)}></script>
 
-    <!-- GLOBAL FOOTER -->
+    <!-- GLOBAL FOOTER (RESTRUCTURED TO NATURAL SKILL FOUNDRY HIERARCHY) -->
     {!hideFooter && (
-      <footer class="site-footer">
+      <footer class="site-footer" id="site-footer">
         <div class="container footer-container">
-          <!-- 1. Centered Brand -->
+          <!-- 1. BRANDING (SF Logo + Brand Name + Exact Description) -->
           <div class="footer-brand-wrap">
             <a class="brand footer-brand" href="/" aria-label="Skill Foundry home">
               <span class="brand-mark">SF</span>
               <span class="brand-name">SKILL FOUNDRY</span>
             </a>
+            <p class="footer-description">
+              Practical tutorials, workflows, and resources to help you learn, build, and create.
+            </p>
           </div>
 
-          <!-- 2. Three Descriptor Points -->
-          <div class="footer-descriptors" aria-label="Skill Foundry Focus Areas">
-            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> PRACTICAL SKILLS</span>
-            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TUTORIALS &amp; WORKFLOWS</span>
-            <span class="descriptor-item"><span class="descriptor-dot" aria-hidden="true">•</span> TOOLS &amp; PROJECTS</span>
-          </div>
+          <!-- DIVIDER 1: Separates Branding from Navigation -->
+          <div class="footer-divider" role="separator"></div>
 
-          <!-- 3. First Subtle Horizontal Divider -->
-          <div class="footer-divider footer-divider-top" role="separator"></div>
-
-          <!-- 4. Main Navigation -->
+          <!-- 2. MAIN NAVIGATION (Resources | Guides | FAQ | About) -->
           <nav class="footer-nav" aria-label="Main navigation">
-            <a href="/">Home</a>
-            <a href="/resources/">Resources</a>
-            <a href="/guides/">Guides</a>
-            <a href="/faq/">FAQ</a>
-            <a href="/about/">About</a>
-            <a href="/contact/">Contact</a>
+            <a href="/resources/" class="footer-nav-link">Resources</a>
+            <span class="footer-nav-separator" aria-hidden="true">|</span>
+            <a href="/guides/" class="footer-nav-link">Guides</a>
+            <span class="footer-nav-separator" aria-hidden="true">|</span>
+            <a href="/faq/" class="footer-nav-link">FAQ</a>
+            <span class="footer-nav-separator" aria-hidden="true">|</span>
+            <a href="/about/" class="footer-nav-link">About</a>
           </nav>
 
-          <!-- 5. Social Platform Icons -->
-          <div class="footer-platforms" aria-label="External platforms">
-            <div class="footer-platform-list">
+          <!-- 3. LEGAL LINKS (Directly underneath main navigation: Terms | Privacy) -->
+          <nav class="footer-legal" aria-label="Legal navigation">
+            <a href="/terms/" class="footer-legal-link">Terms</a>
+            <span class="footer-legal-separator" aria-hidden="true">|</span>
+            <a href="/privacy/" class="footer-legal-link">Privacy</a>
+          </nav>
+
+          <!-- DIVIDER 2: Separates Navigation & Legal from Social Section -->
+          <div class="footer-divider" role="separator"></div>
+
+          <!-- 4. SOCIAL SECTION (Follow Us + 5 Platforms) -->
+          <div class="footer-social-section" aria-label="Follow Us">
+            <h3 class="footer-social-heading">Follow Us</h3>
+            <div class="footer-social-list">
               {platformLinks.map((item) => (
                 <a
-                  class="footer-platform-btn"
+                  class="footer-social-btn"
                   href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -423,16 +421,12 @@ const platformLinks = [
             </div>
           </div>
 
-          <!-- 6. Legal Links -->
-          <nav class="footer-legal" aria-label="Legal navigation">
-            <a href="/privacy/">Privacy</a>
-            <span class="legal-separator" aria-hidden="true">|</span>
-            <a href="/terms/">Terms</a>
-          </nav>
+          <!-- DIVIDER 3: Separates Social Section from Copyright -->
+          <div class="footer-divider" role="separator"></div>
 
-          <!-- 7. Copyright -->
+          <!-- 5. COPYRIGHT -->
           <div class="footer-copyright">
-            <span>© {new Date().getFullYear()} Skill Foundry. All rights reserved.</span>
+            <span>© 2026 Skill Foundry. All rights reserved.</span>
           </div>
         </div>
       </footer>
@@ -1070,86 +1064,72 @@ const platformLinks = [
         border-top-color: #E2E8F0 !important;
         color: #334155 !important;
       }
+      :global([data-theme="light"]) .site-footer,
+      :global(html.light-theme) .site-footer {
+        background: #F8FAFC !important;
+        border-top-color: #E2E8F0 !important;
+        color: #334155 !important;
+      }
       :global([data-theme="light"]) .site-footer .footer-brand-wrap .footer-brand,
       :global(html.light-theme) .site-footer .footer-brand-wrap .footer-brand,
       :global([data-theme="light"]) .footer-brand-wrap .brand-name,
-      :global(html.light-theme) .footer-brand-wrap .brand-name,
-      :global([data-theme="light"]) .site-footer .brand-name,
-      :global(html.light-theme) .site-footer .brand-name,
-      :global([data-theme="light"]) .site-footer .footer-brand,
-      :global(html.light-theme) .site-footer .footer-brand {
+      :global(html.light-theme) .footer-brand-wrap .brand-name {
         color: #0F172A !important;
       }
-      :global([data-theme="light"]) .site-footer .descriptor-item,
-      :global(html.light-theme) .site-footer .descriptor-item,
-      :global([data-theme="light"]) .descriptor-item,
-      :global(html.light-theme) .descriptor-item {
-        color: #0F172A !important;
-        font-weight: 700 !important;
-      }
-      :global([data-theme="light"]) .site-footer .descriptor-dot,
-      :global(html.light-theme) .site-footer .descriptor-dot {
-        color: #0284C7 !important;
+      :global([data-theme="light"]) .footer-description,
+      :global(html.light-theme) .footer-description {
+        color: #475569 !important;
       }
       :global([data-theme="light"]) .site-footer .footer-divider,
       :global(html.light-theme) .site-footer .footer-divider,
       :global([data-theme="light"]) .footer-divider,
       :global(html.light-theme) .footer-divider {
-        background: #CBD5E1 !important;
+        background: #E2E8F0 !important;
       }
-      :global([data-theme="light"]) .site-footer .footer-nav a,
-      :global(html.light-theme) .site-footer .footer-nav a,
-      :global([data-theme="light"]) .footer-nav a,
-      :global(html.light-theme) .footer-nav a {
+      :global([data-theme="light"]) .footer-nav-link,
+      :global(html.light-theme) .footer-nav-link {
         color: #0F172A !important;
-        font-weight: 600 !important;
       }
-      :global([data-theme="light"]) .site-footer .footer-nav a:hover,
-      :global(html.light-theme) .site-footer .footer-nav a:hover,
-      :global([data-theme="light"]) .footer-nav a:hover,
-      :global(html.light-theme) .footer-nav a:hover {
+      :global([data-theme="light"]) .footer-nav-link:hover,
+      :global(html.light-theme) .footer-nav-link:hover {
         color: #0284C7 !important;
       }
-      :global([data-theme="light"]) .site-footer .footer-platform-btn,
-      :global(html.light-theme) .site-footer .footer-platform-btn,
-      :global([data-theme="light"]) .footer-platform-btn,
-      :global(html.light-theme) .footer-platform-btn {
+      :global([data-theme="light"]) .footer-nav-separator,
+      :global(html.light-theme) .footer-nav-separator {
+        color: #CBD5E1 !important;
+      }
+      :global([data-theme="light"]) .footer-legal-link,
+      :global(html.light-theme) .footer-legal-link {
+        color: #64748B !important;
+      }
+      :global([data-theme="light"]) .footer-legal-link:hover,
+      :global(html.light-theme) .footer-legal-link:hover {
+        color: #0F172A !important;
+      }
+      :global([data-theme="light"]) .footer-legal-separator,
+      :global(html.light-theme) .footer-legal-separator {
+        color: #CBD5E1 !important;
+      }
+      :global([data-theme="light"]) .footer-social-heading,
+      :global(html.light-theme) .footer-social-heading {
+        color: #0F172A !important;
+      }
+      :global([data-theme="light"]) .footer-social-btn,
+      :global(html.light-theme) .footer-social-btn {
         background: #FFFFFF !important;
         border-color: #CBD5E1 !important;
-        color: #1E293B !important;
+        color: #334155 !important;
         box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
       }
-      :global([data-theme="light"]) .site-footer .footer-platform-btn:hover,
-      :global(html.light-theme) .site-footer .footer-platform-btn:hover,
-      :global([data-theme="light"]) .footer-platform-btn:hover,
-      :global(html.light-theme) .footer-platform-btn:hover {
+      :global([data-theme="light"]) .footer-social-btn:hover,
+      :global(html.light-theme) .footer-social-btn:hover {
         background: #F1F5F9 !important;
         border-color: #0284C7 !important;
         color: #0284C7 !important;
       }
-      :global([data-theme="light"]) .site-footer .footer-legal a,
-      :global(html.light-theme) .site-footer .footer-legal a,
-      :global([data-theme="light"]) .footer-legal a,
-      :global(html.light-theme) .footer-legal a {
-        color: #334155 !important;
-        font-weight: 600 !important;
-      }
-      :global([data-theme="light"]) .site-footer .footer-legal a:hover,
-      :global(html.light-theme) .site-footer .footer-legal a:hover {
-        color: #0284C7 !important;
-      }
-      :global([data-theme="light"]) .site-footer .legal-separator,
-      :global(html.light-theme) .site-footer .legal-separator {
-        color: #64748B !important;
-      }
-      :global([data-theme="light"]) .site-footer .footer-copyright,
-      :global(html.light-theme) .site-footer .footer-copyright,
-      :global([data-theme="light"]) .site-footer .footer-copyright span,
-      :global(html.light-theme) .site-footer .footer-copyright span,
       :global([data-theme="light"]) .footer-copyright,
       :global(html.light-theme) .footer-copyright {
-        color: #334155 !important;
-        font-weight: 500 !important;
+        color: #64748B !important;
       }
 
       /* Search Modal in Light Theme */
@@ -1627,15 +1607,16 @@ const platformLinks = [
       }
 
       /* ==========================================================================
-         FOOTER STYLES
+         SKILL FOUNDRY REDESIGNED FOOTER (Structured, Full-Width, Balanced)
          ========================================================================== */
       .site-footer {
-        background: #080d0f;
-        border-top: 0;
-        color: #AAB4C0;
-        padding: 32px 0 46px;
+        background: #070B12;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        color: #94A3B8;
+        padding: 44px 0 36px;
         margin-top: 0;
         width: 100%;
+        box-sizing: border-box;
       }
       .footer-container {
         display: flex;
@@ -1643,19 +1624,27 @@ const platformLinks = [
         align-items: center;
         text-align: center;
         max-width: 1120px;
+        width: 100%;
         margin-left: auto;
         margin-right: auto;
-        padding-left: 28px;
-        padding-right: 28px;
+        padding-left: 24px;
+        padding-right: 24px;
+        box-sizing: border-box;
       }
+
+      /* 1. BRANDING */
       .footer-brand-wrap {
         display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 14px;
+        width: 100%;
       }
       .footer-brand-wrap .footer-brand {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 12px;
         color: #F8FAFC;
         text-decoration: none;
@@ -1665,251 +1654,223 @@ const platformLinks = [
         opacity: 0.92;
       }
       .footer-brand-wrap .brand-mark {
-        width: 34px;
-        height: 34px;
-        min-width: 34px;
-        border-radius: 9px;
-        font-size: 12px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 10px;
+        font-size: 14px;
         font-weight: 800;
         background: #FF6600;
         color: #FFFFFF;
         display: grid;
         place-items: center;
-        box-shadow: 0 4px 16px rgba(255, 102, 0, 0.20);
+        box-shadow: 0 4px 16px rgba(255, 102, 0, 0.35);
       }
       .footer-brand-wrap .brand-name {
-        font-size: 20px;
+        font-size: 21px;
         font-weight: 800;
-        letter-spacing: 0.14em;
-        color: #F8FAFC;
+        letter-spacing: 0.12em;
+        color: #FFFFFF;
         text-transform: uppercase;
+        line-height: 1;
       }
-      .footer-descriptors {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        max-width: 940px;
-        gap: 28px;
-        margin: 0 auto;
+      .footer-description {
+        max-width: 540px;
+        font-size: 14px;
+        line-height: 1.55;
+        color: #8C96A5;
+        margin: 0;
+        padding: 0 8px;
       }
-      .descriptor-item {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: #AEB8C5;
-        white-space: nowrap;
-      }
-      .descriptor-dot {
-        color: #697788;
-        font-size: 11px;
-        user-select: none;
-      }
+
+      /* DIVIDERS */
       .footer-divider {
         width: 100%;
         max-width: 1040px;
         height: 1px;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.10);
+        border: none;
+        margin: 26px auto;
       }
-      .footer-divider-top {
-        margin: 32px auto 40px;
-      }
+
+      /* 2. MAIN NAVIGATION (Resources | Guides | FAQ | About) - STRICT 1 HORIZONTAL ROW */
       .footer-nav {
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
-        gap: 0 clamp(38px, 5vw, 68px);
+        flex-wrap: nowrap;
+        gap: clamp(6px, 2.5vw, 24px);
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
       }
-      .footer-nav a {
-        color: #F4F6F8;
-        font-size: 15px;
-        font-weight: 500;
-        letter-spacing: 0;
+      .footer-nav-link {
+        color: #F8FAFC;
+        font-size: clamp(12px, 3.4vw, 16px);
+        font-weight: 600;
+        letter-spacing: -0.01em;
         text-decoration: none;
-        transition: color 0.15s ease, transform 0.15s ease;
+        padding: 4px 2px;
+        white-space: nowrap;
+        transition: color 0.15s ease;
       }
-      .footer-nav a:hover, .footer-nav a:focus-visible {
-        color: #FF6600;
+      .footer-nav-link:hover, .footer-nav-link:focus-visible {
+        color: #FF7711;
         outline: none;
       }
-      .footer-platforms {
-        margin-top: 34px;
-        display: flex;
-        justify-content: center;
+      .footer-nav-separator {
+        color: rgba(255, 255, 255, 0.22);
+        font-size: clamp(11px, 2.8vw, 14px);
+        user-select: none;
+        line-height: 1;
+        flex-shrink: 0;
       }
-      .footer-platform-list {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 14px;
-        flex-wrap: wrap;
-      }
-      .footer-platform-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
-        min-height: 36px;
-        border-radius: 8px;
-        background: #171C20;
-        border: 1px solid #252B30;
-        color: #D5DCE3;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-        text-decoration: none;
-      }
-      .footer-platform-btn:hover {
-        color: #FF6600;
-        border-color: rgba(255, 102, 0, 0.5);
-        background: rgba(255, 102, 0, 0.1);
-        transform: translateY(-2px);
-      }
-      .footer-platform-btn:focus-visible {
-        outline: 2px solid rgba(255, 102, 0, 0.6);
-        outline-offset: 2px;
-      }
-      .footer-platform-btn svg {
-        display: block;
-        width: 18px;
-        height: 18px;
-      }
+
+      /* 3. LEGAL LINKS (Terms | Privacy) */
       .footer-legal {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 14px;
-        margin-top: 50px;
+        flex-wrap: nowrap;
+        gap: clamp(8px, 2vw, 14px);
+        margin-top: 12px;
       }
-      .footer-legal a {
-        color: #8F9AAA;
-        font-size: 12px;
+      .footer-legal-link {
+        color: #7E8B9B;
+        font-size: clamp(11.5px, 3vw, 13.5px);
         font-weight: 500;
         text-decoration: none;
+        padding: 2px 2px;
+        white-space: nowrap;
         transition: color 0.15s ease;
       }
-      .footer-legal a:hover, .footer-legal a:focus-visible {
-        color: #FF6600;
+      .footer-legal-link:hover, .footer-legal-link:focus-visible {
+        color: #DCE4EE;
         outline: none;
       }
-      .legal-separator {
-        color: #56616D;
-        font-size: 11px;
+      .footer-legal-separator {
+        color: rgba(255, 255, 255, 0.15);
+        font-size: clamp(10px, 2.5vw, 12px);
         user-select: none;
+        line-height: 1;
+        flex-shrink: 0;
       }
+
+      /* 4. SOCIAL SECTION */
+      .footer-social-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+      }
+      .footer-social-heading {
+        font-size: 14.5px;
+        font-weight: 700;
+        color: #F8FAFC;
+        margin: 0;
+        letter-spacing: 0.01em;
+      }
+      .footer-social-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(8px, 2.5vw, 14px);
+        flex-wrap: nowrap;
+      }
+      .footer-social-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: clamp(36px, 9vw, 42px);
+        height: clamp(36px, 9vw, 42px);
+        min-width: clamp(36px, 9vw, 42px);
+        min-height: clamp(36px, 9vw, 42px);
+        border-radius: 12px;
+        background: #0E131C;
+        border: 1px solid rgba(255, 255, 255, 0.10);
+        color: #CBD5E1;
+        transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        text-decoration: none;
+        box-sizing: border-box;
+      }
+      .footer-social-btn:hover {
+        color: #FF7711;
+        border-color: rgba(255, 102, 0, 0.45);
+        background: #182030;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      }
+      .footer-social-btn:focus-visible {
+        outline: 2px solid rgba(255, 102, 0, 0.6);
+        outline-offset: 2px;
+      }
+      .footer-social-btn svg {
+        display: block;
+        width: 18px;
+        height: 18px;
+      }
+
+      /* 5. COPYRIGHT */
       .footer-copyright {
-        color: #A1ACB8;
-        font-size: 12px;
+        color: #64748B;
+        font-size: 12.5px;
         line-height: 1.5;
         text-align: center;
-        margin-top: 18px;
+        margin: 0;
       }
 
+      /* Mobile Optimizations */
       @media (max-width: 640px) {
         .site-footer {
-          padding: 24px 0 38px;
-        }
-      }
-
-      @media (max-width: 420px) {
-        .footer-description {
-          display: none;
-        }
-        .site-footer {
-          padding: 24px 0 38px;
+          padding: 34px 0 30px;
         }
         .footer-container {
-          padding-left: 18px;
-          padding-right: 18px;
+          padding-left: 16px;
+          padding-right: 16px;
         }
         .footer-brand-wrap {
-          margin-bottom: 22px;
+          gap: 12px;
         }
         .footer-brand-wrap .brand-mark {
-          width: 40px;
-          height: 40px;
-          min-width: 40px;
-          border-radius: 11px;
-          font-size: 14px;
-          box-shadow: 0 5px 18px rgba(255, 102, 0, 0.28);
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+          font-size: 13.5px;
         }
         .footer-brand-wrap .brand-name {
-          font-size: 20px;
-          letter-spacing: 0.12em;
+          font-size: 19px;
         }
-        .footer-descriptors {
-          width: 100%;
-          max-width: none;
-          margin: 0;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr) minmax(0, 1fr);
-          align-items: center;
-          justify-items: center;
-          gap: 0;
-          padding: 0;
+        .footer-description {
+          font-size: 13px;
+          line-height: 1.5;
+          max-width: 360px;
         }
-        .descriptor-item {
-          width: 100%;
-          min-width: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 9.5px;
-          letter-spacing: 0.055em;
-          gap: 5px;
-          line-height: 1.35;
-          white-space: nowrap;
-        }
-        .descriptor-dot {
-          font-size: 9px;
-          flex: 0 0 auto;
-        }
-        .footer-divider-top {
-          margin: 32px auto 38px;
+        .footer-divider {
+          margin: 18px auto;
+          max-width: 100%;
         }
         .footer-nav {
-          gap: 0 24px;
+          gap: clamp(4px, 1.8vw, 10px);
         }
-        .footer-nav a {
-          font-size: 16px;
-          line-height: 1.3;
-        }
-        .footer-platforms {
-          margin-top: 38px;
-        }
-        .footer-platform-list {
-          gap: 10px;
-        }
-        .footer-platform-btn {
-          width: 44px;
-          height: 44px;
-          min-width: 44px;
-          min-height: 44px;
-          border-radius: 10px;
-        }
-        .footer-platform-btn svg {
-          width: 20px;
-          height: 20px;
+        .footer-nav-link {
+          padding: 2px 2px;
         }
         .footer-legal {
-          margin-top: 48px;
+          gap: 8px;
+          margin-top: 8px;
         }
-        .footer-legal a {
+        .footer-social-section {
+          gap: 12px;
+        }
+        .footer-social-heading {
           font-size: 14px;
+        }
+        .footer-social-list {
+          gap: 10px;
         }
         .footer-copyright {
-          font-size: 14px;
-          color: #C0C9D3;
-          margin-top: 22px;
-        }
-        :global([data-theme="light"]) .footer-copyright,
-        :global(html.light-theme) .footer-copyright {
-          color: #334155 !important;
+          font-size: 12px;
         }
       }
     

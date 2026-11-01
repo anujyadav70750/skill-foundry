@@ -202,7 +202,7 @@ body:not(:has(.testing-1-theme)) .transition-indicator-stem {
 }
 .resource-page .workflow-prompt-head {
   display: grid !important;
-  grid-template-columns: auto 1fr auto !important;
+  grid-template-columns: 30% 40% 30% !important;
   height: 46px !important;
   min-height: 46px !important;
   max-height: 46px !important;
@@ -1982,9 +1982,9 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
 
 
 
-/* TESTING-1 MOBILE PROMPT COMPACT RECTANGLE — prompt box only. */
+/* TESTING-1 MOBILE PROMPT COMPACT RECTANGLE — blueprint cards only, not modal popup. */
 @media (max-width: 640px) {
-  .testing-1-theme .workflow-prompt {
+  .testing-1-theme .blueprint-step-container .workflow-prompt {
     aspect-ratio: 1.3 / 1 !important;
     height: auto !important;
     min-height: 0 !important;
@@ -2079,7 +2079,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
   /* Keep Copy / FULL PROMPT / Expand attached directly to the prompt box/viewer on mobile (matching desktop) */
   .testing-1-theme .workflow-prompt-head {
     display: grid !important;
-    grid-template-columns: 1fr 1fr 1fr !important;
+    grid-template-columns: 30% 40% 30% !important;
     height: 46px !important;
     min-height: 46px !important;
     max-height: 46px !important;
@@ -3280,22 +3280,18 @@ html:not(.light-theme) .blueprint-inner-workflow-container {
   box-shadow: inset 0 3px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* 3. Top-Right Tray Expand Control (Neutral White/Cool Gray - PDF Section 8 & 9) */
-.blueprint-inner-expand-control {
-  position: absolute !important;
-  top: 12px !important;
-  right: 12px !important;
-  z-index: 10 !important;
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  border-radius: 8px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+/* 3. Top-Right Tray Expand Control (Removed per user specification) */
+.blueprint-inner-expand-control,
+#blueprint-board-expand-toggle {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
 }
 
 :root[data-theme="light"] .blueprint-inner-expand-control,
@@ -4585,81 +4581,54 @@ html:not(.light-theme) .blueprint-result-block .blueprint-final-desc {
   margin-top: var(--resource-major-section-gap, 24px) !important;
 }
 
-/* Video Frame — Responsive Full-Height Instagram Embed (Tutorial Reference) */
-.tutorial-section .video-frame,
-.resource-page .tutorial-section .video-frame {
+/* Video Frame — Responsive Instagram Official Embed */
+.tutorial-section .video-frame.is-instagram-embed,
+.resource-page .tutorial-section .video-frame.is-instagram-embed,
+.tutorial-final-result-card .video-frame.is-instagram-embed,
+.video-frame.is-instagram-embed {
   position: relative !important;
   width: 100% !important;
   max-width: 540px !important;
-  margin: 0 auto !important;
+  margin: 14px auto 0 !important;
   aspect-ratio: unset !important;
+  max-height: none !important;
+  min-height: 0 !important;
   height: auto !important;
-  min-height: 580px !important;
   overflow: visible !important;
-  border: none !important;
-  border-radius: 16px !important;
+  border-radius: 12px !important;
   background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
   display: flex !important;
   justify-content: center !important;
-  box-shadow: none !important;
+  padding: 0 !important;
 }
 
-.tutorial-section .video-frame iframe,
-.resource-page .tutorial-section .video-frame iframe {
-  width: 100% !important;
-  min-width: 326px !important;
-  max-width: 540px !important;
-  height: 590px !important;
-  min-height: 580px !important;
-  border-radius: 16px !important;
-  display: block !important;
+.tutorial-final-media-wrap:has(.is-instagram-embed) {
+  background: transparent !important;
+  border: none !important;
   overflow: visible !important;
-  transform: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+.tutorial-section .video-frame.is-instagram-embed .instagram-media,
+.resource-page .tutorial-section .video-frame.is-instagram-embed .instagram-media,
+.tutorial-final-result-card .video-frame.is-instagram-embed .instagram-media,
+.video-frame.is-instagram-embed .instagram-media,
+.video-frame.is-instagram-embed iframe.instagram-media-rendered,
+.tutorial-section .video-frame.is-instagram-embed iframe,
+.tutorial-final-result-card .video-frame.is-instagram-embed iframe {
+  width: 100% !important;
+  max-width: 540px !important;
+  min-width: 280px !important;
+  border: none !important;
+  border-radius: 12px !important;
+  display: block !important;
   margin: 0 auto !important;
-}
-
-:root[data-theme="light"] .tutorial-section .video-frame iframe,
-:root[data-theme="light"] .resource-page .tutorial-section .video-frame iframe,
-html.light-theme .tutorial-section .video-frame iframe,
-html.light-theme .resource-page .tutorial-section .video-frame iframe {
-  border: 1px solid #E2E8F0 !important;
+  overflow: visible !important;
   background: #FFFFFF !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08) !important;
-}
-
-:root:not([data-theme="light"]) .tutorial-section .video-frame iframe,
-:root:not([data-theme="light"]) .resource-page .tutorial-section .video-frame iframe,
-:root[data-theme="dark"] .tutorial-section .video-frame iframe,
-:root[data-theme="dark"] .resource-page .tutorial-section .video-frame iframe,
-html:not(.light-theme) .tutorial-section .video-frame iframe,
-html:not(.light-theme) .resource-page .tutorial-section .video-frame iframe {
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  background: #000000 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
-}
-
-@media (min-width: 480px) and (max-width: 639px) {
-  .tutorial-section .video-frame,
-  .resource-page .tutorial-section .video-frame {
-    min-height: 660px !important;
-  }
-  .tutorial-section .video-frame iframe,
-  .resource-page .tutorial-section .video-frame iframe {
-    height: 675px !important;
-    min-height: 660px !important;
-  }
-}
-
-@media (min-width: 640px) {
-  .tutorial-section .video-frame,
-  .resource-page .tutorial-section .video-frame {
-    min-height: 840px !important;
-  }
-  .tutorial-section .video-frame iframe,
-  .resource-page .tutorial-section .video-frame iframe {
-    height: 860px !important;
-    min-height: 840px !important;
-  }
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
 }
 
 /* RESULT Section Container & Card Scaling System */
@@ -5285,7 +5254,7 @@ html.light-theme .workflow-prompt-head,
 :root[data-theme="light"] .testing-1-theme .workflow-prompt-head,
 html.light-theme .testing-1-theme .workflow-prompt-head {
   display: grid !important;
-  grid-template-columns: 1fr 1fr 1fr !important;
+  grid-template-columns: 30% 40% 30% !important;
   height: 46px !important;
   min-height: 46px !important;
   max-height: 46px !important;
@@ -6099,15 +6068,395 @@ html.light-theme .related-shelf-action {
   }
 }
 
-/* Desktop Result card: proportionally scaled down to match step nodes */
+/* Desktop Result card & Collapsed Blueprint Layout: Synchronized with approved mobile visual structure */
 @media (min-width: 701px) {
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result,
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block {
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint {
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .testing-1-theme .blueprint-workflow-scroll-pane,
+  .blueprint-workflow-scroll-pane {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Centered 2-column graph stream for desktop */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-workflow-stream,
+  .workflow-resource-knight .blueprint-workflow-stream,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-workflow-stream {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    justify-content: center !important;
+    column-gap: 56px !important;
+    row-gap: 0 !important;
+    width: 100% !important;
+    max-width: 720px !important;
+    min-width: 0 !important;
+    margin: 0 auto !important;
+    padding: 32px 18px 54px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper,
+  .workflow-resource-knight .blueprint-step-wrapper,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Step 01: Centered at the top across both columns */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"],
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="1"],
+  .workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="1"],
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="1"] {
     grid-column: 1 / span 2 !important;
-    width: fit-content !important;
-    max-width: 320px !important;
+    grid-row: 1 !important;
+    width: calc((100% - 56px) / 2) !important;
+    max-width: 332px !important;
     justify-self: center !important;
-    margin: 48px auto 0 !important;
+    margin: 0 auto !important;
+  }
+
+  /* Step 02: Row 2, Left column */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"],
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="2"],
+  .workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="2"],
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="2"] {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+    margin-top: 56px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Step 03: Row 2, Right column */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"],
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="3"],
+  .workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="3"],
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="3"] {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+    margin-top: 56px !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Step 04: Row 3, Centered below Step 02 and Step 03 */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"],
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="4"],
+  .workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="4"],
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="4"] {
+    grid-column: 1 / span 2 !important;
+    grid-row: 3 !important;
+    width: calc((100% - 56px) / 2) !important;
+    max-width: 332px !important;
+    justify-self: center !important;
+    margin: 64px auto 0 !important;
+  }
+
+  /* Step 05: Row 4, Centered below Step 04 */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"],
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-wrapper[data-blueprint-step="5"],
+  .workflow-resource-knight .blueprint-step-wrapper[data-blueprint-step="5"],
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-wrapper[data-blueprint-step="5"] {
+    grid-column: 1 / span 2 !important;
+    grid-row: 4 !important;
+    width: calc((100% - 56px) / 2) !important;
+    max-width: 332px !important;
+    justify-self: center !important;
+    margin: 52px auto 0 !important;
+  }
+
+  /* Step cards: Vertical card structure matching mobile blueprint */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container,
+  .workflow-resource-knight .blueprint-step-container,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-container {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    aspect-ratio: auto !important;
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    position: relative !important;
+    border-radius: 18px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: linear-gradient(180deg, #0D1628 0%, #08101E 100%) !important;
+    border: 1px solid rgba(94, 164, 255, 0.28) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container:hover,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-container:hover,
+  .workflow-resource-knight .blueprint-step-container:hover,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-container:hover {
+    transform: translateY(-3px) !important;
+    border-color: rgba(94, 164, 255, 0.5) !important;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55), 0 0 12px rgba(94, 164, 255, 0.2) !important;
+  }
+
+  /* Centered Step Capsule Badge on top edge */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule,
+  .workflow-resource-knight .blueprint-step-capsule,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-capsule {
+    position: absolute !important;
+    top: 0 !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 12 !important;
+    white-space: nowrap !important;
+    width: 82px !important;
+    min-width: 82px !important;
+    max-width: 82px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    max-height: 22px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    border-radius: 9999px !important;
+    background: #0A1220 !important;
+    border: 1px solid rgba(94, 164, 255, 0.38) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45) !important;
+    box-sizing: border-box !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule span,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-capsule span,
+  .workflow-resource-knight .blueprint-step-capsule span,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-capsule span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 9.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-indent: 0.08em !important;
+    line-height: 1 !important;
+    transform: translateY(0.5px) !important;
+    color: #E2E8F0 !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Header Trigger Button: Vertical Column Layout */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-step-header,
+  .workflow-resource-knight .blueprint-step-header,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-step-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    padding: 24px 16px 16px 16px !important;
+    box-sizing: border-box !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    text-align: left !important;
+    overflow: hidden !important;
+    border-radius: 18px !important;
+  }
+
+  /* 16:9 Thumbnail Image */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-box,
+  .workflow-resource-knight .step-header-thumb-box,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-thumb-box {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    flex: 0 0 auto !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    background: #060B14 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    align-self: center !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-main,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-main,
+  .workflow-resource-knight .step-header-thumb-main,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-thumb-main {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
+    display: block !important;
+    border-radius: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-backdrop,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-overlay,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-play,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-backdrop,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-overlay,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-thumb-play,
+  .workflow-resource-knight .step-header-thumb-backdrop,
+  .workflow-resource-knight .step-header-thumb-overlay,
+  .workflow-resource-knight .step-header-thumb-play {
+    display: none !important;
+  }
+
+  /* Text Container directly below thumbnail */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-info,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-info,
+  .workflow-resource-knight .step-header-info,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-info {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 10px 0 0 0 !important;
+    padding: 0 !important;
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title-row,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title-row,
+  .workflow-resource-knight .step-header-title-row,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-title-row {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    overflow: hidden !important;
+    text-align: left !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-title,
+  .workflow-resource-knight .step-header-title,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-title {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.01em !important;
+    color: #F8FAFC !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-align: left !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-header-purpose,
+  .workflow-resource-knight .step-header-purpose,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-header-purpose {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    color: #94A3B8 !important;
+    word-break: break-word !important;
+    text-align: left !important;
+  }
+
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .step-expand-chevron,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .step-expand-chevron,
+  .workflow-resource-knight .step-expand-chevron,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .step-expand-chevron {
+    display: none !important;
+  }
+
+  /* Desktop Result card: centered in row 5 below Step 05 */
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result,
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block,
+  .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block,
+  .workflow-resource-knight #workflow-final-result,
+  .workflow-resource-knight .blueprint-result-block,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] #workflow-final-result,
+  [data-resource-slug="cinematic-medieval-knight-video-google-flow"] .blueprint-result-block {
+    grid-column: 1 / span 2 !important;
+    grid-row: 5 !important;
+    width: fit-content !important;
+    max-width: 340px !important;
+    justify-self: center !important;
+    margin: 52px auto 0 !important;
     border-radius: 18px !important;
     box-sizing: border-box !important;
     overflow: visible !important;
@@ -6118,7 +6467,11 @@ html.light-theme .related-shelf-action {
   }
 
   .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-inner,
-  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-inner {
+  .testing-1-theme .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-inner,
+  .blueprint-inner-workflow-container.sf-graph-blueprint #workflow-final-result .blueprint-result-inner,
+  .blueprint-inner-workflow-container.sf-graph-blueprint .blueprint-result-block .blueprint-result-inner,
+  .workflow-resource-knight #workflow-final-result .blueprint-result-inner,
+  .workflow-resource-knight .blueprint-result-block .blueprint-result-inner {
     width: 100% !important;
     max-width: 100% !important;
     padding: 16px 12px 14px !important;
@@ -6540,14 +6893,14 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .blueprint-canvas-workspace {
   position: relative !important;
   width: 100% !important;
-  min-height: 100% !important;
+  min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
   background: #000000 !important;
   background-color: #000000 !important;
   margin: 0 !important;
-  padding-top: max(16px, env(safe-area-inset-top, 16px)) !important;
-  padding-bottom: max(64px, env(safe-area-inset-bottom, 36px)) !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   border: none !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -6617,13 +6970,14 @@ body.blueprint-fullscreen-open {
   position: relative !important;
   width: 100% !important;
   max-width: 100% !important;
-  height: auto !important;
-  max-height: none !important;
-  overflow-x: hidden !important;
-  overflow-x: clip !important;
-  overflow-y: visible !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  touch-action: pan-x pan-y !important;
+  overscroll-behavior-x: contain !important;
+  overscroll-behavior-y: auto !important;
   background: transparent !important;
   padding: 0 !important;
   margin: 0 !important;
@@ -6639,6 +6993,13 @@ body.blueprint-fullscreen-open {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
+}
+
+#blueprint-inner-workflow-tray.is-blueprint-fullscreen .blueprint-stream-connector,
+#blueprint-inner-workflow-tray.is-blueprint-fullscreen .workflow-process-terminal,
+.blueprint-workflow-container.is-blueprint-fullscreen .blueprint-stream-connector,
+.blueprint-workflow-container.is-blueprint-fullscreen .workflow-process-terminal {
+  display: none !important;
 }
 
 /* Blueprint stream inside fullscreen: exact 440px size and layout matching resource page */
@@ -6803,22 +7164,22 @@ body.blueprint-fullscreen-open {
 .step-details-container {
   position: absolute !important;
   z-index: 2 !important;
-  width: min(340px, calc(100% - 44px)) !important;
-  max-width: 340px !important;
+  width: min(420px, calc(100% - 32px)) !important;
+  max-width: 420px !important;
   height: auto !important;
   max-height: none !important;
   display: flex !important;
   flex-direction: column !important;
-  background: #030814 !important;
-  border: 1px solid rgba(56, 189, 248, 0.22) !important;
-  border-radius: 14px !important;
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(56, 189, 248, 0.18) !important;
+  background: #030712 !important;
+  border: 1px solid #1d4ed8 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25), 0 25px 60px -15px rgba(0, 0, 0, 0.95) !important;
   box-sizing: border-box !important;
   overflow: visible !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   margin: 0 auto !important;
-  padding: 12px 14px 14px 14px !important;
+  padding: 18px 20px 20px 20px !important;
   animation: stepPopupFadeIn 0.15s ease-out !important;
 }
 
@@ -6827,14 +7188,14 @@ body.blueprint-fullscreen-open {
 .blueprint-workflow-container.is-blueprint-fullscreen .step-details-container {
   position: absolute !important;
   z-index: 2 !important;
-  width: min(340px, calc(100% - 44px)) !important;
-  max-width: 340px !important;
+  width: min(420px, calc(100% - 32px)) !important;
+  max-width: 420px !important;
   height: auto !important;
   max-height: none !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   margin: 0 auto !important;
-  padding: 12px 14px 14px 14px !important;
+  padding: 18px 20px 20px 20px !important;
   overflow: visible !important;
   animation: stepPopupFadeIn 0.15s ease-out !important;
 }
@@ -6862,37 +7223,59 @@ body.blueprint-fullscreen-open {
   .step-details-container,
   #blueprint-inner-workflow-tray.is-blueprint-fullscreen .step-details-container,
   .blueprint-workflow-container.is-blueprint-fullscreen .step-details-container {
-    width: min(340px, calc(100% - 44px)) !important;
-    max-width: 340px !important;
-    border-radius: 14px !important;
-    padding: 12px 14px 14px 14px !important;
+    width: min(376px, calc(100% - 24px)) !important;
+    max-width: 376px !important;
+    border-radius: 16px !important;
+    padding: 15px 16px 16px 16px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     margin: 0 auto !important;
   }
 }
 
-/* Top Control Bar with Step Eyebrow and Compact X Close Button */
+/* Top Control Bar with Step Eyebrow Badge and Compact X Close Button */
 .step-details-bar {
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 0 0 6px 0 !important;
+  padding: 0 !important;
   background: transparent !important;
   border-bottom: none !important;
   border-radius: 0 !important;
   z-index: 10 !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
-  margin: 0 !important;
+  margin: 0 0 8px 0 !important;
 }
 
 .step-details-bar-eyebrow {
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.step-details-badge {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
   text-transform: uppercase !important;
   color: #38BDF8 !important;
+  background: rgba(2, 132, 199, 0.12) !important;
+  border: 1.5px solid #0284c7 !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
+}
+
+.step-details-badge-label {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: #94A3B8 !important;
+  line-height: 1.2 !important;
 }
 
 /* Compact X icon button only (matching visual reference) */
@@ -6906,16 +7289,16 @@ body.blueprint-fullscreen-open {
   min-height: 28px !important;
   padding: 0 !important;
   border-radius: 8px !important;
-  background: rgba(255, 255, 255, 0.06) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  color: #E2E8F0 !important;
+  background: #081124 !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #94A3B8 !important;
   cursor: pointer !important;
   transition: all 0.15s ease !important;
 }
 
 .step-details-close-btn:hover {
-  background: rgba(255, 255, 255, 0.16) !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: #0e1b38 !important;
+  border-color: rgba(56, 189, 248, 0.5) !important;
   color: #FFFFFF !important;
   transform: scale(1.05) !important;
 }
@@ -6956,33 +7339,36 @@ body.blueprint-fullscreen-open {
 
 /* Step Title + Description (Directly below header) */
 .step-details-meta-header {
-  margin: 2px 0 8px 0 !important;
+  margin: 4px 0 14px 0 !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 2px !important;
+  gap: 4px !important;
 }
 
 .step-details-step-title {
-  font-size: 15px !important;
+  font-family: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif !important;
+  font-size: 22px !important;
   font-weight: 700 !important;
   color: #FFFFFF !important;
-  line-height: 1.25 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em !important;
   margin: 0 !important;
 }
 
 .step-details-step-desc {
-  font-size: 11px !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
   color: #94A3B8 !important;
-  line-height: 1.35 !important;
+  line-height: 1.4 !important;
   margin: 0 !important;
 }
 
-/* Clean Sections (no bulky surrounding box borders) */
+/* Clean Sections with consistent spacing rhythm */
 .step-details-section {
-  margin-top: 10px !important;
+  margin-top: 15px !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 5px !important;
+  gap: 7px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -6991,26 +7377,29 @@ body.blueprint-fullscreen-open {
   margin-top: 0 !important;
 }
 
+/* Uniform section labels across INPUT, PROMPT, TOOL / SETTINGS, OUTPUT */
 .step-details-section-title {
-  font-size: 9.5px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
   text-transform: uppercase !important;
   color: #38BDF8 !important;
   margin: 0 !important;
   display: block !important;
+  line-height: 1.1 !important;
 }
 
-/* 1. INPUT / INPUTS — Compact Horizontal Rail & Cards */
+/* 1. INPUT / INPUTS — Clean Contained Cards */
 .step-details-input-rail {
   display: flex !important;
-  gap: 6px !important;
+  gap: 8px !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
-  padding: 2px 0 !important;
+  padding: 1px 0 !important;
   margin: 0 !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch !important;
   scroll-snap-type: x proximity !important;
 }
 
@@ -7021,37 +7410,42 @@ body.blueprint-fullscreen-open {
 }
 
 .step-details-input-card {
-  flex: 0 0 88px !important;
-  width: 88px !important;
-  min-width: 88px !important;
-  background: #081120 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 8px !important;
-  padding: 5px !important;
+  flex: 0 0 114px !important;
+  width: 114px !important;
+  min-width: 114px !important;
+  background: #060e20 !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  border-radius: 10px !important;
+  padding: 8px !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
   scroll-snap-align: start !important;
+  transition: border-color 0.15s ease !important;
+}
+
+.step-details-input-card:hover {
+  border-color: rgba(56, 189, 248, 0.45) !important;
 }
 
 .step-details-input-card .input-type-pill {
   align-self: flex-start !important;
-  font-size: 7px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-  padding: 1.5px 5px !important;
-  border-radius: 3px !important;
-  background: rgba(30, 58, 95, 0.8) !important;
-  color: #38BDF8 !important;
-  margin-bottom: 4px !important;
-  line-height: 1.2 !important;
+  font-size: 8.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  background: #0284c7 !important;
+  color: #FFFFFF !important;
+  margin-bottom: 6px !important;
+  line-height: 1.15 !important;
   text-transform: uppercase !important;
 }
 
 .step-details-input-card .input-media-frame {
   width: 100% !important;
-  height: 72px !important;
-  border-radius: 5px !important;
+  height: 86px !important;
+  border-radius: 7px !important;
   overflow: hidden !important;
   background: #01040a !important;
   position: relative !important;
@@ -7073,14 +7467,15 @@ body.blueprint-fullscreen-open {
   position: absolute !important;
   z-index: 3 !important;
   color: #FFFFFF !important;
-  font-size: 12px !important;
-  background: rgba(0, 0, 0, 0.6) !important;
-  width: 24px !important;
-  height: 24px !important;
+  font-size: 13px !important;
+  background: rgba(0, 0, 0, 0.65) !important;
+  width: 26px !important;
+  height: 26px !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
 .step-details-input-card .input-audio-wrap,
@@ -7090,136 +7485,254 @@ body.blueprint-fullscreen-open {
   align-items: center !important;
   justify-content: center !important;
   color: #38BDF8 !important;
-  padding: 4px !important;
+  padding: 6px !important;
   text-align: center !important;
 }
 
 .step-details-input-card .input-card-title {
-  font-size: 10px !important;
-  font-weight: 700 !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
   color: #FFFFFF !important;
-  margin-top: 4px !important;
-  line-height: 1.2 !important;
+  margin-top: 6px !important;
+  line-height: 1.25 !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   text-align: left !important;
 }
 
-/* 2. PROMPT — Continuous Segmented Component */
+/* 2. PROMPT — ONE SINGLE COMPACT CARD: Header -> Prompt Text Area -> Download PDF Footer */
+.step-details-container .step-modal-prompt-card,
 .step-details-container .workflow-prompt {
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
+  aspect-ratio: auto !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
   border: 1px solid rgba(56, 189, 248, 0.25) !important;
-  border-radius: 9px !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
-  background: #01040a !important;
+  background: #020612 !important;
   box-sizing: border-box !important;
   margin: 0 !important;
+  padding: 0 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+  flex: 0 0 auto !important;
 }
 
+@media (max-width: 640px) {
+  .step-details-container .step-modal-prompt-card,
+  .step-details-container .workflow-prompt {
+    aspect-ratio: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+.step-details-container .step-modal-prompt-head,
 .step-details-container .workflow-prompt-head {
   display: grid !important;
-  grid-template-columns: 25% 50% 25% !important;
-  height: 27px !important;
-  min-height: 27px !important;
-  max-height: 27px !important;
+  grid-template-columns: 30% 40% 30% !important;
+  align-items: stretch !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
   width: 100% !important;
   padding: 0 !important;
   margin: 0 !important;
-  border-bottom: 1px solid rgba(56, 189, 248, 0.18) !important;
-  background: #040a16 !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: #040916 !important;
   box-sizing: border-box !important;
+  flex: 0 0 auto !important;
+  overflow: hidden !important;
 }
 
-.step-details-container .workflow-prompt-head button {
-  height: 100% !important;
-  width: 100% !important;
-  padding: 0 !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  color: #FFFFFF !important;
-  background: #0284c7 !important;
-  border: none !important;
-  cursor: pointer !important;
-  transition: background 0.15s ease !important;
-  text-align: center !important;
+/* Copy button: Left cell, attached to card boundary, action-blue background, connected vertical separator */
+.step-details-container [data-copy-step],
+.step-details-container .step-modal-prompt-head [data-copy-step],
+.step-details-container .workflow-prompt-head [data-copy-step],
+.step-details-container .workflow-prompt-head button:first-child {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 !important;
+  background: #0284c7 !important;
+  color: #FFFFFF !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transition: background 0.15s ease !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
 }
 
-.step-details-container .workflow-prompt-head button[data-copy-step] {
-  border-right: 1px solid rgba(1, 4, 10, 0.4) !important;
-  border-top-left-radius: 8px !important;
-}
-
-.step-details-container .workflow-prompt-head button[data-expand-step] {
-  border-left: 1px solid rgba(1, 4, 10, 0.4) !important;
-  border-top-right-radius: 8px !important;
-}
-
-.step-details-container .workflow-prompt-head button:hover {
-  background: #0369a1 !important;
-}
-
+/* FULL PROMPT: Center cell, non-clickable heading, muted typography, dark background */
+.step-details-container .step-modal-prompt-title,
+.step-details-container .step-modal-prompt-head .step-modal-prompt-title,
 .step-details-container .workflow-prompt-head span {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 9px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
-  color: #38BDF8 !important;
-  background: #040a16 !important;
-  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  padding: 0 8px !important;
+  margin: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #040916 !important;
+  color: #94A3B8 !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.09em !important;
+  text-transform: uppercase !important;
   text-align: center !important;
+  pointer-events: none !important;
+  user-select: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
 }
 
-/* Prompt Text: comfortable square-ish area, NO visible scrollbar */
-.step-details-container .workflow-prompt pre {
+/* Expand button: Right cell, attached to card boundary, action-blue background, connected vertical separator */
+.step-details-container [data-expand-step],
+.step-details-container .step-modal-prompt-head [data-expand-step],
+.step-details-container .workflow-prompt-head [data-expand-step],
+.step-details-container .workflow-prompt-head button:last-child {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  padding: 0 10px !important;
   margin: 0 !important;
-  padding: 9px 11px !important;
-  font-family: 'JetBrains Mono', monospace !important;
-  font-size: 10.5px !important;
-  line-height: 1.42 !important;
-  color: #E2E8F0 !important;
+  border: none !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 !important;
+  background: #0284c7 !important;
+  color: #FFFFFF !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  cursor: pointer !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transition: background 0.15s ease !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+}
+
+.step-details-container [data-copy-step]:hover,
+.step-details-container .step-modal-prompt-head [data-copy-step]:hover,
+.step-details-container [data-expand-step]:hover,
+.step-details-container .step-modal-prompt-head [data-expand-step]:hover,
+.step-details-container .workflow-prompt-head button:hover {
+  background: #0369a1 !important;
+  color: #FFFFFF !important;
+}
+
+.step-details-container [data-copy-step]:active,
+.step-details-container .step-modal-prompt-head [data-copy-step]:active,
+.step-details-container [data-expand-step]:active,
+.step-details-container .step-modal-prompt-head [data-expand-step]:active,
+.step-details-container .workflow-prompt-head button:active {
+  background: #075985 !important;
+  transform: none !important;
+}
+
+/* Prompt Text Area: clearly defined height, internal vertical scrolling, monospace, clean readable spacing */
+.step-details-container .step-modal-prompt-pre,
+.step-details-container .workflow-prompt pre,
+.step-details-container .workflow-prompt [data-step-prompt] {
+  display: block !important;
+  width: 100% !important;
+  height: 96px !important;
+  min-height: 96px !important;
+  max-height: 96px !important;
+  margin: 0 !important;
+  padding: 10px 12px !important;
+  box-sizing: border-box !important;
+  background: #02050e !important;
+  color: #F1F5F9 !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-size: 11.5px !important;
+  line-height: 1.55 !important;
   white-space: pre-wrap !important;
   word-break: break-word !important;
-  min-height: 85px !important;
-  max-height: 125px !important;
   overflow-y: auto !important;
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
-  box-sizing: border-box !important;
-  background: #01040a !important;
+  overflow-x: hidden !important;
+  border: none !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(56, 189, 248, 0.35) transparent !important;
+  flex: 0 0 auto !important;
 }
 
-.step-details-container .workflow-prompt pre::-webkit-scrollbar {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
+.step-details-container .step-modal-prompt-pre::-webkit-scrollbar,
+.step-details-container .workflow-prompt pre::-webkit-scrollbar,
+.step-details-container .workflow-prompt [data-step-prompt]::-webkit-scrollbar {
+  width: 4px !important;
 }
 
-.step-details-container .workflow-prompt .workflow-download {
-  height: 28px !important;
-  min-height: 28px !important;
-  padding: 3px 10px !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
+.step-details-container .step-modal-prompt-pre::-webkit-scrollbar-thumb,
+.step-details-container .workflow-prompt pre::-webkit-scrollbar-thumb,
+.step-details-container .workflow-prompt [data-step-prompt]::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.35) !important;
+  border-radius: 2px !important;
+}
+
+/* Download PDF Footer: real footer INSIDE prompt component, below prompt text area, clean attached bottom */
+.step-details-container .step-modal-prompt-download,
+.step-details-container .workflow-prompt .workflow-download,
+.step-details-container .workflow-prompt [data-download-step] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
+  padding: 0 12px !important;
+  margin: 0 !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
   background: #0284c7 !important;
   border: none !important;
-  border-top: 1px solid rgba(56, 189, 248, 0.18) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 0 11px 11px !important;
   color: #FFFFFF !important;
   cursor: pointer !important;
   text-align: center !important;
-  transition: background 0.15s ease !important;
-  border-bottom-left-radius: 8px !important;
-  border-bottom-right-radius: 8px !important;
+  transition: background 0.15s ease, filter 0.15s ease !important;
+  box-sizing: border-box !important;
+  flex: 0 0 auto !important;
 }
 
-.step-details-container .workflow-prompt .workflow-download:hover {
+.step-details-container .step-modal-prompt-download:hover,
+.step-details-container .workflow-prompt .workflow-download:hover,
+.step-details-container .workflow-prompt [data-download-step]:hover {
   background: #0369a1 !important;
 }
 
@@ -7227,69 +7740,101 @@ body.blueprint-fullscreen-open {
 .step-details-container .instruction-card {
   display: flex !important;
   flex-direction: column !important;
-  gap: 4px !important;
-  padding: 8px 10px !important;
-  background: #081120 !important;
+  gap: 6px !important;
+  padding: 10px 12px !important;
+  background: #060e20 !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 8px !important;
+  border-radius: 10px !important;
+  box-sizing: border-box !important;
 }
 
 .step-details-container .instruction-line {
   display: flex !important;
   align-items: flex-start !important;
-  gap: 6px !important;
+  gap: 8px !important;
 }
 
 .step-details-container .instruction-line span {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 15px !important;
-  height: 15px !important;
+  width: 18px !important;
+  height: 18px !important;
   border-radius: 50% !important;
   background: rgba(2, 132, 199, 0.25) !important;
   color: #38BDF8 !important;
-  font-size: 8.5px !important;
+  font-size: 9.5px !important;
   font-weight: 800 !important;
   flex-shrink: 0 !important;
+  margin-top: 1px !important;
 }
 
 .step-details-container .instruction-line p {
   margin: 0 !important;
-  font-size: 11px !important;
-  line-height: 1.3 !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
   color: #E2E8F0 !important;
 }
 
-/* 3. TOOL / SETTINGS — Simplified Clean Layout */
+/* 3. TOOL / SETTINGS — Prominent Tool Component with Clean Settings Row */
 .step-details-tool-box {
   display: flex !important;
   flex-direction: column !important;
-  gap: 6px !important;
+  gap: 8px !important;
   width: 100% !important;
+  background: #060e20 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  box-sizing: border-box !important;
 }
 
 .step-details-tool-row {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 12px !important;
+}
+
+.step-details-tool-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-decoration: none !important;
+  flex-shrink: 0 !important;
 }
 
 .step-details-tool-logo {
-  width: 28px !important;
-  height: 28px !important;
-  border-radius: 6px !important;
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  border-radius: 8px !important;
   background: #FFFFFF !important;
-  padding: 3px !important;
+  padding: 4px !important;
   box-sizing: border-box !important;
   object-fit: contain !important;
   display: block !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.step-details-tool-info {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 0 !important;
 }
 
 .step-details-tool-name {
-  font-size: 13.5px !important;
+  font-size: 15px !important;
   font-weight: 700 !important;
   color: #FFFFFF !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.25 !important;
+}
+
+.step-details-tool-sub {
+  display: none !important;
 }
 
 .step-details-settings-strip {
@@ -7297,11 +7842,13 @@ body.blueprint-fullscreen-open {
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
-  gap: 5px !important;
+  gap: 6px !important;
   margin-top: 2px !important;
-  padding: 2px 0 3px 0 !important;
+  padding: 2px 0 2px 0 !important;
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x proximity !important;
 }
 
 .step-details-settings-strip::-webkit-scrollbar {
@@ -7313,51 +7860,71 @@ body.blueprint-fullscreen-open {
 .blueprint-setting-capsule {
   display: inline-flex !important;
   align-items: center !important;
-  gap: 5px !important;
-  padding: 3px 6px !important;
+  gap: 6px !important;
+  padding: 4px 8px !important;
   border-radius: 6px !important;
-  background: #061224 !important;
-  border: 1px solid rgba(56, 189, 248, 0.2) !important;
+  background: #030a16 !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
+  scroll-snap-align: start !important;
 }
 
 .setting-capsule-icon {
   color: #38BDF8 !important;
   flex-shrink: 0 !important;
-  width: 11px !important;
-  height: 11px !important;
+  width: 12px !important;
+  height: 12px !important;
 }
 
 .setting-capsule-body {
   display: flex !important;
   flex-direction: column !important;
-  gap: 0px !important;
+  gap: 1px !important;
 }
 
 .setting-capsule-label {
-  font-size: 7px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.08em !important;
+  font-size: 7.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
   color: #38BDF8 !important;
   text-transform: uppercase !important;
   line-height: 1 !important;
 }
 
 .setting-capsule-val {
-  font-size: 10px !important;
-  font-weight: 700 !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
   color: #FFFFFF !important;
-  line-height: 1.1 !important;
+  line-height: 1.15 !important;
   white-space: nowrap !important;
 }
 
-/* 4. OUTPUT — Clean Result Card */
+/* 4. OUTPUT / RESULT — TRUE 16:9 Aspect Ratio Media Container */
+.step-details-output-rail {
+  display: flex !important;
+  gap: 8px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 1px 0 !important;
+  margin: 0 !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x proximity !important;
+}
+
+.step-details-output-rail::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 .step-details-output-card {
-  background: #081120 !important;
+  background: #060e20 !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 10px !important;
-  padding: 6px !important;
+  padding: 10px 12px !important;
   box-sizing: border-box !important;
   width: 100% !important;
   display: flex !important;
@@ -7366,44 +7933,58 @@ body.blueprint-fullscreen-open {
 
 .step-details-output-card .output-media-frame {
   width: 100% !important;
-  border-radius: 7px !important;
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+  max-height: none !important;
+  border-radius: 8px !important;
   overflow: hidden !important;
   background: #01040a !important;
   position: relative !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  max-height: 125px !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-sizing: border-box !important;
 }
 
 .step-details-output-card .output-media-img,
 .step-details-output-card .output-media-video {
   width: 100% !important;
-  max-height: 125px !important;
+  height: 100% !important;
+  max-height: none !important;
   object-fit: cover !important;
   display: block !important;
+  background: #01040a !important;
 }
 
 .step-details-output-card .output-reel-link {
   width: 100% !important;
+  height: 100% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   position: relative !important;
+  background: #01040a !important;
+}
+
+.step-details-output-card .output-reel-link .output-media-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 .step-details-output-card .output-play-badge {
   position: absolute !important;
   z-index: 3 !important;
   color: #FFFFFF !important;
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: rgba(0, 0, 0, 0.65) !important;
   width: 36px !important;
   height: 36px !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
 }
 
 .step-details-output-card .output-audio-wrap,
@@ -7413,18 +7994,159 @@ body.blueprint-fullscreen-open {
   align-items: center !important;
   justify-content: center !important;
   color: #38BDF8 !important;
-  padding: 8px !important;
+  padding: 10px !important;
   text-align: center !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 .step-details-output-card .output-card-title {
-  font-size: 10.5px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
   color: #FFFFFF !important;
-  margin-top: 5px !important;
+  margin-top: 8px !important;
   line-height: 1.25 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: left !important;
 }
 
+.step-details-output-card .output-card-desc {
+  font-size: 11px !important;
+  color: #94A3B8 !important;
+  line-height: 1.35 !important;
+  margin: 3px 0 0 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: left !important;
+}
 
+/* 2026-10-30: Real 3D physical tactile buttons for all tool logos on resource pages */
+.resource-page .tool-logo-box,
+.tool-logo-box {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  max-width: 48px !important;
+  max-height: 48px !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  background: #0B0E14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 3px 0 rgba(0, 0, 0, 0.4),
+    0 6px 12px -2px rgba(0, 0, 0, 0.55) !important;
+  transform: translateY(0) !important;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s ease !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
 
+/* 2026-10-31: Refined 36px 3D tactile button for step tool logos in tutorial steps */
+.resource-page .step-tool-logo-box,
+.step-tool-logo-box {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  border-radius: 9px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  background: #0B0E14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.5),
+    0 2px 0 rgba(0, 0, 0, 0.4),
+    0 4px 10px -2px rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(0) !important;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s ease !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
 
+.resource-page .tool-grid-card:hover .tool-logo-box,
+.resource-page .tool-logo-box:hover,
+.tool-grid-card:hover .tool-logo-box,
+.tool-logo-box:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.55),
+    0 5px 0 rgba(0, 0, 0, 0.45),
+    0 10px 18px -2px rgba(0, 0, 0, 0.65) !important;
+}
+
+.resource-page .step-tool-inline:hover .step-tool-logo-box,
+.resource-page .step-tool-logo-box:hover,
+.step-tool-inline:hover .step-tool-logo-box,
+.step-tool-logo-box:hover {
+  transform: translateY(-2px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.55),
+    0 4px 0 rgba(0, 0, 0, 0.45),
+    0 8px 14px -2px rgba(0, 0, 0, 0.6) !important;
+}
+
+.resource-page .tool-grid-card:active .tool-logo-box,
+.resource-page .tool-logo-box:active,
+.resource-page .step-tool-inline:active .step-tool-logo-box,
+.resource-page .step-tool-logo-box:active,
+.tool-grid-card:active .tool-logo-box,
+.tool-logo-box:active,
+.step-tool-inline:active .step-tool-logo-box,
+.step-tool-logo-box:active {
+  transform: translateY(1px) !important;
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 1px 0 rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Full inner surface fill for tool logos */
+.resource-page .tool-logo-box img,
+.resource-page .step-tool-logo-box img,
+.resource-page .tool-grid-logo,
+.resource-page .step-tool-logo,
+.tool-logo-box img,
+.step-tool-logo-box img,
+.tool-grid-logo,
+.step-tool-logo {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 100% !important;
+  min-height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  border-radius: 0 !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}

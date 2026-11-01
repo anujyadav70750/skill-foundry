@@ -5,9 +5,13 @@ REPO_OWNER="anujyadav70750"
 REPO_NAME="skill-foundry"
 BRANCH="main"
 
-# Read GITHUB_TOKEN from env or .env file
+# Read GITHUB_TOKEN from env, .env file, or /app/.dev.env.json
 if [ -z "$GITHUB_TOKEN" ] && [ -f ".env" ]; then
   GITHUB_TOKEN=$(grep -E "^GITHUB_TOKEN=" .env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
+fi
+
+if [ -z "$GITHUB_TOKEN" ] && [ -f "/app/.dev.env.json" ]; then
+  GITHUB_TOKEN=$(node -e 'try { console.log(require("/app/.dev.env.json").GITHUB_TOKEN || ""); } catch (e) {}')
 fi
 
 if [ -z "$GITHUB_TOKEN" ]; then

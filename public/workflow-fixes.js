@@ -1,7 +1,8 @@
 (() => {
   const FLOW_ICON = '/logos/google-flow.png';
-  const CAPCUT_ICON = '/capcut-icon.svg';
+  const CAPCUT_ICON = '/logos/capcut.png';
   const CHATGPT_ICON = '/logos/chatgpt.png';
+  const INSTA_ICON = '/logos/instagram.png';
 
   const downloadPdf = (text, name = 'skill-foundry-prompt') => {
     const clean = (s) => String(s)
@@ -135,8 +136,9 @@ startxref
   };
 
   const blueprintStyle = () => {
-    if (document.getElementById('sf-blueprint-graph-style')) return;
-
+    const existing = document.getElementById('sf-blueprint-graph-style');
+    if (existing) existing.remove();
+    return;
     const style = document.createElement('style');
     style.id = 'sf-blueprint-graph-style';
     style.textContent = `
@@ -1109,148 +1111,164 @@ startxref
     const step5 = getStepByNum(5);
 
     const DOT_RADIUS = 3.5;
-    const GAP = 2.5; // tiny intentional visual gap outside the card/capsule boundary
+    const GAP = 2.5; // intentional visual gap outside the card/capsule boundary
     const dotOffset = DOT_RADIUS + GAP; // 6px
 
-    /* 
-     * Cinematic Medieval Knight Video — Google Flow:
-     * Exactly 6 connections:
-     * 1. STEP 01 -> STEP 02 (leaves bottom left of Step 01, stepped curve into Step 02 capsule)
-     * 2. STEP 01 -> STEP 04 (leaves bottom center of Step 01, pure vertical line through enlarged gap into Step 04 center dot)
-     * 3. STEP 02 -> STEP 04 (leaves bottom center of Step 02, curved into Step 04 LEFT dot above capsule)
-     * 4. STEP 03 -> STEP 04 (leaves bottom center of Step 03, curved into Step 04 RIGHT dot above capsule)
-     * 5. STEP 04 -> STEP 05 (pure vertical line into Step 05 capsule)
-     * 6. STEP 05 -> RESULT  (pure vertical line into RESULT capsule)
+    /*
+     * The workflow graph:
+     *                 STEP 01
+     *                    │
+     *             ┌──────┴──────┐
+     *             ↓             ↓
+     *          STEP 02       STEP 03
+     *             │             │
+     *             └──────┬──────┘
+     *                    ↓
+     *                 STEP 04
+     *                    ↓
+     *                 STEP 05
+     *                    ↓
+     *                  RESULT
+     *
+     * Required connections:
+     * STEP 01 → STEP 02
+     * STEP 01 → STEP 03
+     * STEP 02 → STEP 04
+     * STEP 03 → STEP 04
+     * STEP 04 → STEP 05
+     * STEP 05 → RESULT
      */
 
-    if (step1) {
-      const r1 = step1.getBoundingClientRect();
-      const s1Left = r1.left - streamRect.left;
-      const s1Width = r1.width;
-      const s1BottomY = r1.top - streamRect.top + r1.height;
+    const getBoxGeom = (box) => {
+      if (!box) return null;
+      const r = box.getBoundingClientRect();
+      const left = r.left - streamRect.left;
+      const top = r.top - streamRect.top;
+      const width = r.width;
+      const height = r.height;
+      return {
+        left,
+        top,
+        width,
+        height,
+        centerX: left + width / 2,
+        topY: top,
+        bottomY: top + height
+      };
+    };
 
-      // Two distinct output ports on Step 01's bottom border (outside border with tiny gap):
-      // Left dot (28% width): connects to Step 02
-      // Center dot (50% width): connects straight down to Step 04
-      const s1DotLeft = { x: s1Left + s1Width * 0.28, y: s1BottomY + dotOffset };
-      const s1DotCenter = { x: s1Left + s1Width * 0.50, y: s1BottomY + dotOffset };
+    const g1 = getBoxGeom(step1);
+    const g2 = getBoxGeom(step2);
+    const g3 = getBoxGeom(step3);
+    const g4 = getBoxGeom(step4);
+    const g5 = getBoxGeom(step5);
+    const gRes = getBoxGeom(result);
 
-      // 1. STEP 01 -> STEP 02:
-      if (step2) {
-        const r2 = step2.getBoundingClientRect();
-        const s2TopX = r2.left - streamRect.left + r2.width / 2;
-        const s2TopY = r2.top - streamRect.top;
-        const endPt = { x: s2TopX, y: s2TopY - 9 - dotOffset };
+    // 1 & 2. STEP 01 -> STEP 02 and STEP 01 -> STEP 03
+    if (g1 && g2 && g3) {
+      const s1Exit = { x: g1.centerX, y: g1.bottomY + dotOffset };
+      const s2Entry = { x: g2.centerX, y: g2.topY - 9 - dotOffset };
+      const s3Entry = { x: g3.centerX, y: g3.topY - 9 - dotOffset };
 
-        const cornerR = 10;
-        const midY = (s1DotLeft.y + endPt.y) / 2;
-        const d = `M ${s1DotLeft.x} ${s1DotLeft.y} ` +
-                  `L ${s1DotLeft.x} ${midY - cornerR} ` +
-                  `Q ${s1DotLeft.x} ${midY} ${s1DotLeft.x - cornerR} ${midY} ` +
-                  `L ${endPt.x + cornerR} ${midY} ` +
-                  `Q ${endPt.x} ${midY} ${endPt.x} ${midY + cornerR} ` +
-                  `L ${endPt.x} ${endPt.y}`;
+      // Horizontal branch bar halfway between Step 01 exit and Step 02/03 entry
+      const splitY = (s1Exit.y + Math.min(s2Entry.y, s3Entry.y)) / 2;
+      const cornerR = Math.min(12, Math.abs(s1Exit.x - s2Entry.x) / 3, Math.max(4, Math.abs(splitY - s1Exit.y) - 2));
 
-        svg.appendChild(makePath(d));
-        svg.appendChild(makeDot(s1DotLeft, DOT_RADIUS));
-        svg.appendChild(makeDot(endPt, DOT_RADIUS));
-      }
+      // Branch to Step 02: drops from s1Exit down to splitY, curves left, goes to s2Entry.x, curves down into s2Entry
+      const path1to2 =
+        `M ${s1Exit.x} ${s1Exit.y} ` +
+        `L ${s1Exit.x} ${splitY - cornerR} ` +
+        `Q ${s1Exit.x} ${splitY} ${s1Exit.x - cornerR} ${splitY} ` +
+        `L ${s2Entry.x + cornerR} ${splitY} ` +
+        `Q ${s2Entry.x} ${splitY} ${s2Entry.x} ${splitY + cornerR} ` +
+        `L ${s2Entry.x} ${s2Entry.y}`;
+      svg.appendChild(makePath(path1to2));
 
-      // Step 04 incoming connections
-      if (step4) {
-        const r4 = step4.getBoundingClientRect();
-        const s4TopY = r4.top - streamRect.top;
-        const s4Left = r4.left - streamRect.left;
-        const s4Width = r4.width;
+      // Branch to Step 03: drops from s1Exit down to splitY, curves right, goes to s3Entry.x, curves down into s3Entry
+      const path1to3 =
+        `M ${s1Exit.x} ${s1Exit.y} ` +
+        `L ${s1Exit.x} ${splitY - cornerR} ` +
+        `Q ${s1Exit.x} ${splitY} ${s1Exit.x + cornerR} ${splitY} ` +
+        `L ${s3Entry.x - cornerR} ${splitY} ` +
+        `Q ${s3Entry.x} ${splitY} ${s3Entry.x} ${splitY + cornerR} ` +
+        `L ${s3Entry.x} ${s3Entry.y}`;
+      svg.appendChild(makePath(path1to3));
 
-        const s4DotsY = s4TopY - 17;
-        const inPtLeft = { x: s4Left + s4Width * 0.50 - 24, y: s4DotsY };
-        const inPtCenter = { x: s4Left + s4Width * 0.50, y: s4DotsY };
-        const inPtRight = { x: s4Left + s4Width * 0.50 + 24, y: s4DotsY };
-
-        // 2. STEP 01 -> STEP 04:
-        // Perfectly straight vertical line through the enlarged central opening between Step 02 and Step 03
-        const lineX = s1DotCenter.x;
-        svg.appendChild(makePath(`M ${lineX} ${s1DotCenter.y} L ${lineX} ${inPtCenter.y}`));
-        svg.appendChild(makeDot(s1DotCenter, DOT_RADIUS));
-        svg.appendChild(makeDot(inPtCenter, DOT_RADIUS));
-
-        // 3. STEP 02 -> STEP 04:
-        // Leaves Step 02 bottom border center, curves naturally into Step 04 LEFT dot
-        if (step2) {
-          const r2 = step2.getBoundingClientRect();
-          const s2BottomX = r2.left - streamRect.left + r2.width / 2;
-          const s2BottomY = r2.top - streamRect.top + r2.height;
-          const startPt = { x: s2BottomX, y: s2BottomY + dotOffset };
-
-          const cornerR = 12;
-          const midY = (startPt.y + inPtLeft.y) / 2;
-          const d = `M ${startPt.x} ${startPt.y} ` +
-                    `L ${startPt.x} ${midY - cornerR} ` +
-                    `Q ${startPt.x} ${midY} ${startPt.x + cornerR} ${midY} ` +
-                    `L ${inPtLeft.x - cornerR} ${midY} ` +
-                    `Q ${inPtLeft.x} ${midY} ${inPtLeft.x} ${midY + cornerR} ` +
-                    `L ${inPtLeft.x} ${inPtLeft.y}`;
-
-          svg.appendChild(makePath(d));
-          svg.appendChild(makeDot(startPt, DOT_RADIUS));
-          svg.appendChild(makeDot(inPtLeft, DOT_RADIUS));
-        }
-
-        // 4. STEP 03 -> STEP 04:
-        // Leaves Step 03 bottom border center, curves naturally into Step 04 RIGHT dot
-        if (step3) {
-          const r3 = step3.getBoundingClientRect();
-          const s3BottomX = r3.left - streamRect.left + r3.width / 2;
-          const s3BottomY = r3.top - streamRect.top + r3.height;
-          const startPt = { x: s3BottomX, y: s3BottomY + dotOffset };
-
-          const cornerR = 12;
-          const midY = (startPt.y + inPtRight.y) / 2;
-          const d = `M ${startPt.x} ${startPt.y} ` +
-                    `L ${startPt.x} ${midY - cornerR} ` +
-                    `Q ${startPt.x} ${midY} ${startPt.x - cornerR} ${midY} ` +
-                    `L ${inPtRight.x + cornerR} ${midY} ` +
-                    `Q ${inPtRight.x} ${midY} ${inPtRight.x} ${midY + cornerR} ` +
-                    `L ${inPtRight.x} ${inPtRight.y}`;
-
-          svg.appendChild(makePath(d));
-          svg.appendChild(makeDot(startPt, DOT_RADIUS));
-          svg.appendChild(makeDot(inPtRight, DOT_RADIUS));
-        }
-      }
+      // Cyan terminal dots
+      svg.appendChild(makeDot(s1Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s2Entry, DOT_RADIUS));
+      svg.appendChild(makeDot(s3Entry, DOT_RADIUS));
+      // Junction dot on split point
+      svg.appendChild(makeDot({ x: s1Exit.x, y: splitY }, 2.5));
+    } else if (g1 && g2) {
+      const s1Exit = { x: g1.centerX, y: g1.bottomY + dotOffset };
+      const s2Entry = { x: g2.centerX, y: g2.topY - 9 - dotOffset };
+      svg.appendChild(makePath(`M ${s1Exit.x} ${s1Exit.y} L ${s2Entry.x} ${s2Entry.y}`));
+      svg.appendChild(makeDot(s1Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s2Entry, DOT_RADIUS));
     }
 
-    // 5. STEP 04 -> STEP 05: vertically aligned straight line into Step 05 capsule
-    if (step4 && step5) {
-      const r4 = step4.getBoundingClientRect();
-      const r5 = step5.getBoundingClientRect();
-      const s4BottomX = r4.left - streamRect.left + r4.width / 2;
-      const s4BottomY = r4.top - streamRect.top + r4.height;
-      const s5TopY = r5.top - streamRect.top;
+    // 3 & 4. STEP 02 -> STEP 04 and STEP 03 -> STEP 04
+    if (g2 && g3 && g4) {
+      const s2Exit = { x: g2.centerX, y: g2.bottomY + dotOffset };
+      const s3Exit = { x: g3.centerX, y: g3.bottomY + dotOffset };
+      const s4Entry = { x: g4.centerX, y: g4.topY - 9 - dotOffset };
 
-      const startPt = { x: s4BottomX, y: s4BottomY + dotOffset };
-      const endPt = { x: s4BottomX, y: s5TopY - 9 - dotOffset };
+      // Horizontal merge bar halfway between Step 02/03 exit and Step 04 entry
+      const mergeY = (Math.max(s2Exit.y, s3Exit.y) + s4Entry.y) / 2;
+      const cornerR = Math.min(12, Math.abs(s4Entry.x - s2Exit.x) / 3, Math.max(4, Math.abs(s4Entry.y - mergeY) - 2));
 
-      svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
-      svg.appendChild(makeDot(startPt, DOT_RADIUS));
-      svg.appendChild(makeDot(endPt, DOT_RADIUS));
+      // From Step 02: drops to mergeY, curves right, connects horizontally to center junction
+      const path2to4 =
+        `M ${s2Exit.x} ${s2Exit.y} ` +
+        `L ${s2Exit.x} ${mergeY - cornerR} ` +
+        `Q ${s2Exit.x} ${mergeY} ${s2Exit.x + cornerR} ${mergeY} ` +
+        `L ${s4Entry.x} ${mergeY}`;
+      svg.appendChild(makePath(path2to4));
+
+      // From Step 03: drops to mergeY, curves left, connects horizontally to center junction
+      const path3to4 =
+        `M ${s3Exit.x} ${s3Exit.y} ` +
+        `L ${s3Exit.x} ${mergeY - cornerR} ` +
+        `Q ${s3Exit.x} ${mergeY} ${s3Exit.x - cornerR} ${mergeY} ` +
+        `L ${s4Entry.x} ${mergeY}`;
+      svg.appendChild(makePath(path3to4));
+
+      // Trunk from merge junction straight down into Step 04 entry
+      const pathTrunk = `M ${s4Entry.x} ${mergeY} L ${s4Entry.x} ${s4Entry.y}`;
+      svg.appendChild(makePath(pathTrunk));
+
+      // Cyan terminal dots
+      svg.appendChild(makeDot(s2Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s3Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s4Entry, DOT_RADIUS));
+      // Junction dot on merge point
+      svg.appendChild(makeDot({ x: s4Entry.x, y: mergeY }, 2.5));
+    } else if (g2 && g4) {
+      const s2Exit = { x: g2.centerX, y: g2.bottomY + dotOffset };
+      const s4Entry = { x: g4.centerX, y: g4.topY - 9 - dotOffset };
+      svg.appendChild(makePath(`M ${s2Exit.x} ${s2Exit.y} L ${s4Entry.x} ${s4Entry.y}`));
+      svg.appendChild(makeDot(s2Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s4Entry, DOT_RADIUS));
     }
 
-    // 6. STEP 05 -> RESULT: vertically aligned straight line into RESULT capsule
-    if (step5 && result) {
-      const r5 = step5.getBoundingClientRect();
-      const rRes = result.getBoundingClientRect();
-      const s5BottomX = r5.left - streamRect.left + r5.width / 2;
-      const s5BottomY = r5.top - streamRect.top + r5.height;
-      const resTopY = rRes.top - streamRect.top;
+    // 5. STEP 04 -> STEP 05
+    if (g4 && g5) {
+      const s4Exit = { x: g4.centerX, y: g4.bottomY + dotOffset };
+      const s5Entry = { x: g5.centerX, y: g5.topY - 9 - dotOffset };
+      svg.appendChild(makePath(`M ${s4Exit.x} ${s4Exit.y} L ${s5Entry.x} ${s5Entry.y}`));
+      svg.appendChild(makeDot(s4Exit, DOT_RADIUS));
+      svg.appendChild(makeDot(s5Entry, DOT_RADIUS));
+    }
 
-      const startPt = { x: s5BottomX, y: s5BottomY + dotOffset };
-      const endPt = { x: s5BottomX, y: resTopY - 9 - dotOffset };
-
-      svg.appendChild(makePath(`M ${startPt.x} ${startPt.y} L ${endPt.x} ${endPt.y}`));
-      svg.appendChild(makeDot(startPt, DOT_RADIUS));
-      svg.appendChild(makeDot(endPt, DOT_RADIUS));
+    // 6. STEP 05 -> RESULT
+    const lastGeom = g5 || g4;
+    if (lastGeom && gRes) {
+      const lastExit = { x: lastGeom.centerX, y: lastGeom.bottomY + dotOffset };
+      const resEntry = { x: gRes.centerX, y: gRes.topY - 9 - dotOffset };
+      svg.appendChild(makePath(`M ${lastExit.x} ${lastExit.y} L ${resEntry.x} ${resEntry.y}`));
+      svg.appendChild(makeDot(lastExit, DOT_RADIUS));
+      svg.appendChild(makeDot(resEntry, DOT_RADIUS));
     }
   };
 
@@ -1437,9 +1455,16 @@ startxref
     const isKnightSlug =
       document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
         'cinematic-medieval-knight-video-google-flow' ||
+      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
+        'testing-1' ||
       document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
-      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
-    result.style.gridRow = isKnightSlug ? '5' : String(Math.max(4, steps.length + 1));
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow') ||
+      window.location.pathname.includes('testing-1');
+    if (isKnightSlug || steps.length === 5) {
+      result.style.gridRow = '5';
+    } else {
+      result.style.gridRow = String(Math.max(4, steps.length + 1));
+    }
     result.style.gridColumn = '1 / span 2';
   };
 
@@ -1489,13 +1514,17 @@ startxref
     const isKnightSlug =
       document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
         'cinematic-medieval-knight-video-google-flow' ||
+      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
+        'testing-1' ||
       document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
-      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow') ||
+      window.location.pathname.includes('testing-1');
 
-    if (isKnightSlug) {
+    const isMobile = !isFullscreen && window.matchMedia('(max-width: 700px)').matches;
+
+    if (isKnightSlug || steps.length === 5) {
       drawKnightConnections(svg, steps, streamRect, result);
     } else {
-      const isMobile = !isFullscreen && window.matchMedia('(max-width: 700px)').matches;
       if (isMobile) {
         drawMobileConnections(svg, steps, streamRect, result);
       } else {

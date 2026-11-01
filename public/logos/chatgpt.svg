@@ -16,10 +16,9 @@
     </filter>
   </defs>
 
-  <!-- Container -->
-  <rect width="512" height="512" rx="112" fill="url(#chatgptBgGrad)"/>
-  <rect width="512" height="512" rx="112" fill="url(#bgHighlight)"/>
-  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="rgba(255, 255, 255, 0.22)" stroke-width="4"/>
+  <!-- Container Full Surface -->
+  <rect width="512" height="512" fill="url(#chatgptBgGrad)"/>
+  <rect width="512" height="512" fill="url(#bgHighlight)"/>
 
   <!-- Official OpenAI Swirl / Hexagon Rosette Icon -->
   <g transform="translate(256, 256) scale(3.2)" filter="url(#symbolShadow)">

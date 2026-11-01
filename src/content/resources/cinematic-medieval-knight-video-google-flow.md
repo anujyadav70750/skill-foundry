@@ -1,7 +1,7 @@
 ---
 title: "Create a Cinematic Medieval Knight Video with Google Flow"
 slug: "cinematic-medieval-knight-video-google-flow"
-description: "A five-step workflow for creating a consistent medieval knight character, matching helmet and sword props, building a misty poppy-field location, generating a cinematic 10-second video, and finishing it in Instagram."
+description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
@@ -11,6 +11,8 @@ thumbnail: "/images/knight-poppies-thumbnail.png"
 thumbnailRatio: "16:9"
 heroImage: "/images/knight-poppies-thumbnail.png"
 instagramReelUrl: "https://www.instagram.com/reel/DeD0aGQPgz9/?stkn=c21qODlteWxhNTFk"
+instagramHandle: "skillfoundry.ai"
+instagramAudio: "The Stranglers · Golden Brown (Slowed Down Version)"
 videoEmbedUrl: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
 inputImage: "/images/knight-face-reference.png"
 inputImages:
@@ -45,8 +47,8 @@ prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
   - title: "Create Character Sheet"
-    purpose: "Generate your main character using the prompt."
-    description: "Generate your main character using the prompt."
+    purpose: "Generate a character sheet for your person."
+    description: "Generate a character sheet for your person."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "4-frame character reference"
@@ -59,6 +61,9 @@ steps:
         role: "Strict identity reference"
         src: "/images/knight-face-reference.png"
     settings: []
+    outputPreviewSrc: "/images/knight-character-sheet.png"
+    next: "Use this Character Sheet as the reference input for Step 02."
+    handoff: "Use this Character Sheet as the reference input for Step 02."
     process: |
       Use the uploaded person/reference photo as the STRICT IDENTITY REFERENCE.
 
@@ -170,13 +175,10 @@ steps:
       BOTTOM LEFT = BACK FULL BODY.
       BOTTOM RIGHT = FRONT CLOSE-UP PORTRAIT.
       No text, labels, names, logos, weapons, helmet, shield, or additional characters.
-    outputPreviewSrc: "/images/knight-character-sheet.png"
-    next: "Use this Character Sheet as the reference input for Step 02."
-    handoff: "Use this Character Sheet as the reference input for Step 02."
 
   - title: "Create Helmet & Sword"
-    purpose: "Generate the matching helmet and sword reference using the character from Step 01."
-    description: "Generate the matching helmet and sword reference using the character from Step 01."
+    purpose: "Create the props for your character."
+    description: "Create the props for your character."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Helmet + Sword Reference"
@@ -189,6 +191,9 @@ steps:
         role: "Material and design reference only"
         src: "/images/knight-character-sheet.png"
     settings: []
+    outputPreviewSrc: "/images/knight-props.png"
+    next: "Use this Helmet + Sword Reference as the prop reference for Step 04."
+    handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."
     process: |
       Create a photorealistic professional medieval armor-prop reference image containing exactly TWO objects: one knight's helmet and one medieval arming sword.
 
@@ -357,13 +362,10 @@ steps:
       EXACTLY ONE sword.
       Pure white seamless studio background.
       Both objects fully visible.
-    outputPreviewSrc: "/images/knight-props.png"
-    next: "Use this Helmet + Sword Reference as the prop reference for Step 04."
-    handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."
 
   - title: "Create Location"
-    purpose: "Create the misty poppy-field location using the prompt."
-    description: "Create the misty poppy-field location using the prompt."
+    purpose: "Create the setting for your scene."
+    description: "Create the setting for your scene."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Location Reference"
@@ -372,6 +374,9 @@ steps:
     toolPurpose: "IMAGE GENERATION"
     inputs: []
     settings: []
+    outputPreviewSrc: "/images/misty-poppy-location.png"
+    next: "Use this Location Reference as the environment reference for Step 04."
+    handoff: "Use this Location Reference as the environment reference for Step 04."
     process: |
       Create a highly realistic cinematic environmental reference photograph of a vast untouched wildflower field at misty pre-sunrise dawn.
 
@@ -434,15 +439,11 @@ steps:
       This image is a LOCATION REFERENCE for later image and video generation.
       The same meadow structure, flower types, vegetation density, horizon tree cluster, fog character, sky conditions and cool color palette should remain consistent when this reference is used later.
 
-      NEGATIVE:
       No knight, no person, no horse, no weapons, no armor, no buildings, no road, no path, no footprints, no fence, no vehicles, no structures, no city, no mountains dominating the horizon, no sunset, no orange sunlight, no golden-hour lighting, no tropical vegetation, no desert, no dry grass, no artificial flowers, no fantasy landscape, no painting, no illustration, no text, no watermark.
-    outputPreviewSrc: "/images/misty-poppy-location.png"
-    next: "Use this Location Reference as the environment reference for Step 04."
-    handoff: "Use this Location Reference as the environment reference for Step 04."
 
   - title: "Generate Video"
-    purpose: "Generate the video using these reference images."
-    description: "Generate the video using these reference images."
+    purpose: "Generate the video from your previous creations."
+    description: "Generate the video from your previous creations."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
@@ -463,8 +464,8 @@ steps:
         role: "Exact environment"
         src: "/images/misty-poppy-location.png"
     settings:
-      - label: "VIDEO MODEL"
-        value: "Gemini Omni 1.1 Flash"
+      - label: "MODEL"
+        value: "Omni 1.1 Flash"
       - label: "ASPECT RATIO"
         value: "9:16"
       - label: "DURATION"
@@ -815,12 +816,12 @@ steps:
     handoff: "Download the generated video in 1080p, then use it in Step 05."
 
   - title: "Finish in Instagram"
-    purpose: "Remix the video with matching sound and beat."
-    description: "Remix the video with matching sound and beat."
+    purpose: "Put the finishing touches on your video and get it ready to share."
+    description: "Put the finishing touches on your video and get it ready to share."
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Final edited video"
-    outputDescription: "Final 9:16 video ready to download, share, or post."
+    outputDescription: ""
     tool: "Instagram"
     toolPurpose: "VIDEO EDITING"
     inputs:

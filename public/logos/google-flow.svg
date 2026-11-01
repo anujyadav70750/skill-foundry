@@ -37,9 +37,8 @@
     </filter>
   </defs>
 
-  <!-- Container Base -->
-  <rect width="512" height="512" rx="112" fill="url(#gflowBg)"/>
-  <rect x="2" y="2" width="508" height="508" rx="110" fill="none" stroke="rgba(255, 255, 255, 0.14)" stroke-width="4"/>
+  <!-- Container Base Full Surface -->
+  <rect width="512" height="512" fill="url(#gflowBg)"/>
 
   <!-- Radial Glow Behind Logo -->
   <circle cx="256" cy="256" r="220" fill="url(#gflowCenterGlow)"/>

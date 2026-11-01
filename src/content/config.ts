@@ -65,6 +65,7 @@ const resources = defineCollection({
     imageAlt: z.string().nullish(),
     intro: z.string().optional(),
     whatItDoes: z.string().optional(),
+    whatYouGet: z.array(z.string()).optional(),
     toolsUsed: z.array(resourceTool).default([]),
     prompt: z.string(),
     videoEmbedUrl: z.string().nullish(),
