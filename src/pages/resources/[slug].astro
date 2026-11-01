@@ -111,8 +111,10 @@ const workflowSteps = data.steps.map((step) => {
 });
 
 // Tools & Resources is derived from the workflow itself: every unique tool used by a step appears once.
-const tools = workflowSteps
-  .map((step) => step.toolMeta || (step.tool ? { name: step.tool, purpose: step.toolPurpose, url: '' } : null))
+const tools = [
+  ...workflowSteps.map((step) => step.toolMeta || (step.tool ? { name: step.tool, purpose: step.toolPurpose, url: '' } : null)),
+  ...(Array.isArray(data.toolsUsed) ? data.toolsUsed : [])
+]
   .filter(Boolean)
   .filter((tool, index, list) => list.findIndex((candidate) => candidate.name.trim().toLowerCase() === tool.name.trim().toLowerCase()) === index);
 

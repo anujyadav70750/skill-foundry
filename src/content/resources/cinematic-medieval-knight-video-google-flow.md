@@ -833,7 +833,7 @@ steps:
     toolPurpose: "VIDEO EDITING"
     inputs:
       - type: "video"
-        label: "Your Step 04 generated video"
+        label: "Step 04 — Downloaded 1080p video"
         role: "Upload the 1080p video you downloaded from Google Flow in the previous step."
         src: ""
     settings:
