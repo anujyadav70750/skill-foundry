@@ -31,6 +31,36 @@ function fixDynamicRouteFilenames() {
   };
 }
 
+function injectFooterStyles() {
+  return {
+    name: 'inject-footer-styles',
+    hooks: {
+      'astro:build:done': () => {
+        const targetDir = path.join(process.cwd(), 'dist');
+        const stylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v1">';
+
+        const walk = (dir) => {
+          if (!fs.existsSync(dir)) return;
+          for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+              walk(fullPath);
+            } else if (entry.isFile() && entry.name.endsWith('.html')) {
+              const html = fs.readFileSync(fullPath, 'utf8');
+              if (!html.includes('/footer-overrides.css')) {
+                const updated = html.replace('</head>', `    ${stylesheet}\n  </head>`);
+                fs.writeFileSync(fullPath, updated, 'utf8');
+              }
+            }
+          }
+        };
+
+        walk(targetDir);
+      }
+    }
+  };
+}
+
 export default defineConfig({
   site: 'https://hub.skillfoundry-web.workers.dev',
   output: 'static',
@@ -38,7 +68,7 @@ export default defineConfig({
   devToolbar: {
     enabled: false
   },
-  integrations: [sitemap(), fixDynamicRouteFilenames()],
+  integrations: [sitemap(), fixDynamicRouteFilenames(), injectFooterStyles()],
   server: {
     host: '0.0.0.0',
     port: 3000
