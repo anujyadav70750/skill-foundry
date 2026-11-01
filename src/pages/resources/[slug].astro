@@ -340,7 +340,7 @@ const whatItDoesText = isTesting1
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
 const schema = { '@context': 'https://schema.org', '@graph': [
-  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
+  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: ((data as any).updatedAt || data.date).toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: authorName }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
     { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
@@ -537,12 +537,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             <div class="metadata-item meta-author">
               <img class="meta-author-avatar" src={authorAvatar} alt={authorName} width="22" height="22" />
               <span class="meta-author-name">{authorName}</span>
-              <span class="meta-verification-badge" aria-label="Verified publisher">
-                <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
-                  <circle cx="10" cy="10" r="10" fill="#00D4E5"/>
-                  <path d="M5.3 10.2 8.3 13.1 14.8 6.7" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
             </div>
 
             <div class="metadata-item meta-date">
@@ -552,7 +546,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span class="meta-date-text">{data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
+              <span class="meta-date-text">Published · {data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
             </div>
           </div>
 
@@ -578,17 +572,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <p class="what-you-get-desc">From the first step to the final result</p>
             </div>
             <div class="what-you-get-item">
-              <h3 class="what-you-get-title">Tools Used</h3>
-              <p class="what-you-get-desc">Tap to open the tools used in the workflow</p>
-            </div>
-            <div class="what-you-get-item">
               <h3 class="what-you-get-title">Prompts and Settings</h3>
               <p class="what-you-get-desc">Ready to use prompts and the settings for each step</p>
             </div>
             {hasDownloadableResources && (
               <div class="what-you-get-item">
                 <h3 class="what-you-get-title">Resources</h3>
-                <p class="what-you-get-desc">Tap to view and download available reference or generated resources</p>
+                <p class="what-you-get-desc">Open an available asset to preview it, then download it when you need the file.</p>
               </div>
             )}
           </div>
@@ -635,12 +625,26 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           </section>
         )}
 
-        {/* LIGHT TRANSPARENT BLUE WORKFLOW INTRODUCTION CALLOUT BOX (NO BORDER, NO YELLOW ACCENT) */}
+        {/* QUICK STEP NAVIGATION: direct access to each stage without repeating the introduction */}
         {workflowSteps.length > 0 && (
-          <div class="blueprint-callout-box" id="workflow" role="region" aria-label="Workflow blueprint introduction">
-            <h2 class="blueprint-callout-title">Follow the Blueprint Below</h2>
-            <p class="blueprint-callout-desc">Work through each step in order, using each result to build the next until you reach the final result.</p>
-          </div>
+          <nav class="workflow-navigation-card" id="workflow" aria-label="Jump to a workflow step">
+            <div class="workflow-navigation-heading">
+              <div class="section-title-wrap">
+                <span class="section-accent-bar" aria-hidden="true"></span>
+                <h2 class="editorial-heading-title">The Workflow</h2>
+              </div>
+              <p class="editorial-subcopy">Choose a step to jump directly to its prompts, settings and outputs.</p>
+            </div>
+            <div class="workflow-step-links">
+              {workflowSteps.map((step, index) => (
+                <a class="workflow-step-link" href={`#step-${index + 1}`}>
+                  <span class="workflow-step-link-number">{String(index + 1).padStart(2, '0')}</span>
+                  <span class="workflow-step-link-title">{step.title}</span>
+                </a>
+              ))}
+            </div>
+            <a class="button button-primary workflow-start-link" href="#step-1">Start Step 1</a>
+          </nav>
         )}
 
         {/* STEP-BY-STEP WORKFLOW (Each step is an independent card directly on the page) */}
@@ -777,9 +781,11 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
                         <div class="tutorial-inputs-carousel" role="region" aria-label={`Step ${index + 1} uploads`}>
                           {step.inputs.map((inp: any) => {
-                            const isInputImg = inp.type === "image" || (!inp.type && /\.(png|jpe?g|webp|gif)/i.test(inp.src || ""));
-                            const isInputVid = inp.type === "video" || (!inp.type && /\.(mp4|webm)/i.test(inp.src || ""));
                             const inpSrc = inp.src || "";
+                            const inpPreviewSrc = inp.previewSrc || "";
+                            const isInputDoc = inp.type === "document" || /\.(pdf|docx?|txt)(?:[?#]|$)/i.test(inpSrc);
+                            const isInputVid = inp.type === "video" || (!inp.type && /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(inpSrc));
+                            const isInputImg = !isInputDoc && !isInputVid && (inp.type === "image" || (!inp.type && /\.(png|jpe?g|webp|gif)(?:[?#]|$)/i.test(inpSrc)));
                             const rawTitle = inp.label || inp.title || "Reference";
                             const compactTitle = formatCompactInputTitle(rawTitle);
 
@@ -788,7 +794,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 class:list={["tutorial-input-card-fixed", { "has-lightbox": Boolean(inpSrc) }]}
                                 data-media-trigger={inpSrc ? "" : undefined}
                                 data-media-src={inpSrc || undefined}
-                                data-media-type={isInputVid ? "video" : "image"}
+                                data-media-type={isInputVid ? "video" : isInputDoc ? "document" : "image"}
                                 data-media-name={compactTitle}
                                 role={inpSrc ? "button" : undefined}
                                 tabindex={inpSrc ? "0" : undefined}
@@ -800,10 +806,21 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                   )}
                                   {inpSrc && isInputVid && (
                                     isRealVideo(inpSrc) ? (
-                                      <video class="tutorial-input-thumb" src={inpSrc} muted playsinline preload="metadata" />
+                                      <video class="tutorial-input-thumb" src={inpSrc} poster={inpPreviewSrc || undefined} muted playsinline preload="metadata" />
+                                    ) : inpPreviewSrc ? (
+                                      <img class="tutorial-input-thumb" src={inpPreviewSrc} alt={compactTitle} loading="lazy" />
                                     ) : (
-                                      <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading="lazy" />
+                                      <div class="tutorial-input-file-preview"><span class="tutorial-input-file-icon">▶</span><span>VIDEO</span></div>
                                     )
+                                  )}
+                                  {inpSrc && isInputDoc && (
+                                    <div class="tutorial-input-file-preview" aria-hidden="true">
+                                      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <path d="M14 2v6h6M8 13h8M8 17h8"/>
+                                      </svg>
+                                      <span>DOCUMENT</span>
+                                    </div>
                                   )}
                                   {!inpSrc && (
                                     <svg class="tutorial-input-placeholder-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#70747D" stroke-width="2" aria-hidden="true">
@@ -1150,25 +1167,85 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       <div class="media-lightbox-body">
         <img id="lightbox-img" class="lightbox-img" src="" alt="Resource Preview" style="display: none;" />
         <video id="lightbox-video" class="lightbox-video" src="" controls playsinline preload="auto" style="display: none;"></video>
+        <iframe id="lightbox-document" class="lightbox-document" title="Document preview" src="about:blank" style="display: none;"></iframe>
       </div>
     </div>
   </div>
 
   <script>
     const makePdf = (text, name) => {
-      const clean = (s) => String(s).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-      const lines = [];
-      String(text).split(/\r?\n/).forEach((line) => {
-        let value = clean(line);
-        while (value.length > 88) { lines.push(value.slice(0, 88)); value = value.slice(88); }
-        lines.push(value);
+      const normalize = (value) => String(value)
+        .replace(/\r/g, '')
+        .replace(/\t/g, '    ')
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201C\u201D]/g, '"')
+        .replace(/[\u2013\u2014]/g, '-')
+        .replace(/\u2022/g, '*')
+        .replace(/\u00D7/g, 'x')
+        .replace(/[^\x20-\x7E\n]/g, '?');
+      const escapePdf = (value) => String(value).replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+      const wrapLine = (line, limit = 84) => {
+        const words = String(line).split(/\s+/);
+        const wrapped = [];
+        let current = '';
+        words.forEach((word) => {
+          if (word.length > limit) {
+            if (current) { wrapped.push(current); current = ''; }
+            for (let i = 0; i < word.length; i += limit) wrapped.push(word.slice(i, i + limit));
+            return;
+          }
+          const next = current ? current + ' ' + word : word;
+          if (next.length > limit) { wrapped.push(current); current = word; }
+          else current = next;
+        });
+        if (current || !wrapped.length) wrapped.push(current);
+        return wrapped;
+      };
+      const lines = normalize(text).split('\n').flatMap((line) => wrapLine(line));
+      const linesPerPage = 52;
+      const pages = [];
+      for (let i = 0; i < lines.length; i += linesPerPage) pages.push(lines.slice(i, i + linesPerPage));
+      if (!pages.length) pages.push(['']);
+
+      const pageObjectIds = pages.map((_, i) => 3 + i * 2);
+      const fontObjectId = 3 + pages.length * 2;
+      const objects = [];
+      objects[1] = '<< /Type /Catalog /Pages 2 0 R >>';
+      objects[2] = `<< /Type /Pages /Count ${pages.length} /Kids [${pageObjectIds.map((id) => `${id} 0 R`).join(' ')}] >>`;
+
+      pages.forEach((pageLines, i) => {
+        const pageId = 3 + i * 2;
+        const contentId = pageId + 1;
+        const stream = [
+          'BT', '/F1 10 Tf', '50 748 Td', '13 TL',
+          ...pageLines.map((line) => `(${escapePdf(line)}) Tj T*\n`),
+          'ET'
+        ].join('\n');
+        objects[pageId] = `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ${fontObjectId} 0 R >> >> /Contents ${contentId} 0 R >>`;
+        objects[contentId] = `<< /Length ${new TextEncoder().encode(stream).length} >>\nstream\n${stream}\nendstream`;
       });
-      const content = ['BT','/F1 10 Tf','50 760 Td','13 TL',...lines.map((line, i) => `(${line}) Tj${i < lines.length - 1 ? ' T*' : ''}`),'ET'].join('\n');
-      const pdf = `%PDF-1.4\n1 0 obj<< /Type/Catalog/Pages 2 0 R >>endobj\n2 0 obj<< /Type/Pages/Count 1/Kids[3 0 R] >>endobj\n3 0 obj<< /Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<< /Font<< /F1 4 0 R >> >>/Contents 5 0 R >>endobj\n4 0 obj<< /Type/Font/Subtype/Type1/BaseFont/Courier >>endobj\n5 0 obj<< /Length ${content.length} >>stream\n${content}\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f \ntrailer<< /Size 6/Root 1 0 R >>\nstartxref\n0\n%%EOF`;
+      objects[fontObjectId] = '<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>';
+
+      let pdf = '%PDF-1.4\n';
+      const offsets = [0];
+      for (let id = 1; id < objects.length; id += 1) {
+        offsets[id] = new TextEncoder().encode(pdf).length;
+        pdf += `${id} 0 obj\n${objects[id]}\nendobj\n`;
+      }
+      const xrefOffset = new TextEncoder().encode(pdf).length;
+      pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+      for (let id = 1; id < objects.length; id += 1) pdf += `${String(offsets[id]).padStart(10, '0')} 00000 n \n`;
+      pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
       const blob = new Blob([pdf], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `${name || 'prompt'}.pdf`; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${(name || 'prompt').replace(/[^a-z0-9_-]+/gi, '-')}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1500);
     };
 
     // Copy Prompt Button: Strictly fixed 82px width in both states so zero shift
@@ -1210,6 +1287,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       const lightbox = document.getElementById("media-lightbox");
       const lightboxImg = document.getElementById("lightbox-img");
       const lightboxVideo = document.getElementById("lightbox-video");
+      const lightboxDocument = document.getElementById("lightbox-document");
       const lightboxDownloadBtn = document.getElementById("lightbox-download-btn");
 
       const openLightbox = (src, type, name) => {
@@ -1226,11 +1304,19 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           lightboxVideo.load();
           lightboxVideo.style.display = "none";
         }
+        if (lightboxDocument) {
+          lightboxDocument.src = "about:blank";
+          lightboxDocument.style.display = "none";
+        }
 
-        const isVideo = type === "video" || /\.(mp4|webm)/i.test(src);
+        const isVideo = type === "video" || /\.(mp4|webm|mov|m4v)(?:[?#]|$)/i.test(src);
+        const isDocument = type === "document" || /\.(pdf|docx?|txt)(?:[?#]|$)/i.test(src);
         if (isVideo && lightboxVideo) {
           lightboxVideo.src = src;
           lightboxVideo.style.display = "block";
+        } else if (isDocument && lightboxDocument) {
+          lightboxDocument.src = src;
+          lightboxDocument.style.display = "block";
         } else if (lightboxImg) {
           lightboxImg.src = src;
           lightboxImg.alt = name || "Preview";
@@ -1239,7 +1325,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
         if (lightboxDownloadBtn) {
           lightboxDownloadBtn.setAttribute("href", src);
-          const ext = isVideo ? "mp4" : (src.split(".").pop()?.split(/[?#]/)[0] || "png");
+          const ext = isVideo ? (src.match(/\.(mp4|webm|mov|m4v)(?=[?#]|$)/i)?.[1] || "mp4") : isDocument ? (src.match(/\.(pdf|docx?|txt)(?=[?#]|$)/i)?.[1] || "pdf") : (src.match(/\.(png|jpe?g|webp|gif|svg)(?=[?#]|$)/i)?.[1] || "png");
           const safeName = (name || "resource-asset").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
           lightboxDownloadBtn.setAttribute("download", `${safeName || "asset"}.${ext}`);
         }
@@ -1263,6 +1349,10 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         if (lightboxImg) {
           lightboxImg.src = "";
           lightboxImg.style.display = "none";
+        }
+        if (lightboxDocument) {
+          lightboxDocument.src = "about:blank";
+          lightboxDocument.style.display = "none";
         }
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
@@ -1461,7 +1551,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     /* Main Resource Title: Refined, editorial, controlled sizing, bold 700 */
     .resource-main-title {
-      font-size: clamp(20px, 3.2vw, 25px);
+      font-size: clamp(24px, 3.7vw, 32px);
       font-weight: 700;
       line-height: 1.25;
       letter-spacing: -0.015em;
@@ -1506,8 +1596,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     .meta-author-avatar {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       object-fit: cover;
       flex-shrink: 0;
@@ -1537,7 +1627,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     .meta-date-text {
-      font-size: 13px;
+      font-size: 12px;
       color: #8C92A0;
       line-height: 1.2;
     }
@@ -1576,18 +1666,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       }
     }
 
-    /* Tools Used (Clean compact 2-column mobile grid: square logo box + tool name underneath) */
+    /* Three balanced tool cards: keep the third tool from sitting alone on mobile. */
     .tools-compact-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
       width: 100%;
       box-sizing: border-box;
     }
 
     @media (min-width: 641px) {
       .tools-compact-grid {
-        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
       }
     }
@@ -1596,7 +1685,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       background: #111318;
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 14px 10px;
+      padding: 12px 7px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1943,7 +2032,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     /* Settings row: [gear icon square] | [controls directly], NO outer container box */
     .step-tool-settings-strip {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
       margin-top: 10px;
       background: transparent !important;
@@ -1954,7 +2043,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       gap: 8px;
       overflow: visible;
       box-sizing: border-box;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
     }
 
     /* Gear button square: height matches setting pill height (26px) */
@@ -1994,34 +2083,28 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       align-items: center;
       gap: 8px;
       padding: 2px 0;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      -webkit-overflow-scrolling: touch;
-      flex: 1;
+      overflow: visible;
+      flex: 1 1 calc(100% - 58px);
       min-width: 0;
-      flex-wrap: nowrap;
-    }
-
-    .step-settings-scroll-track::-webkit-scrollbar {
-      display: none;
+      flex-wrap: wrap;
     }
 
     /* Compact horizontal setting item: label and value side by side on ONE horizontal line */
     .step-setting-item {
-      flex-shrink: 0;
+      flex: 0 1 auto;
       display: inline-flex;
       flex-direction: row;
       align-items: center;
-      height: 26px;
+      min-height: 26px;
+      height: auto;
       gap: 6px;
-      padding: 0 10px;
+      padding: 5px 10px;
       background: #111318;
       border: 1px solid rgba(255, 255, 255, 0.10);
       border-radius: 6px;
-      white-space: nowrap;
+      white-space: normal;
       box-sizing: border-box;
+      max-width: 100%;
     }
 
     .step-setting-label {
@@ -3455,5 +3538,72 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     html.light-theme .cta-card p {
       color: #475569;
     }
-  </style>
+  
+    /* Compact step navigation: actionable replacement for the repeated workflow callout. */
+    .workflow-navigation-card {
+      background: #0B1119;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      padding: 18px 16px;
+      margin: 2px 0 20px;
+    }
+    .workflow-navigation-heading .section-title-wrap { margin-bottom: 7px; }
+    .workflow-navigation-heading .editorial-subcopy { margin-bottom: 14px; }
+    .workflow-step-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .workflow-step-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 9px;
+      background: rgba(255,255,255,.025);
+      color: #E5E7EB;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.35;
+      transition: border-color .15s ease, background .15s ease;
+    }
+    .workflow-step-link:hover, .workflow-step-link:focus-visible {
+      border-color: rgba(6,182,212,.45);
+      background: rgba(6,182,212,.08);
+      outline: none;
+    }
+    .workflow-step-link-number {
+      flex: 0 0 25px;
+      color: #F59E0B;
+      font: 700 10px/1 var(--font-mono, monospace);
+      letter-spacing: .06em;
+    }
+    .workflow-step-link-title { min-width: 0; overflow-wrap: anywhere; }
+    .workflow-start-link { margin-top: 14px; min-height: 40px; font-size: 13px; }
+    .tutorial-step-card { scroll-margin-top: calc(var(--header-height, 80px) + 18px); }
+    .tutorial-input-file-preview {
+      width: 100%; height: 100%; min-height: 78px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 6px; background: #111722; color: #94A3B8;
+      font: 700 10px/1.2 var(--font-mono, monospace); letter-spacing: .08em;
+    }
+    .tutorial-input-file-icon { font-size: 22px; color: #F59E0B; }
+    .lightbox-document {
+      width: min(100%, 900px); height: min(74vh, 820px);
+      border: 0; border-radius: 10px; background: #FFFFFF; display: block;
+    }
+    @media (max-width: 420px) {
+      .tool-grid-card { padding: 11px 5px; gap: 8px; }
+      .tool-logo-box { width: 42px; height: 42px; min-width: 42px; min-height: 42px; }
+      .tool-grid-name { font-size: 11.5px; line-height: 1.2; overflow-wrap: anywhere; }
+      .workflow-navigation-card { padding: 16px 13px; }
+      .workflow-step-link { padding: 8px 7px; font-size: 11px; }
+      .meta-author-name { font-size: 12.5px; }
+      .meta-date-text { font-size: 11px; }
+    }
+
+</style>
 </BaseLayout>
