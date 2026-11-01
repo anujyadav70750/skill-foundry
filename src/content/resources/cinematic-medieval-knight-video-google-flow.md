@@ -48,7 +48,7 @@ prompt: |
 steps:
   - title: "Create Character Sheet"
     purpose: "Generate a character sheet for your person."
-    description: "Generate a character sheet for your person."
+    description: "Turn your character into a consistent visual reference for the video."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "4-frame character reference"
