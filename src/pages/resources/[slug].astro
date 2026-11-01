@@ -7,9 +7,7 @@ import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug
 
 export async function getStaticPaths() {
   const resources = await getCollection('resources');
-  return resources
-    .filter((resource) => !resource.data.draft)
-    .map((resource) => ({ params: { slug: resourceSlug(resource) }, props: { resource } }));
+  return resources.map((resource) => ({ params: { slug: resourceSlug(resource) }, props: { resource } }));
 }
 
 const { resource } = Astro.props;
@@ -111,10 +109,8 @@ const workflowSteps = data.steps.map((step) => {
 });
 
 // Tools & Resources is derived from the workflow itself: every unique tool used by a step appears once.
-const tools = [
-  ...workflowSteps.map((step) => step.toolMeta || (step.tool ? { name: step.tool, purpose: step.toolPurpose, url: '' } : null)),
-  ...(Array.isArray(data.toolsUsed) ? data.toolsUsed : [])
-]
+const tools = workflowSteps
+  .map((step) => step.toolMeta || (step.tool ? { name: step.tool, purpose: step.toolPurpose, url: '' } : null))
   .filter(Boolean)
   .filter((tool, index, list) => list.findIndex((candidate) => candidate.name.trim().toLowerCase() === tool.name.trim().toLowerCase()) === index);
 
@@ -123,16 +119,16 @@ const toolLogo = (tool) => {
     const name = String(tool?.name || '').trim().toLowerCase();
     const rawUrl = String(tool?.url || '').trim().toLowerCase();
     if (name.includes('google flow') || name.includes('flow') || name.includes('google labs') || rawUrl.includes('flow.google') || rawUrl.includes('labs.google')) {
-      return '/logos/google-flow.svg';
+      return '/logos/google-flow.png';
     }
     if (name.includes('capcut') || rawUrl.includes('capcut.com')) {
       return '/logos/capcut.png';
     }
     if (name.includes('chatgpt') || name.includes('chat gpt') || name.includes('openai') || rawUrl.includes('chatgpt.com') || rawUrl.includes('openai.com')) {
-      return '/logos/chatgpt.svg';
+      return '/logos/chatgpt.png';
     }
     if (name.includes('instagram') || rawUrl.includes('instagram.com')) {
-      return '/instagram-icon.svg';
+      return '/logos/instagram.png';
     }
     if (!rawUrl) return '/skill-foundry-resource-icon.svg';
     const host = new URL(rawUrl).hostname;
@@ -344,7 +340,7 @@ const whatItDoesText = isTesting1
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
 const schema = { '@context': 'https://schema.org', '@graph': [
-  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: (data.updatedDate || data.date).toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
+  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
     { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
@@ -355,10 +351,10 @@ const schema = { '@context': 'https://schema.org', '@graph': [
 const getDownloadableAssets = () => {
   if (slug === 'cinematic-medieval-knight-video-google-flow') {
     return [
-      { label: 'Face Reference', filename: 'knight-face-reference.png', src: '/images/knight-face-reference.webp', type: 'Starter Image' },
-      { label: 'Character Sheet', filename: 'knight-character-sheet.png', src: '/images/knight-character-sheet.webp', type: 'Character Reference' },
-      { label: 'Helmet & Sword', filename: 'knight-props.png', src: '/images/knight-props.webp', type: 'Prop Reference' },
-      { label: 'Location Reference', filename: 'misty-poppy-location.png', src: '/images/misty-poppy-location.webp', type: 'Location Reference' }
+      { label: 'Face Reference', filename: 'knight-face-reference.png', src: '/images/knight-face-reference.png', type: 'Starter Image' },
+      { label: 'Character Sheet', filename: 'knight-character-sheet.png', src: '/images/knight-character-sheet.png', type: 'Character Reference' },
+      { label: 'Helmet & Sword', filename: 'knight-props.png', src: '/images/knight-props.png', type: 'Prop Reference' },
+      { label: 'Location Reference', filename: 'misty-poppy-location.png', src: '/images/misty-poppy-location.png', type: 'Location Reference' }
     ];
   }
   if (data.inputImages && data.inputImages.length > 0) {
@@ -533,7 +529,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
           {/* 2. Hero Image / Thumbnail (No outer frame/card/border, clean rounded image) */}
           <div class="hero-image-wrap">
-            <img class="hero-image" src={heroImage} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" width="1600" height="900"/>
+            <img class="hero-image" src={heroImage} alt={imageAlt}/>
           </div>
 
           {/* 3. Horizontal Metadata Row (Author & Published Date) */}
@@ -541,6 +537,12 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             <div class="metadata-item meta-author">
               <img class="meta-author-avatar" src={authorAvatar} alt={authorName} width="22" height="22" />
               <span class="meta-author-name">{authorName}</span>
+              <span class="meta-verification-badge" aria-label="Verified publisher">
+                <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
+                  <circle cx="10" cy="10" r="10" fill="#00D4E5"/>
+                  <path d="M5.3 10.2 8.3 13.1 14.8 6.7" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
             </div>
 
             <div class="metadata-item meta-date">
@@ -552,11 +554,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               </svg>
               <span class="meta-date-text">{data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
             </div>
-            {data.updatedDate && data.updatedDate.getTime() > data.date.getTime() && (
-              <div class="metadata-item meta-updated">
-                <span class="meta-date-text">Updated {data.updatedDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })}</span>
-              </div>
-            )}
           </div>
 
           {/* 4. Resource Description */}
@@ -617,7 +614,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                     title={`Open ${tool.name}`}
                   >
                     <div class="tool-logo-box">
-                      <img class="tool-grid-logo" src={toolLogo(tool)} alt={tool.name} width="48" height="48" loading="eager" decoding="async"/>
+                      <img class="tool-grid-logo" src={toolLogo(tool)} alt={tool.name} width="48" height="48" loading="lazy"/>
                     </div>
                     <span class="tool-grid-name">{tool.name}</span>
                   </a>
@@ -635,47 +632,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <h2 class="editorial-heading-title">Before You Begin</h2>
             </div>
             <p class="editorial-lead">{introText}</p>
-            {workflowSteps.length > 0 && (
-              <div class="resource-start-actions">
-                <a class="button button-primary" href="#step-1">Start Step 01 <span aria-hidden="true">→</span></a>
-                <nav class="resource-step-jump-nav" aria-label="Jump to a workflow step">
-                  {workflowSteps.map((step, index) => (
-                    <a href={`#step-${index + 1}`} aria-label={`Jump to step ${index + 1}: ${step.title}`}>Step {String(index + 1).padStart(2, '0')}</a>
-                  ))}
-                </nav>
-              </div>
-            )}
-          </section>
-        )}
-        {downloadableAssets.length > 0 && (
-          <section class="resource-editorial-section reference-assets-section" id="reference-assets">
-            <div class="section-title-wrap">
-              <span class="section-accent-bar" aria-hidden="true"></span>
-              <h2 class="editorial-heading-title">Download Reference Assets</h2>
-            </div>
-            <p class="editorial-subcopy">Save these images to your phone so you can upload the correct reference at each stage.</p>
-            <div class="reference-assets-grid">
-              {downloadableAssets.map((asset: any, index: number) => (
-                <article class="reference-asset-card">
-                  <button
-                    class="reference-asset-preview"
-                    type="button"
-                    data-media-trigger
-                    data-media-src={asset.src}
-                    data-media-type="image"
-                    data-media-name={asset.label}
-                    aria-label={`Preview ${asset.label}`}
-                  >
-                    <img src={asset.src} alt={asset.label} loading={index < 2 ? "eager" : "lazy"} decoding="async" />
-                  </button>
-                  <div class="reference-asset-info">
-                    <span class="reference-asset-type">{asset.type}</span>
-                    <h3>{asset.label}</h3>
-                    <a class="reference-asset-download" href={asset.src} download={asset.filename}>Download image <span aria-hidden="true">↓</span></a>
-                  </div>
-                </article>
-              ))}
-            </div>
           </section>
         )}
 
@@ -751,12 +707,12 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               title={`Open ${stepToolName}`}
                             >
                               <div class="step-tool-logo-box">
-                                <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading={index <= 1 ? "eager" : "lazy"} decoding="async" />
+                                <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading="lazy" />
                               </div>
                             </a>
                           ) : (
                             <div class="step-tool-logo-box">
-                              <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading={index <= 1 ? "eager" : "lazy"} decoding="async" />
+                              <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading="lazy" />
                             </div>
                           )}
                           <span class="step-tool-name">{stepToolName}</span>
@@ -840,13 +796,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               >
                                 <div class="tutorial-input-thumb-box-fixed">
                                   {inpSrc && isInputImg && (
-                                    <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                                    <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading="lazy" />
                                   )}
                                   {inpSrc && isInputVid && (
                                     isRealVideo(inpSrc) ? (
                                       <video class="tutorial-input-thumb" src={inpSrc} muted playsinline preload="metadata" />
                                     ) : (
-                                      <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+                                      <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading="lazy" />
                                     )
                                   )}
                                   {!inpSrc && (
@@ -895,14 +851,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 class="tutorial-prompt-btn tutorial-download-btn"
                                 data-download-prompt
                                 data-prompt-name={`skill-foundry-step-${index + 1}-prompt`}
-                                aria-label="Print or save prompt as PDF"
-                                title="Print or save prompt as PDF"
+                                aria-label="Download prompt as PDF"
+                                title="Download prompt as PDF"
                               >
                                 <svg class="tutorial-download-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                  <path d="M6 9V3h12v6"/>
-                                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                                  <rect x="6" y="14" width="12" height="7" rx="1"/>
-                                  <path d="M18 12h.01"/>
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                  <polyline points="7 10 12 15 17 10"/>
+                                  <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
                               </button>
                               {/* Neutral Copy button */}
@@ -979,8 +934,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                     class="tutorial-result-img"
                                     src={mediaUrl}
                                     alt={`${step.title} result`}
-                                    loading={index === 0 ? "eager" : "lazy"}
-                                    decoding="async"
+                                    loading="lazy"
                                   />
                                   {isVideo && !isInstagramStep && <span class="tutorial-video-badge">VIDEO</span>}
                                 </div>
@@ -1019,9 +973,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <section class="resource-editorial-section tutorial-section" id="tutorial">
             <div class="section-title-wrap">
               <span class="section-accent-bar" aria-hidden="true"></span>
-              <h2 class="editorial-heading-title">{data.videoSectionTitle || 'Watch the Tutorial'}</h2>
+              <h2 class="editorial-heading-title">Watch the Tutorial</h2>
             </div>
-            <p class="editorial-subcopy">{data.videoSectionDescription || 'Watch the full walkthrough to see the workflow in action, then follow along with the steps above.'}</p>
+            <p class="editorial-subcopy">Watch the full walkthrough to see the workflow in action, then follow along with the steps above.</p>
             {data.videoEmbedUrl && (
               data.videoEmbedUrl.includes('instagram.com') ? (
                 <div class="video-frame is-instagram-embed">
@@ -1201,25 +1155,20 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   </div>
 
   <script>
-    const printPromptAsPdf = (box) => {
-      if (!box) return;
-      document.querySelectorAll('.sf-print-target').forEach((item) => item.classList.remove('sf-print-target'));
-      document.querySelectorAll('.sf-print-title').forEach((item) => item.remove());
-      const stepTitle = box.closest('.tutorial-step-card')?.querySelector('.tutorial-step-title')?.textContent?.trim();
-      const printTitle = document.createElement('h1');
-      printTitle.className = 'sf-print-title';
-      printTitle.textContent = stepTitle ? `${stepTitle} — Skill Foundry Prompt` : 'Skill Foundry Prompt';
-      box.prepend(printTitle);
-      box.classList.add('sf-print-target');
-      document.body.classList.add('sf-print-prompt-mode');
-      const cleanup = () => {
-        document.body.classList.remove('sf-print-prompt-mode');
-        box.classList.remove('sf-print-target');
-        printTitle.remove();
-        window.removeEventListener('afterprint', cleanup);
-      };
-      window.addEventListener('afterprint', cleanup);
-      window.print();
+    const makePdf = (text, name) => {
+      const clean = (s) => String(s).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+      const lines = [];
+      String(text).split(/\r?\n/).forEach((line) => {
+        let value = clean(line);
+        while (value.length > 88) { lines.push(value.slice(0, 88)); value = value.slice(88); }
+        lines.push(value);
+      });
+      const content = ['BT','/F1 10 Tf','50 760 Td','13 TL',...lines.map((line, i) => `(${line}) Tj${i < lines.length - 1 ? ' T*' : ''}`),'ET'].join('\n');
+      const pdf = `%PDF-1.4\n1 0 obj<< /Type/Catalog/Pages 2 0 R >>endobj\n2 0 obj<< /Type/Pages/Count 1/Kids[3 0 R] >>endobj\n3 0 obj<< /Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<< /Font<< /F1 4 0 R >> >>/Contents 5 0 R >>endobj\n4 0 obj<< /Type/Font/Subtype/Type1/BaseFont/Courier >>endobj\n5 0 obj<< /Length ${content.length} >>stream\n${content}\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f \ntrailer<< /Size 6/Root 1 0 R >>\nstartxref\n0\n%%EOF`;
+      const blob = new Blob([pdf], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `${name || 'prompt'}.pdf`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
     };
 
     // Copy Prompt Button: Strictly fixed 82px width in both states so zero shift
@@ -1242,13 +1191,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       });
     });
 
-    // Print the selected prompt. On Android Chrome, choose "Save as PDF" in the print menu.
+    // Download Prompt as PDF Button
     document.querySelectorAll("[data-download-prompt]").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
         const box = btn.closest(".tutorial-prompt-box") || btn.closest(".tutorial-step-card");
-        const text = box?.querySelector("[data-prompt-content]")?.textContent?.trim() || "";
-        if (text) printPromptAsPdf(box);
+        const pre = box?.querySelector("[data-prompt-content]");
+        const text = pre?.textContent?.trim() || "";
+        const name = btn.getAttribute("data-prompt-name") || "prompt";
+        if (text) {
+          makePdf(text, name);
+        }
       });
     });
 
@@ -3501,39 +3454,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     html[data-theme="light"] .cta-card p,
     html.light-theme .cta-card p {
       color: #475569;
-    }
-
-    .hero-image-wrap { aspect-ratio: 16 / 9; background: linear-gradient(135deg, #111722, #182334); }
-    .hero-image { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: #111722; }
-    .resource-metadata-row { flex-wrap: wrap; column-gap: 18px; row-gap: 8px; }
-    .resource-main-title { max-width: 900px; font-size: clamp(28px, 5vw, 38px); line-height: 1.16; letter-spacing: -0.025em; }
-    .tool-logo-box, .step-tool-logo-box, .tutorial-input-thumb-box-fixed, .tutorial-result-media-frame, .reference-asset-preview { background: linear-gradient(135deg, #111722, #1A2637); }
-    .tool-grid-logo, .step-tool-logo { object-fit: contain; background: transparent; }
-    .tutorial-input-thumb { background: #111722; }
-    .resource-start-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 18px; }
-    .resource-step-jump-nav { display: flex; gap: 8px; width: 100%; overflow-x: auto; padding: 2px 0 6px; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
-    .resource-step-jump-nav a { flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 34px; padding: 0 12px; border: 1px solid rgba(255,255,255,.12); border-radius: 999px; background: rgba(255,255,255,.04); color: #CBD5E1; font-size: 12px; font-weight: 700; white-space: nowrap; }
-    .resource-step-jump-nav a:hover, .resource-step-jump-nav a:focus-visible { color: #F8FAFC; border-color: rgba(245,158,11,.55); outline: none; }
-    .reference-assets-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-    .reference-asset-card { min-width: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.10); border-radius: 12px; background: #101722; }
-    .reference-asset-preview { display: flex; align-items: center; justify-content: center; width: 100%; aspect-ratio: 4 / 3; padding: 10px; border: 0; border-bottom: 1px solid rgba(255,255,255,.08); cursor: zoom-in; }
-    .reference-asset-preview img { display: block; width: 100%; height: 100%; object-fit: contain; }
-    .reference-asset-info { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px; }
-    .reference-asset-type { color: #94A3B8; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
-    .reference-asset-info h3 { margin: 0; color: #F8FAFC; font-size: 14px; line-height: 1.35; }
-    .reference-asset-download { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; color: #F59E0B; font-size: 12px; font-weight: 800; }
-    .reference-asset-download:hover { color: #FCD34D; }
-    .sf-print-title { display: none; }
-    @media (max-width: 380px) { .reference-assets-grid { grid-template-columns: 1fr; } }
-    @media print {
-      @page { margin: 16mm; }
-      html, body { background: #FFFFFF !important; color: #111827 !important; padding: 0 !important; }
-      body.sf-print-prompt-mode * { visibility: hidden !important; }
-      body.sf-print-prompt-mode .sf-print-target, body.sf-print-prompt-mode .sf-print-target * { visibility: visible !important; }
-      body.sf-print-prompt-mode .sf-print-target { position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; max-width: none !important; border: 0 !important; border-radius: 0 !important; background: #FFFFFF !important; color: #111827 !important; overflow: visible !important; box-shadow: none !important; }
-      body.sf-print-prompt-mode .sf-print-target .tutorial-prompt-header { display: none !important; }
-      body.sf-print-prompt-mode .sf-print-title { display: block !important; margin: 0 0 12px !important; color: #111827 !important; font: 700 16pt/1.25 Arial, sans-serif !important; }
-      body.sf-print-prompt-mode .sf-print-target .tutorial-prompt-pre { max-height: none !important; height: auto !important; overflow: visible !important; padding: 0 !important; background: #FFFFFF !important; color: #111827 !important; font: 9pt/1.5 "Courier New", monospace !important; white-space: pre-wrap !important; overflow-wrap: anywhere !important; word-break: break-word !important; }
     }
   </style>
 </BaseLayout>

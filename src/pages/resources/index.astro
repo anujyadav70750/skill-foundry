@@ -51,17 +51,14 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   description="Browse, search, and discover practical workflows, tutorials, and step-by-step blueprints across AI, video editing, design, automation, and digital skills."
   canonical="https://hub.skillfoundry-web.workers.dev/resources/"
   hideHeaderSearch={true}
+  hideHeader={true}
+  hideFooter={true}
   hideBackButton={true}
 >
   <div class="explore-page">
     <!-- 1. PRIMARY SEARCH BAR AT TOP OF CONTENT AREA -->
     <section class="explore-toolbar-section">
       <div class="container narrow">
-        <div class="library-intro">
-          <p class="library-eyebrow">SKILL FOUNDRY LIBRARY</p>
-          <h1>Explore Resources</h1>
-          <p>Find practical AI workflows, prompts, tools and step-by-step tutorials you can put into practice.</p>
-        </div>
         <div class="search-bar-wrapper">
           <form class="search-form" id="resource-search-form" role="search" onsubmit="return false;">
             <!-- LEFT: Permanent Circular Filter/Sliders Control -->
@@ -220,7 +217,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                             class={isLatest ? "prominent-thumb-img" : "h-thumb-img"}
                             src={resourceThumbnail(resource)}
                             alt={resourceImageAlt(resource)}
-                            loading={index < 4 ? "eager" : "lazy"} decoding="async"
+                            loading={isLatest ? "eager" : "lazy"}
                           />
                         </div>
 
@@ -349,7 +346,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   data-is-latest={isLatest ? "true" : "false"}
                 >
                   <div class="h-thumb-wrap">
-                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading={index < 3 ? "eager" : "lazy"} decoding="async" />
+                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
                   </div>
 
                   <div class="h-content">
@@ -423,11 +420,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       padding: 10px 0 18px;
     }
   }
-
-  .library-intro { margin: 0 auto 22px; max-width: 720px; text-align: left; }
-  .library-eyebrow { margin: 0 0 8px; color: #F59E0B; font-size: 10px; font-weight: 800; letter-spacing: .14em; }
-  .library-intro h1 { margin: 0; color: #F8FAFC; font-size: clamp(28px, 5vw, 38px); line-height: 1.14; letter-spacing: -.03em; }
-  .library-intro > p:last-child { max-width: 620px; margin: 10px 0 0; color: #A7B2C2; font-size: 14px; line-height: 1.6; }
 
   /* 1. PRIMARY SINGLE-ROW SEARCH BAR: [ circular Filter ] [ search input ] [ circular Search ] */
   .explore-toolbar-section {

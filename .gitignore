@@ -7,8 +7,3 @@ node_modules/
 metadata.json
 bun.lock
 tmp/
-public/images/knight-face-reference.webp
-public/images/knight-character-sheet.webp
-public/images/knight-poppies-thumbnail.webp
-public/images/knight-props.webp
-public/images/misty-poppy-location.webp

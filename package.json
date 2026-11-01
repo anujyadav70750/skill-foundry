@@ -7,13 +7,10 @@
     "dev": "astro dev --host 0.0.0.0 --port 3000",
     "build": "astro build",
     "preview": "astro preview --host 0.0.0.0 --port 3000",
-    "lint": "astro build",
-    "predev": "node scripts/optimize-knight-assets.mjs",
-    "prebuild": "node scripts/optimize-knight-assets.mjs"
+    "lint": "astro build"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
-    "astro": "^5.4.2",
-    "sharp": "^0.33.5"
+    "astro": "^5.4.2"
   }
 }

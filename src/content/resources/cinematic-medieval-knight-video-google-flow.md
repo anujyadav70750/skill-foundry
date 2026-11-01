@@ -1,28 +1,25 @@
 ---
 title: "Create a Cinematic Medieval Knight Video with Google Flow"
 slug: "cinematic-medieval-knight-video-google-flow"
-description: "Create a consistent medieval knight character, matching armor and props, and a misty poppy-field environment. Then combine those references in Google Flow to generate a cinematic 10-second vertical video."
+description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
 toolAffiliate: false
 date: "2026-10-04"
-updatedDate: "2026-11-01"
-thumbnail: "/images/knight-poppies-thumbnail.webp"
+thumbnail: "/images/knight-poppies-thumbnail.png"
 thumbnailRatio: "16:9"
-heroImage: "/images/knight-poppies-thumbnail.webp"
+heroImage: "/images/knight-poppies-thumbnail.png"
 instagramReelUrl: "https://www.instagram.com/reel/DeD0aGQPgz9/?stkn=c21qODlteWxhNTFk"
 instagramHandle: "skillfoundry.ai"
 instagramAudio: "The Stranglers · Golden Brown (Slowed Down Version)"
 videoEmbedUrl: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
-videoSectionTitle: "Watch the Final Reel"
-videoSectionDescription: "This is the finished example. Follow the five steps above to create your own version."
-inputImage: "/images/knight-face-reference.webp"
+inputImage: "/images/knight-face-reference.png"
 inputImages:
-  - "/images/knight-face-reference.webp"
-  - "/images/knight-character-sheet.webp"
-  - "/images/knight-props.webp"
-  - "/images/misty-poppy-location.webp"
+  - "/images/knight-face-reference.png"
+  - "/images/knight-character-sheet.png"
+  - "/images/knight-props.png"
+  - "/images/misty-poppy-location.png"
 inputImageRatios:
   - "3:4"
   - "9:16"
@@ -31,8 +28,8 @@ inputImageRatios:
 resultImages: []
 resultImageRatios: []
 imageAlt: "Cinematic medieval knight resting among red poppies"
-intro: "Follow the five steps in order. You will need a clear character reference photo, ChatGPT for the reference images, Google Flow for video generation, and CapCut for the final speed adjustment. The generated video is created in your own Google Flow account; it is not included as a downloadable source file."
-whatItDoes: "Builds the character, matching equipment and location references first, then uses them together to guide a continuous cinematic video in Google Flow."
+intro: "Build the video in order: lock the character first, create matching props, establish the location, generate the cinematic shot, then finish the result in Instagram."
+whatItDoes: "Maintains character identity, armor, props, environment, camera movement, and visual continuity through a chained reference workflow."
 toolsUsed:
   - name: "ChatGPT"
     purpose: "Create the character, prop, and location reference images."
@@ -42,12 +39,8 @@ toolsUsed:
     purpose: "Generate the cinematic 10-second video from the three reference images."
     url: "https://labs.google/fx/tools/flow"
     affiliate: false
-  - name: "CapCut"
-    purpose: "Adjust the generated clip to the intended duration and export the finished vertical video."
-    url: "https://www.capcut.com/"
-    affiliate: false
   - name: "Instagram"
-    purpose: "Upload the exported video as a Reel and optionally add music available to your account."
+    purpose: "Slow the video, optionally add available music or remix elements, download, and share the final result."
     url: "https://www.instagram.com/"
     affiliate: false
 prompt: |
@@ -66,9 +59,9 @@ steps:
       - type: "image"
         label: "Original person/reference photo"
         role: "Strict identity reference"
-        src: "/images/knight-face-reference.webp"
+        src: "/images/knight-face-reference.png"
     settings: []
-    outputPreviewSrc: "/images/knight-character-sheet.webp"
+    outputPreviewSrc: "/images/knight-character-sheet.png"
     next: "Use this Character Sheet as the reference input for Step 02."
     handoff: "Use this Character Sheet as the reference input for Step 02."
     process: |
@@ -196,9 +189,9 @@ steps:
       - type: "image"
         label: "Step 01 — Character Sheet output"
         role: "Material and design reference only"
-        src: "/images/knight-character-sheet.webp"
+        src: "/images/knight-character-sheet.png"
     settings: []
-    outputPreviewSrc: "/images/knight-props.webp"
+    outputPreviewSrc: "/images/knight-props.png"
     next: "Use this Helmet + Sword Reference as the prop reference for Step 04."
     handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."
     process: |
@@ -381,7 +374,7 @@ steps:
     toolPurpose: "IMAGE GENERATION"
     inputs: []
     settings: []
-    outputPreviewSrc: "/images/misty-poppy-location.webp"
+    outputPreviewSrc: "/images/misty-poppy-location.png"
     next: "Use this Location Reference as the environment reference for Step 04."
     handoff: "Use this Location Reference as the environment reference for Step 04."
     process: |
@@ -461,15 +454,15 @@ steps:
       - type: "image"
         label: "Step 01 Character Sheet (@KNIGHT_REF)"
         role: "Exact character identity & appearance"
-        src: "/images/knight-character-sheet.webp"
+        src: "/images/knight-character-sheet.png"
       - type: "image"
         label: "Step 02 Helmet & Sword Reference (@PROPS_REF)"
         role: "Exact helmet & sword design"
-        src: "/images/knight-props.webp"
+        src: "/images/knight-props.png"
       - type: "image"
         label: "Step 03 Location Reference (@LOCATION_REF)"
         role: "Exact environment"
-        src: "/images/misty-poppy-location.webp"
+        src: "/images/misty-poppy-location.png"
     settings:
       - label: "MODEL"
         value: "Omni 1.1 Flash"
@@ -822,32 +815,36 @@ steps:
     next: "Download the generated video in 1080p, then use it in Step 05."
     handoff: "Download the generated video in 1080p, then use it in Step 05."
 
-  - title: "Edit & Publish the Video"
-    purpose: "Adjust the generated clip to the intended duration, export it, and publish the finished Reel."
-    description: "Adjust the generated clip to the intended duration, export it, and publish the finished Reel."
+  - title: "Finish in Instagram"
+    purpose: "Put the finishing touches on your video and get it ready to share."
+    description: "Put the finishing touches on your video and get it ready to share."
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Final edited video"
-    outputDescription: "Exported 9:16 video ready to upload to Instagram."
-    tool: "CapCut"
+    outputDescription: ""
+    tool: "Instagram"
     toolPurpose: "VIDEO EDITING"
     inputs:
       - type: "video"
         label: "Step 04 — Downloaded 1080p video"
-        role: "Upload the 1080p video you downloaded from Google Flow in the previous step."
-        src: ""
+        role: "Video to edit"
+        src: "/images/knight-poppies-thumbnail.png"
     settings:
       - label: "SPEED"
-        value: "0.714×"
+        value: "0.6×"
     process: |
-      1. Open CapCut and create a new project.
-      2. Import the 1080p video downloaded from Step 04.
-      3. Select the clip and set its speed to 0.714× (71.4%). A 10-second clip will become approximately 14 seconds.
-      4. Keep the canvas vertical at 9:16 and check that the knight remains fully visible.
-      5. Export the finished video in 1080p, keeping the original frame rate where possible.
-      6. Open Instagram and upload the exported video as a Reel.
-      7. Optionally add music available to your Instagram account.
-      8. Watch the complete Reel once before publishing.
+      1. Open Instagram.
+      2. Tap the + button.
+      3. Select Reel.
+      4. Add the generated video.
+      5. Open video editing controls.
+      6. Reduce playback speed to 0.6×.
+      7. Use the music available in Instagram for the edit.
+      8. Complete the required recording/shooting portion on Instagram.
+      9. Review the finished Reel.
+      10. Download the finished video, or share/post it directly.
+    outputSrc: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
+    outputPreviewSrc: "/images/knight-poppies-thumbnail.png"
     next: ""
     handoff: ""
 finalTitle: "Final Edited Video"
@@ -857,7 +854,7 @@ tips:
   - "Use Step 1 only as material and design reference when creating the helmet and sword in Step 2."
   - "Do not use the Step 3 location reference as a character or prop reference."
   - "In Google Flow, use the three reference assets as @KNIGHT_REF, @PROPS_REF, and @LOCATION_REF."
-  - "For an approximately 14-second final clip, slow the 10-second Google Flow video to 0.714× (71.4%) in CapCut. Do not use 0.6× for this timing."
+  - "Keep the generated video at exactly 10 seconds, then use 0.6× playback in Instagram as the final edit."
 relatedResources: []
 tags:
   - "ai-video"
@@ -868,7 +865,7 @@ tags:
   - "workflow"
 featured: true
 seoTitle: "Create a Cinematic Medieval Knight Video with Google Flow | Skill Foundry"
-seoDescription: "Create a cinematic medieval knight video with consistent character, armor and location references. Follow five steps using ChatGPT, Google Flow and CapCut."
+seoDescription: "Follow a five-step Skill Foundry workflow to create a consistent medieval knight reference, matching props, misty poppy-field location, cinematic 10-second Google Flow video, and final Instagram edit."
 ---
 
 ## Workflow
