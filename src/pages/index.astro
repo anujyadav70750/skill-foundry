@@ -130,7 +130,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 return (
                   <a class="recent-work-card" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
                     <div class="recent-work-thumb-wrap">
-                      <img class="recent-work-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
+                      <img class="recent-work-thumb-img" src={thumbnail} alt={alt} loading="eager" decoding="async" />
                     </div>
 
                     <div class="recent-work-card-body">

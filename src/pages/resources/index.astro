@@ -217,7 +217,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                             class={isLatest ? "prominent-thumb-img" : "h-thumb-img"}
                             src={resourceThumbnail(resource)}
                             alt={resourceImageAlt(resource)}
-                            loading={isLatest ? "eager" : "lazy"}
+                            loading="eager"
+                            fetchpriority={isLatest ? "high" : "auto"}
+                            decoding="async"
                           />
                         </div>
 
@@ -266,7 +268,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                                 class="h-thumb-img"
                                 src={resourceThumbnail(resource)}
                                 alt={resourceImageAlt(resource)}
-                                loading="lazy"
+                                loading="eager"
+                                decoding="async"
                               />
                             </div>
 
@@ -346,7 +349,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   data-is-latest={isLatest ? "true" : "false"}
                 >
                   <div class="h-thumb-wrap">
-                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
+                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="eager" decoding="async" />
                   </div>
 
                   <div class="h-content">

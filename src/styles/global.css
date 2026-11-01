@@ -221,3 +221,26 @@ html.light-theme .empty-state {
 @media (max-width: 850px) { .steps-grid { grid-template-columns: 1fr; } .cta-card { align-items: flex-start; flex-direction: column; } .results-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .container, .narrow, .content-wide { width: min(calc(100% - 28px), var(--max)); } nav { gap: 12px; font-size: 12px; } .header-search { width: 30px; height: 30px; } .hero { padding: 78px 0; } .resource-grid { grid-template-columns: 1fr; } .results-gallery { grid-template-columns: 1fr; } .section { padding: 58px 0; } .section-heading { align-items: flex-start; } .section-heading > a { flex: 0 0 auto; } .footer-grid { grid-template-columns: 1fr; } .prompt-heading { flex-direction: column; } .hero-proof { gap: 20px; } .hero-proof div { min-width: 100px; } .cta-card { padding: 26px; } .quick-actions .button { width: 100%; } .prompt-shell pre { max-height: 320px; padding: 18px 18px 72px; } .copy-button { right: 10px; bottom: 10px; } }
 
+/* Prevent Layout Shifts (CLS) & Deferred Image Pop-In Across the Site */
+img {
+  content-visibility: auto;
+}
+.hero-image-wrap {
+  aspect-ratio: 16 / 9;
+  background-color: #0c1017;
+  overflow: hidden;
+}
+.tool-logo-box, .step-tool-logo-box {
+  background-color: rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+.tutorial-input-thumb-box-fixed,
+.prominent-thumb-wrap,
+.h-thumb-wrap,
+.card-thumb-wrap,
+.recent-work-thumb-wrap,
+.related-work-thumb-wrap {
+  background-color: #0d121b;
+}
+
+

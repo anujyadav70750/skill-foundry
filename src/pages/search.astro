@@ -92,7 +92,7 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
                 data-search={searchBlob}
               >
                 <div class="card-thumb-wrap">
-                  <img class="card-thumb-img" src={thumbnail} alt={alt} loading="lazy" />
+                  <img class="card-thumb-img" src={thumbnail} alt={alt} loading="eager" decoding="async" />
                 </div>
 
                 <div class="card-content-wrap">
