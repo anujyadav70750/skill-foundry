@@ -1,7 +1,7 @@
 ---
-title: "Create a Cinematic Medieval Knight Video with Google Flow"
+title: "Create a Cinematic Medieval Knight Video Like This"
 slug: "cinematic-medieval-knight-video-google-flow"
-description: "Videos like this are going viral on social media and pulling in millions of views. This resource shows you how to create your own version with the character and style you want."
+description: "Create your own cinematic medieval character video in this trending AI-generated style. Use your own character, build the world around them, and turn the idea into a cinematic video you can make your own."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
@@ -28,7 +28,7 @@ inputImageRatios:
 resultImages: []
 resultImageRatios: []
 imageAlt: "Cinematic medieval knight resting among red poppies"
-intro: "Build the video in order: lock the character first, create matching props, establish the location, generate the cinematic shot, then finish the result in Instagram."
+intro: "Start with your character, then build the world around them. Keep the character, props, environment, and final video visually consistent from beginning to end."
 whatItDoes: "Maintains character identity, armor, props, environment, camera movement, and visual continuity through a chained reference workflow."
 toolsUsed:
   - name: "ChatGPT"
@@ -62,8 +62,8 @@ steps:
         src: "/images/knight-face-reference.png"
     settings: []
     outputPreviewSrc: "/images/knight-character-sheet.png"
-    next: "Use this Character Sheet as the reference input for Step 02."
-    handoff: "Use this Character Sheet as the reference input for Step 02."
+    next: "Use this character reference in Step 02."
+    handoff: "Use this character reference in Step 02."
     process: |
       Use the uploaded person/reference photo as the STRICT IDENTITY REFERENCE.
 
@@ -176,9 +176,9 @@ steps:
       BOTTOM RIGHT = FRONT CLOSE-UP PORTRAIT.
       No text, labels, names, logos, weapons, helmet, shield, or additional characters.
 
-  - title: "Create Helmet & Sword"
+  - title: "Create Matching Props"
     purpose: "Create the props for your character."
-    description: "Create the props for your character."
+    description: "Build the key props that belong to your character and match their visual style."
     actionType: "prompt"
     outputType: "image"
     outputLabel: "16:9 Helmet + Sword Reference"
@@ -192,8 +192,8 @@ steps:
         src: "/images/knight-character-sheet.png"
     settings: []
     outputPreviewSrc: "/images/knight-props.png"
-    next: "Use this Helmet + Sword Reference as the prop reference for Step 04."
-    handoff: "Use this Helmet + Sword Reference as the prop reference for Step 04."
+    next: "Keep this prop reference for the cinematic generation step."
+    handoff: "Keep this prop reference for the cinematic generation step."
     process: |
       Create a photorealistic professional medieval armor-prop reference image containing exactly TWO objects: one knight's helmet and one medieval arming sword.
 

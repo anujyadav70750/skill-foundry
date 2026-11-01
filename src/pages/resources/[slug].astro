@@ -575,20 +575,20 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <div class="what-you-get-list">
             <div class="what-you-get-item">
               <h3 class="what-you-get-title">Complete Workflow</h3>
-              <p class="what-you-get-desc">From the first step to the final result</p>
+              <p class="what-you-get-desc">Everything you need to recreate this video style from start to finish.</p>
             </div>
             <div class="what-you-get-item">
               <h3 class="what-you-get-title">Tools Used</h3>
-              <p class="what-you-get-desc">Tap to open the tools used in the workflow</p>
+              <p class="what-you-get-desc">The tools used to create and finish the video.</p>
             </div>
             <div class="what-you-get-item">
               <h3 class="what-you-get-title">Prompts and Settings</h3>
-              <p class="what-you-get-desc">Ready to use prompts and the settings for each step</p>
+              <p class="what-you-get-desc">Ready-to-use prompts and the key instructions for creating each part.</p>
             </div>
             {hasDownloadableResources && (
               <div class="what-you-get-item">
                 <h3 class="what-you-get-title">Resources</h3>
-                <p class="what-you-get-desc">Tap to view and download available reference or generated resources</p>
+                <p class="what-you-get-desc">Reference images and other assets used throughout the creation.</p>
               </div>
             )}
           </div>
@@ -601,7 +601,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <span class="section-accent-bar" aria-hidden="true"></span>
               <h2 class="editorial-heading-title">Tools Used</h2>
             </div>
-            <p class="editorial-subcopy">Tap any tool to open it directly and get started.</p>
+            <p class="editorial-subcopy">These are the tools used in the original workflow. You can use equivalent tools for your own version.</p>
             <div class="tools-compact-grid" role="region" aria-label="Tools used list">
               {tools.map((tool) => {
                 return (
@@ -638,8 +638,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         {/* LIGHT TRANSPARENT BLUE WORKFLOW INTRODUCTION CALLOUT BOX (NO BORDER, NO YELLOW ACCENT) */}
         {workflowSteps.length > 0 && (
           <div class="blueprint-callout-box" id="workflow" role="region" aria-label="Workflow blueprint introduction">
-            <h2 class="blueprint-callout-title">Follow the Blueprint Below</h2>
-            <p class="blueprint-callout-desc">Work through each step in order, using each result to build the next until you reach the final result.</p>
+            <h2 class="blueprint-callout-title">Create It Step by Step</h2>
+            <p class="blueprint-callout-desc">Each part builds on the previous one, taking you from your character reference to the finished cinematic video.</p>
           </div>
         )}
 
