@@ -1017,9 +1017,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <section class="resource-editorial-section tutorial-section" id="tutorial">
             <div class="section-title-wrap">
               <span class="section-accent-bar" aria-hidden="true"></span>
-              <h2 class="editorial-heading-title">{videoSectionTitle}</h2>
+              <h2 class="editorial-heading-title">{data.videoSectionTitle || 'Watch the Tutorial'}</h2>
             </div>
-            <p class="editorial-subcopy">{videoSectionDescription}</p>
+            <p class="editorial-subcopy">{data.videoSectionDescription || 'Watch the full walkthrough to see the workflow in action, then follow along with the steps above.'}</p>
             {data.videoEmbedUrl && (
               data.videoEmbedUrl.includes('instagram.com') ? (
                 <div class="video-frame is-instagram-embed">
