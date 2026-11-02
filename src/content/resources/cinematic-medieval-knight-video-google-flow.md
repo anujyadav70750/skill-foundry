@@ -55,27 +55,9 @@ steps:
       - "Copy the prompt and open ChatGPT."
       - "Upload the photo with the prompt and generate the character sheet."
     details:
-      - label: "FORMAT"
-        value: "Portrait · 9:16"
-        icon: "📐"
-      - label: "VIEWS"
-        value: "Front · Side · Back · Close-up"
-        icon: "👤"
-    actionType: "prompt"
-    outputType: "image"
-    outputLabel: "4-frame character reference"
-    outputDescription: "A single vertical 9:16 character sheet containing the front, side, back, and close-up views."
-    tool: "ChatGPT"
-    toolPurpose: "IMAGE GENERATION"
-    inputs:
-      - type: "image"
-        label: "Original person/reference photo"
-        role: "Strict identity reference"
-        src: "/images/knight-face-reference.png"
+      - label: "TOOL USED"
+        value: "ChatGPT"
     settings: []
-    outputPreviewSrc: "/images/knight-character-sheet.png"
-    next: "Use this character reference in Step 02."
-    handoff: "Use this character reference in Step 02."
     process: |
       Use the uploaded person/reference photo as the STRICT IDENTITY REFERENCE.
 
@@ -197,27 +179,9 @@ steps:
       - "Use it as the design reference for the helmet and sword."
       - "Run the prompt in ChatGPT."
     details:
-      - label: "FORMAT"
-        value: "Landscape · 16:9"
-        icon: "📐"
-      - label: "OBJECTS"
-        value: "Helmet · Sword"
-        icon: "🛡️"
-    actionType: "prompt"
-    outputType: "image"
-    outputLabel: "16:9 Helmet + Sword Reference"
-    outputDescription: "A single horizontal 16:9 prop-reference image containing the sallet helmet and medieval arming sword."
-    tool: "ChatGPT"
-    toolPurpose: "IMAGE GENERATION"
-    inputs:
-      - type: "image"
-        label: "Step 01 — Character Sheet output"
-        role: "Material and design reference only"
-        src: "/images/knight-character-sheet.png"
+      - label: "TOOL USED"
+        value: "ChatGPT"
     settings: []
-    outputPreviewSrc: "/images/knight-props.png"
-    next: "Keep this prop reference for the cinematic generation step."
-    handoff: "Keep this prop reference for the cinematic generation step."
     process: |
       Create a photorealistic professional medieval armor-prop reference image containing exactly TWO objects: one knight's helmet and one medieval arming sword.
 
@@ -395,23 +359,9 @@ steps:
       - "No reference image is needed for this step."
       - "Copy the prompt into ChatGPT and generate the location image."
     details:
-      - label: "FORMAT"
-        value: "Landscape · 16:9"
-        icon: "📐"
-      - label: "SCENE"
-        value: "Misty poppy field · Pre-sunrise"
-        icon: "🌄"
-    actionType: "prompt"
-    outputType: "image"
-    outputLabel: "16:9 Location Reference"
-    outputDescription: "A horizontal 16:9 photorealistic environmental establishing photograph of the untouched wildflower field."
-    tool: "ChatGPT"
-    toolPurpose: "IMAGE GENERATION"
-    inputs: []
+      - label: "TOOL USED"
+        value: "ChatGPT"
     settings: []
-    outputPreviewSrc: "/images/misty-poppy-location.png"
-    next: "Use this Location Reference as the environment reference for Step 04."
-    handoff: "Use this Location Reference as the environment reference for Step 04."
     process: |
       Create a highly realistic cinematic environmental reference photograph of a vast untouched wildflower field at misty pre-sunrise dawn.
 
@@ -487,12 +437,8 @@ steps:
       - "Upload the location reference as @LOCATION_REF."
       - "Select the settings in Details, paste the prompt, and generate."
     details:
-      - label: "SHOT"
-        value: "One continuous 10-second shot"
-        icon: "🎥"
-      - label: "LENS"
-        value: "84° diagonal field of view"
-        icon: "📷"
+      - label: "TOOL USED"
+        value: "Google Flow"
     settings:
       - label: "MODEL"
         value: "Omni 1.1 Flash"
@@ -860,8 +806,11 @@ steps:
         label: "Step 04 — Downloaded 1080p video"
         role: "Video to edit"
         src: "/images/knight-poppies-thumbnail.png"
+    details:
+      - label: "TOOL USED"
+        value: "Instagram"
     settings:
-      - label: "SPEED"
+      - label: "PLAYBACK SPEED"
         value: "0.6×"
     process: |
       1. Open Instagram.
