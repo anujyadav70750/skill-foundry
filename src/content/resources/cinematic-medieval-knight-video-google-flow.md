@@ -28,7 +28,7 @@ inputImageRatios:
 resultImages: []
 resultImageRatios: []
 imageAlt: "Cinematic medieval knight resting among red poppies"
-intro: "Start with your character, then build the world around them. Keep the character, props, environment, and final video visually consistent from beginning to end."
+intro: "Prepare one clear, well-lit photo of the person you want to use as your character, with their face clearly visible. Make sure you have access to ChatGPT, Google Flow, and Instagram before starting."
 whatItDoes: "Maintains character identity, armor, props, environment, camera movement, and visual continuity through a chained reference workflow."
 toolsUsed:
   - name: "ChatGPT"
@@ -516,7 +516,7 @@ steps:
       Perform all actions and camera movements naturally and continuously within the 10-second duration.
       Do NOT make the acting frantic or artificially rushed.
       Maintain realistic weight, inertia, gravity, breathing, armor movement, cloak movement, hair movement, vegetation physics, object physics, and camera motion.
-      The generated 10-second video will later be slowed to approximately 71.4% playback speed in editing to restore the intended approximately 14-second pacing.
+      The generated 10-second video will later be slowed to 0.6× playback speed in editing, producing a final duration of approximately 16.7 seconds.
       Do not add extra actions or alter the choreography simply because the generation is compressed.
 
       OPTICS
@@ -846,11 +846,10 @@ steps:
 finalTitle: "Final Edited Video"
 finalDescription: "Your finished video, ready to share."
 tips:
-  - "Use the Step 1 character reference as the identity anchor for the entire workflow."
-  - "Use Step 1 only as material and design reference when creating the helmet and sword in Step 2."
-  - "Do not use the Step 3 location reference as a character or prop reference."
-  - "In Google Flow, use the three reference assets as @KNIGHT_REF, @PROPS_REF, and @LOCATION_REF."
-  - "Keep the generated video at exactly 10 seconds, then use 0.6× playback in Instagram as the final edit."
+  - "For the most reliable result, use the tools listed in each step and follow any settings shown in that step’s Details tab."
+  - "Start with a sharp, well-lit character photo. A clear face reference helps preserve the character’s identity throughout the workflow."
+  - "Check each generated reference before continuing. Correct any mismatch in the face, outfit, props, or environment before using that image in the next generation."
+  - "Use the original, full-resolution reference images in Google Flow. Avoid screenshots or compressed copies that can reduce visual detail."
 relatedResources: []
 tags:
   - "ai-video"
