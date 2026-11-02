@@ -13,6 +13,12 @@ const workflowSetting = z.object({
   value: z.string()
 });
 
+const workflowDetail = z.object({
+  label: z.string(),
+  value: z.string(),
+  icon: z.enum(['frame', 'grid', 'layers', 'landscape']).default('frame')
+});
+
 const workflowStep = z.object({
   title: z.string(),
   tool: z.string().default(''),
@@ -25,6 +31,8 @@ const workflowStep = z.object({
   next: z.string().default(''),
   description: z.string().default(''),
   whatToDo: z.string().optional(),
+  guidePoints: z.array(z.string()).default([]),
+  details: z.array(workflowDetail).default([]),
   purpose: z.string().optional(),
   actionType: z.enum(['prompt','instructions']).optional(),
   outputType: z.enum(['image','video','audio','text','document']).optional(),
