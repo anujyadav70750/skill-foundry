@@ -811,45 +811,39 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                           </div>
 
                           <div class="tutorial-step-disclosure-panel tutorial-details-panel" role="tabpanel" data-step-panel="details" id={`step-${index + 1}-details`} aria-hidden="true" tabindex="-1" inert>
-                            {(step.details && step.details.length > 0) || (step.settings && step.settings.length > 0) ? (
-                              <div class="tutorial-details-grid">
-                                {step.details && step.details.map((detail: any) => (
+                            <div class="tutorial-details-grid">
+                              {stepToolName && (
+                                <div class="tutorial-detail-item tutorial-tool-used-item">
+                                  <div class="tutorial-detail-heading">
+                                    <span class="tutorial-detail-emoji" aria-hidden="true">🛠️</span>
+                                    <span class="tutorial-detail-label">TOOL USED</span>
+                                  </div>
+                                  <span class="tutorial-detail-value">{stepToolName}</span>
+                                </div>
+                              )}
+                              {!/chatgpt/i.test(stepToolName) && step.details && step.details.map((detail: any) => (
+                                <div class="tutorial-detail-item">
+                                  <div class="tutorial-detail-heading">
+                                    <span class="tutorial-detail-emoji" aria-hidden="true">{detail.icon}</span>
+                                    <span class="tutorial-detail-label">{detail.label}</span>
+                                  </div>
+                                  <span class="tutorial-detail-value">{detail.value}</span>
+                                </div>
+                              ))}
+                              {step.settings && step.settings.map((setting: any) => {
+                                const label = String(setting.label || '').toUpperCase();
+                                const settingEmoji = label.includes("MODEL") ? "🎬" : label.includes("ASPECT") ? "📱" : label.includes("DURATION") ? "⏱️" : label.includes("RESOLUTION") ? "🎞️" : label.includes("SPEED") ? "⏩" : "⚙️";
+                                return (
                                   <div class="tutorial-detail-item">
                                     <div class="tutorial-detail-heading">
-                                      <span class="tutorial-detail-emoji" aria-hidden="true">{detail.icon}</span>
-                                      <span class="tutorial-detail-label">{detail.label}</span>
+                                      <span class="tutorial-detail-emoji" aria-hidden="true">{settingEmoji}</span>
+                                      <span class="tutorial-detail-label">{label}</span>
                                     </div>
-                                    <span class="tutorial-detail-value">{detail.value}</span>
+                                    <span class="tutorial-detail-value">{String(setting.value || '').replace(/^gemini\s+/i, '')}</span>
                                   </div>
-                                ))}
-                                {step.settings && step.settings.map((setting: any) => {
-                                  const label = String(setting.label || '').toUpperCase();
-                                  const settingEmoji = label.includes("MODEL") ? "🎬" : label.includes("ASPECT") ? "📱" : label.includes("DURATION") ? "⏱️" : label.includes("RESOLUTION") ? "🎞️" : label.includes("SPEED") ? "⏩" : "⚙️";
-                                  return (
-                                    <div class="tutorial-detail-item">
-                                      <div class="tutorial-detail-heading">
-                                        <span class="tutorial-detail-emoji" aria-hidden="true">{settingEmoji}</span>
-                                        <span class="tutorial-detail-label">{label}</span>
-                                      </div>
-                                      <span class="tutorial-detail-value">{String(setting.value || '').replace(/^gemini\s+/i, '')}</span>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            ) : null}
-                            {step.settings && step.settings.length > 0 && step.outputDescription && (
-                              <div class="tutorial-details-note">
-                                <div class="tutorial-detail-heading">
-                                  <svg class="tutorial-detail-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <rect x="2.5" y="5.2" width="15" height="10.5" rx="2"/>
-                                    <circle cx="10" cy="10.5" r="3"/>
-                                    <path d="m5.2 5.2 1-2h2l1 2"/>
-                                  </svg>
-                                  <span class="tutorial-detail-label">CAMERA</span>
-                                </div>
-                                <p class="tutorial-details-note-copy">{step.outputDescription}</p>
-                              </div>
-                            )}
+                                );
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1346,6 +1340,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
           const initiallySelected = tabButtons.find((button) => button.getAttribute("aria-selected") === "true") || tabButtons[0];
           activateTab(initiallySelected);
+
+          const syncPanelHeight = () => {
+            const height = Math.max(0, ...panels.map((panel) => panel.scrollHeight));
+            disclosure.style.setProperty("--sf-disclosure-height", `${height}px`);
+          };
+          syncPanelHeight();
+          window.addEventListener("resize", syncPanelHeight);
 
           tabButtons.forEach((button, index) => {
             button.addEventListener("click", () => activateTab(button));
@@ -2255,26 +2256,26 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     .tutorial-step-disclosure-tabs {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 3px;
-      padding: 4px;
-      background: #11151C;
-      border: 1px solid rgba(255, 255, 255, 0.13);
-      border-radius: 10px;
+      gap: 8px;
+      padding: 0;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
       box-sizing: border-box;
     }
 
     .tutorial-step-disclosure-button {
       width: 100%;
       min-width: 0;
-      min-height: 42px;
+      min-height: 44px;
       padding: 9px 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      border: 1px solid transparent;
-      border-radius: 7px;
-      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      background: #11151C;
       color: #929BAA;
       font: 600 13px/1.2 sans-serif;
       cursor: pointer;
@@ -2284,15 +2285,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     .tutorial-step-disclosure-button:hover {
-      background: rgba(255, 255, 255, 0.055);
-      color: #E5E7EB;
+      background: #1A1F28;
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #F5F7FA;
+      transform: translateY(-1px);
     }
 
     .tutorial-step-disclosure-button[aria-selected="true"] {
       background: #35404F;
-      border-color: rgba(255, 255, 255, 0.13);
+      border-color: rgba(255, 255, 255, 0.18);
       color: #FFFFFF;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 2px 5px rgba(0, 0, 0, 0.22);
     }
 
     .tutorial-tab-icon {
@@ -2307,6 +2310,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: grid;
       width: 100%;
       margin-top: 0;
+      min-height: var(--sf-disclosure-height, 0px);
     }
 
     .tutorial-step-disclosure-panel {
