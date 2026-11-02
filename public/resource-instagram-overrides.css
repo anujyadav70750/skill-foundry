@@ -276,3 +276,75 @@ html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] 
   border-color: rgba(37, 99, 235, 0.38) !important;
   color: #173B67 !important;
 }
+
+
+/* Final workflow spacing and palette correction: match the 14px mobile
+   section rhythm used by the resource cards without doubling adjacent margins. */
+.resource-page #intro.intro-section {
+  margin-bottom: 0 !important;
+}
+
+.resource-page #intro.intro-section + .blueprint-callout-box {
+  margin: 14px auto 14px !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+.resource-page .workflow-step-nav {
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+/* Softer steel-blue tabs: visible tint without the heavy, saturated blue look. */
+.resource-page .workflow-step-nav-button {
+  background: rgba(96, 126, 165, 0.15) !important;
+  border-color: rgba(130, 155, 190, 0.20) !important;
+  color: #C0CCDA !important;
+}
+
+.resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(96, 126, 165, 0.25) !important;
+  border-color: rgba(145, 170, 205, 0.36) !important;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+}
+
+.resource-page .workflow-step-nav {
+  scrollbar-color: rgba(130, 155, 190, 0.32) transparent !important;
+}
+
+.resource-page .workflow-step-nav::-webkit-scrollbar-thumb {
+  background: rgba(130, 155, 190, 0.32) !important;
+}
+
+html[data-theme="light"] .resource-page #intro.intro-section + .blueprint-callout-box,
+html.light-theme .resource-page #intro.intro-section + .blueprint-callout-box {
+  background: rgba(16, 185, 129, 0.10) !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button,
+html.light-theme .resource-page .workflow-step-nav-button {
+  background: rgba(96, 126, 165, 0.10) !important;
+  border-color: rgba(80, 110, 150, 0.20) !important;
+  color: #36506F !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button[aria-selected="true"],
+html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(96, 126, 165, 0.24) !important;
+  border-color: rgba(80, 110, 150, 0.34) !important;
+  color: #173B67 !important;
+}
+
+@media (min-width: 641px) {
+  .resource-page #intro.intro-section + .blueprint-callout-box {
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .resource-page #intro.intro-section {
+    margin-bottom: 0 !important;
+  }
+}
