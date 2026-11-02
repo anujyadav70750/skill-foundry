@@ -1,0 +1,58 @@
+name: Temporary resource step UX patch
+
+on: [push]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch resource step UX
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          if [[ "$COMMIT_MESSAGE" == fix:* ]]; then
+            exit 0
+          fi
+          python3 <<'PY'
+          from pathlib import Path
+
+          path = Path('src/pages/resources/[slug].astro')
+          text = path.read_text()
+
+          start = text.find('                            {(step.details && step.details.length > 0) || (step.settings && step.settings.length > 0) ? (')
+          end_marker = '''                            {step.settings && step.settings.length > 0 && step.outputDescription && ('''
+          end = text.find(end_marker, start)
+          if start < 0 or end < 0:
+              raise SystemExit('Details block start/end not found; no changes made.')
+          camera_end = text.find('                            )}\n                          </div>', end)
+          if camera_end < 0:
+              raise SystemExit('Details block end not found; no changes made.')
+          camera_end += len('                            )}\n')
+
+          replacement = '''                            <div class="tutorial-details-grid">\n                              {stepToolName && (\n                                <div class="tutorial-detail-item tutorial-tool-used-item">\n                                  <div class="tutorial-detail-heading">\n                                    <span class="tutorial-detail-emoji" aria-hidden="true">🛠️</span>\n                                    <span class="tutorial-detail-label">TOOL USED</span>\n                                  </div>\n                                  <span class="tutorial-detail-value">{stepToolName}</span>\n                                </div>\n                              )}\n                              {!/chatgpt/i.test(stepToolName) && step.details && step.details.map((detail: any) => (\n                                <div class="tutorial-detail-item">\n                                  <div class="tutorial-detail-heading">\n                                    <span class="tutorial-detail-emoji" aria-hidden="true">{detail.icon}</span>\n                                    <span class="tutorial-detail-label">{detail.label}</span>\n                                  </div>\n                                  <span class="tutorial-detail-value">{detail.value}</span>\n                                </div>\n                              ))}\n                              {step.settings && step.settings.map((setting: any) => {\n                                const label = String(setting.label || '').toUpperCase();\n                                const settingEmoji = label.includes("MODEL") ? "🎬" : label.includes("ASPECT") ? "📱" : label.includes("DURATION") ? "⏱️" : label.includes("RESOLUTION") ? "🎞️" : label.includes("SPEED") ? "⏩" : "⚙️";\n                                return (\n                                  <div class="tutorial-detail-item">\n                                    <div class="tutorial-detail-heading">\n                                      <span class="tutorial-detail-emoji" aria-hidden="true">{settingEmoji}</span>\n                                      <span class="tutorial-detail-label">{label}</span>\n                                    </div>\n                                    <span class="tutorial-detail-value">{String(setting.value || '').replace(/^gemini\\s+/i, '')}</span>\n                                  </div>\n                                );\n                              })}\n                            </div>\n'''
+          text = text[:start] + replacement + text[camera_end:]
+
+          text = text.replace('''    .tutorial-step-disclosure-tabs {\n      display: grid;\n      grid-template-columns: repeat(2, minmax(0, 1fr));\n      gap: 3px;\n      padding: 4px;\n      background: #11151C;\n      border: 1px solid rgba(255, 255, 255, 0.13);\n      border-radius: 10px;\n      box-sizing: border-box;\n    }''', '''    .tutorial-step-disclosure-tabs {\n      display: grid;\n      grid-template-columns: repeat(2, minmax(0, 1fr));\n      gap: 8px;\n      padding: 0;\n      background: transparent;\n      border: 0;\n      border-radius: 0;\n      box-sizing: border-box;\n    }''', 1)
+
+          text = text.replace('''      min-height: 42px;\n      padding: 9px 12px;\n      display: inline-flex;\n      align-items: center;\n      justify-content: center;\n      gap: 7px;\n      border: 1px solid transparent;\n      border-radius: 7px;\n      background: transparent;''', '''      min-height: 44px;\n      padding: 9px 12px;\n      display: inline-flex;\n      align-items: center;\n      justify-content: center;\n      gap: 7px;\n      border: 1px solid rgba(255, 255, 255, 0.12);\n      border-radius: 10px;\n      background: #11151C;''', 1)
+
+          text = text.replace('''    .tutorial-step-disclosure-button:hover {\n      background: rgba(255, 255, 255, 0.055);\n      color: #E5E7EB;\n    }''', '''    .tutorial-step-disclosure-button:hover {\n      background: #1A1F28;\n      border-color: rgba(255, 255, 255, 0.22);\n      color: #F5F7FA;\n      transform: translateY(-1px);\n    }''', 1)
+
+          text = text.replace('''    .tutorial-step-disclosure-button[aria-selected="true"] {\n      background: #35404F;\n      border-color: rgba(255, 255, 255, 0.13);\n      color: #FFFFFF;\n      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.22);\n    }''', '''    .tutorial-step-disclosure-button[aria-selected="true"] {\n      background: #35404F;\n      border-color: rgba(255, 255, 255, 0.18);\n      color: #FFFFFF;\n      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 2px 5px rgba(0, 0, 0, 0.22);\n    }''', 1)
+
+          text = text.replace('''    .tutorial-step-disclosure-panels {\n      display: grid;\n      width: 100%;\n      margin-top: 0;\n    }''', '''    .tutorial-step-disclosure-panels {\n      display: grid;\n      width: 100%;\n      margin-top: 0;\n      min-height: var(--sf-disclosure-height, 0px);\n    }''', 1)
+
+          text = text.replace('''          const initiallySelected = tabButtons.find((button) => button.getAttribute("aria-selected") === "true") || tabButtons[0];\n          activateTab(initiallySelected);\n\n          tabButtons.forEach((button, index) => {''', '''          const initiallySelected = tabButtons.find((button) => button.getAttribute("aria-selected") === "true") || tabButtons[0];\n          activateTab(initiallySelected);\n\n          const syncPanelHeight = () => {\n            const height = Math.max(0, ...panels.map((panel) => panel.scrollHeight));\n            disclosure.style.setProperty("--sf-disclosure-height", `${height}px`);\n          };\n          syncPanelHeight();\n          window.addEventListener("resize", syncPanelHeight);\n\n          tabButtons.forEach((button, index) => {''', 1)
+
+          path.write_text(text)
+          PY
+          git diff --check
+          git add src/pages/resources/'[slug].astro'
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "fix: refine resource step details UX"
+          git push
