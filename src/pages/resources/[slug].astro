@@ -535,7 +535,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           {/* 3. Horizontal Metadata Row (Author & Published Date) */}
           <div class="resource-metadata-row" aria-label="Resource metadata">
             <div class="metadata-item meta-author">
-              <img class="meta-author-avatar" src={authorAvatar} alt={authorName} width="22" height="22" loading="eager" decoding="async" />
+              <img class="meta-author-avatar" src={authorAvatar} alt="" width="22" height="22" loading="eager" decoding="async" />
               <span class="meta-author-name">{authorName}</span>
               <span class="meta-verification-badge" aria-label="Verified publisher">
                 <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
@@ -1099,6 +1099,59 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   </div>
 
   <script>
+    // Resource-page selection copy: copy selected visible text, not image alt text or hidden markup.
+    (() => {
+      const resourcePage = document.querySelector(".resource-editorial-layout .resource-page");
+      if (!resourcePage) return;
+
+      document.addEventListener("copy", (event) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0 || !event.clipboardData) return;
+
+        let selectionTouchesResource = false;
+        const selectedTextParts = [];
+
+        for (let index = 0; index < selection.rangeCount; index += 1) {
+          const range = selection.getRangeAt(index);
+          try {
+            if (range.intersectsNode(resourcePage)) {
+              selectionTouchesResource = true;
+              selectedTextParts.push(range.toString());
+            }
+          } catch {
+            return;
+          }
+        }
+
+        if (!selectionTouchesResource) return;
+
+        const visibleText = selectedTextParts
+          .join("\n")
+          .replace(/\u00A0/g, " ")
+          .replace(/\r\n?/g, "\n")
+          .trim();
+
+        // Leave native copying untouched for image-only selections or empty ranges.
+        if (!visibleText) return;
+
+        // Set both clipboard formats from text nodes only. This prevents image alt text,
+        // media metadata, and hidden/inactive markup from being added by rich-text copy.
+        const escapeHtml = (value) => value
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+        const htmlText = \`<div>\${escapeHtml(visibleText).replace(/\n/g, "<br>")}</div>\`;
+
+        event.preventDefault();
+        event.clipboardData.clearData();
+        event.clipboardData.setData("text/plain", visibleText);
+        event.clipboardData.setData("text/html", htmlText);
+      }, true);
+    })();
+
     const makePdf = (text, name) => {
       const cp1252Extra = new Map([
         [0x20AC, 0x80], [0x201A, 0x82], [0x0192, 0x83], [0x201E, 0x84],
