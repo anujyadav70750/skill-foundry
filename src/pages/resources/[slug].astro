@@ -664,7 +664,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const isInstagramStep = Boolean(mediaUrl && /instagram\.com/i.test(mediaUrl));
                 const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(mediaUrl));
                 const isVideo = hasMedia && (output.type === "video" || isRealVideo(mediaUrl) || isEmbedUrl || isInstagramStep);
-                const isPdf = hasMedia && /\\.pdf(?:[?#]|$)/i.test(mediaUrl);
+                const isPdf = hasMedia && /\.pdf(?:[?#]|$)/i.test(mediaUrl);
                 const isImage = hasMedia && !isVideo && !isPdf && (output.type === "image" || !output.type);
 
                 const stepPurpose = step.purpose || step.description || "";
