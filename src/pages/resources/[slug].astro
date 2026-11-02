@@ -375,7 +375,7 @@ const hasDownloadableResources = Boolean(
     const hasInputs = step.inputs && step.inputs.some((inp: any) => inp.src && !inp.src.startsWith('http'));
     const output = outputVisual(step, index);
     const mediaUrl = output?.src || '';
-    const hasOutput = mediaUrl && !mediaUrl.startsWith('http') && !isRealVideo(mediaUrl);
+    const hasOutput = mediaUrl && !mediaUrl.startsWith('http');
     return hasInputs || hasOutput;
   })
 );
@@ -577,7 +577,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             <li class="what-you-get-item">Tap any app logo to open it directly, without searching for it yourself.</li>
             <li class="what-you-get-item">Copy the ready-to-use prompts or download them as PDFs to use throughout the process.</li>
             {hasDownloadableResources && (
-              <li class="what-you-get-item">Tap any reference image to preview it and download a copy whenever you need it.</li>
+              <li class="what-you-get-item">Tap any image, video, PDF, or other asset preview to open and download the file.</li>
             )}
           </ul>
         </section>
@@ -589,7 +589,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <span class="section-accent-bar" aria-hidden="true"></span>
               <h2 class="editorial-heading-title">Tools Used</h2>
             </div>
-            <p class="editorial-subcopy">These are the tools used in the original workflow. You can use equivalent tools for your own version.</p>
+            <p class="editorial-subcopy">This workflow was created using the tools below. Follow the steps with these tools; alternatives may require different steps or settings.</p>
             <div class="tools-compact-grid" role="region" aria-label="Tools used list">
               {tools.map((tool) => {
                 return (
@@ -627,7 +627,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         {workflowSteps.length > 0 && (
           <div class="blueprint-callout-box" id="workflow" role="region" aria-label="Workflow blueprint introduction">
             <h2 class="blueprint-callout-title">Create It Step by Step</h2>
-            <p class="blueprint-callout-desc">Each part builds on the previous one, taking you from your character reference to the finished cinematic video.</p>
+            <p class="blueprint-callout-desc">Complete the current step, then tap the next step above to continue. Follow Steps 01–05 in order to create your final video.</p>
           </div>
         )}
 
@@ -664,7 +664,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const isInstagramStep = Boolean(mediaUrl && /instagram\.com/i.test(mediaUrl));
                 const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(mediaUrl));
                 const isVideo = hasMedia && (output.type === "video" || isRealVideo(mediaUrl) || isEmbedUrl || isInstagramStep);
-                const isImage = hasMedia && !isVideo && (output.type === "image" || !output.type);
+                const isPdf = hasMedia && /\\.pdf(?:[?#]|$)/i.test(mediaUrl);
+                const isImage = hasMedia && !isVideo && !isPdf && (output.type === "image" || !output.type);
 
                 const stepPurpose = step.purpose || step.description || "";
                 const stepToolName = step.tool || (step.toolMeta ? step.toolMeta.name : "");
@@ -707,16 +708,29 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                         
                         <div class:list={["tutorial-step-result-card", { "has-instagram-embed": isInstagramStep }]}>
                           <div
-                            class:list={["tutorial-result-media-frame", { "is-instagram-frame": isInstagramStep, "is-video-frame": isRealVideo(mediaUrl) || isEmbedUrl, "has-lightbox": !isInstagramStep && !isEmbedUrl && Boolean(mediaUrl) }]}
+                            class:list={["tutorial-result-media-frame", { "is-instagram-frame": isInstagramStep, "is-video-frame": isRealVideo(mediaUrl) || isEmbedUrl, "is-pdf-preview": isPdf, "has-lightbox": !isInstagramStep && !isEmbedUrl && Boolean(mediaUrl) }]}
                             data-media-trigger={(!isInstagramStep && !isEmbedUrl && mediaUrl) ? "" : undefined}
                             data-media-src={(!isInstagramStep && !isEmbedUrl && mediaUrl) ? mediaUrl : undefined}
-                            data-media-type={isRealVideo(mediaUrl) ? "video" : "image"}
+                            data-media-type={isPdf ? "document" : isRealVideo(mediaUrl) ? "video" : "image"}
                             data-media-name={compactResultTitle}
                             role={(!isInstagramStep && !isEmbedUrl && mediaUrl) ? "button" : undefined}
                             tabindex={(!isInstagramStep && !isEmbedUrl && mediaUrl) ? "0" : undefined}
                             aria-label={(!isInstagramStep && !isEmbedUrl && mediaUrl) ? `Open ${compactResultTitle} preview` : undefined}
                           >
-                            {isInstagramStep ? (
+                            {isPdf ? (
+                              <div class="tutorial-pdf-preview">
+                                <span class="tutorial-pdf-preview-icon" aria-hidden="true">
+                                  <svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M8 3.75h10l6 6v18.5H8z"/>
+                                    <path d="M18 3.75v6h6M11.5 16h9M11.5 20h9M11.5 24h5"/>
+                                  </svg>
+                                </span>
+                                <span class="tutorial-pdf-preview-copy">
+                                  <strong>{output.label || "PDF preview"}</strong>
+                                  <span>Tap to preview and download</span>
+                                </span>
+                              </div>
+                            ) : isInstagramStep ? (
                               <div class="step-instagram-wrapper">
                                 <blockquote
                                   class="instagram-media"
@@ -1079,25 +1093,142 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       <div class="media-lightbox-body">
         <img id="lightbox-img" class="lightbox-img" src="" alt="Resource Preview" style="display: none;" />
         <video id="lightbox-video" class="lightbox-video" src="" controls playsinline preload="auto" style="display: none;"></video>
+        <iframe id="lightbox-pdf" class="lightbox-pdf" title="PDF preview" style="display: none;"></iframe>
       </div>
     </div>
   </div>
 
   <script>
     const makePdf = (text, name) => {
-      const clean = (s) => String(s).replace(/[^\x20-\x7E]/g, '?').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
-      const lines = [];
-      String(text).split(/\r?\n/).forEach((line) => {
-        let value = clean(line);
-        while (value.length > 88) { lines.push(value.slice(0, 88)); value = value.slice(88); }
-        lines.push(value);
+      const cp1252Extra = new Map([
+        [0x20AC, 0x80], [0x201A, 0x82], [0x0192, 0x83], [0x201E, 0x84],
+        [0x2026, 0x85], [0x2020, 0x86], [0x2021, 0x87], [0x02C6, 0x88],
+        [0x2030, 0x89], [0x0160, 0x8A], [0x2039, 0x8B], [0x0152, 0x8C],
+        [0x017D, 0x8E], [0x2018, 0x91], [0x2019, 0x92], [0x201C, 0x93],
+        [0x201D, 0x94], [0x2022, 0x95], [0x2013, 0x96], [0x2014, 0x97],
+        [0x02DC, 0x98], [0x2122, 0x99], [0x0161, 0x9A], [0x203A, 0x9B],
+        [0x0153, 0x9C], [0x017E, 0x9E], [0x0178, 0x9F]
+      ]);
+      const ascii = (value) => new TextEncoder().encode(value);
+      const concatBytes = (parts) => {
+        const total = parts.reduce((sum, part) => sum + part.length, 0);
+        const output = new Uint8Array(total);
+        let offset = 0;
+        for (const part of parts) {
+          output.set(part, offset);
+          offset += part.length;
+        }
+        return output;
+      };
+      const winAnsiByte = (character) => {
+        const code = character.codePointAt(0);
+        if (code >= 0x20 && code <= 0x7E) return code;
+        if (code >= 0xA0 && code <= 0xFF) return code;
+        return cp1252Extra.get(code) ?? 0x3F;
+      };
+      const encodePdfText = (line) => {
+        const bytes = [];
+        for (const character of Array.from(line)) {
+          const byte = winAnsiByte(character);
+          if (byte === 0x28 || byte === 0x29 || byte === 0x5C) bytes.push(0x5C);
+          bytes.push(byte);
+        }
+        return Uint8Array.from(bytes);
+      };
+
+      const wrappedLines = [];
+      String(text ?? '').replace(/\r\n?/g, '\n').split('\n').forEach((sourceLine) => {
+        let remaining = Array.from(sourceLine.replace(/\t/g, '    '));
+        if (!remaining.length) {
+          wrappedLines.push('');
+          return;
+        }
+        while (remaining.length > 90) {
+          let breakAt = -1;
+          for (let index = 90; index > 0; index -= 1) {
+            if (/\s/.test(remaining[index])) {
+              breakAt = index;
+              break;
+            }
+          }
+          if (breakAt < 1) breakAt = 90;
+          wrappedLines.push(remaining.slice(0, breakAt).join(''));
+          remaining = remaining.slice(breakAt);
+          while (remaining.length && remaining[0] === ' ') remaining.shift();
+        }
+        wrappedLines.push(remaining.join(''));
       });
-      const content = ['BT','/F1 10 Tf','50 760 Td','13 TL',...lines.map((line, i) => `(${line}) Tj${i < lines.length - 1 ? ' T*' : ''}`),'ET'].join('\n');
-      const pdf = `%PDF-1.4\n1 0 obj<< /Type/Catalog/Pages 2 0 R >>endobj\n2 0 obj<< /Type/Pages/Count 1/Kids[3 0 R] >>endobj\n3 0 obj<< /Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Resources<< /Font<< /F1 4 0 R >> >>/Contents 5 0 R >>endobj\n4 0 obj<< /Type/Font/Subtype/Type1/BaseFont/Courier >>endobj\n5 0 obj<< /Length ${content.length} >>stream\n${content}\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f \ntrailer<< /Size 6/Root 1 0 R >>\nstartxref\n0\n%%EOF`;
-      const blob = new Blob([pdf], { type: 'application/pdf' });
+
+      const linesPerPage = 54;
+      const pages = [];
+      for (let start = 0; start < wrappedLines.length; start += linesPerPage) {
+        pages.push(wrappedLines.slice(start, start + linesPerPage));
+      }
+      if (!pages.length) pages.push(['']);
+
+      const fontId = 3 + pages.length * 2;
+      const objects = new Map();
+      objects.set(1, ascii('<< /Type /Catalog /Pages 2 0 R >>'));
+      const pageIds = pages.map((_, index) => 3 + index * 2);
+      objects.set(2, ascii('<< /Type /Pages /Kids [' + pageIds.map((id) => id + ' 0 R').join(' ') + '] /Count ' + pages.length + ' >>'));
+
+      pages.forEach((pageLines, index) => {
+        const pageId = pageIds[index];
+        const contentId = pageId + 1;
+        objects.set(pageId, ascii('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ' + fontId + ' 0 R >> >> /Contents ' + contentId + ' 0 R >>'));
+
+        const streamParts = [ascii('BT\n/F1 9 Tf\n50 750 Td\n12.8 TL\n')];
+        pageLines.forEach((line, lineIndex) => {
+          streamParts.push(ascii('('), encodePdfText(line), ascii(') Tj\n'));
+          if (lineIndex < pageLines.length - 1) streamParts.push(ascii('T*\n'));
+        });
+        streamParts.push(ascii('ET\n'));
+
+        const stream = concatBytes(streamParts);
+        objects.set(contentId, concatBytes([
+          ascii('<< /Length ' + stream.length + ' >>\nstream\n'),
+          stream,
+          ascii('endstream')
+        ]));
+      });
+
+      objects.set(fontId, ascii('<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>'));
+
+      const header = ascii('%PDF-1.4\n');
+      const fileParts = [header];
+      const offsets = new Map();
+      let fileLength = header.length;
+
+      for (const [id, body] of [...objects.entries()].sort((a, b) => a[0] - b[0])) {
+        const objectBytes = concatBytes([
+          ascii(id + ' 0 obj\n'),
+          body,
+          ascii('\nendobj\n')
+        ]);
+        offsets.set(id, fileLength);
+        fileParts.push(objectBytes);
+        fileLength += objectBytes.length;
+      }
+
+      const xrefOffset = fileLength;
+      const maxObjectId = fontId;
+      let xref = 'xref\n0 ' + (maxObjectId + 1) + '\n0000000000 65535 f \n';
+      for (let id = 1; id <= maxObjectId; id += 1) {
+        xref += String(offsets.get(id)).padStart(10, '0') + ' 00000 n \n';
+      }
+      xref += 'trailer\n<< /Size ' + (maxObjectId + 1) + ' /Root 1 0 R >>\nstartxref\n' + xrefOffset + '\n%%EOF';
+
+      fileParts.push(ascii(xref));
+      const pdfBytes = concatBytes(fileParts);
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `${name || 'prompt'}.pdf`; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = (name || 'prompt') + '.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
     };
 
     // Copy Prompt Button: Strictly fixed 82px width in both states so zero shift
@@ -1139,6 +1270,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       const lightbox = document.getElementById("media-lightbox");
       const lightboxImg = document.getElementById("lightbox-img");
       const lightboxVideo = document.getElementById("lightbox-video");
+      const lightboxPdf = document.getElementById("lightbox-pdf");
       const lightboxDownloadBtn = document.getElementById("lightbox-download-btn");
 
       const openLightbox = (src, type, name) => {
@@ -1155,9 +1287,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           lightboxVideo.load();
           lightboxVideo.style.display = "none";
         }
+        if (lightboxPdf) {
+          lightboxPdf.removeAttribute("src");
+          lightboxPdf.style.display = "none";
+        }
 
+        const isPdf = /\.pdf(?:[?#]|$)/i.test(src);
         const isVideo = type === "video" || /\.(mp4|webm)/i.test(src);
-        if (isVideo && lightboxVideo) {
+        if (isPdf && lightboxPdf) {
+          lightboxPdf.src = src;
+          lightboxPdf.style.display = "block";
+        } else if (isVideo && lightboxVideo) {
           lightboxVideo.src = src;
           lightboxVideo.style.display = "block";
         } else if (lightboxImg) {
@@ -1168,7 +1308,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
         if (lightboxDownloadBtn) {
           lightboxDownloadBtn.setAttribute("href", src);
-          const ext = isVideo ? "mp4" : (src.split(".").pop()?.split(/[?#]/)[0] || "png");
+          const ext = isPdf ? "pdf" : (isVideo ? "mp4" : (src.split(".").pop()?.split(/[?#]/)[0] || "png"));
           const safeName = (name || "resource-asset").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
           lightboxDownloadBtn.setAttribute("download", `${safeName || "asset"}.${ext}`);
         }
@@ -1188,6 +1328,10 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           lightboxVideo.removeAttribute("src");
           lightboxVideo.load();
           lightboxVideo.style.display = "none";
+        }
+        if (lightboxPdf) {
+          lightboxPdf.removeAttribute("src");
+          lightboxPdf.style.display = "none";
         }
         if (lightboxImg) {
           lightboxImg.src = "";
@@ -3271,6 +3415,61 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       outline: none;
       display: block;
       background: #000000;
+    }
+
+    .lightbox-pdf {
+      display: block;
+      width: min(88vw, 980px);
+      height: min(78vh, 820px);
+      max-width: 100%;
+      border: 0;
+      background: #FFFFFF;
+    }
+
+    .tutorial-pdf-preview {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      min-height: 150px;
+      padding: 22px;
+      box-sizing: border-box;
+      color: #E5E7EB;
+      background: linear-gradient(135deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+    }
+
+    .tutorial-pdf-preview-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 12px;
+      color: #D1D5DB;
+      background: rgba(255,255,255,0.045);
+    }
+
+    .tutorial-pdf-preview-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .tutorial-pdf-preview-copy strong {
+      color: #FFFFFF;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .tutorial-pdf-preview-copy span {
+      color: #AEB5C2;
+      font-size: 12px;
+      line-height: 1.4;
     }
 
     /* ==========================================================================
