@@ -51,9 +51,9 @@ steps:
     description: "Turn your character into a consistent visual reference for the video."
     whatToDo: "Upload one clear photo of the person you want to use as your character."
     guidePoints:
-          - "Upload one clear photo of the person you want to use as your character."
-          - "Copy the prompt and open ChatGPT."
-          - "Upload the photo with the prompt and generate the character sheet."
+      - "Upload one clear photo of the person you want to use as your character."
+      - "Copy the prompt and open ChatGPT."
+      - "Upload the photo with the prompt and generate the character sheet."
     details:
       - label: "FORMAT"
         value: "Portrait · 9:16"
@@ -193,9 +193,9 @@ steps:
     description: "Build the key props that belong to your character and match their visual style."
     whatToDo: "Use the character sheet created in Step 01 as the design reference for the helmet and sword."
     guidePoints:
-          - "Upload the character sheet created in Step 01."
-          - "Use it as the design reference for the helmet and sword."
-          - "Run the prompt in ChatGPT."
+      - "Upload the character sheet created in Step 01."
+      - "Use it as the design reference for the helmet and sword."
+      - "Run the prompt in ChatGPT."
     details:
       - label: "FORMAT"
         value: "Landscape · 16:9"
@@ -392,8 +392,8 @@ steps:
     description: "Create the setting for your scene."
     whatToDo: "No reference image is needed. Use the prompt below to create the location."
     guidePoints:
-          - "No reference image is needed for this step."
-          - "Copy the prompt into ChatGPT and generate the location image."
+      - "No reference image is needed for this step."
+      - "Copy the prompt into ChatGPT and generate the location image."
     details:
       - label: "FORMAT"
         value: "Landscape · 16:9"
@@ -481,14 +481,14 @@ steps:
     description: "Generate the video from your previous creations."
     whatToDo: "Upload the character sheet, helmet and sword reference, and location reference created in Steps 01 to 03."
     guidePoints:
-          - "Upload the character sheet as @KNIGHT_REF."
-          - "Upload the helmet and sword reference as @PROPS_REF."
-          - "Upload the location reference as @LOCATION_REF."
-          - "Select the settings in Details, then run the prompt."
+      - "Upload the character sheet as @KNIGHT_REF."
+      - "Upload the helmet and sword reference as @PROPS_REF."
+      - "Upload the location reference as @LOCATION_REF."
+      - "Select the settings in Details, then run the prompt."
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
-    outputDescription: "Single continuous 10-second 9:16 shot with locked 84° lens and orbital camera movement."
+    outputDescription: "Single continuous shot with a locked 84° wide-angle lens and smooth orbital camera movement."
     tool: "Google Flow"
     toolPurpose: "VIDEO GENERATION"
     inputs:
