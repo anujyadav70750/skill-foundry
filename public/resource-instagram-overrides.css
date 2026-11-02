@@ -1,0 +1,95 @@
+/* Shared Instagram embed presentation for Step output and Tutorial section.
+   One width and one rounded-card treatment keep duplicated embeds visually identical. */
+
+.resource-page .tutorial-step-result-card.has-instagram-embed,
+.resource-page .tutorial-step-result-card:has(.step-instagram-wrapper),
+.resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell) {
+  width: 100% !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-result-media-frame.is-instagram-frame,
+.resource-page .tutorial-result-media-frame:has(.step-instagram-wrapper) {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  aspect-ratio: auto !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.resource-page .resource-instagram-embed-shell {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  max-width: 540px !important;
+  min-width: 0 !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  margin: 14px auto 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  border: 1px solid rgba(15, 23, 42, 0.12) !important;
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18) !important;
+  aspect-ratio: auto !important;
+  transition: none !important;
+}
+
+.resource-page .step-instagram-wrapper.resource-instagram-embed-shell {
+  flex: 0 1 540px !important;
+}
+
+.resource-page .tutorial-section .resource-instagram-embed-shell {
+  margin-top: 14px !important;
+}
+
+.resource-page .resource-instagram-embed-shell > blockquote.instagram-media {
+  display: block !important;
+  width: 100% !important;
+  max-width: 540px !important;
+  min-width: min(326px, 100%) !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.resource-page .resource-instagram-embed-shell iframe,
+.resource-page .resource-instagram-embed-shell iframe.instagram-media-rendered {
+  display: block !important;
+  width: 100% !important;
+  max-width: 540px !important;
+  min-width: min(326px, 100%) !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+  vertical-align: top !important;
+  transition: none !important;
+}
+
+@media (max-width: 360px) {
+  .resource-page .resource-instagram-embed-shell {
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+}
