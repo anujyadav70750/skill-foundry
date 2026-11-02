@@ -1,0 +1,4 @@
+/* Resource workflow step navigation: use rounded-rectangle buttons, not pill capsules. */
+.resource-page .workflow-step-nav-button {
+  border-radius: 10px !important;
+}
