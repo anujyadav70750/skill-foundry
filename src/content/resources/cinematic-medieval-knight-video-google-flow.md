@@ -55,9 +55,10 @@ steps:
     description: "Turn your character into a consistent visual reference for the video."
     whatToDo: "Upload one clear photo of the person you want to use as your character."
     guidePoints:
+      - "Open ChatGPT."
       - "Upload one clear photo of the person you want to use as your character."
-      - "Copy the prompt and open ChatGPT."
-      - "Upload the photo with the prompt and generate the character sheet."
+      - "Copy the prompt above, paste it into ChatGPT, and generate the character sheet."
+      - "Download the generated character sheet to your phone."
     details:
       - label: "TOOL USED"
         value: "ChatGPT"
@@ -183,9 +184,10 @@ steps:
     description: "Build the key props that belong to your character and match their visual style."
     whatToDo: "Use the character sheet created in Step 01 as the design reference for the helmet and sword."
     guidePoints:
-      - "Upload the character sheet created in Step 01."
-      - "Use it as the design reference for the helmet and sword."
-      - "Run the prompt in ChatGPT."
+      - "Open ChatGPT."
+      - "Upload the character sheet from Step 01."
+      - "Copy the prompt above, paste it into ChatGPT, and generate the helmet and sword reference."
+      - "Download the generated image to your phone."
     details:
       - label: "TOOL USED"
         value: "ChatGPT"
@@ -368,8 +370,9 @@ steps:
     description: "Create the setting for your scene."
     whatToDo: "No reference image is needed. Use the prompt below to create the location."
     guidePoints:
-      - "No reference image is needed for this step."
-      - "Copy the prompt into ChatGPT and generate the location image."
+      - "Open ChatGPT."
+      - "Copy the prompt above, paste it into ChatGPT, and generate the location reference."
+      - "Download the generated image to your phone."
     details:
       - label: "TOOL USED"
         value: "ChatGPT"
@@ -448,10 +451,12 @@ steps:
     whatToDo: "Upload the character sheet, helmet and sword reference, and location reference created in Steps 01 to 03."
     guidePoints:
       - "Open Google Flow and start a new video generation."
-      - "Upload the character sheet as @KNIGHT_REF."
-      - "Upload the helmet and sword reference as @PROPS_REF."
-      - "Upload the location reference as @LOCATION_REF."
-      - "Select the settings in Details, paste the prompt, and generate."
+      - "Upload the character sheet from Step 01 as @KNIGHT_REF."
+      - "Upload the helmet and sword reference from Step 02 as @PROPS_REF."
+      - "Upload the location reference from Step 03 as @LOCATION_REF."
+      - "Copy the video prompt above and paste it into Google Flow."
+      - "Apply the settings shown in the Details tab and generate the video."
+      - "Download the generated video to your phone."
     details:
       - label: "TOOL USED"
         value: "Google Flow"
@@ -829,16 +834,11 @@ steps:
       - label: "PLAYBACK SPEED"
         value: "0.6×"
     process: |
-      1. Open Instagram.
-      2. Tap the + button.
-      3. Select Reel.
-      4. Add the generated video.
-      5. Open video editing controls.
-      6. Reduce playback speed to 0.6×.
-      7. Use the music available in Instagram for the edit.
-      8. Complete the required recording/shooting portion on Instagram.
-      9. Review the finished Reel.
-      10. Download the finished video, or share/post it directly.
+      1. Open Instagram and start creating a new Reel.
+      2. Upload the video downloaded from Step 04.
+      3. Open the editing controls and reduce the playback speed to 0.6×.
+      4. Add music from Instagram's music library and complete the edit.
+      5. Review the finished video, then download or share it.
     outputSrc: "https://www.instagram.com/reel/DeD0aGQPgz9/embed"
     outputPreviewSrc: "/images/knight-poppies-thumbnail.png"
     next: ""
