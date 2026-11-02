@@ -680,168 +680,32 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                     </div>
                     <div class="step-header-divider" role="separator" aria-hidden="true"></div>
 
-                    {/* 1. TOOL & SETTINGS (Standardized square logo box + tool name, with settings strip nested directly underneath) */}
-                    {stepToolName && (
-                      <div class="tutorial-step-section tutorial-tool-section">
-                        <span class="step-subheading-label">{step.settings && step.settings.length > 0 ? "TOOL & SETTINGS" : "TOOL"}</span>
-                        <div class="step-tool-inline">
-                          {stepToolUrl ? (
-                            <a
-                              class="step-tool-logo-link"
-                              href={stepToolUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              aria-label={`Open ${stepToolName}`}
-                              title={`Open ${stepToolName}`}
-                            >
-                              <div class="step-tool-logo-box">
-                                <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading="eager" decoding="async" />
-                              </div>
-                            </a>
-                          ) : (
-                            <div class="step-tool-logo-box">
-                              <img class="step-tool-logo" src={stepToolLogo} alt={stepToolName} width="36" height="36" loading="eager" decoding="async" />
-                            </div>
-                          )}
-                          <span class="step-tool-name">{stepToolName}</span>
-                        </div>
-                        {step.settings && step.settings.length > 0 && (
-                          <div class="step-tool-settings-strip" role="region" aria-label="Step settings">
-                            <div class="step-settings-gear-box" aria-hidden="true">
-                              <svg class="step-settings-gear-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                              </svg>
-                            </div>
-                            <span class="step-settings-divider" aria-hidden="true"></span>
-                            <div class="step-settings-scroll-track">
-                              {step.settings.map((setting: any) => {
-                                const cleanVal = String(setting.value || '').replace(/^gemini\s+/i, '');
-                                const cleanLabel = String(setting.label || '').replace(/^video\s+model$/i, 'MODEL');
-                                return (
-                                  <div class="step-setting-item">
-                                    <span class="step-setting-label">{cleanLabel}</span>
-                                    <span class="step-setting-value">{cleanVal}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {!stepToolName && step.settings && step.settings.length > 0 && (
-                      <div class="tutorial-step-section tutorial-tool-section">
-                        <span class="step-subheading-label">SETTINGS</span>
-                        <div class="step-tool-settings-strip" role="region" aria-label="Step settings">
-                          <div class="step-settings-gear-box" aria-hidden="true">
-                            <svg class="step-settings-gear-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
-                              <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                          </div>
-                          <span class="step-settings-divider" aria-hidden="true"></span>
-                          <div class="step-settings-scroll-track">
-                            {step.settings.map((setting: any) => {
-                              const cleanVal = String(setting.value || '').replace(/^gemini\s+/i, '');
-                              const cleanLabel = String(setting.label || '').replace(/^video\s+model$/i, 'MODEL');
-                              return (
-                                <div class="step-setting-item">
-                                  <span class="step-setting-label">{cleanLabel}</span>
-                                  <span class="step-setting-value">{cleanVal}</span>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 2. WHAT TO DO — concise upload/use guidance, shown separately from the tool */}
-                    {step.whatToDo && (
-                      <div class="tutorial-step-section tutorial-what-to-do-section">
-                        <span class="step-subheading-label">WHAT TO DO</span>
-                        <p class="tutorial-what-to-do-copy">{step.whatToDo}</p>
-                      </div>
-                    )}
-
-                    {/* Legacy input references remain available for resource entries without a What to do instruction */}
-                    {!step.whatToDo && step.inputs && step.inputs.length > 0 && (
-                      <div class="tutorial-step-section tutorial-inputs-section">
-                        <span class="step-subheading-label">UPLOAD</span>
-
-                        <div class="tutorial-inputs-carousel" role="region" aria-label={`Step ${index + 1} uploads`}>
-                          {step.inputs.map((inp: any) => {
-                            const isInputImg = inp.type === "image" || (!inp.type && /\.(png|jpe?g|webp|gif)/i.test(inp.src || ""));
-                            const isInputVid = inp.type === "video" || (!inp.type && /\.(mp4|webm)/i.test(inp.src || ""));
-                            const inpSrc = inp.src || "";
-                            const rawTitle = inp.label || inp.title || "Reference";
-                            const compactTitle = formatCompactInputTitle(rawTitle);
-
-                            return (
-                              <div
-                                class:list={["tutorial-input-card-fixed", { "has-lightbox": Boolean(inpSrc) }]}
-                                data-media-trigger={inpSrc ? "" : undefined}
-                                data-media-src={inpSrc || undefined}
-                                data-media-type={isInputVid ? "video" : "image"}
-                                data-media-name={compactTitle}
-                                role={inpSrc ? "button" : undefined}
-                                tabindex={inpSrc ? "0" : undefined}
-                                aria-label={inpSrc ? `Open ${compactTitle} preview` : undefined}
-                              >
-                                <div class="tutorial-input-thumb-box-fixed">
-                                  {inpSrc && isInputImg && (
-                                    <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading="eager" decoding="async" />
-                                  )}
-                                  {inpSrc && isInputVid && (
-                                    isRealVideo(inpSrc) ? (
-                                      <video class="tutorial-input-thumb" src={inpSrc} muted playsinline preload="metadata" />
-                                    ) : (
-                                      <img class="tutorial-input-thumb" src={inpSrc} alt={compactTitle} loading="eager" decoding="async" />
-                                    )
-                                  )}
-                                  {!inpSrc && (
-                                    <svg class="tutorial-input-placeholder-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#70747D" stroke-width="2" aria-hidden="true">
-                                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                      <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                                      <polyline points="21 15 16 10 5 21"></polyline>
-                                    </svg>
-                                  )}
-                                </div>
-                                <div class="tutorial-input-meta">
-                                  <span class="tutorial-input-title" title={rawTitle}>{compactTitle}</span>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* 3. PROMPT OR INSTRUCTIONS */}
+                    {/* Tool access stays beside the prompt actions; instructions steps get the same app button separately. */}
                     {isInstructionStep ? (
-                      <div class="tutorial-step-section tutorial-instructions-section">
-                        <span class="step-subheading-label">INSTRUCTIONS</span>
-                        <ol class="tutorial-instruction-list">
-                          {instructionLines.map((line: string, i: number) => {
-                            const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
-                            return (
-                              <li class="tutorial-instruction-item">
-                                <span class="instruction-num">{i + 1}.</span>
-                                <span class="instruction-text">{cleanLine}</span>
-                              </li>
-                            );
-                          })}
-                        </ol>
+                      <div class="tutorial-step-section tutorial-app-action-section">
+                        {stepToolUrl ? (
+                          <a class="tutorial-prompt-tool-link tutorial-standalone-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${stepToolName}`} title={`Open ${stepToolName}`}>
+                            {stepToolName}
+                          </a>
+                        ) : (
+                          <span class="tutorial-prompt-tool-link tutorial-standalone-tool-link">{stepToolName}</span>
+                        )}
                       </div>
                     ) : actionText ? (
                       <div class="tutorial-step-section tutorial-prompt-section">
                         <span class="step-subheading-label">PROMPT</span>
                         <div class="tutorial-prompt-box">
                           <div class="tutorial-prompt-header">
+                            {stepToolName && (
+                              stepToolUrl ? (
+                                <a class="tutorial-prompt-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${stepToolName}`} title={`Open ${stepToolName}`}>
+                                  {stepToolName}
+                                </a>
+                              ) : (
+                                <span class="tutorial-prompt-tool-link">{stepToolName}</span>
+                              )
+                            )}
                             <div class="tutorial-prompt-actions">
-                              {/* Download button: 34px x 34px fixed */}
                               <button
                                 type="button"
                                 class="tutorial-prompt-btn tutorial-download-btn"
@@ -856,7 +720,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                   <line x1="12" y1="15" x2="12" y2="3"/>
                                 </svg>
                               </button>
-                              {/* Neutral Copy button */}
                               <button
                                 type="button"
                                 class="tutorial-prompt-btn tutorial-copy-btn"
@@ -870,10 +733,117 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                       </div>
                     ) : null}
 
+                    {/* Secondary information stays collapsed until requested. */}
+                    {isInstructionStep ? (
+                      <div class="tutorial-step-disclosure tutorial-step-disclosure-single" data-step-disclosure>
+                        <button
+                          type="button"
+                          class="tutorial-step-disclosure-button"
+                          data-step-panel-toggle
+                          data-panel="instructions"
+                          aria-expanded="false"
+                          aria-controls={`step-${index + 1}-instructions`}
+                        >
+                          <span>Instructions</span>
+                          <svg class="tutorial-step-disclosure-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="m5 7.5 5 5 5-5"/>
+                          </svg>
+                        </button>
+                        <div class="tutorial-step-disclosure-panel" data-step-panel="instructions" id={`step-${index + 1}-instructions`} hidden>
+                          <ol class="tutorial-instruction-list">
+                            {instructionLines.map((line: string, i: number) => {
+                              const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
+                              return (
+                                <li class="tutorial-instruction-item">
+                                  <span class="instruction-num">{i + 1}.</span>
+                                  <span class="instruction-text">{cleanLine}</span>
+                                </li>
+                              );
+                            })}
+                          </ol>
+                        </div>
+                      </div>
+                    ) : actionText ? (
+                      <div class="tutorial-step-disclosure" data-step-disclosure>
+                        <div class="tutorial-step-disclosure-tabs" role="group" aria-label={`Step ${index + 1} information`}>
+                          <button
+                            type="button"
+                            class="tutorial-step-disclosure-button"
+                            data-step-panel-toggle
+                            data-panel="how-to-use"
+                            aria-expanded="false"
+                            aria-controls={`step-${index + 1}-how-to-use`}
+                          >
+                            How to use
+                          </button>
+                          {((step.settings && step.settings.length > 0) || step.outputDescription) && (
+                            <button
+                              type="button"
+                              class="tutorial-step-disclosure-button"
+                              data-step-panel-toggle
+                              data-panel="details"
+                              aria-expanded="false"
+                              aria-controls={`step-${index + 1}-details`}
+                            >
+                              Details
+                            </button>
+                          )}
+                        </div>
+
+                        <div class="tutorial-step-disclosure-panel" data-step-panel="how-to-use" id={`step-${index + 1}-how-to-use`} hidden>
+                          {step.whatToDo ? (
+                            <p class="tutorial-what-to-do-copy">{step.whatToDo}</p>
+                          ) : step.inputs && step.inputs.length > 0 ? (
+                            <ul class="tutorial-how-to-use-list">
+                              {step.inputs.map((input: any) => (
+                                <li>
+                                  <strong>{input.label || input.title || "Reference"}</strong>
+                                  {input.role ? <span> — {input.role}</span> : null}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <p class="tutorial-what-to-do-copy">Copy the prompt, open the selected app, paste it, and generate your result.</p>
+                          )}
+                          <p class="tutorial-how-to-use-followup">
+                            Copy the prompt above, open {stepToolName || "the selected app"}, and run it.
+                          </p>
+                        </div>
+
+                        {((step.settings && step.settings.length > 0) || step.outputDescription) && (
+                          <div class="tutorial-step-disclosure-panel" data-step-panel="details" id={`step-${index + 1}-details`} hidden>
+                            {step.settings && step.settings.length > 0 && (
+                              <div class="tutorial-details-group">
+                                <span class="tutorial-details-label">GENERATION SETTINGS</span>
+                                <div class="tutorial-details-grid">
+                                  {step.settings.map((setting: any) => {
+                                    const cleanVal = String(setting.value || '').replace(/^gemini\s+/i, '');
+                                    const cleanLabel = String(setting.label || '').replace(/^video\s+model$/i, 'MODEL');
+                                    return (
+                                      <div class="tutorial-detail-item">
+                                        <span class="tutorial-detail-label">{cleanLabel}</span>
+                                        <span class="tutorial-detail-value">{cleanVal}</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                            {step.outputDescription && (
+                              <div class="tutorial-details-group">
+                                <span class="tutorial-details-label">EXPECTED RESULT</span>
+                                <p class="tutorial-output-description">{step.outputDescription}</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ) : null}
+
                     {/* 4. OUTPUT (Optional: rendered only when step has an actual visual or embed output) */}
                     {hasMedia && mediaUrl && (
                       <div class="tutorial-step-section tutorial-result-section">
-                        <span class="step-subheading-label">OUTPUT</span>
+                        <span class="step-subheading-label">RESULT</span>
                         <div class:list={["tutorial-step-result-card", { "has-instagram-embed": isInstagramStep }]}>
                           <div
                             class:list={["tutorial-result-media-frame", { "is-instagram-frame": isInstagramStep, "is-video-frame": isRealVideo(mediaUrl) || isEmbedUrl, "has-lightbox": !isInstagramStep && !isEmbedUrl && Boolean(mediaUrl) }]}
@@ -1325,6 +1295,30 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           }
         });
       }
+
+      // Step information panels: one panel open at a time within each step.
+      document.querySelectorAll("[data-step-disclosure]").forEach((disclosure) => {
+        const buttons = Array.from(disclosure.querySelectorAll("[data-step-panel-toggle]"));
+        const panels = Array.from(disclosure.querySelectorAll("[data-step-panel]"));
+
+        buttons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const panelName = button.getAttribute("data-panel");
+            const wasExpanded = button.getAttribute("aria-expanded") === "true";
+
+            buttons.forEach((item) => item.setAttribute("aria-expanded", "false"));
+            panels.forEach((panel) => { panel.hidden = true; });
+
+            if (!wasExpanded && panelName) {
+              const target = panels.find((panel) => panel.getAttribute("data-step-panel") === panelName);
+              if (target) {
+                button.setAttribute("aria-expanded", "true");
+                target.hidden = false;
+              }
+            }
+          });
+        });
+      });
     })();
   </script>
 
@@ -2152,9 +2146,189 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       padding: 8px 12px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 8px;
       box-sizing: border-box;
+    }
+
+    .tutorial-prompt-tool-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      max-width: 48%;
+      padding: 0 12px;
+      border-radius: 6px;
+      background: #111318;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #F5F5F5;
+      font: 600 12px/1.2 sans-serif;
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      box-sizing: border-box;
+      flex-shrink: 1;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .tutorial-prompt-tool-link:hover {
+      background: #1A1E28;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .tutorial-prompt-tool-link:focus-visible,
+    .tutorial-step-disclosure-button:focus-visible {
+      outline: 2px solid #FACC15;
+      outline-offset: 2px;
+    }
+
+    .tutorial-standalone-tool-link {
+      width: fit-content;
+      max-width: 100%;
+    }
+
+    .tutorial-step-disclosure {
+      width: 100%;
+      margin: 0 0 18px;
+    }
+
+    .tutorial-step-disclosure-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .tutorial-step-disclosure-button {
+      width: 100%;
+      min-height: 42px;
+      padding: 10px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9px;
+      background: #111318;
+      color: #B0B5C0;
+      font: 600 13px/1.25 sans-serif;
+      cursor: pointer;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .tutorial-step-disclosure-button[aria-expanded="true"] {
+      background: #1A1E28;
+      border-color: rgba(250, 204, 21, 0.38);
+      color: #FFFFFF;
+    }
+
+    .tutorial-step-disclosure-single .tutorial-step-disclosure-button {
+      justify-content: space-between;
+      text-align: left;
+    }
+
+    .tutorial-step-disclosure-icon {
+      flex: 0 0 auto;
+      transition: transform 0.18s ease;
+    }
+
+    .tutorial-step-disclosure-button[aria-expanded="true"] .tutorial-step-disclosure-icon {
+      transform: rotate(180deg);
+    }
+
+    .tutorial-step-disclosure-panel {
+      margin-top: 9px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 10px;
+      background: #101319;
+      color: #B0B5C0;
+      box-sizing: border-box;
+    }
+
+    .tutorial-step-disclosure-panel[hidden] {
+      display: none !important;
+    }
+
+    .tutorial-how-to-use-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #B0B5C0;
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .tutorial-how-to-use-list li + li {
+      margin-top: 6px;
+    }
+
+    .tutorial-how-to-use-list strong {
+      color: #E5E7EB;
+      font-weight: 600;
+    }
+
+    .tutorial-how-to-use-followup {
+      margin: 8px 0 0;
+      color: #8C92A0;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .tutorial-details-group + .tutorial-details-group {
+      margin-top: 14px;
+      padding-top: 13px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tutorial-details-label {
+      display: block;
+      margin: 0 0 9px;
+      color: #8C92A0;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      line-height: 1.3;
+    }
+
+    .tutorial-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .tutorial-detail-item {
+      min-width: 0;
+      padding: 10px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      background: #151922;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tutorial-detail-label {
+      color: #8C92A0;
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .tutorial-detail-value {
+      color: #F5F5F5;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .tutorial-output-description {
+      margin: 0;
+      color: #B0B5C0;
+      font-size: 13.5px;
+      line-height: 1.55;
     }
 
     .tutorial-prompt-actions {
@@ -3169,6 +3343,63 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     html[data-theme="light"] .tutorial-prompt-header,
     html.light-theme .tutorial-prompt-header {
       background: #F1F5F9;
+      border-color: #E2E8F0;
+    }
+
+    html[data-theme="light"] .tutorial-prompt-tool-link,
+    html.light-theme .tutorial-prompt-tool-link {
+      background: #FFFFFF;
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+
+    html[data-theme="light"] .tutorial-step-disclosure-button,
+    html.light-theme .tutorial-step-disclosure-button {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #334155;
+    }
+
+    html[data-theme="light"] .tutorial-step-disclosure-button[aria-expanded="true"],
+    html.light-theme .tutorial-step-disclosure-button[aria-expanded="true"] {
+      background: #EFF6FF;
+      border-color: #93C5FD;
+      color: #0F172A;
+    }
+
+    html[data-theme="light"] .tutorial-step-disclosure-panel,
+    html.light-theme .tutorial-step-disclosure-panel {
+      background: #F8FAFC;
+      border-color: #E2E8F0;
+      color: #334155;
+    }
+
+    html[data-theme="light"] .tutorial-how-to-use-list,
+    html.light-theme .tutorial-how-to-use-list,
+    html[data-theme="light"] .tutorial-output-description,
+    html.light-theme .tutorial-output-description {
+      color: #334155;
+    }
+
+    html[data-theme="light"] .tutorial-how-to-use-list strong,
+    html.light-theme .tutorial-how-to-use-list strong,
+    html[data-theme="light"] .tutorial-detail-value,
+    html.light-theme .tutorial-detail-value {
+      color: #0F172A;
+    }
+
+    html[data-theme="light"] .tutorial-details-label,
+    html.light-theme .tutorial-details-label,
+    html[data-theme="light"] .tutorial-detail-label,
+    html.light-theme .tutorial-detail-label,
+    html[data-theme="light"] .tutorial-how-to-use-followup,
+    html.light-theme .tutorial-how-to-use-followup {
+      color: #64748B;
+    }
+
+    html[data-theme="light"] .tutorial-detail-item,
+    html.light-theme .tutorial-detail-item {
+      background: #FFFFFF;
       border-color: #E2E8F0;
     }
 
