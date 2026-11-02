@@ -847,8 +847,18 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 })}
                               </div>
                             ) : null}
-                            {(!step.details || step.details.length === 0) && (!step.settings || step.settings.length === 0) && step.outputDescription && (
-                              <p class="tutorial-details-note">{step.outputDescription}</p>
+                            {step.settings && step.settings.length > 0 && step.outputDescription && (
+                              <div class="tutorial-details-note">
+                                <div class="tutorial-detail-heading">
+                                  <svg class="tutorial-detail-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect x="2.5" y="5.2" width="15" height="10.5" rx="2"/>
+                                    <circle cx="10" cy="10.5" r="3"/>
+                                    <path d="m5.2 5.2 1-2h2l1 2"/>
+                                  </svg>
+                                  <span class="tutorial-detail-label">CAMERA</span>
+                                </div>
+                                <p class="tutorial-details-note-copy">{step.outputDescription}</p>
+                              </div>
                             )}
                           </div>
                         </div>
@@ -2397,6 +2407,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       margin: 14px 0 0;
       padding-top: 11px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tutorial-details-note .tutorial-detail-heading {
+      margin-bottom: 5px;
+    }
+
+    .tutorial-details-note-copy {
+      margin: 0;
       color: #AAB2BF;
       font-size: 12.5px;
       line-height: 1.5;
@@ -3558,8 +3576,12 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     html[data-theme="light"] .tutorial-details-note,
     html.light-theme .tutorial-details-note {
-      color: #475569;
       border-top-color: #E2E8F0;
+    }
+
+    html[data-theme="light"] .tutorial-details-note-copy,
+    html.light-theme .tutorial-details-note-copy {
+      color: #475569;
     }
 
     html[data-theme="light"] .tutorial-step-disclosure-single .tutorial-step-disclosure-button,
