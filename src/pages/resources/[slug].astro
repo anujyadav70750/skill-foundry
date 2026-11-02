@@ -633,7 +633,23 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
         {/* STEP-BY-STEP WORKFLOW (Each step is an independent card directly on the page) */}
         {workflowSteps.length > 0 && (
-          <div class="tutorial-steps-list" aria-label="Workflow steps">
+          <nav class="workflow-step-nav" aria-label="Choose a workflow step" role="tablist" data-workflow-step-nav>
+            {workflowSteps.map((step, index) => (
+              <button
+                type="button"
+                id={`workflow-step-tab-${index + 1}`}
+                class="workflow-step-nav-button"
+                role="tab"
+                data-workflow-step-button
+                aria-selected={index === 0 ? "true" : "false"}
+                aria-controls={`step-${index + 1}`}
+                tabindex={index === 0 ? 0 : -1}
+              >
+                STEP {String(index + 1).padStart(2, "0")}
+              </button>
+            ))}
+          </nav>
+          <div class="tutorial-steps-list" aria-label="Workflow step content" data-workflow-step-panels>
               {workflowSteps.map((step, index) => {
                 const output = outputVisual(step, index);
                 const actionText = String(step.process || "").trim();
@@ -662,11 +678,16 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const compactResultTitle = formatCompactResultTitle(step.outputLabel || step.output || "", step.title);
 
                 return (
-                  <article class="tutorial-step-card" id={`step-${index + 1}`} data-step={index + 1}>
-                    {/* Centered Step Capsule Marker */}
-                    <div class="tutorial-step-capsule-wrap">
-                      <span class="tutorial-step-capsule">STEP {String(index + 1).padStart(2, '0')}</span>
-                    </div>
+                  <article
+                    class:list={["tutorial-step-card", { "is-active": index === 0 }]}
+                    id={`step-${index + 1}`}
+                    data-step={index + 1}
+                    data-workflow-step-card
+                    role="tabpanel"
+                    aria-labelledby={`workflow-step-tab-${index + 1}`}
+                    aria-hidden={index === 0 ? "false" : "true"}
+                    hidden={index !== 0}
+                  >
 
                     {/* Step Title & Short Lead Description — with yellow accent bar matching upper sections */}
                     <div class="tutorial-step-header">
@@ -680,179 +701,10 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                     </div>
                     <div class="step-header-divider" role="separator" aria-hidden="true"></div>
 
-                    {/* Tool access stays beside the prompt actions; instructions steps get the same app button separately. */}
-                    {isInstructionStep ? (
-                      <div class="tutorial-step-section tutorial-app-action-section">
-                        {stepToolUrl ? (
-                          <a class="tutorial-prompt-tool-link tutorial-standalone-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${stepToolName}`} title={`Open ${stepToolName}`}>
-                            {stepToolName}
-                          </a>
-                        ) : (
-                          <span class="tutorial-prompt-tool-link tutorial-standalone-tool-link">{stepToolName}</span>
-                        )}
-                      </div>
-                    ) : actionText ? (
-                      <div class="tutorial-step-section tutorial-prompt-section">
-                        <span class="step-subheading-label">PROMPT</span>
-                        <div class="tutorial-prompt-box">
-                          <div class="tutorial-prompt-header">
-                            {stepToolName && (
-                              stepToolUrl ? (
-                                <a class="tutorial-prompt-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${stepToolName}`} title={`Open ${stepToolName}`}>
-                                  {stepToolName}
-                                </a>
-                              ) : (
-                                <span class="tutorial-prompt-tool-link">{stepToolName}</span>
-                              )
-                            )}
-                            <div class="tutorial-prompt-actions">
-                              <button
-                                type="button"
-                                class="tutorial-prompt-btn tutorial-download-btn"
-                                data-download-prompt
-                                data-prompt-name={`skill-foundry-step-${index + 1}-prompt`}
-                                aria-label="Download prompt as PDF"
-                                title="Download prompt as PDF"
-                              >
-                                <svg class="tutorial-download-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                  <polyline points="7 10 12 15 17 10"/>
-                                  <line x1="12" y1="15" x2="12" y2="3"/>
-                                </svg>
-                              </button>
-                              <button
-                                type="button"
-                                class="tutorial-prompt-btn tutorial-copy-btn"
-                                data-copy-prompt
-                                aria-label="Copy prompt to clipboard"
-                              >Copy</button>
-                            </div>
-                          </div>
-                          <pre class="tutorial-prompt-pre" data-prompt-content>{actionText}</pre>
-                        </div>
-                      </div>
-                    ) : null}
-
-                    {/* Guide / Details tabs keep secondary information compact and replace content in one reserved area. */}
-                    {isInstructionStep ? (
-                      <div class="tutorial-step-disclosure tutorial-step-disclosure-single" data-step-disclosure>
-                        <button
-                          type="button"
-                          class="tutorial-step-disclosure-button"
-                          data-step-panel-toggle
-                          data-panel="instructions"
-                          aria-expanded="true"
-                          aria-controls={`step-${index + 1}-instructions`}
-                        >
-                          <span>Instructions</span>
-                          <svg class="tutorial-step-disclosure-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                            <path d="m5 7.5 5 5 5-5"/>
-                          </svg>
-                        </button>
-                        <div class="tutorial-step-disclosure-panel tutorial-instructions-panel" data-step-panel="instructions" id={`step-${index + 1}-instructions`}>
-                          <ol class="tutorial-instruction-list">
-                            {instructionLines.map((line: string, i: number) => {
-                              const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
-                              return (
-                                <li class="tutorial-instruction-item">
-                                  <span class="instruction-num">{i + 1}.</span>
-                                  <span class="instruction-text">{cleanLine}</span>
-                                </li>
-                              );
-                            })}
-                          </ol>
-                        </div>
-                      </div>
-                    ) : actionText ? (
-                      <div class="tutorial-step-disclosure" data-step-disclosure>
-                        <div class="tutorial-step-disclosure-tabs" role="tablist" aria-label={`Step ${index + 1} information`}>
-                          <button
-                            type="button"
-                            role="tab"
-                            class="tutorial-step-disclosure-button"
-                            data-step-panel-toggle
-                            data-panel="guide"
-                            aria-selected="true"
-                            tabindex="0"
-                            aria-controls={`step-${index + 1}-guide`}
-                          >
-                            <svg class="tutorial-tab-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                              <path d="M4 3.5h12v13H4z"/>
-                              <path d="M7 7h6M7 10h6M7 13h4"/>
-                            </svg>
-                            <span>Guide</span>
-                          </button>
-                          <button
-                            type="button"
-                            role="tab"
-                            class="tutorial-step-disclosure-button"
-                            data-step-panel-toggle
-                            data-panel="details"
-                            aria-selected="false"
-                            tabindex="-1"
-                            aria-controls={`step-${index + 1}-details`}
-                          >
-                            <svg class="tutorial-tab-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                              <circle cx="10" cy="10" r="7.2"/>
-                              <path d="M10 9v4M10 6.5h.01"/>
-                            </svg>
-                            <span>Details</span>
-                          </button>
-                        </div>
-
-                        <div class="tutorial-step-disclosure-panels">
-                          <div class="tutorial-step-disclosure-panel tutorial-guide-panel is-active" role="tabpanel" data-step-panel="guide" id={`step-${index + 1}-guide`} aria-hidden="false" tabindex="0">
-                            <ul class="tutorial-guide-list">
-                              {(step.guidePoints && step.guidePoints.length > 0
-                                ? step.guidePoints
-                                : [step.whatToDo || "Copy the prompt, open the selected app, and run it."]
-                              ).map((point: string) => <li>{point}</li>)}
-                            </ul>
-                          </div>
-
-                          <div class="tutorial-step-disclosure-panel tutorial-details-panel" role="tabpanel" data-step-panel="details" id={`step-${index + 1}-details`} aria-hidden="true" tabindex="-1" inert>
-                            <div class="tutorial-details-grid">
-                              {stepToolName && (
-                                <div class="tutorial-detail-item tutorial-tool-used-item">
-                                  <div class="tutorial-detail-heading">
-                                    <span class="tutorial-detail-emoji" aria-hidden="true">🛠️</span>
-                                    <span class="tutorial-detail-label">TOOL USED</span>
-                                  </div>
-                                  <span class="tutorial-detail-value">{stepToolName}</span>
-                                </div>
-                              )}
-                              {!/chatgpt/i.test(stepToolName) && step.details && step.details.map((detail: any) => (
-                                <div class="tutorial-detail-item">
-                                  <div class="tutorial-detail-heading">
-                                    <span class="tutorial-detail-emoji" aria-hidden="true">{detail.icon}</span>
-                                    <span class="tutorial-detail-label">{detail.label}</span>
-                                  </div>
-                                  <span class="tutorial-detail-value">{detail.value}</span>
-                                </div>
-                              ))}
-                              {step.settings && step.settings.map((setting: any) => {
-                                const label = String(setting.label || '').toUpperCase();
-                                const settingEmoji = label.includes("MODEL") ? "🎬" : label.includes("ASPECT") ? "📱" : label.includes("DURATION") ? "⏱️" : label.includes("RESOLUTION") ? "🎞️" : label.includes("SPEED") ? "⏩" : "⚙️";
-                                return (
-                                  <div class="tutorial-detail-item">
-                                    <div class="tutorial-detail-heading">
-                                      <span class="tutorial-detail-emoji" aria-hidden="true">{settingEmoji}</span>
-                                      <span class="tutorial-detail-label">{label}</span>
-                                    </div>
-                                    <span class="tutorial-detail-value">{String(setting.value || '').replace(/^gemini\s+/i, '')}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ) : null}
-
                     {/* 4. OUTPUT (Optional: rendered only when step has an actual visual or embed output) */}
                     {hasMedia && mediaUrl && (
-                      <div class="tutorial-step-section tutorial-result-section">
-                        <span class="step-subheading-label">RESULT</span>
+                      <div class="tutorial-result-section">
+                        
                         <div class:list={["tutorial-step-result-card", { "has-instagram-embed": isInstagramStep }]}>
                           <div
                             class:list={["tutorial-result-media-frame", { "is-instagram-frame": isInstagramStep, "is-video-frame": isRealVideo(mediaUrl) || isEmbedUrl, "has-lightbox": !isInstagramStep && !isEmbedUrl && Boolean(mediaUrl) }]}
@@ -917,13 +769,114 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               </div>
                             )}
                           </div>
-                          <div class="tutorial-result-info">
-                            <span class="tutorial-result-name">{compactResultTitle}</span>
+                          </div>
+                      </div>
+                    )}
+                  
+                    {/* Prompt box appears only on generation steps. */}
+                    {!isInstructionStep && actionText ? (
+
+                      <div class="tutorial-step-section tutorial-prompt-section">
+                        <span class="step-subheading-label">PROMPT</span>
+                        <div class="tutorial-prompt-box">
+                          <div class="tutorial-prompt-header">
+                            {stepToolName && (
+                              stepToolUrl ? (
+                                <a class="tutorial-prompt-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${stepToolName}`} title={`Open ${stepToolName}`}>
+                                  {stepToolName}
+                                </a>
+                              ) : (
+                                <span class="tutorial-prompt-tool-link">{stepToolName}</span>
+                              )
+                            )}
+                            <div class="tutorial-prompt-actions">
+                              <button
+                                type="button"
+                                class="tutorial-prompt-btn tutorial-download-btn"
+                                data-download-prompt
+                                data-prompt-name={`skill-foundry-step-${index + 1}-prompt`}
+                                aria-label="Download prompt as PDF"
+                                title="Download prompt as PDF"
+                              >
+                                <svg class="tutorial-download-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                  <polyline points="7 10 12 15 17 10"/>
+                                  <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                              </button>
+                              <button
+                                type="button"
+                                class="tutorial-prompt-btn tutorial-copy-btn"
+                                data-copy-prompt
+                                aria-label="Copy prompt to clipboard"
+                              >Copy</button>
+                            </div>
+                          </div>
+                          <pre class="tutorial-prompt-pre" data-prompt-content>{actionText}</pre>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {/* Guide / Details for the selected step. Step 05 keeps numbered editing instructions in Guide. */}
+                    <div class="tutorial-step-disclosure" data-step-disclosure>
+                      <div class="tutorial-step-disclosure-tabs" role="tablist" aria-label={`Step ${index + 1} information`}>
+                        <button type="button" role="tab" class="tutorial-step-disclosure-button" data-step-panel-toggle data-panel="guide" aria-selected="true" tabindex="0" aria-controls={`step-${index + 1}-guide`}>
+                          <svg class="tutorial-tab-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 3.5h12v13H4z"/><path d="M7 7h6M7 10h6M7 13h4"/>
+                          </svg>
+                          <span>Guide</span>
+                        </button>
+                        <button type="button" role="tab" class="tutorial-step-disclosure-button" data-step-panel-toggle data-panel="details" aria-selected="false" tabindex="-1" aria-controls={`step-${index + 1}-details`}>
+                          <svg class="tutorial-tab-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="10" cy="10" r="7.2"/><path d="M10 9v4M10 6.5h.01"/>
+                          </svg>
+                          <span>Details</span>
+                        </button>
+                      </div>
+                      <div class="tutorial-step-disclosure-panels">
+                        <div class="tutorial-step-disclosure-panel tutorial-guide-panel" role="tabpanel" data-step-panel="guide" id={`step-${index + 1}-guide`} aria-hidden="false" tabindex="0">
+                          {isInstructionStep ? (
+                            <ol class="tutorial-instruction-list">
+                              {instructionLines.map((line: string, i: number) => {
+                                const cleanLine = line.replace(/^\d+[\.\)]\s*/, "").trim();
+                                return <li class="tutorial-instruction-item"><span class="instruction-num">{i + 1}.</span><span class="instruction-text">{cleanLine}</span></li>;
+                              })}
+                            </ol>
+                          ) : (
+                            <ul class="tutorial-guide-list">
+                              {(step.guidePoints && step.guidePoints.length > 0 ? step.guidePoints : [step.whatToDo || "Copy the prompt, open the selected app, and generate the result."]).map((point: string) => <li>{point}</li>)}
+                            </ul>
+                          )}
+                        </div>
+                        <div class="tutorial-step-disclosure-panel tutorial-details-panel" role="tabpanel" data-step-panel="details" id={`step-${index + 1}-details`} aria-hidden="true" tabindex="-1" inert>
+                          <div class="tutorial-details-grid">
+                            {[...(step.details || []), ...(step.settings || [])].map((detail: any) => {
+                              const label = String(detail.label || "").toUpperCase();
+                              const kind = label.includes("TOOL") ? "tool" : label.includes("MODEL") ? "model" : label.includes("ASPECT") || label.includes("FORMAT") ? "ratio" : label.includes("DURATION") ? "duration" : label.includes("RESOLUTION") ? "resolution" : label.includes("SPEED") ? "speed" : "info";
+                              return (
+                                <div class="tutorial-detail-item">
+                                  <div class="tutorial-detail-heading">
+                                    <svg class="tutorial-detail-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                      {kind === "tool" && <><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M7 7h2v2H7zM11 7h2v2h-2zM7 11h2v2H7zM11 11h2v2h-2z"/></>}
+                                      {kind === "model" && <><rect x="5" y="5" width="10" height="10" rx="1.6"/><path d="M7.5 2.5v2.5M12.5 2.5v2.5M7.5 15v2.5M12.5 15v2.5M2.5 7.5H5M2.5 12.5H5M15 7.5h2.5M15 12.5h2.5"/></>}
+                                      {kind === "ratio" && <><rect x="2.8" y="4" width="14.4" height="12" rx="1.5"/><path d="M6 7h8M6 10h5"/></>}
+                                      {kind === "duration" && <><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.8 1.8"/></>}
+                                      {kind === "resolution" && <><rect x="2.5" y="3.5" width="15" height="10.5" rx="1.5"/><path d="M7 17h6M10 14v3"/></>}
+                                      {kind === "speed" && <><path d="M3.5 14a7 7 0 1 1 13 0"/><path d="m10 10 3.5-3M5 14h10"/></>}
+                                      {kind === "info" && <><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.5h.01"/></>}
+                                    </svg>
+                                    <span class="tutorial-detail-label">{label}</span>
+                                  </div>
+                                  <span class="tutorial-detail-value">{detail.value}</span>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
-                    )}
-                  </article>
+                    </div>
+
+                    </article>
                 );
               })}
             </div>
@@ -1305,76 +1258,85 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         });
       }
 
-      // Segmented information tabs: switch visible content without changing the reserved panel height.
+      // Step navigation: show only the selected workflow card.
+      const workflowStepNav = document.querySelector("[data-workflow-step-nav]");
+      if (workflowStepNav) {
+        const stepButtons = Array.from(workflowStepNav.querySelectorAll("[data-workflow-step-button]"));
+        const stepCards = Array.from(document.querySelectorAll("[data-workflow-step-card]"));
+        const activateWorkflowStep = (index, moveFocus = false) => {
+          if (index < 0 || index >= stepButtons.length || !stepCards[index]) return;
+          stepButtons.forEach((button, i) => {
+            const active = i === index;
+            button.setAttribute("aria-selected", active ? "true" : "false");
+            button.tabIndex = active ? 0 : -1;
+          });
+          stepCards.forEach((card, i) => {
+            const active = i === index;
+            card.hidden = !active;
+            card.setAttribute("aria-hidden", active ? "false" : "true");
+            card.classList.toggle("is-active", active);
+          });
+          if (moveFocus) stepButtons[index].focus();
+        };
+        const selectedIndex = stepButtons.findIndex((button) => button.getAttribute("aria-selected") === "true");
+        activateWorkflowStep(selectedIndex < 0 ? 0 : selectedIndex);
+        stepButtons.forEach((button,index) => {
+          button.addEventListener("click", () => activateWorkflowStep(index));
+          button.addEventListener("keydown", (event) => {
+            let next = index;
+            if (event.key === "ArrowRight") next = (index + 1) % stepButtons.length;
+            else if (event.key === "ArrowLeft") next = (index - 1 + stepButtons.length) % stepButtons.length;
+            else if (event.key === "Home") next = 0;
+            else if (event.key === "End") next = stepButtons.length - 1;
+            else return;
+            event.preventDefault();
+            activateWorkflowStep(next,true);
+          });
+        });
+      }
+
+      // Guide / Details tabs within each step.
       document.querySelectorAll("[data-step-disclosure]").forEach((disclosure) => {
-        const buttons = Array.from(disclosure.querySelectorAll("[data-step-panel-toggle]"));
+        const tabButtons = Array.from(disclosure.querySelectorAll('[role="tab"][data-step-panel-toggle]'));
         const panels = Array.from(disclosure.querySelectorAll("[data-step-panel]"));
-        const tabButtons = buttons.filter((button) => button.getAttribute("role") === "tab");
-
-        if (tabButtons.length) {
-          const activateTab = (selectedButton, moveFocus = false) => {
-            const panelName = selectedButton.getAttribute("data-panel");
-            const targetPanel = panels.find((panel) => panel.getAttribute("data-step-panel") === panelName);
-            if (!targetPanel) return;
-
-            tabButtons.forEach((button) => {
-              const selected = button === selectedButton;
-              button.setAttribute("aria-selected", selected ? "true" : "false");
-              button.tabIndex = selected ? 0 : -1;
-            });
-
-            panels.forEach((panel) => {
-              const active = panel === targetPanel;
-              panel.setAttribute("aria-hidden", active ? "false" : "true");
-              if (active) {
-                panel.removeAttribute("inert");
-                panel.setAttribute("tabindex", "0");
-              } else {
-                panel.setAttribute("inert", "");
-                panel.setAttribute("tabindex", "-1");
-              }
-            });
-
-            if (moveFocus) selectedButton.focus();
-          };
-
-          const initiallySelected = tabButtons.find((button) => button.getAttribute("aria-selected") === "true") || tabButtons[0];
-          activateTab(initiallySelected);
-
-          const syncPanelHeight = () => {
-            const height = Math.max(0, ...panels.map((panel) => panel.scrollHeight));
-            disclosure.style.setProperty("--sf-disclosure-height", `${height}px`);
-          };
-          syncPanelHeight();
-          window.addEventListener("resize", syncPanelHeight);
-
-          tabButtons.forEach((button, index) => {
-            button.addEventListener("click", () => activateTab(button));
-            button.addEventListener("keydown", (event) => {
-              let nextIndex = index;
-              if (event.key === "ArrowRight") nextIndex = (index + 1) % tabButtons.length;
-              else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabButtons.length) % tabButtons.length;
-              else if (event.key === "Home") nextIndex = 0;
-              else if (event.key === "End") nextIndex = tabButtons.length - 1;
-              else return;
-              event.preventDefault();
-              activateTab(tabButtons[nextIndex], true);
-            });
+        if (!tabButtons.length) return;
+        const activateInfoTab = (selectedButton, moveFocus = false) => {
+          const name = selectedButton.getAttribute("data-panel");
+          const activePanel = panels.find((panel) => panel.getAttribute("data-step-panel") === name);
+          if (!activePanel) return;
+          tabButtons.forEach((button) => {
+            const active = button === selectedButton;
+            button.setAttribute("aria-selected", active ? "true" : "false");
+            button.tabIndex = active ? 0 : -1;
           });
-        } else {
-          // Step 05 remains a separate Instructions disclosure.
-          buttons.forEach((button) => {
-            const panelName = button.getAttribute("data-panel");
-            const panel = panels.find((item) => item.getAttribute("data-step-panel") === panelName);
-            if (!panel) return;
-            panel.hidden = button.getAttribute("aria-expanded") !== "true";
-            button.addEventListener("click", () => {
-              const expanded = button.getAttribute("aria-expanded") === "true";
-              button.setAttribute("aria-expanded", expanded ? "false" : "true");
-              panel.hidden = expanded;
-            });
+          panels.forEach((panel) => {
+            const active = panel === activePanel;
+            panel.setAttribute("aria-hidden", active ? "false" : "true");
+            if (active) {
+              panel.removeAttribute("inert");
+              panel.setAttribute("tabindex","0");
+            } else {
+              panel.setAttribute("inert","");
+              panel.setAttribute("tabindex","-1");
+            }
           });
-        }
+          if (moveFocus) selectedButton.focus();
+        };
+        const selected = tabButtons.find((button) => button.getAttribute("aria-selected") === "true") || tabButtons[0];
+        activateInfoTab(selected);
+        tabButtons.forEach((button,index) => {
+          button.addEventListener("click", () => activateInfoTab(button));
+          button.addEventListener("keydown", (event) => {
+            let next=index;
+            if(event.key==="ArrowRight") next=(index+1)%tabButtons.length;
+            else if(event.key==="ArrowLeft") next=(index-1+tabButtons.length)%tabButtons.length;
+            else if(event.key==="Home") next=0;
+            else if(event.key==="End") next=tabButtons.length-1;
+            else return;
+            event.preventDefault();
+            activateInfoTab(tabButtons[next],true);
+          });
+        });
       });
     })();
   </script>
@@ -1778,12 +1740,53 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       line-height: 1.55;
     }
 
+    .workflow-step-nav {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      width: 100%;
+      margin: 0 0 12px;
+    }
+
+    .workflow-step-nav-button {
+      min-width: 0;
+      min-height: 36px;
+      padding: 7px 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      background: #0D1016;
+      color: #929BAA;
+      font: 650 10px/1.1 sans-serif;
+      letter-spacing: 0.035em;
+      white-space: nowrap;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+    }
+
+    .workflow-step-nav-button[aria-selected="true"] {
+      background: #344252;
+      border-color: rgba(173, 190, 210, 0.32);
+      color: #FFFFFF;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    .workflow-step-nav-button:focus-visible {
+      outline: 2px solid #94A3B8;
+      outline-offset: 2px;
+    }
+
     .tutorial-steps-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      display: block;
       width: 100%;
       margin-top: 0;
+    }
+
+    .tutorial-step-card[hidden] {
+      display: none !important;
     }
 
     /* Step Card: Matches the Tools used section background, border, radius, shadow, and padding */
@@ -1803,32 +1806,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         padding: 22px 20px;
         border-radius: 16px;
       }
-    }
-
-    /* Centered Step Number Capsule */
-    .tutorial-step-capsule-wrap {
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin: 0 0 16px;
-    }
-
-    .tutorial-step-capsule {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      border-radius: 9999px;
-      padding: 3px 12px;
-      color: #94A3B8;
-      font-family: var(--font-mono, monospace, sans-serif);
-      font-size: 10.5px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      line-height: 1.2;
     }
 
     /* Step Title & Short Lead Description — Matches upper sections exactly */
@@ -2248,54 +2225,46 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     .tutorial-step-disclosure {
       width: 100%;
-      margin: 0 0 18px;
+      margin: 0;
       box-sizing: border-box;
     }
 
-    /* The segmented control itself is the only enclosed element. */
     .tutorial-step-disclosure-tabs {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      padding: 0;
-      background: transparent;
-      border: 0;
-      border-radius: 0;
+      gap: 4px;
+      padding: 4px;
+      background: #11151C;
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 10px;
       box-sizing: border-box;
     }
 
     .tutorial-step-disclosure-button {
       width: 100%;
       min-width: 0;
-      min-height: 44px;
+      min-height: 42px;
       padding: 9px 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 7px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 10px;
-      background: #11151C;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: transparent;
       color: #929BAA;
       font: 600 13px/1.2 sans-serif;
       cursor: pointer;
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
-      transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
-    }
-
-    .tutorial-step-disclosure-button:hover {
-      background: #1A1F28;
-      border-color: rgba(255, 255, 255, 0.22);
-      color: #F5F7FA;
-      transform: translateY(-1px);
+      transition: background 0.16s ease, color 0.16s ease;
     }
 
     .tutorial-step-disclosure-button[aria-selected="true"] {
       background: #35404F;
-      border-color: rgba(255, 255, 255, 0.18);
+      border-color: rgba(255, 255, 255, 0.14);
       color: #FFFFFF;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 2px 5px rgba(0, 0, 0, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
     }
 
     .tutorial-tab-icon {
@@ -2304,13 +2273,10 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       opacity: 0.9;
     }
 
-    /* Both panels occupy the same grid cell. The taller panel sets the row height,
-       so switching tabs never moves the Result section. */
     .tutorial-step-disclosure-panels {
       display: grid;
       width: 100%;
       margin-top: 0;
-      min-height: var(--sf-disclosure-height, 0px);
     }
 
     .tutorial-step-disclosure-panel {
@@ -2374,14 +2340,11 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       min-width: 0;
     }
 
-    .tutorial-detail-emoji {
-      width: 19px;
+    .tutorial-detail-icon {
+      width: 16px;
+      height: 16px;
       flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: flex-start;
-      font-size: 14px;
-      line-height: 1;
+      color: #929BAA;
     }
 
     .tutorial-detail-label {
@@ -3467,6 +3430,20 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       background: #FFFFFF;
       border-color: #CBD5E1;
       color: #0F172A;
+    }
+
+    html[data-theme="light"] .workflow-step-nav-button,
+    html.light-theme .workflow-step-nav-button {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+      color: #64748B;
+    }
+
+    html[data-theme="light"] .workflow-step-nav-button[aria-selected="true"],
+    html.light-theme .workflow-step-nav-button[aria-selected="true"] {
+      background: #334155;
+      border-color: #334155;
+      color: #FFFFFF;
     }
 
     html[data-theme="light"] .tutorial-step-disclosure-tabs,
