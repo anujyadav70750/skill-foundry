@@ -731,7 +731,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 </span>
                               </div>
                             ) : isInstagramStep ? (
-                              <div class="step-instagram-wrapper">
+                              <div class="step-instagram-wrapper resource-instagram-embed-shell">
                                 <blockquote
                                   class="instagram-media"
                                   data-instgrm-permalink={getInstaPermalink(mediaUrl)}
@@ -921,7 +921,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             <p class="editorial-subcopy">Watch the full walkthrough to see the workflow in action, then follow along with the steps above.</p>
             {data.videoEmbedUrl && (
               data.videoEmbedUrl.includes('instagram.com') ? (
-                <div class="video-frame is-instagram-embed">
+                <div class="video-frame is-instagram-embed resource-instagram-embed-shell">
                   <blockquote
                     class="instagram-media"
                     data-instgrm-permalink={getInstaPermalink(data.videoEmbedUrl)}
@@ -958,41 +958,52 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         <script async src="https://www.instagram.com/embed.js"></script>
         <script is:inline>
           (() => {
-            const processEmbeds = () => {
+            // Static Instagram blockquotes are parsed by embed.js. Run the explicit
+            // parser once after the async embed script has loaded, not at DOMContentLoaded
+            // and again at window.load.
+            let embedsProcessed = false;
+            const processEmbedsOnce = () => {
+              if (embedsProcessed) return;
               try {
                 if (window.instgrm && window.instgrm.Embeds) {
+                  embedsProcessed = true;
                   window.instgrm.Embeds.process();
                 }
-              } catch (e) {}
+              } catch (err) {}
             };
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', processEmbeds);
-            } else {
-              processEmbeds();
-            }
-            window.addEventListener('load', processEmbeds);
 
-            // Listen for Instagram height messages to ensure natural, unclipped height
-            window.addEventListener('message', (e) => {
-              if (!e.origin || !e.origin.includes('instagram.com')) return;
+            if (document.readyState === "complete") {
+              processEmbedsOnce();
+            } else {
+              window.addEventListener("load", processEmbedsOnce, { once: true });
+            }
+
+            // Instagram sends separate height messages for each embed. Resize only
+            // the iframe whose contentWindow sent the message; never apply one post's
+            // height to every Instagram iframe on the page.
+            window.addEventListener("message", (event) => {
+              if (!event.origin || !event.origin.includes("instagram.com")) return;
+
               try {
-                const payload = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+                const payload = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
                 if (!payload) return;
-                let h = 0;
-                if (payload.details && typeof payload.details.height === 'number') {
-                  h = payload.details.height;
-                } else if (typeof payload.height === 'number') {
-                  h = payload.height;
-                } else if (payload.details && !isNaN(Number(payload.details.height))) {
-                  h = Number(payload.details.height);
-                }
-                if (h > 200) {
-                  const targetHeight = Math.ceil(h);
-                  const iframes = document.querySelectorAll('.is-instagram-embed iframe, iframe.instagram-media-rendered, iframe[src*="instagram.com"]');
-                  iframes.forEach((iframe) => {
-                    iframe.style.setProperty('height', targetHeight + 'px', 'important');
-                    iframe.style.setProperty('max-height', 'none', 'important');
-                  });
+
+                const detailsHeight = payload.details && payload.details.height;
+                const rawHeight = detailsHeight ?? payload.height;
+                const reportedHeight = Number(rawHeight);
+                if (!Number.isFinite(reportedHeight) || reportedHeight <= 200 || reportedHeight > 3000) return;
+
+                const targetIframe = Array.from(
+                  document.querySelectorAll(".resource-instagram-embed-shell iframe")
+                ).find((iframe) => iframe.contentWindow === event.source);
+
+                if (!targetIframe) return;
+
+                const targetHeight = Math.ceil(reportedHeight);
+                const currentHeight = Number.parseFloat(targetIframe.style.height || "");
+                if (!Number.isFinite(currentHeight) || Math.abs(currentHeight - targetHeight) > 1) {
+                  targetIframe.style.setProperty("height", targetHeight + "px", "important");
+                  targetIframe.style.setProperty("max-height", "none", "important");
                 }
               } catch (err) {}
             });
