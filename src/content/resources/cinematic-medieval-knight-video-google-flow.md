@@ -47,6 +47,10 @@ prompt: |
   Follow the five-step workflow below to create the final cinematic medieval knight video.
 steps:
   - title: "Create Character Sheet"
+    tool: "ChatGPT"
+    outputType: "image"
+    outputLabel: "Character Sheet"
+    outputSrc: "/images/knight-character-sheet.png"
     purpose: "Create a consistent visual reference for your character."
     description: "Turn your character into a consistent visual reference for the video."
     whatToDo: "Upload one clear photo of the person you want to use as your character."
@@ -171,6 +175,10 @@ steps:
       No text, labels, names, logos, weapons, helmet, shield, or additional characters.
 
   - title: "Create Matching Props"
+    tool: "ChatGPT"
+    outputType: "image"
+    outputLabel: "Helmet and Sword Reference"
+    outputSrc: "/images/knight-props.png"
     purpose: "Create the props for your character."
     description: "Build the key props that belong to your character and match their visual style."
     whatToDo: "Use the character sheet created in Step 01 as the design reference for the helmet and sword."
@@ -352,6 +360,10 @@ steps:
       Both objects fully visible.
 
   - title: "Create Location"
+    tool: "ChatGPT"
+    outputType: "image"
+    outputLabel: "Location Reference"
+    outputSrc: "/images/misty-poppy-location.png"
     purpose: "Create the setting for your scene."
     description: "Create the setting for your scene."
     whatToDo: "No reference image is needed. Use the prompt below to create the location."
@@ -427,6 +439,10 @@ steps:
       No knight, no person, no horse, no weapons, no armor, no buildings, no road, no path, no footprints, no fence, no vehicles, no structures, no city, no mountains dominating the horizon, no sunset, no orange sunlight, no golden-hour lighting, no tropical vegetation, no desert, no dry grass, no artificial flowers, no fantasy landscape, no painting, no illustration, no text, no watermark.
 
   - title: "Generate Video"
+    tool: "Google Flow"
+    outputType: "image"
+    outputLabel: "Video Preview"
+    outputSrc: "/images/knight-poppies-thumbnail.png"
     purpose: "Generate the video from your previous creations."
     description: "Generate the video from your previous creations."
     whatToDo: "Upload the character sheet, helmet and sword reference, and location reference created in Steps 01 to 03."
