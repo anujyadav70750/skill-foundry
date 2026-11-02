@@ -847,7 +847,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 })}
                               </div>
                             ) : null}
-                            {step.outputDescription && (
+                            {(!step.details || step.details.length === 0) && (!step.settings || step.settings.length === 0) && step.outputDescription && (
                               <p class="tutorial-details-note">{step.outputDescription}</p>
                             )}
                           </div>
