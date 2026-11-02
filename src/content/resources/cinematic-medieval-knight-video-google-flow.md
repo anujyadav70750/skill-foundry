@@ -512,7 +512,7 @@ steps:
       The major reframe from the standing face-level shot to the final lying view is hidden inside a camera move through the poppies, with foreground flowers and stems completely wiping across the lens.
 
       IMPORTANT TEMPORAL INSTRUCTION
-      This is a temporally compressed version of a 14-second performance designed specifically for a 10-second generation.
+      This is a temporally compressed version of an approximately 16.7-second performance designed specifically for a 10-second generation.
       Perform all actions and camera movements naturally and continuously within the 10-second duration.
       Do NOT make the acting frantic or artificially rushed.
       Maintain realistic weight, inertia, gravity, breathing, armor movement, cloak movement, hair movement, vegetation physics, object physics, and camera motion.
