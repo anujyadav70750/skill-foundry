@@ -485,10 +485,6 @@ steps:
           - "Upload the helmet and sword reference as @PROPS_REF."
           - "Upload the location reference as @LOCATION_REF."
           - "Select the settings in Details, then run the prompt."
-    details:
-      - label: "CAMERA"
-        value: "84° wide-angle · Orbital movement"
-        icon: "landscape"
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Generated Video (1080p)"
