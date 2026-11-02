@@ -37,7 +37,8 @@ function injectFooterStyles() {
     hooks: {
       'astro:build:done': () => {
         const targetDir = path.join(process.cwd(), 'dist');
-        const stylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v2">';
+        const footerStylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v2">';
+        const stepNavStylesheet = '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -46,9 +47,15 @@ function injectFooterStyles() {
             if (entry.isDirectory()) {
               walk(fullPath);
             } else if (entry.isFile() && entry.name.endsWith('.html')) {
-              const html = fs.readFileSync(fullPath, 'utf8');
-              if (!html.includes('/footer-overrides.css')) {
-                const updated = html.replace('</head>', `    ${stylesheet}\n  </head>`);
+              let html = fs.readFileSync(fullPath, 'utf8');
+              let updated = html;
+              if (!updated.includes('/footer-overrides.css')) {
+                updated = updated.replace('</head>', `    ${footerStylesheet}\n  </head>`);
+              }
+              if (!updated.includes('/resource-step-nav-overrides.css')) {
+                updated = updated.replace('</head>', `    ${stepNavStylesheet}\n  </head>`);
+              }
+              if (updated !== html) {
                 fs.writeFileSync(fullPath, updated, 'utf8');
               }
             }
