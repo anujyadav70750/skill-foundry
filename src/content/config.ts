@@ -16,7 +16,7 @@ const workflowSetting = z.object({
 const workflowDetail = z.object({
   label: z.string(),
   value: z.string(),
-  icon: z.string().default('ℹ️')
+  icon: z.string().optional()
 });
 
 const workflowStep = z.object({
