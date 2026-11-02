@@ -28,7 +28,7 @@ inputImageRatios:
 resultImages: []
 resultImageRatios: []
 imageAlt: "Cinematic medieval knight resting among red poppies"
-intro: "Prepare one clear, well-lit photo of the person you want to use as your character, with their face clearly visible. Make sure you have access to ChatGPT, Google Flow, and Instagram before starting."
+intro: "Make sure you have a clear, well-lit photo of the person you’d like to use as your character. Make sure you have access to the required tools before starting."
 whatItDoes: "Maintains character identity, armor, props, environment, camera movement, and visual continuity through a chained reference workflow."
 toolsUsed:
   - name: "ChatGPT"
