@@ -134,3 +134,145 @@ html.light-theme .resource-page .intro-section .editorial-lead::before,
 html.light-theme .resource-page .intro-section .editorial-lead::after {
   color: #334155 !important;
 }
+
+
+/* Workflow intro: compact translucent emerald callout, visually distinct
+   from standard content cards without an outline or accent bar. */
+.resource-page .blueprint-callout-box {
+  width: 94% !important;
+  max-width: 760px !important;
+  margin: 2px auto 16px !important;
+  padding: 12px 14px !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+}
+
+.resource-page .blueprint-callout-box .section-accent-bar {
+  display: none !important;
+}
+
+.resource-page .blueprint-callout-box .section-title-wrap {
+  display: block !important;
+  margin: 0 0 5px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-title {
+  margin: 0 !important;
+  font-size: 17px !important;
+  line-height: 1.35 !important;
+  font-weight: 650 !important;
+  letter-spacing: -0.01em !important;
+  color: #EAFBF4 !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-desc {
+  margin: 0 !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #B8D5C9 !important;
+}
+
+@media (min-width: 641px) {
+  .resource-page .blueprint-callout-box {
+    padding: 14px 18px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .resource-page .blueprint-callout-box .blueprint-callout-title {
+    font-size: 18px !important;
+  }
+
+  .resource-page .blueprint-callout-box .blueprint-callout-desc {
+    font-size: 13px !important;
+  }
+}
+
+/* Step tabs stay independent from the callout. The row scrolls horizontally
+   when more steps are added; no arrows or enclosing navigation card. */
+.resource-page .workflow-step-nav {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 8px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 12px !important;
+  padding: 2px 0 7px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(96, 165, 250, 0.38) transparent !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.resource-page .workflow-step-nav::-webkit-scrollbar {
+  height: 4px !important;
+}
+
+.resource-page .workflow-step-nav::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.resource-page .workflow-step-nav::-webkit-scrollbar-thumb {
+  background: rgba(96, 165, 250, 0.38) !important;
+  border-radius: 999px !important;
+}
+
+.resource-page .workflow-step-nav-button {
+  flex: 1 0 0 !important;
+  min-width: 68px !important;
+  max-width: 124px !important;
+  scroll-snap-align: start;
+  background: rgba(59, 130, 246, 0.09) !important;
+  border-color: rgba(96, 165, 250, 0.20) !important;
+  color: #B7CBE4 !important;
+}
+
+.resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(59, 130, 246, 0.27) !important;
+  border-color: rgba(96, 165, 250, 0.48) !important;
+  color: #F8FBFF !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+}
+
+/* Light theme keeps the same translucent color distinction and contrast. */
+html[data-theme="light"] .resource-page .blueprint-callout-box,
+html.light-theme .resource-page .blueprint-callout-box {
+  background: rgba(16, 185, 129, 0.10) !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-title,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-title {
+  color: #064E3B !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-desc,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-desc {
+  color: #365B4D !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button,
+html.light-theme .resource-page .workflow-step-nav-button {
+  background: rgba(59, 130, 246, 0.07) !important;
+  border-color: rgba(37, 99, 235, 0.17) !important;
+  color: #365A88 !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button[aria-selected="true"],
+html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(59, 130, 246, 0.22) !important;
+  border-color: rgba(37, 99, 235, 0.38) !important;
+  color: #173B67 !important;
+}
