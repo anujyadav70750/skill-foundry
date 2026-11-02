@@ -39,6 +39,7 @@ function injectFooterStyles() {
         const targetDir = path.join(process.cwd(), 'dist');
         const footerStylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v2">';
         const stepNavStylesheet = '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">';
+        const instagramStylesheet = '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -54,6 +55,9 @@ function injectFooterStyles() {
               }
               if (!updated.includes('/resource-step-nav-overrides.css')) {
                 updated = updated.replace('</head>', `    ${stepNavStylesheet}\n  </head>`);
+              }
+              if (!updated.includes('/resource-instagram-overrides.css')) {
+                updated = updated.replace('</head>', `    ${instagramStylesheet}\n  </head>`);
               }
               if (updated !== html) {
                 fs.writeFileSync(fullPath, updated, 'utf8');
