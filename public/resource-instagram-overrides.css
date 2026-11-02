@@ -110,7 +110,7 @@
 }
 
 .resource-page .intro-section .editorial-lead::before {
-  content: "• Make sure you have a clear, well-lit photo of the person you’d like to use as your character.\A• Make sure you have access to the required tools before starting.";
+  content: "• Make sure you have a clear, well-lit photo of the person you’d like to use as your character.\A\A• Make sure you have access to the required tools before starting.";
   display: block !important;
   white-space: pre-line !important;
   color: #B0B5C0 !important;
