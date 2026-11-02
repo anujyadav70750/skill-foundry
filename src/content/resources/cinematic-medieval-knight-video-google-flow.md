@@ -368,7 +368,7 @@ steps:
     outputSrc: "/images/misty-poppy-location.png"
     purpose: "Create the setting for your scene."
     description: "Create the setting for your scene."
-    whatToDo: "No reference image is needed. Use the prompt below to create the location."
+    whatToDo: "Generate the location reference using the prompt below."
     guidePoints:
       - "Open ChatGPT."
       - "Copy the prompt above, paste it into ChatGPT, and generate the location reference."
