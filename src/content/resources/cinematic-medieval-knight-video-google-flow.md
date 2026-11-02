@@ -486,6 +486,13 @@ steps:
       - "Upload the helmet and sword reference as @PROPS_REF."
       - "Upload the location reference as @LOCATION_REF."
       - "Select the settings in Details, paste the prompt, and generate."
+    details:
+      - label: "SHOT"
+        value: "One continuous 10-second shot"
+        icon: "🎥"
+      - label: "LENS"
+        value: "84° diagonal field of view"
+        icon: "📷"
     settings:
       - label: "MODEL"
         value: "Omni 1.1 Flash"
