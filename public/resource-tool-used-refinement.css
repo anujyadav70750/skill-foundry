@@ -70,3 +70,13 @@ html.light-theme .resource-page .tutorial-detail-tool-link:hover {
   background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%) !important;
   box-shadow: 0 2px 7px rgba(15,23,42,.10) !important;
 }
+
+/* Give the Guide/Details switch a small inset from the full-width Prompt box.
+   Only the tab track narrows; the Guide and Details panels keep their full width. */
+.resource-page .tutorial-step-disclosure-tabs {
+  width: 95% !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  box-sizing: border-box !important;
+}
