@@ -1,0 +1,70 @@
+/* Restore the normal resource-section and step-card containers.
+   Do not alter Instagram embed size, position, or internal presentation. */
+
+/* Tutorial section: use the exact same container treatment as the other
+   resource editorial sections. */
+.resource-page .article-layout .resource-editorial-section.tutorial-section {
+  background: #0B0D12 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  padding: 18px 16px !important;
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.12) !important;
+  box-sizing: border-box !important;
+}
+
+/* Step result cards: Step 5 must use the same container treatment as every
+   other step result card. */
+.resource-page .tutorial-step-result-card:has(.step-instagram-wrapper),
+.resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell) {
+  width: 100% !important;
+  background: #0B0E14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Keep the Instagram media itself untouched. */
+.resource-page .tutorial-step-result-card:has(.step-instagram-wrapper) .tutorial-result-media-frame,
+.resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell) .tutorial-result-media-frame {
+  border: 0 !important;
+}
+
+@media (min-width: 641px) {
+  .resource-page .article-layout .resource-editorial-section.tutorial-section {
+    padding: 22px 20px !important;
+    margin-bottom: 16px !important;
+    border-radius: 16px !important;
+  }
+}
+
+/* Light theme: match the standard resource-section and step-card surfaces. */
+html[data-theme="light"] .resource-page .article-layout .resource-editorial-section.tutorial-section,
+html.light-theme .resource-page .article-layout .resource-editorial-section.tutorial-section {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-result-card:has(.step-instagram-wrapper),
+html.light-theme .resource-page .tutorial-step-result-card:has(.step-instagram-wrapper),
+html[data-theme="light"] .resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell),
+html.light-theme .resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell) {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+}
+
+@media (min-width: 641px) {
+  html[data-theme="light"] .resource-page .article-layout .resource-editorial-section.tutorial-section,
+  html.light-theme .resource-page .article-layout .resource-editorial-section.tutorial-section {
+    border-radius: 16px !important;
+  }
+}
