@@ -44,6 +44,7 @@ function injectFooterStyles() {
         const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">';
         const aspectRatioCorrectionStylesheet = '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">';
         const instagramRecentUndoStylesheet = '<link rel="stylesheet" href="/resource-instagram-recent-undo.css?v=20261103-instagram-undo-v1">';
+        const resourceContainerRestorationStylesheet = '<link rel="stylesheet" href="/resource-container-restoration.css?v=20261103-resource-containers-v1">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -74,6 +75,9 @@ function injectFooterStyles() {
               }
               if (!updated.includes('/resource-instagram-recent-undo.css')) {
                 updated = updated.replace('</head>', `    ${instagramRecentUndoStylesheet}\n  </head>`);
+              }
+              if (!updated.includes('/resource-container-restoration.css')) {
+                updated = updated.replace('</head>', `    ${resourceContainerRestorationStylesheet}\n  </head>`);
               }
               if (updated !== html) {
                 fs.writeFileSync(fullPath, updated, 'utf8');
