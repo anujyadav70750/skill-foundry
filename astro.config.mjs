@@ -43,6 +43,7 @@ function injectFooterStyles() {
         const stepCardFinalStylesheet = '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v5">';
         const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">';
         const aspectRatioCorrectionStylesheet = '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">';
+        const instagramSectionIntegrationStylesheet = '<link rel="stylesheet" href="/resource-instagram-section-integration.css?v=20261103-instagram-section-v1">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -70,6 +71,9 @@ function injectFooterStyles() {
               }
               if (!updated.includes('/resource-aspect-ratio-correction.css')) {
                 updated = updated.replace('</head>', `    ${aspectRatioCorrectionStylesheet}\n  </head>`);
+              }
+              if (!updated.includes('/resource-instagram-section-integration.css')) {
+                updated = updated.replace('</head>', `    ${instagramSectionIntegrationStylesheet}\n  </head>`);
               }
               if (updated !== html) {
                 fs.writeFileSync(fullPath, updated, 'utf8');
