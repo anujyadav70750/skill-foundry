@@ -1004,3 +1004,167 @@ html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-se
 html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
   color: #FFFFFF !important;
 }
+
+
+/* Definitive visual pass requested: one flat active switch segment and
+   solid dark tactile action buttons; prompt header dots only, no filename. */
+.resource-page .tutorial-prompt-file-label {
+  gap: 0 !important;
+  min-width: 38px !important;
+}
+
+.resource-page .tutorial-prompt-file-dots {
+  gap: 6px !important;
+}
+
+.resource-page .tutorial-prompt-file-dot {
+  width: 12px !important;
+  height: 12px !important;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.48),
+    0 1px 2px rgba(0,0,0,0.34) !important;
+}
+
+.resource-page .tutorial-prompt-file-dot.is-red { background: #FF5F57 !important; }
+.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FEBC2E !important; }
+.resource-page .tutorial-prompt-file-dot.is-green { background: #28C840 !important; }
+
+/* Existing placement and dimensions are intentionally preserved. */
+.resource-page .tutorial-download-btn {
+  background: #293B50 !important;
+  border: 0 !important;
+  color: #EAF2FC !important;
+  box-shadow:
+    0 3px 0 #18283B,
+    0 5px 8px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-download-btn:hover {
+  background: #324961 !important;
+  border: 0 !important;
+  box-shadow:
+    0 3px 0 #1B2C40,
+    0 6px 10px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.14) !important;
+}
+
+.resource-page .tutorial-download-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 0 #18283B, 0 2px 4px rgba(0,0,0,0.24) !important;
+}
+
+.resource-page .tutorial-copy-btn {
+  background: #15594F !important;
+  border: 0 !important;
+  color: #F0FDFA !important;
+  box-shadow:
+    0 3px 0 #0B3E37,
+    0 5px 8px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-copy-btn:hover {
+  background: #1B6A5E !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow:
+    0 3px 0 #10483F,
+    0 6px 10px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.14) !important;
+}
+
+.resource-page .tutorial-copy-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 0 #0B3E37, 0 2px 4px rgba(0,0,0,0.24) !important;
+}
+
+.resource-page .tutorial-copy-btn.is-copied {
+  background: #17633A !important;
+  border: 0 !important;
+  color: #F0FDF4 !important;
+  box-shadow:
+    0 3px 0 #104323,
+    0 5px 8px rgba(0,0,0,0.26),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+}
+
+/* The switch track remains one continuous pill. The selected side is one
+   uniform fill with no second rim, gradient, or stacked shadow. */
+.resource-page .tutorial-step-disclosure-tabs {
+  background: #080D14 !important;
+  border: 1px solid rgba(148,163,184,0.12) !important;
+  border-radius: 999px !important;
+  padding: 4px !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #8492A4 !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border: 0 !important;
+  color: #F8FAFC !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #F8FAFC !important;
+  opacity: 1 !important;
+}
+
+/* Same solid control treatment in light mode. */
+html[data-theme="light"] .resource-page .tutorial-download-btn,
+html.light-theme .resource-page .tutorial-download-btn {
+  background: #D6E2EF !important;
+  border: 0 !important;
+  color: #25415F !important;
+  box-shadow: 0 3px 0 #B8C9DB, 0 5px 8px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.8) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn,
+html.light-theme .resource-page .tutorial-copy-btn {
+  background: #17695E !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 0 #0E4B43, 0 5px 8px rgba(15,23,42,0.12), inset 0 1px 0 rgba(255,255,255,0.13) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn.is-copied,
+html.light-theme .resource-page .tutorial-copy-btn.is-copied {
+  background: #17633A !important;
+  color: #F0FDF4 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-tabs,
+html.light-theme .resource-page .tutorial-step-disclosure-tabs {
+  background: #E8EDF3 !important;
+  border: 1px solid #D8E0EA !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button,
+html.light-theme .resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  border: 0 !important;
+  color: #607086 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"],
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
