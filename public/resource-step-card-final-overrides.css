@@ -316,3 +316,36 @@ html.light-theme .resource-page .tutorial-prompt-btn.tutorial-copy-btn {
   visibility: visible !important;
   pointer-events: auto !important;
 }
+
+/* Layout stability fix:
+   resource-instagram-overrides.css hides the inactive panel with a more
+   specific [aria-hidden="true"] selector. These selectors deliberately
+   out-rank it so BOTH panels remain in the grid's layout calculation.
+   The invisible panel still reserves its natural height, preventing the
+   Tips and following sections from shifting when Guide/Details is toggled. */
+.resource-page .tutorial-step-disclosure-panels > .tutorial-step-disclosure-panel[aria-hidden="true"] {
+  display: block !important;
+  grid-area: 1 / 1 / 2 / 2 !important;
+  position: static !important;
+  align-self: start !important;
+  height: auto !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-panels > .tutorial-step-disclosure-panel[aria-hidden="false"] {
+  display: block !important;
+  grid-area: 1 / 1 / 2 / 2 !important;
+  position: static !important;
+  align-self: start !important;
+  height: auto !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.resource-page .tutorial-step-disclosure-panels {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-rows: auto !important;
+  align-items: start !important;
+}
