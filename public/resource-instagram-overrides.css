@@ -1168,3 +1168,150 @@ html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
+
+
+/* Final refinement from the latest mobile review:
+   make Guide / Details a true two-position pill switch, and remove the
+   hard lower-edge layers from the prompt action buttons. */
+.resource-page .tutorial-step-disclosure-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  border-radius: 9999px !important;
+  background: #080D14 !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-button {
+  flex: 1 1 0 !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  border: 0 !important;
+  border-radius: 9999px !important;
+  background: transparent !important;
+  color: #8794A5 !important;
+  box-shadow: none !important;
+  font-weight: 500 !important;
+  transition: background-color 0.18s ease, color 0.18s ease !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border: 0 !important;
+  color: #F8FAFC !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #F8FAFC !important;
+  opacity: 1 !important;
+}
+
+/* Solid action colours remain; remove the offset dark "second layer".
+   Only a soft ambient shadow remains, with no hard bottom strip. */
+.resource-page .tutorial-download-btn {
+  background: #293B50 !important;
+  border: 0 !important;
+  color: #EAF2FC !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20) !important;
+  transform: none !important;
+}
+
+.resource-page .tutorial-download-btn:hover {
+  background: #32465C !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24) !important;
+  transform: translateY(-1px) !important;
+}
+
+.resource-page .tutorial-download-btn:active {
+  background: #223247 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-copy-btn {
+  background: #15594F !important;
+  border: 0 !important;
+  color: #F0FDFA !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20) !important;
+  transform: none !important;
+}
+
+.resource-page .tutorial-copy-btn:hover {
+  background: #1B6A5E !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.24) !important;
+  transform: translateY(-1px) !important;
+}
+
+.resource-page .tutorial-copy-btn:active {
+  background: #10483F !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-copy-btn.is-copied {
+  background: #17633A !important;
+  border: 0 !important;
+  color: #F0FDF4 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+  transform: none !important;
+}
+
+/* Light-theme switch keeps the same single-colour selected capsule. */
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-tabs,
+html.light-theme .resource-page .tutorial-step-disclosure-tabs {
+  background: #E8EDF3 !important;
+  border: 1px solid #D8E0EA !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button,
+html.light-theme .resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  border: 0 !important;
+  color: #607086 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"],
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon,
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #FFFFFF !important;
+}
+
+/* Keep the button colour identity consistent in light mode too. */
+html[data-theme="light"] .resource-page .tutorial-download-btn,
+html.light-theme .resource-page .tutorial-download-btn {
+  background: #293B50 !important;
+  border: 0 !important;
+  color: #EAF2FC !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn,
+html.light-theme .resource-page .tutorial-copy-btn {
+  background: #15594F !important;
+  border: 0 !important;
+  color: #F0FDFA !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn.is-copied,
+html.light-theme .resource-page .tutorial-copy-btn.is-copied {
+  background: #17633A !important;
+  color: #F0FDF4 !important;
+}
