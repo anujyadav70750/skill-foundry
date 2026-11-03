@@ -831,7 +831,7 @@ html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="
 
 html[data-theme="light"] .resource-page .tutorial-guide-panel-heading,
 html.light-theme .resource-page .tutorial-guide-panel-heading {
-  color: #64748B !important;
+  color: #475569 !important;
 }
 
 html[data-theme="light"] .resource-page .tutorial-detail-tool-link,
