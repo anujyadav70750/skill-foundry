@@ -1,0 +1,53 @@
+/* Night-theme Instagram integration.
+   The Instagram post keeps its existing size, position, white surface,
+   rounded corners and native embed. Only the OUTER section is reshaped so
+   its visible card footprint matches the embed instead of extending around it.
+*/
+
+html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section {
+  width: min(540px, 100%) !important;
+  max-width: 540px !important;
+  box-sizing: border-box !important;
+  padding: 18px 0 0 !important;
+}
+
+html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section > .section-title-wrap,
+html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section > .editorial-subcopy {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+  box-sizing: border-box !important;
+}
+
+html:not([data-theme="light"]):not(.light-theme) .resource-page .tutorial-section .resource-instagram-embed-shell {
+  width: 100% !important;
+  max-width: 540px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Step-result Instagram embeds: when the result contains Instagram,
+   make its outer section footprint match the embed instead of leaving
+   a larger invisible card around it. */
+html:not([data-theme="light"]):not(.light-theme) .resource-page .tutorial-step-result-card:has(.resource-instagram-embed-shell) {
+  width: min(540px, 100%) !important;
+  max-width: 540px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+@media (min-width: 641px) {
+  html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section {
+    padding: 22px 0 0 !important;
+  }
+
+  html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section > .section-title-wrap,
+  html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section > .editorial-subcopy {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
