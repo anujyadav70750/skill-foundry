@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300,0,0&icon_names=design_services');
+
 /* Shared Instagram embed presentation for Step output and Tutorial section.
    One width and one rounded-card treatment keep duplicated embeds visually identical. */
 
@@ -707,13 +709,35 @@ html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] 
 
 .resource-page .tutorial-guide-panel-heading {
   margin: 0 0 12px !important;
-  color: #7BC8B8 !important;
+  color: #8C92A0 !important;
   font-family: var(--font-mono, monospace) !important;
-  font-size: 10px !important;
+  font-size: 11px !important;
   font-weight: 700 !important;
-  line-height: 1.25 !important;
-  letter-spacing: 0.10em !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
+}
+
+/* Match the exact crossed creative-tools glyph from the reference app-used icon. */
+.resource-page .tutorial-detail-design-services-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px !important;
+  overflow: visible !important;
+  color: #929BAA !important;
+  font-family: 'Material Symbols Outlined' !important;
+  font-size: 19px !important;
+  font-style: normal !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  font-feature-settings: 'liga' !important;
+  -webkit-font-feature-settings: 'liga' !important;
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20 !important;
 }
 
 /* The app name itself is the only clickable control in TOOL USED.
@@ -807,7 +831,7 @@ html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="
 
 html[data-theme="light"] .resource-page .tutorial-guide-panel-heading,
 html.light-theme .resource-page .tutorial-guide-panel-heading {
-  color: #0F766E !important;
+  color: #64748B !important;
 }
 
 html[data-theme="light"] .resource-page .tutorial-detail-tool-link,
