@@ -547,3 +547,272 @@ html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] 
   border-color: rgba(91, 119, 155, 0.28) !important;
   color: #213C5D !important;
 }
+
+
+/* Step-card prompt toolbar: file-editor identity on the left, existing
+   Download and Copy controls stay in their original top-right positions. */
+.resource-page .tutorial-prompt-file-label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  color: #AEBBCB !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.015em !important;
+}
+
+.resource-page .tutorial-prompt-file-dots {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex: 0 0 auto !important;
+}
+
+.resource-page .tutorial-prompt-file-dot {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.22), 0 0 4px rgba(0,0,0,0.25) !important;
+}
+
+.resource-page .tutorial-prompt-file-dot.is-red { background: #F87171 !important; }
+.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FBBF24 !important; }
+.resource-page .tutorial-prompt-file-dot.is-green { background: #4ADE80 !important; }
+
+.resource-page .tutorial-prompt-file-name {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Give Download and Copy clear action colours without changing their order,
+   dimensions, labels, icons, or alignment in the prompt toolbar. */
+.resource-page .tutorial-download-btn {
+  background: rgba(59, 130, 246, 0.20) !important;
+  border: 1px solid rgba(96, 165, 250, 0.34) !important;
+  color: #BFDBFE !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 2px 7px rgba(37,99,235,0.08) !important;
+}
+
+.resource-page .tutorial-download-btn:hover {
+  background: rgba(59, 130, 246, 0.30) !important;
+  border-color: rgba(125, 180, 250, 0.48) !important;
+}
+
+.resource-page .tutorial-copy-btn {
+  background: rgba(13, 148, 136, 0.24) !important;
+  border: 1px solid rgba(45, 212, 191, 0.38) !important;
+  color: #CCFBF1 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07), 0 2px 8px rgba(13,148,136,0.08) !important;
+}
+
+.resource-page .tutorial-copy-btn:hover {
+  background: rgba(13, 148, 136, 0.34) !important;
+  border-color: rgba(45, 212, 191, 0.52) !important;
+  color: #F0FDFA !important;
+}
+
+.resource-page .tutorial-copy-btn.is-copied {
+  background: rgba(34, 197, 94, 0.20) !important;
+  border-color: rgba(74, 222, 128, 0.42) !important;
+  color: #86EFAC !important;
+}
+
+/* Guide / Details: one continuous Day-Night-style switch with a single
+   inset active segment, not two separate rectangular cards. */
+.resource-page .tutorial-step-disclosure-tabs {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  padding: 4px !important;
+  background: #080D14 !important;
+  border: 1px solid rgba(148, 163, 184, 0.15) !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.32) !important;
+}
+
+.resource-page .tutorial-step-disclosure-button {
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  padding: 8px 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  border: 1px solid transparent !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #8492A4 !important;
+  font: 500 12.5px/1.2 sans-serif !important;
+  box-shadow: none !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #1E293B !important;
+  border-color: rgba(148, 163, 184, 0.10) !important;
+  color: #F1F5F9 !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+.resource-page .tutorial-tab-icon {
+  width: 17px !important;
+  height: 17px !important;
+  opacity: 0.88 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #C4D7E8 !important;
+  opacity: 1 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button:focus-visible {
+  outline: 2px solid rgba(125, 180, 250, 0.65) !important;
+  outline-offset: 2px !important;
+}
+
+/* Only the selected Guide/Details panel participates in layout. This removes
+   the large blank area previously reserved by the invisible panel. */
+.resource-page .tutorial-step-disclosure-panels {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+}
+
+.resource-page .tutorial-step-disclosure-panel {
+  display: none !important;
+  grid-area: auto !important;
+  min-height: 0 !important;
+  padding: 14px 4px 8px !important;
+  visibility: visible !important;
+}
+
+.resource-page .tutorial-step-disclosure-panel[aria-hidden="false"] {
+  display: block !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.resource-page .tutorial-step-disclosure-panel[aria-hidden="true"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.resource-page .tutorial-guide-panel-heading {
+  margin: 0 0 12px !important;
+  color: #7BC8B8 !important;
+  font-family: var(--font-mono, monospace) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+}
+
+/* The app name itself is the only clickable control in TOOL USED.
+   No arrow, icon, helper text, or secondary label beside the app name. */
+.resource-page .tutorial-detail-tool-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: fit-content !important;
+  max-width: 100% !important;
+  min-height: 34px !important;
+  padding: 6px 12px !important;
+  border: 1px solid rgba(45, 170, 151, 0.30) !important;
+  border-radius: 9px !important;
+  background: rgba(24, 128, 112, 0.16) !important;
+  color: #C6F1E7 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+  text-decoration: none !important;
+  overflow-wrap: anywhere !important;
+  transition: background 0.16s ease, border-color 0.16s ease !important;
+}
+
+.resource-page .tutorial-detail-tool-link:hover {
+  background: rgba(24, 128, 112, 0.25) !important;
+  border-color: rgba(45, 212, 191, 0.46) !important;
+}
+
+.resource-page .tutorial-detail-tool-link:focus-visible {
+  outline: 2px solid rgba(45, 212, 191, 0.60) !important;
+  outline-offset: 2px !important;
+}
+
+/* Light theme equivalents. */
+html[data-theme="light"] .resource-page .tutorial-prompt-file-label,
+html.light-theme .resource-page .tutorial-prompt-file-label {
+  color: #526176 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-download-btn,
+html.light-theme .resource-page .tutorial-download-btn {
+  background: rgba(59, 130, 246, 0.12) !important;
+  border-color: rgba(37, 99, 235, 0.28) !important;
+  color: #245A9B !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn,
+html.light-theme .resource-page .tutorial-copy-btn {
+  background: rgba(13, 148, 136, 0.13) !important;
+  border-color: rgba(13, 148, 136, 0.30) !important;
+  color: #086B63 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn.is-copied,
+html.light-theme .resource-page .tutorial-copy-btn.is-copied {
+  background: rgba(34, 197, 94, 0.14) !important;
+  border-color: rgba(22, 163, 74, 0.30) !important;
+  color: #15803D !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-tabs,
+html.light-theme .resource-page .tutorial-step-disclosure-tabs {
+  background: #EEF2F7 !important;
+  border-color: #D7E0EA !important;
+  box-shadow: inset 0 1px 3px rgba(15,23,42,0.07) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button,
+html.light-theme .resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  color: #65758A !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"],
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #FFFFFF !important;
+  border-color: rgba(148,163,184,0.22) !important;
+  color: #1F334B !important;
+  box-shadow: 0 2px 7px rgba(15,23,42,0.10) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon,
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #365B78 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-guide-panel-heading,
+html.light-theme .resource-page .tutorial-guide-panel-heading {
+  color: #0F766E !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-detail-tool-link,
+html.light-theme .resource-page .tutorial-detail-tool-link {
+  background: rgba(13, 148, 136, 0.08) !important;
+  border-color: rgba(13, 148, 136, 0.24) !important;
+  color: #0F625A !important;
+}
