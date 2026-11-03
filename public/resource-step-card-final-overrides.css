@@ -176,3 +176,116 @@ html.light-theme .resource-page .tutorial-detail-tool-link {
   color: #F4F8FF !important;
   box-shadow: 0 3px 0 #101722, 0 6px 12px rgba(0,0,0,.18) !important;
 }
+
+
+/* Latest mobile review correction — this is the final-loaded stylesheet.
+   Match the site's Day/Night pill switch and remove hard button under-layers. */
+.resource-page .tutorial-step-disclosure-tabs {
+  border-radius: 9999px !important;
+  background: #080D14 !important;
+  border: 1px solid rgba(148, 163, 184, 0.14) !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  padding: 4px !important;
+  gap: 4px !important;
+}
+
+.resource-page .tutorial-step-disclosure-button {
+  border-radius: 9999px !important;
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  color: #8794A5 !important;
+  font-weight: 500 !important;
+  transition: background-color .18s ease, color .18s ease !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border-radius: 9999px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  color: #F8FAFC !important;
+  font-weight: 600 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #F8FAFC !important;
+}
+
+/* Keep the solid navy and deep-teal fills, but remove the offset shadow
+   that created a visible dark strip underneath each action button. */
+.resource-page .tutorial-prompt-btn.tutorial-download-btn {
+  background: #263449 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  color: #EAF2FF !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+  transform: none !important;
+}
+
+.resource-page .tutorial-prompt-btn.tutorial-copy-btn {
+  background: #164542 !important;
+  border: 0 !important;
+  outline: 0 !important;
+  color: #E7FFFB !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+  transform: none !important;
+}
+
+.resource-page .tutorial-prompt-btn.tutorial-download-btn:hover,
+.resource-page .tutorial-prompt-btn.tutorial-copy-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.22) !important;
+}
+
+.resource-page .tutorial-prompt-btn.tutorial-download-btn:active,
+.resource-page .tutorial-prompt-btn.tutorial-copy-btn:active {
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Preserve the same single-colour switch in light theme. */
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-tabs,
+html.light-theme .resource-page .tutorial-step-disclosure-tabs {
+  border-radius: 9999px !important;
+  background: #E8EDF3 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button,
+html.light-theme .resource-page .tutorial-step-disclosure-button {
+  border-radius: 9999px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #607086 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"],
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  border-radius: 9999px !important;
+  background: #354453 !important;
+  border: 0 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-prompt-btn.tutorial-download-btn,
+html.light-theme .resource-page .tutorial-prompt-btn.tutorial-download-btn {
+  background: #263449 !important;
+  border: 0 !important;
+  color: #EAF2FF !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-prompt-btn.tutorial-copy-btn,
+html.light-theme .resource-page .tutorial-prompt-btn.tutorial-copy-btn {
+  background: #164542 !important;
+  border: 0 !important;
+  color: #E7FFFB !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.16) !important;
+}
