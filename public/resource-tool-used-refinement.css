@@ -1,0 +1,113 @@
+/* Resource Details — Tool Used refinement
+   Loaded after the existing resource detail overrides.
+   Purpose: clean TOOL USED icon, real tool logos, and a single-layer tool chip. */
+
+/* 1. Replace the generic grid icon only for TOOL USED rows. */
+.resource-page .tutorial-detail-item:has(.tutorial-detail-tool-link) .tutorial-detail-icon {
+  display: none !important;
+}
+
+.resource-page .tutorial-detail-item:has(.tutorial-detail-tool-link) .tutorial-detail-heading::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px !important;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOTI5QkFBIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHJlY3QgeD0iMyIgeT0iNCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE2IiByeD0iMyIvPjxwYXRoIGQ9Ik03IDhoMTBNNyAxMmg2TTcgMTZoNCIvPjwvc3ZnPg==") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 16px 16px !important;
+}
+
+/* 2. One clean layer for the clickable tool name. */
+.resource-page .tutorial-detail-tool-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  width: fit-content !important;
+  min-height: 38px !important;
+  box-sizing: border-box !important;
+  padding: 8px 13px !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+  border-radius: 10px !important;
+  background: #1B2636 !important;
+  color: #F4F8FF !important;
+  box-shadow: none !important;
+  text-decoration: none !important;
+  font-weight: 650 !important;
+  line-height: 1.2 !important;
+  transform: none !important;
+}
+
+.resource-page .tutorial-detail-tool-link::before,
+.resource-page .tutorial-detail-tool-link::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Tool brand logos. The href is already the tool's clickable URL. */
+.resource-page .tutorial-detail-tool-link[href*="chatgpt.com"]::before,
+.resource-page .tutorial-detail-tool-link[href*="openai.com"]::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 20px !important;
+  background: url("/logos/chatgpt.png") center / contain no-repeat !important;
+}
+
+.resource-page .tutorial-detail-tool-link[href*="flow.google"]::before,
+.resource-page .tutorial-detail-tool-link[href*="labs.google"]::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 20px !important;
+  background: url("/logos/google-flow.png") center / contain no-repeat !important;
+}
+
+.resource-page .tutorial-detail-tool-link[href*="capcut.com"]::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 20px !important;
+  background: url("/logos/capcut.png") center / contain no-repeat !important;
+}
+
+.resource-page .tutorial-detail-tool-link[href*="instagram.com"]::before {
+  content: "" !important;
+  display: inline-block !important;
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 20px !important;
+  background: url("/logos/instagram.png") center / contain no-repeat !important;
+}
+
+/* Keep the chip flat on hover/focus; only the surface colour may change. */
+.resource-page .tutorial-detail-tool-link:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  background: #243247 !important;
+}
+
+.resource-page .tutorial-detail-tool-link:focus-visible {
+  outline: 2px solid rgba(45,212,191,.55) !important;
+  outline-offset: 2px !important;
+}
+
+/* Light theme: retain the same single-layer structure. */
+html[data-theme="light"] .resource-page .tutorial-detail-tool-link,
+html.light-theme .resource-page .tutorial-detail-tool-link {
+  background: #F1F5F9 !important;
+  color: #1E293B !important;
+  border-color: rgba(15,23,42,.10) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-detail-tool-link:hover,
+html.light-theme .resource-page .tutorial-detail-tool-link:hover {
+  background: #E8EEF5 !important;
+  box-shadow: none !important;
+}
