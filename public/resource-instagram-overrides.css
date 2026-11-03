@@ -816,3 +816,191 @@ html.light-theme .resource-page .tutorial-detail-tool-link {
   border-color: rgba(13, 148, 136, 0.24) !important;
   color: #0F625A !important;
 }
+
+
+/* Final visual cleanup requested: brighter macOS-style dots, solid dark
+   tactile action buttons, and a single-colour Day/Night-style selected tab. */
+.resource-page .tutorial-prompt-file-label {
+  gap: 0 !important;
+  min-width: 34px !important;
+}
+
+.resource-page .tutorial-prompt-file-dots {
+  gap: 6px !important;
+}
+
+.resource-page .tutorial-prompt-file-dot {
+  width: 11px !important;
+  height: 11px !important;
+  border-radius: 50% !important;
+  box-shadow:
+    inset 0 1px 1px rgba(255,255,255,0.42),
+    0 1px 2px rgba(0,0,0,0.38) !important;
+}
+
+.resource-page .tutorial-prompt-file-dot.is-red {
+  background: #FF5F57 !important;
+}
+
+.resource-page .tutorial-prompt-file-dot.is-yellow {
+  background: #FEBC2E !important;
+}
+
+.resource-page .tutorial-prompt-file-dot.is-green {
+  background: #28C840 !important;
+}
+
+/* Keep the existing top-right positions and button sizes. These are solid,
+   dark button surfaces with subtle lower shadows instead of outline-only
+   or translucent controls. */
+.resource-page .tutorial-download-btn {
+  background: #27394F !important;
+  border: 0 !important;
+  color: #E7F0FB !important;
+  box-shadow:
+    0 3px 0 #18283B,
+    0 5px 9px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.13) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-download-btn:hover {
+  background: #30465F !important;
+  box-shadow:
+    0 3px 0 #1B2C40,
+    0 6px 11px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.15) !important;
+}
+
+.resource-page .tutorial-download-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow:
+    0 1px 0 #18283B,
+    0 2px 4px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+.resource-page .tutorial-copy-btn {
+  background: #15594F !important;
+  border: 0 !important;
+  color: #F0FDFA !important;
+  box-shadow:
+    0 3px 0 #0C3F38,
+    0 5px 9px rgba(0,0,0,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.13) !important;
+  transform: translateY(0) !important;
+}
+
+.resource-page .tutorial-copy-btn:hover {
+  background: #1A6A5E !important;
+  color: #FFFFFF !important;
+  box-shadow:
+    0 3px 0 #10483F,
+    0 6px 11px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.15) !important;
+}
+
+.resource-page .tutorial-copy-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow:
+    0 1px 0 #0C3F38,
+    0 2px 4px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.08) !important;
+}
+
+.resource-page .tutorial-copy-btn.is-copied {
+  background: #166534 !important;
+  border: 0 !important;
+  color: #F0FDF4 !important;
+  box-shadow:
+    0 3px 0 #104323,
+    0 5px 9px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.12) !important;
+}
+
+/* One clean switch track. The active segment is a single solid colour:
+   remove the extra outline, gradient-like shine and layered shadow. */
+.resource-page .tutorial-step-disclosure-tabs {
+  background: #080D14 !important;
+  border: 1px solid rgba(148,163,184,0.13) !important;
+  box-shadow: none !important;
+  border-radius: 999px !important;
+  padding: 4px !important;
+}
+
+.resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: #8795A7 !important;
+  box-shadow: none !important;
+  font-weight: 500 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  border: 0 !important;
+  color: #F8FAFC !important;
+  box-shadow: none !important;
+  font-weight: 600 !important;
+}
+
+.resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #F8FAFC !important;
+  opacity: 1 !important;
+}
+
+/* Light-theme equivalents retain the same flat, single-colour active state. */
+html[data-theme="light"] .resource-page .tutorial-download-btn,
+html.light-theme .resource-page .tutorial-download-btn {
+  background: #DCE7F3 !important;
+  color: #25415F !important;
+  box-shadow:
+    0 3px 0 #BCCBDD,
+    0 5px 9px rgba(15,23,42,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.85) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn,
+html.light-theme .resource-page .tutorial-copy-btn {
+  background: #17695E !important;
+  color: #FFFFFF !important;
+  box-shadow:
+    0 3px 0 #0E4B43,
+    0 5px 9px rgba(15,23,42,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.14) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn.is-copied,
+html.light-theme .resource-page .tutorial-copy-btn.is-copied {
+  background: #166534 !important;
+  color: #F0FDF4 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-tabs,
+html.light-theme .resource-page .tutorial-step-disclosure-tabs {
+  background: #E8EDF3 !important;
+  border-color: #D8E0EA !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button,
+html.light-theme .resource-page .tutorial-step-disclosure-button {
+  background: transparent !important;
+  color: #607086 !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"],
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] {
+  background: #354453 !important;
+  color: #FFFFFF !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon,
+html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="true"] .tutorial-tab-icon {
+  color: #FFFFFF !important;
+}
