@@ -1,0 +1,18 @@
+/* Aspect Ratio icon — exact reference geometry.
+   Hide the old inline SVG and render the corrected framed icon with
+   opposing inward-facing corner/arrow markers. Site color is preserved. */
+
+.resource-page .tutorial-detail-heading:has(.tutorial-detail-icon path[d^="M18.018 15.518"]) .tutorial-detail-icon {
+  display: none !important;
+}
+
+.resource-page .tutorial-detail-heading:has(.tutorial-detail-icon path[d^="M18.018 15.518"])::before {
+  content: "" !important;
+  display: block !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex: 0 0 16px !important;
+  background-color: currentColor !important;
+  -webkit-mask: url("/icons/aspect-ratio-reference.svg") center / contain no-repeat !important;
+  mask: url("/icons/aspect-ratio-reference.svg") center / contain no-repeat !important;
+}
