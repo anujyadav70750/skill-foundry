@@ -1349,3 +1349,12 @@ html:not([data-theme="light"]):not(.light-theme) .resource-page .resource-instag
   border-color: transparent !important;
   box-shadow: none !important;
 }
+
+/* Day theme: remove the floating wrapper edge as well.
+   The Instagram embed remains white and keeps its existing dimensions,
+   position, spacing, and native rounded corners. */
+html[data-theme="light"] .resource-page .resource-instagram-embed-shell,
+html.light-theme .resource-page .resource-instagram-embed-shell {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
