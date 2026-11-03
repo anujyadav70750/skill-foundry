@@ -41,7 +41,7 @@ function injectFooterStyles() {
         const stepNavStylesheet = '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">';
         const instagramStylesheet = '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">';
         const stepCardFinalStylesheet = '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v5">';
-        const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v2">';
+        const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
