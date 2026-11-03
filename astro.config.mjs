@@ -40,7 +40,7 @@ function injectFooterStyles() {
         const footerStylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261101-footer-v2">';
         const stepNavStylesheet = '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">';
         const instagramStylesheet = '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">';
-        const stepCardFinalStylesheet = '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v3">';
+        const stepCardFinalStylesheet = '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v4">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -78,19 +78,5 @@ function injectFooterStyles() {
 
 export default defineConfig({
   site: 'https://hub.skillfoundry-web.workers.dev',
-  output: 'static',
-  compressHTML: true,
-  devToolbar: {
-    enabled: false
-  },
-  integrations: [sitemap(), fixDynamicRouteFilenames(), injectFooterStyles()],
-  server: {
-    host: '0.0.0.0',
-    port: 3000
-  },
-  vite: {
-    server: {
-      hmr: false
-    }
-  }
+  integrations: [sitemap(), fixDynamicRouteFilenames(), injectFooterStyles()]
 });
