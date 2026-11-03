@@ -348,3 +348,166 @@ html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] 
     margin-bottom: 0 !important;
   }
 }
+
+
+/* Final approved workflow presentation: centered green instruction callout
+   and four-at-a-time, horizontally swipeable translucent blue step tabs. */
+.resource-page #intro.intro-section + .blueprint-callout-box {
+  width: 94% !important;
+  max-width: 760px !important;
+  margin: 14px auto 14px !important;
+  padding: 13px 15px !important;
+  background: rgba(16, 185, 129, 0.13) !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+}
+
+.resource-page .blueprint-callout-box .section-accent-bar {
+  display: none !important;
+}
+
+.resource-page .blueprint-callout-box .section-title-wrap {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 0 5px !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  text-align: center !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-title {
+  margin: 0 !important;
+  font-size: 16px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
+  color: #ECFDF5 !important;
+  text-align: center !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-desc {
+  margin: 0 auto !important;
+  max-width: 620px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  font-weight: 400 !important;
+  color: #C0D8CC !important;
+  text-align: center !important;
+}
+
+.resource-page .workflow-step-nav {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  flex-wrap: nowrap !important;
+  gap: 10px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-snap-type: x proximity !important;
+  scrollbar-width: none !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.resource-page .workflow-step-nav::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.resource-page .workflow-step-nav-button {
+  flex: 0 0 calc((100% - 30px) / 4) !important;
+  width: calc((100% - 30px) / 4) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 40px !important;
+  padding: 8px 3px !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border: 1px solid rgba(125, 170, 230, 0.25) !important;
+  border-radius: 11px !important;
+  background: rgba(59, 130, 246, 0.18) !important;
+  color: #D3E2F5 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0.035em !important;
+  white-space: nowrap !important;
+  scroll-snap-align: start !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.055), 0 2px 8px rgba(37,99,235,0.06) !important;
+}
+
+.resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(59, 130, 246, 0.34) !important;
+  border-color: rgba(147, 197, 253, 0.52) !important;
+  color: #FFFFFF !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 3px 12px rgba(37,99,235,0.16) !important;
+}
+
+.resource-page .workflow-step-nav-button:focus-visible {
+  outline: 2px solid rgba(147, 197, 253, 0.75) !important;
+  outline-offset: 2px !important;
+}
+
+@media (min-width: 641px) {
+  .resource-page #intro.intro-section + .blueprint-callout-box {
+    padding: 15px 20px !important;
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .resource-page .blueprint-callout-box .blueprint-callout-title {
+    font-size: 17px !important;
+  }
+
+  .resource-page .workflow-step-nav-button {
+    min-height: 42px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* Matching light-theme contrast without changing the translucent treatment. */
+html[data-theme="light"] .resource-page #intro.intro-section + .blueprint-callout-box,
+html.light-theme .resource-page #intro.intro-section + .blueprint-callout-box {
+  background: rgba(16, 185, 129, 0.10) !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-title,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-title {
+  color: #064E3B !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-desc,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-desc {
+  color: #365B4D !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button,
+html.light-theme .resource-page .workflow-step-nav-button {
+  background: rgba(59, 130, 246, 0.14) !important;
+  border-color: rgba(37, 99, 235, 0.24) !important;
+  color: #294E7A !important;
+}
+
+html[data-theme="light"] .resource-page .workflow-step-nav-button[aria-selected="true"],
+html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] {
+  background: rgba(59, 130, 246, 0.29) !important;
+  border-color: rgba(37, 99, 235, 0.46) !important;
+  color: #153B68 !important;
+}
