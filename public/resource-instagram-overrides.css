@@ -1359,11 +1359,3 @@ html.light-theme .resource-page .resource-instagram-embed-shell {
   box-shadow: none !important;
 }
 
-/* Night theme: remove only the larger parent-card surface around Instagram.
-   Preserve parent layout, padding, dimensions and the Instagram embed geometry. */
-html:not([data-theme="light"]):not(.light-theme) .article-layout .resource-editorial-section.tutorial-section:has(.resource-instagram-embed-shell),
-html:not([data-theme="light"]):not(.light-theme) .resource-page .tutorial-step-card:has(.resource-instagram-embed-shell) {
-  background: transparent !important;
-  border-color: transparent !important;
-  box-shadow: none !important;
-}
