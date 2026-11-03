@@ -853,7 +853,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                       </div>
                       <div class="tutorial-step-disclosure-panels">
                         <div class="tutorial-step-disclosure-panel tutorial-guide-panel" role="tabpanel" data-step-panel="guide" id={`step-${index + 1}-guide`} aria-hidden="false" tabindex="0">
-                          <div class="step-subheading-label tutorial-guide-panel-heading">HOW TO USE</div>
+                          <div class="step-subheading-label">HOW TO USE</div>
                           {isInstructionStep ? (
                             <ol class="tutorial-instruction-list">
                               {instructionLines.map((line: string, i: number) => {
@@ -875,7 +875,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               return (
                                 <div class="tutorial-detail-item">
                                   <div class="tutorial-detail-heading">
-                                    <svg class="tutorial-detail-icon" viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <svg class:list={["tutorial-detail-icon", { "is-replaced": kind === "tool" || kind === "ratio" }]} viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                       {kind === "tool" && <><path d="m4 15.8 8.7-8.7 2.2 2.2-8.7 8.7H4z"/><path d="m12.2 4.4 1.2-1.2a3.1 3.1 0 0 1 3.8 3.8L16 8.2M4.7 5.1l3.2 3.2M6.3 3.5l3.2 3.2"/></>}
                                       {kind === "model" && <><rect x="5" y="5" width="10" height="10" rx="1.6"/><path d="M7.5 2.5v2.5M12.5 2.5v2.5M7.5 15v2.5M12.5 15v2.5M2.5 7.5H5M2.5 12.5H5M15 7.5h2.5M15 12.5h2.5"/></>}
                                       {kind === "ratio" && <><rect x="2.8" y="4" width="14.4" height="12" rx="1.5"/><path d="M6 7v2.5h2.5M14 7v2.5h-2.5M6 13v-2.5h2.5M14 13v-2.5h-2.5"/></>}
@@ -884,6 +884,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                       {kind === "speed" && <><path d="M3.5 14a7 7 0 1 1 13 0"/><path d="m10 10 3.5-3M5 14h10"/></>}
                                       {kind === "info" && <><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.5h.01"/></>}
                                     </svg>
+                                    {(kind === "tool" || kind === "ratio") && <span class="tutorial-detail-material-icon" aria-hidden="true">{kind === "tool" ? "design_services" : "aspect_ratio"}</span>}
                                     <span class="tutorial-detail-label">{label}</span>
                                   </div>
                                   {kind === "tool" && stepToolUrl ? (
