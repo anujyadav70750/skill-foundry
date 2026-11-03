@@ -1339,3 +1339,13 @@ html.light-theme .resource-page .tutorial-copy-btn.is-copied {
   background: #17633A !important;
   color: #F0FDF4 !important;
 }
+
+/* Night theme: flatten Instagram embeds into their parent section.
+   Keep Instagram's native white surface, exact dimensions, position, margins,
+   and rounded corners. Remove only the extra outlined/floating wrapper treatment.
+   This shared shell covers embeds in Step output (including Step 5) and Tutorial.
+*/
+html:not([data-theme="light"]):not(.light-theme) .resource-page .resource-instagram-embed-shell {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
