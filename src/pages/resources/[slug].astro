@@ -498,8 +498,29 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
           {/* 2. Hero Image / Thumbnail (No outer frame/card/border, clean rounded image) */}
           <div class="hero-image-wrap">
-            <img class="hero-image" src={heroImage} alt={imageAlt} loading="eager" fetchpriority="high" decoding="sync" />
+            <img class="hero-image" src={heroImage} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
           </div>
+          <script is:inline>
+            (() => {
+              const image = document.querySelector('.resource-header-section .hero-image');
+              if (!image) return;
+
+              const revealAfterFullLoad = async () => {
+                if (!image.complete || image.naturalWidth === 0) return;
+                try {
+                  if (typeof image.decode === 'function') await image.decode();
+                } catch {}
+                if (image.naturalWidth > 0) image.classList.add('is-image-ready');
+              };
+
+              if (image.complete) {
+                void revealAfterFullLoad();
+              } else {
+                image.addEventListener('load', () => { void revealAfterFullLoad(); }, { once: true });
+                image.addEventListener('error', () => image.classList.add('is-image-failed'), { once: true });
+              }
+            })();
+          </script>
 
 
           {/* 3. Horizontal Metadata Row (Author & Published Date) */}
@@ -1714,19 +1735,24 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     /* Hero Image: Clean, integrated, NO outer card or heavy border */
     /* The resource cover has one visible source only. Never paint a second image or loading backdrop. */
-    .resource-header-section .hero-image-wrap,
-    .resource-header-section .hero-image-wrap::before,
-    .resource-header-section .hero-image-wrap::after {
+    .resource-header-section .hero-image-wrap {
+      position: relative !important;
       width: 100%;
       border-radius: 12px;
       overflow: hidden;
       margin: 0 0 12px;
-      background: transparent !important;
+      background: #080A0E !important;
       background-image: none !important;
       filter: none !important;
       box-shadow: none !important;
+    }
+
+    .resource-header-section .hero-image-wrap::before,
+    .resource-header-section .hero-image-wrap::after {
       content: none !important;
-      display: block;
+      display: none !important;
+      background: none !important;
+      background-image: none !important;
     }
 
     .resource-header-section .hero-image-wrap > :not(.hero-image) {
@@ -1744,11 +1770,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       background: transparent !important;
       background-image: none !important;
       filter: none !important;
-      opacity: 1 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
       animation: none !important;
       transition: none !important;
       transform: none !important;
       mix-blend-mode: normal !important;
+    }
+
+    .resource-header-section .hero-image.is-image-ready {
+      opacity: 1 !important;
+      visibility: visible !important;
     }
 
     /* Clean Horizontal Metadata Row Below Hero Image (Left: Author, Right: Date) */

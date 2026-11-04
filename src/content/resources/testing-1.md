@@ -7,9 +7,8 @@ tool: "Google Flow"
 toolUrl: "https://flow.google/"
 toolAffiliate: false
 date: "2026-09-10"
-thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
 thumbnailRatio: "16:9"
-heroImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
+heroImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
 resultImages: []
 resultImageRatios: []
 imageAlt: "Character reference portrait used in the AI video workflow"
@@ -49,7 +48,7 @@ steps:
       - type: "image"
         label: "Character reference"
         role: "Primary identity reference"
-        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
+        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
       - type: "image"
         label: "Dress reference"
         role: "Clothing / outfit reference"
@@ -83,7 +82,7 @@ steps:
       - type: "image"
         label: "Dressed character image"
         role: "Starting frame / character reference"
-        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
+        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
     settings:
       - label: "MODEL"
         value: "Gemini Omni"
@@ -119,7 +118,7 @@ steps:
       - type: "image"
         label: "Dressed character image"
         role: "Character consistency reference"
-        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
+        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
     settings:
       - label: "MODEL"
         value: "Gemini Omni"
@@ -155,7 +154,7 @@ steps:
       - type: "image"
         label: "Dressed character image"
         role: "Character consistency reference"
-        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=webp"
+        src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
     settings:
       - label: "MODEL"
         value: "Gemini Omni"
