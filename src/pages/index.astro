@@ -3608,12 +3608,12 @@ const formatUploadDate = (d: Date | string | undefined) => {
   /* CONSISTENT HOMEPAGE SECTION DIVIDERS
      The hero already has a bottom divider; add matching separators
      between all content sections that follow Recent Works. */
-  .home-page .home-section:not(.recent-work-section) {
+  .home-page .home-section:not(.recent-work-section):not(.final-cta-section) {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  :global([data-theme="light"]) .home-page .home-section:not(.recent-work-section),
-  :global(html.light-theme) .home-page .home-section:not(.recent-work-section) {
+  :global([data-theme="light"]) .home-page .home-section:not(.recent-work-section):not(.final-cta-section),
+  :global(html.light-theme) .home-page .home-section:not(.recent-work-section):not(.final-cta-section) {
     border-top-color: rgba(15, 23, 42, 0.10);
   }
 
