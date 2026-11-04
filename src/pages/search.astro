@@ -457,10 +457,21 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
 
   /* Search Highlight */
   :global(.search-hl) {
-    background: rgba(56, 189, 248, 0.25);
-    color: #7DD3FC;
+    background: rgba(255, 224, 130, 0.14);
+    color: inherit;
+    border-bottom: 1px solid rgba(255, 224, 130, 0.28);
+    box-shadow: 0 0 7px rgba(255, 224, 130, 0.10);
     padding: 0 2px;
     border-radius: 3px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  :global([data-theme="light"]) .search-hl,
+  :global(html.light-theme) .search-hl {
+    background: rgba(234, 179, 8, 0.13);
+    border-bottom-color: rgba(202, 138, 4, 0.28);
+    box-shadow: 0 0 6px rgba(202, 138, 4, 0.08);
   }
 
   /* Force hidden */
@@ -648,11 +659,6 @@ if (rawFrom && rawFrom.startsWith('/') && !rawFrom.startsWith('//') && !rawFrom.
     background: #E2E8F0;
     border-color: #94A3B8;
     color: #0F172A;
-  }
-  :global([data-theme="light"]) .search-hl,
-  :global(html.light-theme) .search-hl {
-    background: rgba(2, 132, 199, 0.15);
-    color: #0369A1;
   }
 </style>
 

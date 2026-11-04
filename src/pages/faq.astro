@@ -424,12 +424,25 @@ const pageDescription = 'Search common questions about Skill Foundry, our free p
     line-height: 1.65;
   }
 
-  :global(.faq-match-mark) {
-    background: rgba(56, 189, 248, 0.25);
-    border-bottom: 2px solid #38BDF8;
-    color: #FFFFFF;
+    :global(.faq-match-mark) {
+    background: rgba(255, 224, 130, 0.14);
+    color: inherit;
+    border-bottom: 1px solid rgba(255, 224, 130, 0.28);
+    box-shadow: 0 0 7px rgba(255, 224, 130, 0.10);
+    border-radius: 3px;
     padding: 0 2px;
-    border-radius: 2px;
+    margin: 0;
+    font-weight: inherit;
+    display: inline;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  :global([data-theme="light"]) .faq-match-mark,
+  :global(html.light-theme) .faq-match-mark {
+    background: rgba(234, 179, 8, 0.13);
+    border-bottom-color: rgba(202, 138, 4, 0.28);
+    box-shadow: 0 0 6px rgba(202, 138, 4, 0.08);
   }
 
   /* No Results State */

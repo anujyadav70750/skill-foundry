@@ -1977,15 +1977,25 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border-radius: 9999px;
   }
 
-  .faq-match-mark {
-    background: rgba(56, 189, 248, 0.20);
-    color: #38BDF8;
-    border-bottom: 1.5px solid rgba(56, 189, 248, 0.65);
+    :global(.faq-match-mark) {
+    background: rgba(255, 224, 130, 0.14);
+    color: inherit;
+    border-bottom: 1px solid rgba(255, 224, 130, 0.28);
+    box-shadow: 0 0 7px rgba(255, 224, 130, 0.10);
     border-radius: 3px;
-    padding: 0 3px;
+    padding: 0 2px;
     margin: 0;
     font-weight: inherit;
     display: inline;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  :global([data-theme="light"]) .faq-match-mark,
+  :global(html.light-theme) .faq-match-mark {
+    background: rgba(234, 179, 8, 0.13);
+    border-bottom-color: rgba(202, 138, 4, 0.28);
+    box-shadow: 0 0 6px rgba(202, 138, 4, 0.08);
   }
 
   .faq-no-results {
