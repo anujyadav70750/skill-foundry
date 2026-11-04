@@ -292,22 +292,6 @@ const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
 
-// Start fetching every image used by this resource as early as possible, before the page body is parsed.
-const resourceImagePreloads = [...new Set([
-  heroImage,
-  authorAvatar,
-  ...tools.map((tool) => toolLogo(tool)),
-  ...workflowSteps.flatMap((step, index) => {
-    const output = outputVisual(step, index);
-    const mediaUrl = output.src || output.previewSrc;
-    const stepToolLogo = toolLogo(step.toolMeta || { name: step.tool, url: '' });
-    return [mediaUrl, stepToolLogo];
-  }),
-  ...related.map((item) => getRelatedThumbnail(item))
-].filter((src) => {
-  const value = String(src || '').trim();
-  return value.length > 0 && !/^data:/i.test(value) && !/\.(mp4|webm|mov|m4v|mp3|wav|ogg|m4a|aac|pdf|docx?)(?:[?#]|$)/i.test(value) && !/(youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|instagram\.com|\/embed)/i.test(value);
-}))];
 const schema = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
@@ -391,7 +375,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   return p;
 };
 ---
-<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} preloadImages={resourceImagePreloads} type="article" hideBackButton={true}>
+<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} type="article" hideBackButton={true}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
   <style is:global>
@@ -762,7 +746,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                   class="tutorial-result-img"
                                   src={mediaUrl}
                                   alt={`${step.title} result`}
-                                  loading="eager"
+                                  loading="lazy"
                                   decoding="async"
                                 />
                               </div>
@@ -872,7 +856,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                     <span class="tutorial-detail-label">{label}</span>
                                   </div>
                                   {kind === "tool" && stepToolUrl ? (
-                                    <a class="tutorial-detail-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer"><img class="tutorial-detail-tool-logo" src={stepToolLogo} alt="" width="22" height="22" loading="eager" decoding="async" /><span>{detail.value}</span></a>
+                                    <a class="tutorial-detail-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer"><img class="tutorial-detail-tool-logo" src={stepToolLogo} alt="" width="22" height="22" loading="lazy" decoding="async" /><span>{detail.value}</span></a>
                                   ) : (
                                     <span class="tutorial-detail-value">{detail.value}</span>
                                   )}
@@ -1032,7 +1016,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             return (
               <a class="related-work-card" href={`/resources/${relatedSlug}/`} aria-label={`Open ${item.data.title}`}>
                 <div class="related-work-thumb-wrap">
-                  <img class="related-work-thumb-img" src={thumb} alt={alt} loading="eager" decoding="async" />
+                  <img class="related-work-thumb-img" src={thumb} alt={alt} loading="lazy" decoding="async" />
                 </div>
                 <div class="related-work-card-body">
                   <div class="related-work-meta-row">
