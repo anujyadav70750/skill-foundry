@@ -328,9 +328,9 @@ const finalWorkflowStep = workflowSteps[workflowSteps.length - 1];
 const finalWorkflowOutput = finalWorkflowStep ? outputVisual(finalWorkflowStep, workflowSteps.length - 1) : null;
 const finalWorkflowMediaUrl = (finalWorkflowOutput?.src && isRealVideo(finalWorkflowOutput.src))
   ? finalWorkflowOutput.src
-  : (isTesting1 ? (resultImages[0] || heroImage) : '');
+  : (resultImages[0] || '');
 const isFinalWorkflowVideoDirect = finalWorkflowOutput?.src ? isRealVideo(finalWorkflowOutput.src) : false;
-const isFinalWorkflowVideo = finalWorkflowOutput?.type === 'video' || isFinalWorkflowVideoDirect || isTesting1;
+const isFinalWorkflowVideo = Boolean(finalWorkflowMediaUrl) && (finalWorkflowOutput?.type === 'video' || isFinalWorkflowVideoDirect || isTesting1);
 const introText = isTesting1
   ? "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
   : data.intro;
@@ -666,9 +666,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const hasMedia = Boolean(mediaUrl);
                 const isInstagramStep = Boolean(mediaUrl && /instagram\.com/i.test(mediaUrl));
                 const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(mediaUrl));
-                const isVideo = hasMedia && (output.type === "video" || isRealVideo(mediaUrl) || isEmbedUrl || isInstagramStep);
                 const isPdf = hasMedia && /\.pdf(?:[?#]|$)/i.test(mediaUrl);
-                const isImage = hasMedia && !isVideo && !isPdf && (output.type === "image" || !output.type);
 
                 const stepPurpose = step.purpose || step.description || "";
                 const stepToolName = step.tool || (step.toolMeta ? step.toolMeta.name : "");
@@ -781,7 +779,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                     loading="eager"
                                     decoding="async"
                                   />
-                                  {isVideo && !isInstagramStep && <span class="tutorial-video-badge">VIDEO</span>}
+
                                 </div>
                               </div>
                             )}
@@ -2485,6 +2483,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       background: #111318;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 8px 12px;
+      height: 50px;
+      min-height: 50px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -2794,6 +2794,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       white-space: pre-wrap;
       word-break: break-word;
       overflow-wrap: anywhere;
+      height: 280px;
+      min-height: 280px;
       max-height: 280px;
       overflow-y: auto;
       scrollbar-width: thin;
@@ -2905,19 +2907,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .tutorial-video-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(0, 0, 0, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #FACC15;
-      font: 800 10px/1 var(--font-mono, monospace);
-      letter-spacing: 0.1em;
-      padding: 4px 8px;
-      border-radius: 4px;
     }
 
     /* Standard Step Result / Output Card */
