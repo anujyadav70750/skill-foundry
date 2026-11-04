@@ -73,7 +73,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <!-- SECTION 1 — WHAT SKILL FOUNDRY IS (HERO) -->
     <section class="home-hero">
       <div class="container narrow hero-content">
-        <p class="home-eyebrow home-hero-eyebrow">PRACTICAL SKILLS PLATFORM</p>
+        <div class="hero-capsule-row">
+          <span class="home-capsule">PRACTICAL SKILLS PLATFORM</span>
+        </div>
         <h1 class="hero-title">
           Build practical skills that work in the <span class="hero-highlight">real world.</span>
         </h1>
@@ -167,7 +169,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section why-section" id="why-it-exists">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-eyebrow">WHY IT EXISTS</p>
+          <p class="home-capsule">WHY IT EXISTS</p>
           <h2>Skills you can understand, apply, and make your own</h2>
           <p class="section-subcopy">
             Skill Foundry exists to help people learn useful skills, apply those skills in real projects, and make work and life easier. We teach practical workflows that you can genuinely understand and adapt — not simply copy-paste without knowing how they work.
@@ -176,7 +178,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
         <div class="promise-grid">
           <article class="home-card promise-card">
-            <div class="home-card-kicker">01 • UNDERSTAND THE LOGIC</div>
+            <div class="promise-card-capsule">01 • UNDERSTAND THE LOGIC</div>
             <h3 class="card-title">Understand how it works</h3>
             <p class="card-description">
               Learn the core principles, tool mechanics, and prompt logic behind each workflow so you gain genuine, reusable skills.
@@ -184,7 +186,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </article>
 
           <article class="home-card promise-card">
-            <div class="home-card-kicker">02 • REAL APPLICATION</div>
+            <div class="promise-card-capsule">02 • REAL APPLICATION</div>
             <h3 class="card-title">Apply in everyday work</h3>
             <p class="card-description">
               Put what you learn directly into practice on real projects, creative deliverables, and daily tasks to make work easier.
@@ -192,7 +194,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </article>
 
           <article class="home-card promise-card">
-            <div class="home-card-kicker">03 • FLEXIBLE ADAPTATION</div>
+            <div class="promise-card-capsule">03 • FLEXIBLE ADAPTATION</div>
             <h3 class="card-title">Adapt to your own needs</h3>
             <p class="card-description">
               Take proven workflows and customize them to your specific goals, different tools, and unique project requirements.
@@ -206,7 +208,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section skills-section" id="what-you-can-build">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-eyebrow">SKILLS &amp; DISCIPLINES</p>
+          <p class="home-capsule">SKILLS &amp; DISCIPLINES</p>
           <h2>What you can learn and build</h2>
           <p class="section-subcopy">
             Understand the core capabilities and skill sets you can master and apply across digital disciplines, from motion to automation.
@@ -273,7 +275,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section method-section" id="how-it-works">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-eyebrow">HOW IT WORKS</p>
+          <p class="home-capsule">HOW IT WORKS</p>
           <h2>A clear path from idea to result</h2>
           <p class="section-subcopy">
             Follow a simple, beginner-friendly process designed to help you learn, execute, and adapt any workflow.
@@ -283,7 +285,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <div class="steps-grid">
           <article class="home-card method-card">
             <div class="method-step-badge">01</div>
-            <div class="home-card-kicker">FIND</div>
+            <div class="method-subcapsule">FIND</div>
             <h3 class="card-title">Find a practical topic or workflow</h3>
             <p class="card-description">
               Find a practical topic, skill or workflow relevant to what you want to create.
@@ -292,7 +294,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card method-card">
             <div class="method-step-badge">02</div>
-            <div class="home-card-kicker">FOLLOW</div>
+            <div class="method-subcapsule">FOLLOW</div>
             <h3 class="card-title">Follow the instructions</h3>
             <p class="card-description">
               Follow clear instructions, examples, prompts, and tool settings.
@@ -301,7 +303,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card method-card">
             <div class="method-step-badge">03</div>
-            <div class="home-card-kicker">BUILD</div>
+            <div class="method-subcapsule">BUILD</div>
             <h3 class="card-title">Apply and create a real result</h3>
             <p class="card-description">
               Apply what you learned and create a real, practical result for your own project.
@@ -317,7 +319,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section trust-section" id="why-trust-the-resources">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-eyebrow">VERIFIED QUALITY</p>
+          <p class="home-capsule">VERIFIED QUALITY</p>
           <h2>Why trust Skill Foundry resources</h2>
           <p class="section-subcopy">
             Every blueprint and tutorial in our library is built for reliable, reproducible execution.
@@ -326,7 +328,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
         <div class="promise-grid">
           <article class="home-card trust-card">
-            <div class="home-card-kicker">01 • HANDS-ON VERIFIED</div>
+            <div class="trust-card-capsule">01 • HANDS-ON VERIFIED</div>
             <h3 class="card-title">Tested before publication</h3>
             <p class="card-description">
               Every blueprint is tested end-to-end to ensure prompts, settings, and step sequences work as described.
@@ -334,7 +336,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </article>
 
           <article class="home-card trust-card">
-            <div class="home-card-kicker">02 • TOOL TRANSPARENCY</div>
+            <div class="trust-card-capsule">02 • TOOL TRANSPARENCY</div>
             <h3 class="card-title">Clear tool access</h3>
             <p class="card-description">
               We clearly specify required tools, free tiers, and alternatives so you know exact requirements upfront.
@@ -342,7 +344,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </article>
 
           <article class="home-card trust-card">
-            <div class="home-card-kicker">03 • ZERO FLUFF</div>
+            <div class="trust-card-capsule">03 • ZERO FLUFF</div>
             <h3 class="card-title">Built for execution</h3>
             <p class="card-description">
               No filler or endless theory. Clean, actionable instructions designed to help you finish real projects.
@@ -356,7 +358,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section faq-section" id="faq">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-eyebrow">FREQUENTLY ASKED</p>
+          <p class="home-capsule">FREQUENTLY ASKED</p>
           <h2>Questions you might have</h2>
           <p class="section-subcopy">
             Quick answers to common questions about Skill Foundry, our resources, and how to use them.
@@ -512,7 +514,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
       <div class="container narrow">
         <div class="home-cta-card">
           <div class="cta-text-content">
-            <p class="home-eyebrow cta-eyebrow">START BUILDING</p>
+            <p class="home-capsule cta-capsule">START BUILDING</p>
             <h2 class="cta-title">Build the skill. Then make it your own.</h2>
             <p class="cta-desc">
               Explore practical resources, build useful skills, and put what you learn into practice.
@@ -982,7 +984,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     flex-direction: column;
   }
 
-  .home-card-kicker, .home-card-kicker {
+  .promise-card-capsule, .trust-card-capsule {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
@@ -992,10 +994,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
     margin-bottom: 16px;
   }
 
-  :global([data-theme="light"]) .home-card-kicker,
-  :global(html.light-theme) .home-card-kicker,
-  :global([data-theme="light"]) .home-card-kicker,
-  :global(html.light-theme) .home-card-kicker {
+  :global([data-theme="light"]) .promise-card-capsule,
+  :global(html.light-theme) .promise-card-capsule,
+  :global([data-theme="light"]) .trust-card-capsule,
+  :global(html.light-theme) .trust-card-capsule {
     color: #475569;
   }
 
@@ -1071,7 +1073,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: rgba(15, 23, 42, 0.1);
   }
 
-  .home-card-kicker {
+  .method-subcapsule {
     font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
     font-weight: 700;
@@ -1081,8 +1083,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
     margin-bottom: 10px;
   }
 
-  :global([data-theme="light"]) .home-card-kicker,
-  :global(html.light-theme) .home-card-kicker {
+  :global([data-theme="light"]) .method-subcapsule,
+  :global(html.light-theme) .method-subcapsule {
     color: #475569;
   }
 
@@ -2869,1054 +2871,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
       font-size: 13px;
     }
   }
-
-  /* ==========================================================================
-     HOME PAGE VISUAL SYSTEM — MATCH THE KNIGHT RESOURCE EDITORIAL DESIGN
-     Scoped to the homepage so resources and other pages remain unchanged.
-     ========================================================================== */
-
-  .home-page {
-    --home-bg: #050505;
-    --home-surface: #0B0D12;
-    --home-card: #111318;
-    --home-line: rgba(255, 255, 255, 0.085);
-    --home-text: #F5F5F5;
-    --home-muted: #A6ABB6;
-    --home-soft-muted: #8C92A0;
-    --home-accent: #FACC15;
-    --home-accent-rgb: 250, 204, 21;
-    --accent: #FACC15;
-    --accent-hover: #EAB308;
-    --accent-rgb: 250, 204, 21;
-    --brand-accent: #FACC15;
-    --brand-accent-hover: #FDE047;
-    --brand-accent-subtle: rgba(250, 204, 21, 0.10);
-    --brand-accent-border: rgba(250, 204, 21, 0.32);
-    background: #050505 !important;
-    color: #F5F5F5 !important;
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-
-  :global([data-theme="light"]) .home-page,
-  :global(html.light-theme) .home-page {
-    --home-bg: #F8FAFC;
-    --home-surface: #FFFFFF;
-    --home-card: #FFFFFF;
-    --home-line: #E2E8F0;
-    --home-text: #0F172A;
-    --home-muted: #475569;
-    --home-soft-muted: #64748B;
-    --home-accent: #A16207;
-    --home-accent-rgb: 161, 98, 7;
-    --accent: #A16207;
-    --accent-hover: #854D0E;
-    --accent-rgb: 161, 98, 7;
-    --brand-accent: #A16207;
-    --brand-accent-hover: #854D0E;
-    --brand-accent-subtle: rgba(161, 98, 7, 0.08);
-    --brand-accent-border: rgba(161, 98, 7, 0.28);
-    background: #F8FAFC !important;
-    color: #0F172A !important;
-  }
-
-  .home-page .container.narrow {
-    width: min(780px, calc(100% - 36px));
-    max-width: 780px;
-    padding: 0;
-  }
-
-  .home-page .home-section {
-    padding: 30px 0 18px;
-  }
-
-  .home-page .section-head {
-    margin-bottom: 18px;
-  }
-
-  .home-page .section-head h2 {
-    display: block;
-    padding: 0 0 0 11px;
-    border-left: 3.5px solid #FACC15;
-    margin: 0 0 9px;
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: clamp(18px, 2.4vw, 20px);
-    font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.015em;
-  }
-
-  :global([data-theme="light"]) .home-page .section-head h2,
-  :global(html.light-theme) .home-page .section-head h2 {
-    border-left-color: #A16207;
-    color: #0F172A;
-  }
-
-  .home-page .section-subcopy {
-    max-width: 720px;
-    color: #A6ABB6;
-    font-size: 14.5px;
-    line-height: 1.65;
-  }
-
-  :global([data-theme="light"]) .home-page .section-subcopy,
-  :global(html.light-theme) .home-page .section-subcopy {
-    color: #475569;
-  }
-
-  /* Former capsule labels become quiet, text-only editorial eyebrows. */
-  .home-page .home-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    width: fit-content;
-    padding: 0;
-    margin: 0 0 12px;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    color: #9A9FAA;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .home-page .home-eyebrow::before {
-    content: '';
-    display: block;
-    width: 14px;
-    height: 2px;
-    flex: 0 0 14px;
-    border-radius: 2px;
-    background: #FACC15;
-  }
-
-  :global([data-theme="light"]) .home-page .home-eyebrow,
-  :global(html.light-theme) .home-page .home-eyebrow {
-    color: #64748B;
-  }
-
-  :global([data-theme="light"]) .home-page .home-eyebrow::before,
-  :global(html.light-theme) .home-page .home-eyebrow::before {
-    background: #A16207;
-  }
-
-  .home-page .home-card-kicker {
-    display: block;
-    margin: 0 0 12px;
-    color: #D8B746;
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.4;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-  }
-
-  :global([data-theme="light"]) .home-page .home-card-kicker,
-  :global(html.light-theme) .home-page .home-card-kicker {
-    color: #8A5B08;
-  }
-
-  /* Shared cards now use the same restrained surfaces and borders as resource pages. */
-  .home-page .home-card {
-    background: #0B0D12;
-    border: 1px solid rgba(255, 255, 255, 0.085);
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: none;
-  }
-
-  .home-page .home-card:hover {
-    border-color: rgba(250, 204, 21, 0.24);
-    background: #0E1016;
-    box-shadow: none;
-    transform: translateY(-2px);
-  }
-
-  :global([data-theme="light"]) .home-page .home-card,
-  :global(html.light-theme) .home-page .home-card {
-    background: #FFFFFF;
-    border-color: #E2E8F0;
-    box-shadow: none;
-  }
-
-  :global([data-theme="light"]) .home-page .home-card:hover,
-  :global(html.light-theme) .home-page .home-card:hover {
-    border-color: rgba(161, 98, 7, 0.35);
-    background: #FFFFFF;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.045);
-  }
-
-  .home-page .card-title {
-    margin: 0 0 9px;
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.35;
-    letter-spacing: -0.015em;
-  }
-
-  .home-page .card-description {
-    color: #A6ABB6;
-    font-size: 14px;
-    line-height: 1.65;
-  }
-
-  :global([data-theme="light"]) .home-page .card-title,
-  :global(html.light-theme) .home-page .card-title {
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .card-description,
-  :global(html.light-theme) .home-page .card-description {
-    color: #475569;
-  }
-
-  .home-page .empty-state-box {
-    background: #0B0D12;
-    border: 1px dashed rgba(255, 255, 255, 0.16);
-    border-radius: 14px;
-    box-shadow: none;
-  }
-
-  :global([data-theme="light"]) .home-page .empty-state-box,
-  :global(html.light-theme) .home-page .empty-state-box {
-    background: #FFFFFF;
-    border-color: #CBD5E1;
-  }
-
-  .home-page .empty-state-title {
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: 19px;
-    font-weight: 700;
-  }
-
-  .home-page .empty-state-text {
-    color: #A6ABB6;
-    font-size: 14px;
-  }
-
-  :global([data-theme="light"]) .home-page .empty-state-title,
-  :global(html.light-theme) .home-page .empty-state-title {
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .empty-state-text,
-  :global(html.light-theme) .home-page .empty-state-text {
-    color: #64748B;
-  }
-
-  /* Hero: editorial left alignment, clean black field, yellow highlight. */
-  .home-page .home-hero {
-    padding: 44px 0 32px;
-    background: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .home-page .hero-content {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .home-page .home-hero-eyebrow {
-    margin-bottom: 13px;
-  }
-
-  .home-page .hero-title {
-    max-width: 760px;
-    margin: 0 0 14px;
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: clamp(34px, 5vw, 46px);
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -0.04em;
-    text-wrap: balance;
-  }
-
-  .home-page .hero-highlight {
-    background: none;
-    color: #FACC15;
-    font-style: normal;
-    -webkit-text-fill-color: #FACC15;
-  }
-
-  .home-page .hero-lead {
-    max-width: 660px;
-    margin: 0 0 22px;
-    color: #A6ABB6;
-    font-size: 15px;
-    line-height: 1.7;
-    text-wrap: pretty;
-  }
-
-  :global([data-theme="light"]) .home-page .home-hero,
-  :global(html.light-theme) .home-page .home-hero {
-    border-bottom-color: #E2E8F0;
-  }
-
-  :global([data-theme="light"]) .home-page .hero-title,
-  :global(html.light-theme) .home-page .hero-title {
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .hero-highlight,
-  :global(html.light-theme) .home-page .hero-highlight {
-    color: #A16207;
-    -webkit-text-fill-color: #A16207;
-  }
-
-  :global([data-theme="light"]) .home-page .hero-lead,
-  :global(html.light-theme) .home-page .hero-lead {
-    color: #475569;
-  }
-
-  .home-page .hero-actions {
-    justify-content: flex-start;
-    margin-bottom: 12px;
-  }
-
-  .home-page .home-button {
-    min-height: 44px;
-    border-radius: 9px;
-    font-size: 13.5px;
-    font-weight: 700;
-    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
-  }
-
-  .home-page .home-button-primary,
-  .home-page .home-button-cta,
-  .home-page .faq-submit-btn:not(:disabled) {
-    background: #FACC15;
-    border: 1px solid #FACC15;
-    color: #090909;
-    box-shadow: none;
-  }
-
-  .home-page .home-button-primary:hover,
-  .home-page .home-button-cta:hover,
-  .home-page .faq-submit-btn:not(:disabled):hover {
-    background: #EAB308;
-    border-color: #EAB308;
-    color: #090909;
-    box-shadow: none;
-    transform: translateY(-1px);
-  }
-
-  .home-page .home-button-secondary {
-    background: #111318;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #E5E7EB;
-    box-shadow: none;
-  }
-
-  .home-page .home-button-secondary:hover {
-    background: #171A21;
-    border-color: rgba(250, 204, 21, 0.35);
-    color: #F5F5F5;
-  }
-
-  :global([data-theme="light"]) .home-page .home-button-primary,
-  :global(html.light-theme) .home-page .home-button-primary,
-  :global([data-theme="light"]) .home-page .home-button-cta,
-  :global(html.light-theme) .home-page .home-button-cta,
-  :global([data-theme="light"]) .home-page .faq-submit-btn:not(:disabled),
-  :global(html.light-theme) .home-page .faq-submit-btn:not(:disabled) {
-    background: #A16207;
-    border-color: #A16207;
-    color: #FFFFFF;
-  }
-
-  :global([data-theme="light"]) .home-page .home-button-primary:hover,
-  :global(html.light-theme) .home-page .home-button-primary:hover,
-  :global([data-theme="light"]) .home-page .home-button-cta:hover,
-  :global(html.light-theme) .home-page .home-button-cta:hover,
-  :global([data-theme="light"]) .home-page .faq-submit-btn:not(:disabled):hover,
-  :global(html.light-theme) .home-page .faq-submit-btn:not(:disabled):hover {
-    background: #854D0E;
-    border-color: #854D0E;
-    color: #FFFFFF;
-  }
-
-  :global([data-theme="light"]) .home-page .home-button-secondary,
-  :global(html.light-theme) .home-page .home-button-secondary {
-    background: #FFFFFF;
-    border-color: #CBD5E1;
-    color: #334155;
-  }
-
-  .home-page .hero-pillars-strip {
-    justify-content: flex-start;
-    gap: 10px 13px;
-    color: #8C92A0;
-    font-size: 12px;
-  }
-
-  .home-page .pillar-check {
-    color: #FACC15;
-  }
-
-  .home-page .pillar-dot {
-    color: rgba(255, 255, 255, 0.22);
-  }
-
-  :global([data-theme="light"]) .home-page .hero-pillars-strip,
-  :global(html.light-theme) .home-page .hero-pillars-strip {
-    color: #64748B;
-  }
-
-  :global([data-theme="light"]) .home-page .pillar-check,
-  :global(html.light-theme) .home-page .pillar-check {
-    color: #A16207;
-  }
-
-  :global([data-theme="light"]) .home-page .pillar-dot,
-  :global(html.light-theme) .home-page .pillar-dot {
-    color: #CBD5E1;
-  }
-
-  /* Recent works: match the compact resource-card language. */
-  .home-page .recent-work-section {
-    padding-top: 28px;
-    padding-bottom: 24px;
-  }
-
-  .home-page .recent-work-container {
-    width: min(920px, calc(100% - 36px));
-  }
-
-  .home-page .recent-works-header {
-    margin-bottom: 15px;
-  }
-
-  .home-page .recent-works-title {
-    padding-left: 11px;
-    border-left: 3.5px solid #FACC15;
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: clamp(18px, 2.4vw, 20px);
-    font-weight: 700;
-    line-height: 1.3;
-    letter-spacing: -0.015em;
-  }
-
-  .home-page .recent-works-chevron {
-    color: #8C92A0;
-    font-size: 24px;
-  }
-
-  .home-page .recent-works-header-link:hover,
-  .home-page .recent-works-header-link:hover .recent-works-chevron {
-    color: #FACC15;
-  }
-
-  .home-page .recent-work-carousel-track {
-    gap: 12px;
-    padding: 2px 1px 10px;
-  }
-
-  .home-page .recent-work-card {
-    min-width: 260px;
-    padding: 10px;
-    border-radius: 14px;
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.085);
-    box-shadow: none;
-  }
-
-  .home-page .recent-work-card:hover {
-    transform: translateY(-2px);
-    border-color: rgba(250, 204, 21, 0.25);
-    box-shadow: none;
-  }
-
-  .home-page .recent-work-thumb-wrap {
-    border-radius: 10px;
-    background: #080A0E;
-    border-color: rgba(255, 255, 255, 0.07);
-  }
-
-  .home-page .recent-work-card-body {
-    padding: 11px 2px 2px;
-  }
-
-  .home-page .recent-work-meta-row {
-    margin-bottom: 8px;
-  }
-
-  .home-page .recent-work-meta-category {
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: none;
-    color: #D8B746;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-  }
-
-  .home-page .recent-work-meta-date {
-    color: #8C92A0;
-    font-size: 10.5px;
-  }
-
-  .home-page .recent-work-card-title {
-    color: #F5F5F5;
-    font-size: 14.5px;
-    font-weight: 700;
-  }
-
-  .home-page .recent-work-card:hover .recent-work-card-title {
-    color: #FACC15;
-  }
-
-  .home-page .recent-work-nav-btn {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    background: #111318;
-    border-color: rgba(255, 255, 255, 0.14);
-    color: #D1D5DB;
-    box-shadow: none;
-    backdrop-filter: none;
-  }
-
-  .home-page .recent-work-nav-btn:hover {
-    background: #191C23;
-    border-color: rgba(250, 204, 21, 0.35);
-    color: #FACC15;
-    transform: translateY(-50%);
-  }
-
-  /* Cards and icons across skills, method, trust and promise sections. */
-  .home-page .promise-grid,
-  .home-page .steps-grid,
-  .home-page .skills-tracks-grid {
-    gap: 12px;
-  }
-
-  .home-page .skill-track-card {
-    padding: 22px;
-  }
-
-  .home-page .skill-track-icon {
-    width: 42px;
-    height: 42px;
-    margin-bottom: 15px;
-    border-radius: 10px;
-    background: #111318;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    color: #FACC15;
-  }
-
-  .home-page .method-card {
-    padding: 24px;
-  }
-
-  .home-page .method-step-badge {
-    margin-bottom: 13px;
-    color: rgba(250, 204, 21, 0.62);
-    font-size: 27px;
-    font-weight: 700;
-  }
-
-  .home-page .home-card-kicker {
-    color: #D8B746;
-  }
-
-  .home-page .trust-section,
-  .home-page .why-section,
-  .home-page .skills-section,
-  .home-page .method-section {
-    padding-top: 26px;
-    padding-bottom: 18px;
-  }
-
-  :global([data-theme="light"]) .home-page .skill-track-icon,
-  :global(html.light-theme) .home-page .skill-track-icon {
-    background: #F8FAFC;
-    border-color: #E2E8F0;
-    color: #A16207;
-  }
-
-  :global([data-theme="light"]) .home-page .method-step-badge,
-  :global(html.light-theme) .home-page .method-step-badge {
-    color: rgba(161, 98, 7, 0.62);
-  }
-
-  :global([data-theme="light"]) .home-page .home-card-kicker,
-  :global(html.light-theme) .home-page .home-card-kicker {
-    color: #8A5B08;
-  }
-
-  /* FAQ: compact resource-style panels and clear yellow active state. */
-  .home-page .faq-section {
-    padding-top: 28px;
-    padding-bottom: 22px;
-  }
-
-  .home-page .faq-accordion-list {
-    gap: 9px;
-  }
-
-  .home-page .faq-accordion-item {
-    border-radius: 12px;
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.085);
-    box-shadow: none;
-  }
-
-  .home-page .faq-accordion-item:hover {
-    border-color: rgba(250, 204, 21, 0.23);
-    box-shadow: none;
-  }
-
-  .home-page .faq-accordion-trigger {
-    padding: 16px 17px;
-  }
-
-  .home-page .faq-question-text {
-    color: #F5F5F5;
-    font-size: 14px;
-    font-weight: 650;
-  }
-
-  .home-page .faq-plus-control {
-    width: 30px;
-    height: 30px;
-    min-width: 30px;
-    border-radius: 8px;
-    background: #111318;
-    border-color: rgba(255, 255, 255, 0.11);
-    color: #A6ABB6;
-  }
-
-  .home-page .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
-    background: rgba(250, 204, 21, 0.12);
-    border-color: rgba(250, 204, 21, 0.4);
-    color: #FACC15;
-  }
-
-  .home-page .faq-accordion-panel {
-    border-top-color: rgba(255, 255, 255, 0.08);
-    padding: 0 17px 16px;
-  }
-
-  .home-page .faq-answer-text {
-    color: #A6ABB6;
-    font-size: 13.5px;
-  }
-
-  .home-page .faq-search-field {
-    min-height: 46px;
-    border-radius: 10px;
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.11);
-  }
-
-  .home-page .faq-search-field:focus-within {
-    border-color: rgba(250, 204, 21, 0.5);
-    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.09);
-  }
-
-  .home-page .faq-search-input {
-    color: #F5F5F5;
-    font-size: 14px;
-  }
-
-  .home-page .faq-search-clear,
-  .home-page .faq-textarea-expand-btn {
-    border-radius: 8px;
-    background: #111318;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #A6ABB6;
-  }
-
-  .home-page .faq-more-btn,
-  .home-page .faq-action-btn {
-    border-radius: 8px;
-  }
-
-  .home-page .faq-more-btn {
-    min-height: 36px;
-    background: #111318;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #E5E7EB;
-    box-shadow: none;
-  }
-
-  .home-page .faq-more-btn:hover {
-    border-color: rgba(250, 204, 21, 0.35);
-    color: #FACC15;
-  }
-
-  .home-page .faq-no-results {
-    border-radius: 12px;
-    background: #0B0D12;
-    border: 1px dashed rgba(255, 255, 255, 0.15);
-  }
-
-  .home-page .faq-no-results-link {
-    color: #FACC15;
-  }
-
-  .home-page .home-card.faq-submit-card {
-    border-radius: 14px;
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.085);
-    padding: 22px;
-  }
-
-  .home-page .faq-submit-title {
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: 17px;
-    font-weight: 700;
-  }
-
-  .home-page .faq-submit-desc {
-    color: #A6ABB6;
-  }
-
-  .home-page .faq-textarea {
-    min-height: 110px;
-    border-radius: 10px;
-    background: #080A0E;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #F5F5F5;
-    font-size: 14px;
-  }
-
-  .home-page .faq-textarea:focus {
-    border-color: rgba(250, 204, 21, 0.5);
-    box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.09);
-  }
-
-  .home-page .faq-clear-btn {
-    border-radius: 8px;
-    background: #111318;
-    border-color: rgba(255, 255, 255, 0.12);
-    color: #D1D5DB;
-    box-shadow: none;
-  }
-
-  .home-page .faq-clear-btn:disabled {
-    background: #0E1015;
-    border-color: rgba(255, 255, 255, 0.07);
-    color: #626976;
-  }
-
-  .home-page .faq-submit-btn:disabled {
-    background: rgba(250, 204, 21, 0.18);
-    border-color: rgba(250, 204, 21, 0.2);
-    color: rgba(245, 245, 245, 0.5);
-    box-shadow: none;
-  }
-
-  /* Final CTA uses the same surface as the resource information panels. */
-  .home-page .final-cta-section {
-    padding-top: 18px;
-    padding-bottom: 30px;
-  }
-
-  .home-page .home-cta-card {
-    padding: 26px;
-    border-radius: 14px;
-    background: #0B0D12;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: none;
-  }
-
-  .home-page .cta-title {
-    color: #F5F5F5;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: clamp(21px, 3vw, 26px);
-    font-weight: 750;
-    line-height: 1.25;
-  }
-
-  .home-page .cta-desc {
-    color: #A6ABB6;
-    font-size: 14px;
-  }
-
-  .home-page .home-button-cta {
-    border-radius: 9px;
-  }
-
-  /* FAQ modal inherits the same dark surfaces and restrained gold controls. */
-  .home-page .faq-modal-dialog {
-    background: #0B0D12;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 14px;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
-  }
-
-  .home-page .faq-modal-backdrop {
-    background: rgba(0, 0, 0, 0.78);
-  }
-
-  .home-page .faq-modal-collapse-btn,
-  .home-page .faq-modal-action-btn {
-    border-radius: 8px;
-  }
-
-  .home-page .faq-modal-submit-btn {
-    background: #FACC15;
-    border-color: #FACC15;
-    color: #090909;
-    box-shadow: none;
-  }
-
-  :global([data-theme="light"]) .home-page .section-head h2,
-  :global(html.light-theme) .home-page .section-head h2,
-  :global([data-theme="light"]) .home-page .recent-works-title,
-  :global(html.light-theme) .home-page .recent-works-title {
-    border-left-color: #A16207;
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .recent-work-card,
-  :global(html.light-theme) .home-page .recent-work-card,
-  :global([data-theme="light"]) .home-page .faq-accordion-item,
-  :global(html.light-theme) .home-page .faq-accordion-item,
-  :global([data-theme="light"]) .home-page .home-card.faq-submit-card,
-  :global(html.light-theme) .home-page .home-card.faq-submit-card,
-  :global([data-theme="light"]) .home-page .home-cta-card,
-  :global(html.light-theme) .home-page .home-cta-card {
-    background: #FFFFFF;
-    border-color: #E2E8F0;
-    box-shadow: none;
-  }
-
-  :global([data-theme="light"]) .home-page .recent-work-meta-category,
-  :global(html.light-theme) .home-page .recent-work-meta-category,
-  :global([data-theme="light"]) .home-page .home-card-kicker,
-  :global(html.light-theme) .home-page .home-card-kicker {
-    color: #8A5B08;
-  }
-
-  :global([data-theme="light"]) .home-page .recent-work-meta-date,
-  :global(html.light-theme) .home-page .recent-work-meta-date,
-  :global([data-theme="light"]) .home-page .cta-desc,
-  :global(html.light-theme) .home-page .cta-desc,
-  :global([data-theme="light"]) .home-page .faq-answer-text,
-  :global(html.light-theme) .home-page .faq-answer-text,
-  :global([data-theme="light"]) .home-page .faq-submit-desc,
-  :global(html.light-theme) .home-page .faq-submit-desc {
-    color: #64748B;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-question-text,
-  :global(html.light-theme) .home-page .faq-question-text,
-  :global([data-theme="light"]) .home-page .faq-submit-title,
-  :global(html.light-theme) .home-page .faq-submit-title,
-  :global([data-theme="light"]) .home-page .cta-title,
-  :global(html.light-theme) .home-page .cta-title {
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-plus-control,
-  :global(html.light-theme) .home-page .faq-plus-control,
-  :global([data-theme="light"]) .home-page .faq-more-btn,
-  :global(html.light-theme) .home-page .faq-more-btn,
-  :global([data-theme="light"]) .home-page .faq-clear-btn,
-  :global(html.light-theme) .home-page .faq-clear-btn {
-    background: #F8FAFC;
-    border-color: #CBD5E1;
-    color: #475569;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control,
-  :global(html.light-theme) .home-page .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
-    background: rgba(161, 98, 7, 0.09);
-    border-color: rgba(161, 98, 7, 0.35);
-    color: #A16207;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-search-field,
-  :global(html.light-theme) .home-page .faq-search-field,
-  :global([data-theme="light"]) .home-page .faq-textarea,
-  :global(html.light-theme) .home-page .faq-textarea {
-    background: #FFFFFF;
-    border-color: #CBD5E1;
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-search-field:focus-within,
-  :global(html.light-theme) .home-page .faq-search-field:focus-within,
-  :global([data-theme="light"]) .home-page .faq-textarea:focus,
-  :global(html.light-theme) .home-page .faq-textarea:focus {
-    border-color: #A16207;
-    box-shadow: 0 0 0 3px rgba(161, 98, 7, 0.08);
-  }
-
-  :global([data-theme="light"]) .home-page .faq-modal-dialog,
-  :global(html.light-theme) .home-page .faq-modal-dialog {
-    background: #FFFFFF;
-    border-color: #E2E8F0;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-modal-submit-btn,
-  :global(html.light-theme) .home-page .faq-modal-submit-btn {
-    background: #A16207;
-    border-color: #A16207;
-    color: #FFFFFF;
-  }
-
-  /* Footer on the homepage uses the same black / neutral / yellow visual system. */
-  :global(body:has(.home-page) .site-footer) {
-    background: #050505 !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.09) !important;
-    color: #A6ABB6 !important;
-  }
-
-  :global(body:has(.home-page) .site-footer .brand-name),
-  :global(body:has(.home-page) .site-footer .footer-social-heading) {
-    color: #F5F5F5 !important;
-  }
-
-  :global(body:has(.home-page) .site-footer .brand-name-accent),
-  :global(body:has(.home-page) .site-footer a:hover) {
-    color: #FACC15 !important;
-  }
-
-  :global(body:has(.home-page) .site-footer a),
-  :global(body:has(.home-page) .site-footer .footer-description) {
-    color: #A6ABB6 !important;
-  }
-
-  :global(body:has(.home-page) .site-footer .footer-divider) {
-    background: rgba(255, 255, 255, 0.09) !important;
-  }
-
-  :global([data-theme="light"] body:has(.home-page) .site-footer),
-  :global(html.light-theme body:has(.home-page) .site-footer) {
-    background: #FFFFFF !important;
-    border-top-color: #E2E8F0 !important;
-    color: #64748B !important;
-  }
-
-  :global([data-theme="light"] body:has(.home-page) .site-footer .brand-name),
-  :global(html.light-theme body:has(.home-page) .site-footer .brand-name),
-  :global([data-theme="light"] body:has(.home-page) .site-footer .footer-social-heading),
-  :global(html.light-theme body:has(.home-page) .site-footer .footer-social-heading) {
-    color: #0F172A !important;
-  }
-
-  :global([data-theme="light"] body:has(.home-page) .site-footer a),
-  :global(html.light-theme body:has(.home-page) .site-footer a),
-  :global([data-theme="light"] body:has(.home-page) .site-footer .footer-description),
-  :global(html.light-theme body:has(.home-page) .site-footer .footer-description) {
-    color: #475569 !important;
-  }
-
-  :global([data-theme="light"] body:has(.home-page) .site-footer a:hover),
-  :global(html.light-theme body:has(.home-page) .site-footer a:hover),
-  :global([data-theme="light"] body:has(.home-page) .site-footer .brand-name-accent),
-  :global(html.light-theme body:has(.home-page) .site-footer .brand-name-accent) {
-    color: #A16207 !important;
-  }
-
-  :global([data-theme="light"] body:has(.home-page) .site-footer .footer-divider),
-  :global(html.light-theme body:has(.home-page) .site-footer .footer-divider) {
-    background: #E2E8F0 !important;
-  }
-
-  @media (max-width: 640px) {
-    .home-page .home-section {
-      padding: 24px 0 15px;
-    }
-
-    .home-page .home-hero {
-      padding: 34px 0 25px;
-    }
-
-    .home-page .hero-title {
-      font-size: clamp(31px, 8.4vw, 37px);
-      line-height: 1.13;
-    }
-
-    .home-page .hero-lead {
-      font-size: 14px;
-      margin-bottom: 18px;
-    }
-
-    .home-page .hero-pillars-strip {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      justify-content: start;
-      gap: 9px 12px;
-      font-size: 11px;
-    }
-
-    .home-page .pillar-dot {
-      display: none;
-    }
-
-    .home-page .home-card {
-      padding: 20px 17px;
-    }
-
-    .home-page .method-card,
-    .home-page .skill-track-card {
-      padding: 20px 17px;
-    }
-
-    .home-page .recent-work-container {
-      width: calc(100% - 36px);
-    }
-
-    .home-page .recent-work-card {
-      flex: 0 0 84vw;
-      width: 84vw;
-      min-width: 260px;
-      max-width: 360px;
-      padding: 9px;
-      border-radius: 13px;
-    }
-
-    .home-page .faq-accordion-trigger {
-      padding: 14px 14px;
-      gap: 12px;
-    }
-
-    .home-page .faq-question-text {
-      font-size: 13.5px;
-    }
-
-    .home-page .faq-accordion-panel {
-      padding: 0 14px 14px;
-    }
-
-    .home-page .home-card.faq-submit-card {
-      padding: 19px 16px 15px;
-    }
-
-    .home-page .home-cta-card {
-      padding: 21px 17px;
-    }
-
-    .home-page .faq-more-wrap {
-      justify-content: flex-start;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .home-page *,
-    .home-page *::before,
-    .home-page *::after {
-      scroll-behavior: auto !important;
-      transition-duration: 0.01ms !important;
-      animation-duration: 0.01ms !important;
-    }
-  }
-
 </style>
 
 <script>
