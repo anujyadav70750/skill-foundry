@@ -100,7 +100,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <div class="recent-works-header">
           <a class="recent-works-header-link" href="/resources/" aria-label="View all resources">
             <h2 class="recent-works-title">Recent</h2>
-            <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5L16 12L9 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>
         </div>
 
@@ -1396,7 +1396,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .recent-works-header-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     text-decoration: none;
     color: var(--text, #F8FAFC);
     transition: color 0.18s ease;
@@ -1418,14 +1418,15 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   .recent-works-chevron {
     display: block;
-    width: 24px;
+    width: 16px;
     height: 24px;
-    flex: 0 0 24px;
+    flex: 0 0 16px;
     color: var(--text, #F8FAFC);
-    opacity: 0.68;
+    opacity: 0.58;
     overflow: visible;
     transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
     align-self: center;
+    transform: translateY(-1px);
   }
 
   :global([data-theme="light"]) .recent-works-chevron,
@@ -3528,12 +3529,13 @@ const formatUploadDate = (d: Date | string | undefined) => {
       font-weight: 700;
       line-height: 1.25;
       letter-spacing: -0.015em;
+      margin: 0;
     }
 
     .home-page .recent-works-chevron {
-      width: 24px;
+      width: 16px;
       height: 24px;
-      flex-basis: 24px;
+      flex-basis: 16px;
       align-self: center;
     }
 
