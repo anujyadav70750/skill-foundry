@@ -433,45 +433,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
   </style>
 
-  <script is:inline>
-    (() => {
-      const getPageSlug = () => {
-        const parts = window.location.pathname.split('/').filter(Boolean);
-        const resIdx = parts.indexOf('resources');
-        if (resIdx !== -1 && parts[resIdx + 1]) {
-          return parts[resIdx + 1];
-        }
-        return document.querySelector('[data-resource-slug]')?.getAttribute('data-resource-slug') || '';
-      };
-      const keepAnchor = () => window.location.hash;
-      const navigationType = () => {
-        try {
-          return performance.getEntriesByType('navigation')[0]?.type || 'navigate';
-        } catch {
-          return 'navigate';
-        }
-      };
-      const resetFreshResourcePosition = () => {
-        if (keepAnchor()) return;
-        if (navigationType() === 'back_forward') return;
-        try {
-          const s = getPageSlug();
-          if (s && sessionStorage.getItem('sf_blueprint_return_scroll_' + s) !== null) return;
-        } catch {}
-        window.scrollTo(0, 0);
-      };
-      try {
-        if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-      } catch {}
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', resetFreshResourcePosition, { once: true });
-      } else {
-        resetFreshResourcePosition();
-      }
-      // Do not reset scroll again on pageshow: it fires after remaining assets load,
-      // and can pull readers back to the top after they have started scrolling.
-    })();
-  </script>
+  <!-- Native browser scroll restoration is preserved; no delayed resource-page scroll reset. -->
 
   <div class="testing-1-theme resource-editorial-layout" data-resource-slug={slug}>
     <article class="resource-page">
