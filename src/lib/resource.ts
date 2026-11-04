@@ -26,22 +26,17 @@ export function resourceImageAlt(resource: CollectionEntry<'resources'>) {
   return resource.data.imageAlt?.trim() || resource.data.title;
 }
 
-export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
-  // Listing cards use the explicitly configured thumbnail first.
+export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
+  // One canonical image identifies this resource everywhere: hero, search, listings and related cards.
   return firstUsableImage(
-    resource.data.thumbnail,
     resource.data.heroImage,
+    resource.data.thumbnail,
     resource.data.inputImage,
     ...resourceResultImages(resource)
   );
 }
 
-export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
-  // The resource page hero uses heroImage first, so an older thumbnail cannot override it.
-  return firstUsableImage(
-    resource.data.heroImage,
-    resource.data.thumbnail,
-    resource.data.inputImage,
-    ...resourceResultImages(resource)
-  );
+export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
+  // Keep the legacy helper name for existing callers, but always use the canonical hero image.
+  return resourceHeroImage(resource);
 }
