@@ -7,15 +7,13 @@ tool: "Google Flow"
 toolUrl: "https://flow.google/"
 toolAffiliate: false
 date: "2026-09-10"
-thumbnail: "/images/1000069055-thumbnail-16x9-1788985430602.jpg"
+thumbnail: "/images/1000069056-result-16x9-1788985389269.jpg"
 thumbnailRatio: "16:9"
-heroImage: "/images/1000068513-hero-16x9-1788985443598.jpg"
-inputImage: "/images/1000069054-input-16x9-1788985501045.jpg"
-inputImages: ["/images/1000069054-input-16x9-1788985501045.jpg"]
+heroImage: "/images/1000069056-result-16x9-1788985389269.jpg"
 inputImageRatios: ["original"]
-resultImages: []
+resultImages: ["/images/1000069056-result-16x9-1788985389269.jpg"]
 resultImageRatios: []
-imageAlt: "AI character video workflow cover image"
+imageAlt: "Final AI character video result preview"
 intro: "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
 whatItDoes: "Keep character identity, outfit, framing, and visual continuity consistent from the first image to the final video."
 toolsUsed:
@@ -31,6 +29,15 @@ prompt: |
   Use the workflow steps below to create a consistent AI character video.
 steps:
   - title: "Create the dressed character image"
+    guidePoints:
+      - "Open Google Flow and start a new image-generation project."
+      - "Upload the character reference and the dress reference."
+      - "Select Nano Banana Pro and set the aspect ratio to 9:16."
+      - "Use the prompt to preserve the character’s identity while applying the clothing reference."
+      - "Generate the dressed character image and keep it for the next step."
+    details:
+      - label: "TOOL USED"
+        value: "Google Flow"
     purpose: "Establish character identity and dress styling in a clean 9:16 portrait."
     actionType: "prompt"
     outputType: "image"
@@ -55,6 +62,15 @@ steps:
     process: "Use the uploaded character image as the primary identity reference. Preserve the character’s facial identity, facial structure, hairstyle, skin tone, and overall appearance. Use the uploaded dress image as the clothing reference and replace the character’s current outfit with the referenced dress. Keep the character’s identity and proportions consistent. Create a polished vertical 9:16 image with natural lighting, realistic fabric details, and a clean cinematic presentation."
     next: "Use this dressed character image as the reference for Video Clip 01 in Step 02."
   - title: "Generate video clip 01"
+    guidePoints:
+      - "Open a new video-generation project in Google Flow."
+      - "Upload the dressed character image as the starting frame and identity reference."
+      - "Select Gemini Omni, set the aspect ratio to 9:16, and choose a 10-second duration."
+      - "Paste the prompt and add the scene direction for the opening shot."
+      - "Generate the first clip and save it as Video Clip 01."
+    details:
+      - label: "TOOL USED"
+        value: "Google Flow"
     purpose: "Generate the opening 10-second vertical clip from the dressed character reference."
     actionType: "prompt"
     outputType: "video"
@@ -77,6 +93,15 @@ steps:
     process: "Use the uploaded dressed character image as the primary visual reference. Keep the same character identity, outfit, appearance, and visual style. Animate the character naturally according to the supplied scene direction, with realistic movement and a consistent vertical 9:16 composition. Create one clean 10-second video clip."
     next: "Use Video Clip 01 as the continuity reference for Step 03."
   - title: "Generate video clip 02"
+    guidePoints:
+      - "Start a new video-generation project in Google Flow."
+      - "Upload Video Clip 01 as the previous-clip continuity reference."
+      - "Also upload the dressed character image to reinforce identity and outfit consistency."
+      - "Select Gemini Omni, 9:16, and 10 seconds."
+      - "Use the prompt with the new scene direction, generate the second clip, and save it as Video Clip 02."
+    details:
+      - label: "TOOL USED"
+        value: "Google Flow"
     purpose: "Generate the second 10-second vertical clip maintaining character identity and motion continuity."
     actionType: "prompt"
     outputType: "video"
@@ -103,6 +128,15 @@ steps:
     process: "Continue the same visual character and outfit established in Clip 01. Use the supplied reference assets to maintain identity, clothing, lighting, framing, and overall visual continuity. Generate the next natural 10-second vertical clip with the new scene direction."
     next: "Use Video Clip 02 as the continuity reference for Step 04."
   - title: "Generate video clip 03"
+    guidePoints:
+      - "Start a new video-generation project in Google Flow."
+      - "Upload Video Clip 02 as the previous-clip continuity reference."
+      - "Also upload the dressed character image as the character consistency reference."
+      - "Select Gemini Omni, 9:16, and 10 seconds."
+      - "Use the prompt with the closing scene direction, generate the third clip, and save it as Video Clip 03."
+    details:
+      - label: "TOOL USED"
+        value: "Google Flow"
     purpose: "Generate the closing 10-second vertical clip completing the visual sequence."
     actionType: "prompt"
     outputType: "video"
@@ -129,11 +163,15 @@ steps:
     process: "Continue the same character, outfit, visual language, lighting, and vertical framing established by the previous clips. Use the supplied continuity reference and character image to keep the result visually consistent. Generate the final 10-second clip with the required closing scene direction."
     next: "Bring Video Clips 01, 02, and 03 into CapCut for the final video assembly in Step 05."
   - title: "Assemble the final video"
+    details:
+      - label: "TOOL USED"
+        value: "CapCut"
     purpose: "Arrange all three vertical clips in sequence, trim transitions, and export 1080p video."
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Final edited video"
     outputDescription: "This is the completed video exported from the editing step."
+    outputPreviewSrc: "/images/1000069056-result-16x9-1788985389269.jpg"
     tool: "CapCut"
     toolPurpose: "VIDEO EDITING"
     inputs:
