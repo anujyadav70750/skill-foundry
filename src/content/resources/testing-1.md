@@ -10,7 +10,6 @@ date: "2026-09-10"
 thumbnail: "/images/1000069056-result-16x9-1788985389269.jpg"
 thumbnailRatio: "16:9"
 heroImage: "/images/1000069056-result-16x9-1788985389269.jpg"
-inputImageRatios: ["original"]
 resultImages: ["/images/1000069056-result-16x9-1788985389269.jpg"]
 resultImageRatios: []
 imageAlt: "Final AI character video result preview"
@@ -41,6 +40,7 @@ steps:
     purpose: "Establish character identity and dress styling in a clean 9:16 portrait."
     actionType: "prompt"
     outputType: "image"
+    hasOutput: false
     outputLabel: "Dressed character image"
     outputDescription: "Generated character image used as the visual foundation for the video clips."
     tool: "Google Flow"
@@ -74,6 +74,7 @@ steps:
     purpose: "Generate the opening 10-second vertical clip from the dressed character reference."
     actionType: "prompt"
     outputType: "video"
+    hasOutput: false
     outputLabel: "Video Clip 01"
     outputDescription: "First generated 10-second vertical clip."
     tool: "Google Flow"
@@ -105,6 +106,7 @@ steps:
     purpose: "Generate the second 10-second vertical clip maintaining character identity and motion continuity."
     actionType: "prompt"
     outputType: "video"
+    hasOutput: false
     outputLabel: "Video Clip 02"
     outputDescription: "Second generated 10-second vertical clip."
     tool: "Google Flow"
@@ -140,6 +142,7 @@ steps:
     purpose: "Generate the closing 10-second vertical clip completing the visual sequence."
     actionType: "prompt"
     outputType: "video"
+    hasOutput: false
     outputLabel: "Video Clip 03"
     outputDescription: "Third generated 10-second vertical clip."
     tool: "Google Flow"
