@@ -718,21 +718,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               />
                             ) : (
                               <div class="tutorial-result-img-wrap">
-                                <div
-                                  class="result-fog-backdrop"
-                                  style={`background-image: url('${output.previewSrc || mediaUrl || heroImage}');`}
-                                  aria-hidden="true"
-                                ></div>
-                                <div class="result-media-content">
-                                  <img
-                                    class="tutorial-result-img"
-                                    src={mediaUrl}
-                                    alt={`${step.title} result`}
-                                    loading="eager"
-                                    decoding="async"
-                                  />
-
-                                </div>
+                                <img
+                                  class="tutorial-result-img"
+                                  src={mediaUrl}
+                                  alt={`${step.title} result`}
+                                  loading="eager"
+                                  decoding="async"
+                                />
                               </div>
                             )}
                           </div>
@@ -2815,30 +2807,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       justify-content: center;
     }
 
-    /* Subtle darkened/fogged version of result media behind actual result filling unused frame space */
-    .result-fog-backdrop {
-      position: absolute;
-      inset: -20px;
-      background-size: cover;
-      background-position: center;
-      filter: blur(28px) brightness(0.10);
-      opacity: 0.35;
-      transform: scale(1.1);
-      pointer-events: none;
-    }
-
-    .result-media-content {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6px;
-      box-sizing: border-box;
-    }
-
     /* Uncropped media: fitted with object-fit: contain so 9:16 vertical results are completely visible */
     .tutorial-result-img,
     .tutorial-result-video {
@@ -2942,12 +2910,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       max-width: 540px !important;
       min-width: 280px !important;
       display: block !important;
-    }
-
-    .tutorial-result-media-frame.is-instagram-frame .result-fog-backdrop,
-    .tutorial-result-media-frame:has(.step-instagram-wrapper) .result-fog-backdrop,
-    .tutorial-result-media-frame:has(blockquote.instagram-media) .result-fog-backdrop {
-      display: none !important;
     }
 
     /* Clean rectangular info area under the media frame */
