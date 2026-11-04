@@ -484,7 +484,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       } else {
         resetFreshResourcePosition();
       }
-      window.addEventListener('pageshow', resetFreshResourcePosition);
+      // Do not reset scroll again on pageshow: it fires after remaining assets load,
+      // and can pull readers back to the top after they have started scrolling.
     })();
   </script>
 
