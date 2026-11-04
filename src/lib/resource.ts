@@ -27,6 +27,7 @@ export function resourceImageAlt(resource: CollectionEntry<'resources'>) {
 }
 
 export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
+  // Listing cards use the explicitly configured thumbnail first.
   return firstUsableImage(
     resource.data.thumbnail,
     resource.data.heroImage,
@@ -36,6 +37,11 @@ export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
 }
 
 export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
-  // One resource uses one primary cover image everywhere.
-  return resourceThumbnail(resource);
+  // The resource page hero uses heroImage first, so an older thumbnail cannot override it.
+  return firstUsableImage(
+    resource.data.heroImage,
+    resource.data.thumbnail,
+    resource.data.inputImage,
+    ...resourceResultImages(resource)
+  );
 }
