@@ -3700,6 +3700,62 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
+
+  /* MOBILE FAQ COMPACTING — questions and search field */
+  @media (max-width: 640px) {
+    .home-page .faq-accordion-trigger {
+      padding: 15px 18px;
+      gap: 12px;
+    }
+
+    .home-page .faq-question-text {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.38;
+      letter-spacing: -0.01em;
+    }
+
+    .home-page .faq-plus-control {
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+    }
+
+    .home-page .faq-accordion-list {
+      gap: 9px;
+    }
+
+    .home-page .faq-accordion-item {
+      border-radius: 14px;
+    }
+
+    .home-page .faq-search-wrap {
+      margin-bottom: 14px;
+    }
+
+    .home-page .faq-search-field {
+      min-height: 44px;
+      padding: 0 12px 0 14px;
+      border-radius: 12px;
+    }
+
+    .home-page .faq-search-icon {
+      margin-right: 10px;
+    }
+
+    .home-page .faq-search-input {
+      font-size: 14px;
+      padding: 10px 0;
+      line-height: 1.4;
+    }
+
+    .home-page .faq-search-clear {
+      width: 26px;
+      height: 26px;
+      margin-left: 6px;
+    }
+  }
+
 </style>
 
 <script>
