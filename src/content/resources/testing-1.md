@@ -28,6 +28,8 @@ prompt: |
   Use the workflow steps below to create a consistent AI character video.
 steps:
   - title: "Create the dressed character image"
+    outputPreviewSrc: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=85"
+    outputLabel: "Character preview"
     guidePoints:
       - "Open Google Flow and start a new image-generation project."
       - "Upload the character reference and the dress reference."
@@ -40,7 +42,6 @@ steps:
     purpose: "Establish character identity and dress styling in a clean 9:16 portrait."
     actionType: "prompt"
     outputType: "image"
-    outputPreviewSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=85"
     outputLabel: "Dressed character image"
     outputDescription: "Generated character image used as the visual foundation for the video clips."
     tool: "Google Flow"
@@ -62,6 +63,8 @@ steps:
     process: "Use the uploaded character image as the primary identity reference. Preserve the character’s facial identity, facial structure, hairstyle, skin tone, and overall appearance. Use the uploaded dress image as the clothing reference and replace the character’s current outfit with the referenced dress. Keep the character’s identity and proportions consistent. Create a polished vertical 9:16 image with natural lighting, realistic fabric details, and a clean cinematic presentation."
     next: "Use this dressed character image as the reference for Video Clip 01 in Step 02."
   - title: "Generate video clip 01"
+    outputPreviewSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=85"
+    outputLabel: "Clip 01 preview"
     guidePoints:
       - "Open a new video-generation project in Google Flow."
       - "Upload the dressed character image as the starting frame and identity reference."
@@ -74,7 +77,6 @@ steps:
     purpose: "Generate the opening 10-second vertical clip from the dressed character reference."
     actionType: "prompt"
     outputType: "video"
-    outputPreviewSrc: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=85"
     outputLabel: "Video Clip 01"
     outputDescription: "First generated 10-second vertical clip."
     tool: "Google Flow"
@@ -94,6 +96,8 @@ steps:
     process: "Use the uploaded dressed character image as the primary visual reference. Keep the same character identity, outfit, appearance, and visual style. Animate the character naturally according to the supplied scene direction, with realistic movement and a consistent vertical 9:16 composition. Create one clean 10-second video clip."
     next: "Use Video Clip 01 as the continuity reference for Step 03."
   - title: "Generate video clip 02"
+    outputPreviewSrc: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=85"
+    outputLabel: "Clip 02 preview"
     guidePoints:
       - "Start a new video-generation project in Google Flow."
       - "Upload Video Clip 01 as the previous-clip continuity reference."
@@ -106,7 +110,6 @@ steps:
     purpose: "Generate the second 10-second vertical clip maintaining character identity and motion continuity."
     actionType: "prompt"
     outputType: "video"
-    outputPreviewSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=85"
     outputLabel: "Video Clip 02"
     outputDescription: "Second generated 10-second vertical clip."
     tool: "Google Flow"
@@ -130,6 +133,8 @@ steps:
     process: "Continue the same visual character and outfit established in Clip 01. Use the supplied reference assets to maintain identity, clothing, lighting, framing, and overall visual continuity. Generate the next natural 10-second vertical clip with the new scene direction."
     next: "Use Video Clip 02 as the continuity reference for Step 04."
   - title: "Generate video clip 03"
+    outputPreviewSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85"
+    outputLabel: "Clip 03 preview"
     guidePoints:
       - "Start a new video-generation project in Google Flow."
       - "Upload Video Clip 02 as the previous-clip continuity reference."
@@ -142,7 +147,6 @@ steps:
     purpose: "Generate the closing 10-second vertical clip completing the visual sequence."
     actionType: "prompt"
     outputType: "video"
-    outputPreviewSrc: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1200&q=85"
     outputLabel: "Video Clip 03"
     outputDescription: "Third generated 10-second vertical clip."
     tool: "Google Flow"
@@ -166,6 +170,8 @@ steps:
     process: "Continue the same character, outfit, visual language, lighting, and vertical framing established by the previous clips. Use the supplied continuity reference and character image to keep the result visually consistent. Generate the final 10-second clip with the required closing scene direction."
     next: "Bring Video Clips 01, 02, and 03 into CapCut for the final video assembly in Step 05."
   - title: "Assemble the final video"
+    outputPreviewSrc: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85"
+    outputLabel: "Final video preview"
     details:
       - label: "TOOL USED"
         value: "CapCut"
@@ -174,7 +180,6 @@ steps:
     outputType: "video"
     outputLabel: "Final edited video"
     outputDescription: "This is the completed video exported from the editing step."
-    outputPreviewSrc: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85"
     tool: "CapCut"
     toolPurpose: "VIDEO EDITING"
     inputs:
