@@ -29,7 +29,6 @@ prompt: |
 steps:
   - title: "Create the dressed character image"
     outputPreviewSrc: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=900&q=85"
-    outputLabel: "Character preview"
     guidePoints:
       - "Open Google Flow and start a new image-generation project."
       - "Upload the character reference and the dress reference."
@@ -64,7 +63,6 @@ steps:
     next: "Use this dressed character image as the reference for Video Clip 01 in Step 02."
   - title: "Generate video clip 01"
     outputPreviewSrc: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=900&q=85"
-    outputLabel: "Clip 01 preview"
     guidePoints:
       - "Open a new video-generation project in Google Flow."
       - "Upload the dressed character image as the starting frame and identity reference."
@@ -97,7 +95,6 @@ steps:
     next: "Use Video Clip 01 as the continuity reference for Step 03."
   - title: "Generate video clip 02"
     outputPreviewSrc: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=85"
-    outputLabel: "Clip 02 preview"
     guidePoints:
       - "Start a new video-generation project in Google Flow."
       - "Upload Video Clip 01 as the previous-clip continuity reference."
@@ -134,7 +131,6 @@ steps:
     next: "Use Video Clip 02 as the continuity reference for Step 04."
   - title: "Generate video clip 03"
     outputPreviewSrc: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=85"
-    outputLabel: "Clip 03 preview"
     guidePoints:
       - "Start a new video-generation project in Google Flow."
       - "Upload Video Clip 02 as the previous-clip continuity reference."
@@ -171,7 +167,6 @@ steps:
     next: "Bring Video Clips 01, 02, and 03 into CapCut for the final video assembly in Step 05."
   - title: "Assemble the final video"
     outputPreviewSrc: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=85"
-    outputLabel: "Final video preview"
     details:
       - label: "TOOL USED"
         value: "CapCut"
