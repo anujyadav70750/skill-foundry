@@ -291,6 +291,15 @@ const introText = String(data.intro || '').trim();
 const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
+const formatResourceTag = (tag: string) => tag
+  .split(/[-_\\s]+/)
+  .filter(Boolean)
+  .map((part) => {
+    const upper = part.toUpperCase();
+    if (['AI', '3D', 'API', 'UI', 'UX', 'SEO'].includes(upper)) return upper;
+    return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
+  })
+  .join(' ');
 
 const schema = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
@@ -951,9 +960,19 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         </script>
 
         {data.tags.length > 0 && (
-          <div class="tags" aria-label="Resource tags">
-            {data.tags.map((tag) => <a href={`/resources/?q=${encodeURIComponent(tag)}`}>#{tag}</a>)}
-          </div>
+          <section class="resource-tags-section" aria-label="Tags">
+            <div class="resource-tags-heading">
+              <span class="resource-tags-accent" aria-hidden="true"></span>
+              <h2>Tags</h2>
+            </div>
+            <div class="resource-tags-list">
+              {data.tags.map((tag) => (
+                <a class="resource-tag" href={`/resources/?q=${encodeURIComponent(tag)}`}>
+                  {formatResourceTag(tag)}
+                </a>
+              ))}
+            </div>
+          </section>
         )}
       </div>
     </article>
@@ -3158,28 +3177,92 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       text-decoration: underline;
     }
 
-    /* Tags */
-    .tags {
+    /* Resource tags — quiet editorial metadata, visually separate from resource cards. */
+    .resource-tags-section {
+      width: min(920px, calc(100% - 36px));
+      margin: 30px auto 0;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .resource-tags-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 13px;
+    }
+
+    .resource-tags-accent {
+      display: block;
+      width: 3px;
+      height: 16px;
+      flex: 0 0 3px;
+      border-radius: 999px;
+      background: #FACC15;
+    }
+
+    .resource-tags-heading h2 {
+      margin: 0;
+      color: #E5E7EB;
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .resource-tags-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 24px;
+      align-items: center;
+      gap: 9px;
     }
 
-    .tags a {
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      color: #9A9FAA;
+    .resource-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      box-sizing: border-box;
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: transparent;
+      color: #A9B2C1;
       font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 6px;
+      font-weight: 500;
+      line-height: 1.25;
       text-decoration: none;
-      transition: color 0.15s ease, border-color 0.15s ease;
+      overflow-wrap: anywhere;
+      transition: color 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
     }
 
-    .tags a:hover {
-      color: #F5F5F5;
-      border-color: rgba(255, 255, 255, 0.25);
+    .resource-tag:hover {
+      color: #67E8F9;
+      border-color: rgba(61, 214, 208, 0.42);
+      background: rgba(61, 214, 208, 0.045);
+    }
+
+    .resource-tag:focus-visible {
+      outline: 2px solid #67E8F9;
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 600px) {
+      .resource-tags-section {
+        width: calc(100% - 36px);
+        margin-top: 26px;
+        padding-top: 16px;
+      }
+
+      .resource-tags-list {
+        gap: 8px;
+      }
+
+      .resource-tag {
+        min-height: 33px;
+        padding: 7px 10px;
+        font-size: 11.5px;
+      }
     }
 
     /* Related Resources */
@@ -4033,11 +4116,28 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       color: #334155;
     }
 
-    html[data-theme="light"] .tags a,
-    html.light-theme .tags a {
-      background: #F1F5F9;
-      border-color: #E2E8F0;
-      color: #475569;
+    html[data-theme="light"] .resource-tags-section,
+    html.light-theme .resource-tags-section {
+      border-top-color: #E2E8F0;
+    }
+
+    html[data-theme="light"] .resource-tags-heading h2,
+    html.light-theme .resource-tags-heading h2 {
+      color: #334155;
+    }
+
+    html[data-theme="light"] .resource-tag,
+    html.light-theme .resource-tag {
+      background: transparent;
+      border-color: #D7DEE8;
+      color: #596579;
+    }
+
+    html[data-theme="light"] .resource-tag:hover,
+    html.light-theme .resource-tag:hover {
+      color: #0E7490;
+      border-color: #67C7D0;
+      background: rgba(8, 145, 178, 0.045);
     }
 
     html[data-theme="light"] .related-works-title,
