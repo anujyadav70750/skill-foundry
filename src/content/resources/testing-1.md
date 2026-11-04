@@ -7,11 +7,12 @@ tool: "Google Flow"
 toolUrl: "https://flow.google/"
 toolAffiliate: false
 date: "2026-09-10"
+thumbnail: "/images/testing-resource-hero-16x9-20261104.jpg"
 thumbnailRatio: "16:9"
-heroImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?fit=crop&w=1200&q=85&fm=jpg"
+heroImage: "/images/testing-resource-hero-16x9-20261104.jpg"
 resultImages: []
 resultImageRatios: []
-imageAlt: "Character reference portrait used in the AI video workflow"
+imageAlt: "Wide character reference sheet used as the visual identity image for this resource"
 intro: "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
 whatItDoes: "Keep character identity, outfit, framing, and visual continuity consistent from the first image to the final video."
 toolsUsed:

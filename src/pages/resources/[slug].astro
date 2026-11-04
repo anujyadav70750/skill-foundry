@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceThumbnail } from '../../lib/resource';
+import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const resources = await getCollection('resources');
@@ -229,7 +229,7 @@ const related = (data.relatedResources.length > 0
 ).slice(0, 6);
 
 const getRelatedThumbnail = (item: any) => {
-  const thumb = resourceThumbnail(item);
+  const thumb = resourceHeroImage(item);
   if (thumb && thumb !== '/images/placeholder.svg' && !thumb.includes('placeholder')) {
     return thumb;
   }
@@ -261,8 +261,8 @@ const site = Astro.site ?? Astro.url;
 const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
-const heroImage = slug === 'testing-1' ? '/images/testing-resource-hero-16x9-20261104.jpg' : resourceHeroImage(resource);
-const imageAlt = slug === 'testing-1' ? 'Wide 16:9 character reference sheet used as the testing resource hero image' : resourceImageAlt(resource);
+const heroImage = resourceHeroImage(resource);
+const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
 
 const rawReel = (data as any).instagramReelUrl || (data as any).finalReelUrl || (data as any).videoEmbedUrl || '';

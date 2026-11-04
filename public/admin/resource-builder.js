@@ -333,6 +333,7 @@
   const markdown = data => {
     const repeat = data.repeat;
     const firstTool = repeat.tools[0] || { name: '', url: '', affiliate: false };
+    const canonicalImage = String(data.heroImage || data.thumbnail || '').trim();
     const lines = [
       '---',
       `title: ${quote(data.title)}`,
@@ -343,9 +344,9 @@
       `toolUrl: ${firstTool.url ? quote(firstTool.url) : 'null'}`,
       `toolAffiliate: ${firstTool.affiliate ? 'true' : 'false'}`,
       `date: ${quote(data.date)}`,
-      `thumbnail: ${data.thumbnail ? quote(data.thumbnail) : 'null'}`,
+      `thumbnail: ${canonicalImage ? quote(canonicalImage) : 'null'}`,
       `thumbnailRatio: ${quote('16:9')}`,
-      `heroImage: ${data.heroImage ? quote(data.heroImage) : 'null'}`,
+      `heroImage: ${canonicalImage ? quote(canonicalImage) : 'null'}`,
       `inputImage: ${repeat.inputs[0] ? quote(repeat.inputs[0]) : 'null'}`,
       `inputImages: ${list(repeat.inputs)}`,
       `inputImageRatios: ${list(repeat.inputs.map(() => 'original'))}`,
