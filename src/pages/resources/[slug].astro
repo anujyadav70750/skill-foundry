@@ -304,7 +304,10 @@ const resourceImagePreloads = [...new Set([
     return [mediaUrl, stepToolLogo];
   }),
   ...related.map((item) => getRelatedThumbnail(item))
-].filter((src): src is string => Boolean(src && !/\\.(mp4|webm|mov|m4v|mp3|wav|ogg|m4a|aac|pdf|docx?)(?:[?#]|$)/i.test(src) && !/(youtube\\.com|youtu\\.be|vimeo\\.com|tiktok\\.com|instagram\\.com|\\/embed)/i.test(src)))];
+].filter((src) => {
+  const value = String(src || '').trim();
+  return value.length > 0 && !/^data:/i.test(value) && !/\.(mp4|webm|mov|m4v|mp3|wav|ogg|m4a|aac|pdf|docx?)(?:[?#]|$)/i.test(value) && !/(youtube\.com|youtu\.be|vimeo\.com|tiktok\.com|instagram\.com|\/embed)/i.test(value);
+}))];
 const schema = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
