@@ -500,24 +500,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <div class="hero-image-wrap">
             <img class="hero-image" src={heroImage} alt={imageAlt} loading="eager" fetchpriority="high" decoding="sync" />
           </div>
-          <script is:inline>
-            (() => {
-              const image = document.querySelector('.resource-editorial-layout .hero-image');
-              if (!image) return;
-              const revealWhenDecoded = () => {
-                if (typeof image.decode === 'function') {
-                  image.decode().then(() => image.classList.add('is-image-ready')).catch(() => {
-                    if (image.complete && image.naturalWidth > 0) image.classList.add('is-image-ready');
-                  });
-                } else if (image.complete && image.naturalWidth > 0) {
-                  image.classList.add('is-image-ready');
-                } else {
-                  image.addEventListener('load', () => image.classList.add('is-image-ready'), { once: true });
-                }
-              };
-              revealWhenDecoded();
-            })();
-          </script>
+
 
           {/* 3. Horizontal Metadata Row (Author & Published Date) */}
           <div class="resource-metadata-row" aria-label="Resource metadata">
@@ -1730,16 +1713,27 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     /* Hero Image: Clean, integrated, NO outer card or heavy border */
-    .hero-image-wrap {
+    /* The resource cover has one visible source only. Never paint a second image or loading backdrop. */
+    .resource-header-section .hero-image-wrap,
+    .resource-header-section .hero-image-wrap::before,
+    .resource-header-section .hero-image-wrap::after {
       width: 100%;
       border-radius: 12px;
       overflow: hidden;
       margin: 0 0 12px;
-      background: transparent;
-      border: none;
+      background: transparent !important;
+      background-image: none !important;
+      filter: none !important;
+      box-shadow: none !important;
+      content: none !important;
+      display: block;
     }
 
-    .hero-image {
+    .resource-header-section .hero-image-wrap > :not(.hero-image) {
+      display: none !important;
+    }
+
+    .resource-header-section .hero-image {
       width: 100%;
       height: auto;
       max-height: 520px;
@@ -1747,12 +1741,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: block;
       border-radius: 12px;
       content-visibility: visible !important;
-      opacity: 0;
-      transition: opacity 0.16s ease;
-    }
-
-    .hero-image.is-image-ready {
-      opacity: 1;
+      background: transparent !important;
+      background-image: none !important;
+      filter: none !important;
+      opacity: 1 !important;
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+      mix-blend-mode: normal !important;
     }
 
     /* Clean Horizontal Metadata Row Below Hero Image (Left: Author, Right: Date) */
