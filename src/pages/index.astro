@@ -169,8 +169,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section why-section" id="why-it-exists">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">WHY IT EXISTS</p>
-          <h2>Skills you can understand, apply, and make your own</h2>
+          <div class="why-title-wrap">
+            <span class="why-accent-bar" aria-hidden="true"></span>
+            <h2>Skills you can understand, apply, and make your own</h2>
+          </div>
           <p class="section-subcopy">
             Skill Foundry exists to help people learn useful skills, apply those skills in real projects, and make work and life easier. We teach practical workflows that you can genuinely understand and adapt — not simply copy-paste without knowing how they work.
           </p>
@@ -178,24 +180,21 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
         <div class="promise-grid">
           <article class="home-card promise-card">
-            <div class="promise-card-capsule">01 • UNDERSTAND THE LOGIC</div>
-            <h3 class="card-title">Understand how it works</h3>
+              <h3 class="card-title">Understand how it works</h3>
             <p class="card-description">
               Learn the core principles, tool mechanics, and prompt logic behind each workflow so you gain genuine, reusable skills.
             </p>
           </article>
 
           <article class="home-card promise-card">
-            <div class="promise-card-capsule">02 • REAL APPLICATION</div>
-            <h3 class="card-title">Apply in everyday work</h3>
+              <h3 class="card-title">Apply in everyday work</h3>
             <p class="card-description">
               Put what you learn directly into practice on real projects, creative deliverables, and daily tasks to make work easier.
             </p>
           </article>
 
           <article class="home-card promise-card">
-            <div class="promise-card-capsule">03 • FLEXIBLE ADAPTATION</div>
-            <h3 class="card-title">Adapt to your own needs</h3>
+              <h3 class="card-title">Adapt to your own needs</h3>
             <p class="card-description">
               Take proven workflows and customize them to your specific goals, different tools, and unique project requirements.
             </p>
@@ -597,11 +596,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
      ========================================================================== */
 
   .home-page {
-    background:
-      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.15) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.08) 0%, transparent 40%),
-      #080D14;
-    color: #F8FAFC;
+    background: #050505;
+    color: #F5F5F5;
     min-height: 100vh;
     padding-top: var(--header-height);
     margin-top: calc(-1 * var(--header-height));
@@ -612,10 +608,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
   /* Light Theme Homepage Background & Global Colors */
   :global([data-theme="light"]) .home-page,
   :global(html.light-theme) .home-page {
-    background:
-      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(2, 132, 199, 0.08) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(217, 119, 6, 0.05) 0%, transparent 40%),
-      #F8FAFC;
+    background: #F8FAFC;
     color: #0F172A;
   }
 
@@ -2871,6 +2864,110 @@ const formatUploadDate = (d: Date | string | undefined) => {
       font-size: 13px;
     }
   }
+
+  /* Stage 1: Match the resource-page visual system in the Why It Exists section only. */
+  .why-section .why-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 8px;
+  }
+
+  .why-section .why-accent-bar {
+    display: inline-block;
+    flex: 0 0 3.5px;
+    width: 3.5px;
+    height: 16px;
+    border-radius: 2px;
+    background: #FACC15;
+  }
+
+  .why-section .section-head h2 {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(17px, 2.2vw, 19px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .why-section .section-subcopy {
+    margin: 0;
+    color: #B0B5C0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  .why-section .home-card {
+    padding: 22px 20px;
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: none;
+  }
+
+  .why-section .home-card:hover,
+  .why-section .home-card:active {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+  }
+
+  .why-section .card-title {
+    margin: 0 0 9px;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .why-section .card-description {
+    margin: 0;
+    color: #B0B5C0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  :global([data-theme="light"]) .why-section .section-head h2,
+  :global(html.light-theme) .why-section .section-head h2 {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .why-section .section-subcopy,
+  :global(html.light-theme) .why-section .section-subcopy,
+  :global([data-theme="light"]) .why-section .card-description,
+  :global(html.light-theme) .why-section .card-description {
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .why-section .home-card,
+  :global(html.light-theme) .why-section .home-card,
+  :global([data-theme="light"]) .why-section .home-card:hover,
+  :global(html.light-theme) .why-section .home-card:hover,
+  :global([data-theme="light"]) .why-section .home-card:active,
+  :global(html.light-theme) .why-section .home-card:active {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .why-section .card-title,
+  :global(html.light-theme) .why-section .card-title {
+    color: #0F172A;
+  }
+
+  @media (max-width: 640px) {
+    .why-section .home-card {
+      padding: 18px 16px;
+      border-radius: 14px;
+    }
+  }
+
 </style>
 
 <script>
