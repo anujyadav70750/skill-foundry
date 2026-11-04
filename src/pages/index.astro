@@ -3100,6 +3100,16 @@ const formatUploadDate = (d: Date | string | undefined) => {
     box-shadow: none;
   }
 
+  /* FAQ accordion questions use clean text without the yellow accent marker. */
+  .home-page .faq-question-text {
+    padding-left: 0;
+  }
+
+  .home-page .faq-question-text::before {
+    display: none !important;
+    content: none !important;
+  }
+
   .home-page .faq-question-text {
     display: block;
     color: #F5F5F5;
