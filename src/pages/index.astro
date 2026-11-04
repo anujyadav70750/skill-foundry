@@ -3453,6 +3453,114 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
+
+  /* MOBILE FIRST-SCREEN REFINEMENT
+     Tighten the hero and Recent Works rhythm without changing navigation,
+     content, carousel behavior, or desktop styling. */
+  @media (max-width: 640px) {
+    .home-page .home-hero {
+      padding-top: 26px;
+      padding-bottom: 20px;
+    }
+
+    .home-page .home-hero .hero-content {
+      padding-inline: 18px;
+    }
+
+    .home-page .home-hero .hero-title {
+      font-size: clamp(30px, 8.6vw, 32px);
+      line-height: 1.13;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      max-width: 540px;
+    }
+
+    .home-page .home-hero .hero-lead {
+      font-size: 15px;
+      line-height: 1.52;
+      max-width: 540px;
+      margin-bottom: 20px;
+    }
+
+    .home-page .home-hero .hero-actions {
+      margin-bottom: 8px;
+    }
+
+    .home-page .home-hero .home-button {
+      min-height: 44px;
+      font-size: 14px;
+    }
+
+    .home-page .home-hero .home-button-primary {
+      padding: 10px 23px;
+    }
+
+    .home-page .home-hero .hero-pillars-strip {
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .home-page .home-hero .pillar-dot {
+      display: none;
+    }
+
+    .home-page .recent-work-section {
+      padding-top: 20px;
+      padding-bottom: 22px;
+    }
+
+    .home-page .recent-work-container {
+      width: calc(100% - 36px);
+    }
+
+    .home-page .recent-works-header {
+      margin-bottom: 13px;
+    }
+
+    .home-page .recent-works-title {
+      font-size: 24px;
+      line-height: 1.15;
+    }
+
+    .home-page .recent-works-chevron {
+      font-size: 25px;
+    }
+
+    .home-page .recent-work-carousel-track {
+      gap: 12px;
+      padding: 3px 1px 8px;
+    }
+
+    .home-page .recent-work-card {
+      flex: 0 0 76vw;
+      width: 76vw;
+      min-width: 240px;
+      max-width: 320px;
+      padding: 10px;
+      border-radius: 14px;
+    }
+
+    .home-page .recent-work-thumb-wrap {
+      border-radius: 10px;
+    }
+
+    .home-page .recent-work-card-body {
+      padding-top: 11px;
+    }
+
+    .home-page .recent-work-meta-row {
+      margin-bottom: 7px;
+    }
+
+    .home-page .recent-work-card-title {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+  }
+
 </style>
 
 <script>
