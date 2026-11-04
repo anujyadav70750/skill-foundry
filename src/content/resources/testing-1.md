@@ -7,12 +7,12 @@ tool: "Google Flow"
 toolUrl: "https://flow.google/"
 toolAffiliate: false
 date: "2026-09-10"
-thumbnail: "/images/1000069056-result-16x9-1788985389269.jpg"
+thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85"
 thumbnailRatio: "16:9"
-heroImage: "/images/1000069056-result-16x9-1788985389269.jpg"
-resultImages: ["/images/1000069056-result-16x9-1788985389269.jpg"]
+heroImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=85"
+resultImages: []
 resultImageRatios: []
-imageAlt: "Final AI character video result preview"
+imageAlt: "Character reference portrait used in the AI video workflow"
 intro: "Start with the character and clothing references, then follow the workflow in order to create three connected clips and assemble the final video."
 whatItDoes: "Keep character identity, outfit, framing, and visual continuity consistent from the first image to the final video."
 toolsUsed:
@@ -174,7 +174,6 @@ steps:
     outputType: "video"
     outputLabel: "Final edited video"
     outputDescription: "This is the completed video exported from the editing step."
-    outputPreviewSrc: "/images/1000069056-result-16x9-1788985389269.jpg"
     tool: "CapCut"
     toolPurpose: "VIDEO EDITING"
     inputs:
