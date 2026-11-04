@@ -1417,13 +1417,17 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .recent-works-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: clamp(24px, 3.2vw, 32px);
+    font-size: clamp(27px, 3.2vw, 32px);
     font-weight: 400;
     color: var(--text, #F8FAFC);
-    transition: transform 0.2s ease, color 0.2s ease;
+    opacity: 0.68;
+    transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
     line-height: 1;
-    margin-top: -2px;
+    margin-top: 0;
   }
 
   :global([data-theme="light"]) .recent-works-chevron,
@@ -3529,7 +3533,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
 
     .home-page .recent-works-chevron {
-      font-size: 23px;
+      font-size: 27px;
+      align-self: center;
     }
 
     /* YouTube-style mobile resource carousel: thumbnail first, text below,
