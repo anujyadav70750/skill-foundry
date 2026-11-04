@@ -790,30 +790,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                       </div>
                     )}
                   
-                    {/* Show supplied source/reference assets on steps that do not have a generated media output.
-                        This is data-driven and renders only when a step actually includes input references. */}
-                    {index > 0 && step.inputs?.some((input: any) => input?.src) && (
-                      <section class="tutorial-input-reference-section" aria-label="Reference inputs">
-                        <span class="step-subheading-label">REFERENCE INPUTS</span>
-                        <div class="tutorial-input-reference-grid">
-                          {step.inputs.filter((input: any) => input?.src).map((input: any) => (
-                            <figure class="tutorial-input-reference-item">
-                              <img
-                                src={input.src}
-                                alt={input.label || "Step reference"}
-                                loading="lazy"
-                                decoding="async"
-                              />
-                              <figcaption>
-                                <strong>{input.label || "Reference asset"}</strong>
-                                {input.role && <span>{input.role}</span>}
-                              </figcaption>
-                            </figure>
-                          ))}
-                        </div>
-                      </section>
-                    )}
-
                     {/* Prompt box appears only on generation steps. */}
                     {!isInstructionStep && actionText ? (
 
@@ -2118,77 +2094,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     .tutorial-result-section {
       width: 100%;
       margin: 0 0 18px;
-    }
-
-    /* Explicit source/reference thumbnails for steps whose inputs are provided
-       but whose actual generated output file is not part of the resource. */
-    .tutorial-input-reference-section {
-      width: 100%;
-      margin: 0 0 20px;
-    }
-
-    .tutorial-input-reference-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 138px), 1fr));
-      gap: 10px;
-      width: 100%;
-      min-width: 0;
-    }
-
-    .tutorial-input-reference-item {
-      min-width: 0;
-      margin: 0;
-      padding: 8px;
-      border: 1px solid rgba(148, 163, 184, 0.16);
-      border-radius: 11px;
-      background: #10141B;
-    }
-
-    .tutorial-input-reference-item img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
-      border-radius: 7px;
-      background: #080B10;
-    }
-
-    .tutorial-input-reference-item figcaption {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      min-width: 0;
-      margin-top: 7px;
-      color: #E5E7EB;
-      font-size: 12px;
-      line-height: 1.35;
-      overflow-wrap: anywhere;
-    }
-
-    .tutorial-input-reference-item figcaption span {
-      color: #8C92A0;
-      font-size: 11px;
-    }
-
-    html[data-theme="light"] .tutorial-input-reference-item,
-    html.light-theme .tutorial-input-reference-item {
-      background: #F8FAFC;
-      border-color: #CBD5E1;
-    }
-
-    html[data-theme="light"] .tutorial-input-reference-item img,
-    html.light-theme .tutorial-input-reference-item img {
-      background: #E2E8F0;
-    }
-
-    html[data-theme="light"] .tutorial-input-reference-item figcaption,
-    html.light-theme .tutorial-input-reference-item figcaption {
-      color: #0F172A;
-    }
-
-    html[data-theme="light"] .tutorial-input-reference-item figcaption span,
-    html.light-theme .tutorial-input-reference-item figcaption span {
-      color: #64748B;
     }
 
     /* Step Card: Matches the Tools used section background, border, radius, shadow, and padding */
