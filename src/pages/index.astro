@@ -3323,6 +3323,136 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
+
+  /* FINAL RESOURCE-PAGE ALIGNMENT — BELOW RECENT WORKS ONLY
+     Keep section order, content, interactions, and the Recent Works area unchanged. */
+  .home-page .home-section:not(.featured-section) .section-head h2 {
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(17px, 2.2vw, 19px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .home-page .home-section:not(.featured-section) .section-head .section-subcopy {
+    color: #8C92A0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  .home-page .home-section:not(.featured-section) .home-card {
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: none;
+    padding: 22px 20px;
+    transition: none;
+  }
+
+  .home-page .home-section:not(.featured-section) .home-card:hover,
+  .home-page .home-section:not(.featured-section) .home-card:active,
+  .home-page .home-section:not(.featured-section) .home-card:focus {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .home-page .home-section:not(.featured-section) .card-title,
+  .home-page .home-section:not(.featured-section) .faq-submit-title {
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(17px, 2.2vw, 19px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .home-page .home-section:not(.featured-section) .card-description,
+  .home-page .home-section:not(.featured-section) .faq-submit-desc,
+  .home-page .home-section:not(.featured-section) .faq-answer-text {
+    color: #8C92A0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+
+  .home-page .faq-accordion-item,
+  .home-page .faq-accordion-item:hover,
+  .home-page .faq-accordion-item:active {
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    box-shadow: none;
+    transition: none;
+  }
+
+  .home-page .faq-question-text {
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(17px, 2.2vw, 19px);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .home-card,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .home-card,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .home-card:hover,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .home-card:hover,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .home-card:active,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .home-card:active,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .home-card:focus,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .home-card:focus,
+  :global([data-theme="light"]) .home-page .faq-accordion-item,
+  :global(html.light-theme) .home-page .faq-accordion-item,
+  :global([data-theme="light"]) .home-page .faq-accordion-item:hover,
+  :global(html.light-theme) .home-page .faq-accordion-item:hover,
+  :global([data-theme="light"]) .home-page .faq-accordion-item:active,
+  :global(html.light-theme) .home-page .faq-accordion-item:active {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .section-head h2,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .section-head h2,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .card-title,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .card-title,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .faq-submit-title,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .faq-submit-title,
+  :global([data-theme="light"]) .home-page .faq-question-text,
+  :global(html.light-theme) .home-page .faq-question-text {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .card-description,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .card-description,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .faq-submit-desc,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .faq-submit-desc,
+  :global([data-theme="light"]) .home-page .home-section:not(.featured-section) .faq-answer-text,
+  :global(html.light-theme) .home-page .home-section:not(.featured-section) .faq-answer-text {
+    color: #475569;
+  }
+
+  @media (max-width: 640px) {
+    .home-page .home-section:not(.featured-section) .home-card {
+      padding: 18px 16px;
+      border-radius: 14px;
+    }
+
+    .home-page .faq-accordion-item,
+    .home-page .faq-accordion-item:hover,
+    .home-page .faq-accordion-item:active {
+      border-radius: 14px;
+    }
+  }
+
 </style>
 
 <script>
