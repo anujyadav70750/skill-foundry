@@ -9,6 +9,7 @@ export interface Props {
   canonical?: string;
   image?: string;
   imageAlt?: string;
+  preloadImages?: string[];
   type?: 'website' | 'article';
   robots?: string;
   hideHeaderSearch?: boolean;
@@ -31,6 +32,7 @@ const {
   canonical,
   image = '/og-image.svg',
   imageAlt = 'Skill Foundry — Practical learning resources, tutorials, and workflows',
+  preloadImages = [],
   type = 'website',
   robots = 'index, follow',
   hideHeaderSearch = false,
@@ -44,6 +46,7 @@ const fullTitle = title
   : defaultTitle;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = image ? new URL(image, siteUrl).href : undefined;
+const uniquePreloadImages = [...new Set(preloadImages.filter((src) => typeof src === 'string' && src.trim() && src !== image))];
 
 // Single Source of Truth: published resources for global search
 const allResources = await getCollection('resources');
@@ -111,6 +114,9 @@ const platformLinks = [
     {image && image !== '/og-image.svg' && (
       <link rel="preload" as="image" href={image} fetchpriority="high" />
     )}
+    {uniquePreloadImages.map((src) => (
+      <link rel="preload" as="image" href={src} />
+    ))}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
