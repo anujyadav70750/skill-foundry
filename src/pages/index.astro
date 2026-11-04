@@ -73,9 +73,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <!-- SECTION 1 — WHAT SKILL FOUNDRY IS (HERO) -->
     <section class="home-hero">
       <div class="container narrow hero-content">
-        <div class="hero-capsule-row">
-          <span class="home-capsule">PRACTICAL SKILLS PLATFORM</span>
-        </div>
         <h1 class="hero-title">
           Build practical skills that work in the <span class="hero-highlight">real world.</span>
         </h1>
@@ -204,7 +201,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section skills-section" id="what-you-can-build">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">SKILLS &amp; DISCIPLINES</p>
           <h2>What you can learn and build</h2>
           <p class="section-subcopy">
             Understand the core capabilities and skill sets you can master and apply across digital disciplines, from motion to automation.
@@ -219,7 +215,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
               </svg>
             </div>
-            <h3 class="card-title">Video Editing &amp; Motion</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Video Editing &amp; Motion</h3></div>
             <p class="card-description">
               Multi-clip assembly, pacing, audio synchronization, motion control, and professional editing workflows.
             </p>
@@ -233,7 +229,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 <polyline points="21 15 16 10 5 21"></polyline>
               </svg>
             </div>
-            <h3 class="card-title">Content Creation &amp; Visuals</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Content Creation &amp; Visuals</h3></div>
             <p class="card-description">
               Consistent character styling, visual assets, brand imagery, and multi-format digital media production.
             </p>
@@ -245,7 +241,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83"/>
               </svg>
             </div>
-            <h3 class="card-title">AI Workflows &amp; Prompting</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">AI Workflows &amp; Prompting</h3></div>
             <p class="card-description">
               Structured prompt blueprints, model parameters, generative tools, and connected creative pipelines.
             </p>
@@ -258,7 +254,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 <polyline points="8 6 2 12 8 18"></polyline>
               </svg>
             </div>
-            <h3 class="card-title">Automation &amp; Productivity</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Automation &amp; Productivity</h3></div>
             <p class="card-description">
               Workflow orchestration, tool integration, execution shortcuts, and repeatable digital production systems.
             </p>
@@ -271,7 +267,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section method-section" id="how-it-works">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">HOW IT WORKS</p>
           <h2>A clear path from idea to result</h2>
           <p class="section-subcopy">
             Follow a simple, beginner-friendly process designed to help you learn, execute, and adapt any workflow.
@@ -281,8 +276,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <div class="steps-grid">
           <article class="home-card method-card">
             <div class="method-step-badge">01</div>
-            <div class="method-subcapsule">FIND</div>
-            <h3 class="card-title">Find a practical topic or workflow</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Find a practical topic or workflow</h3></div>
             <p class="card-description">
               Find a practical topic, skill or workflow relevant to what you want to create.
             </p>
@@ -290,8 +284,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card method-card">
             <div class="method-step-badge">02</div>
-            <div class="method-subcapsule">FOLLOW</div>
-            <h3 class="card-title">Follow the instructions</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Follow the instructions</h3></div>
             <p class="card-description">
               Follow clear instructions, examples, prompts, and tool settings.
             </p>
@@ -299,8 +292,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card method-card">
             <div class="method-step-badge">03</div>
-            <div class="method-subcapsule">BUILD</div>
-            <h3 class="card-title">Apply and create a real result</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Apply and create a real result</h3></div>
             <p class="card-description">
               Apply what you learned and create a real, practical result for your own project.
             </p>
@@ -315,7 +307,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section trust-section" id="why-trust-the-resources">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">VERIFIED QUALITY</p>
           <h2>Why trust Skill Foundry resources</h2>
           <p class="section-subcopy">
             Every blueprint and tutorial in our library is built for reliable, reproducible execution.
@@ -324,24 +315,21 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
         <div class="promise-grid">
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">01 • HANDS-ON VERIFIED</div>
-            <h3 class="card-title">Tested before publication</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Tested before publication</h3></div>
             <p class="card-description">
               Every blueprint is tested end-to-end to ensure prompts, settings, and step sequences work as described.
             </p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">02 • TOOL TRANSPARENCY</div>
-            <h3 class="card-title">Clear tool access</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Clear tool access</h3></div>
             <p class="card-description">
               We clearly specify required tools, free tiers, and alternatives so you know exact requirements upfront.
             </p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="trust-card-capsule">03 • ZERO FLUFF</div>
-            <h3 class="card-title">Built for execution</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="card-title">Built for execution</h3></div>
             <p class="card-description">
               No filler or endless theory. Clean, actionable instructions designed to help you finish real projects.
             </p>
@@ -354,7 +342,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section faq-section" id="faq">
       <div class="container narrow">
         <div class="section-head">
-          <p class="home-capsule">FREQUENTLY ASKED</p>
           <h2>Questions you might have</h2>
           <p class="section-subcopy">
             Quick answers to common questions about Skill Foundry, our resources, and how to use them.
@@ -454,7 +441,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <!-- Question Submission Card -->
         <div class="home-card faq-submit-card" id="faq-submit-card">
           <div class="faq-submit-head">
-            <h3 class="faq-submit-title">Didn’t find your question?</h3>
+            <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h3 class="faq-submit-title">Didn’t find your question?</h3></div>
             <p class="faq-submit-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
           </div>
           <form id="faq-submit-form" class="faq-submit-form" novalidate>
@@ -510,8 +497,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
       <div class="container narrow">
         <div class="home-cta-card">
           <div class="cta-text-content">
-            <p class="home-capsule cta-capsule">START BUILDING</p>
-            <h2 class="cta-title">Build the skill. Then make it your own.</h2>
+              <div class="home-inner-title-wrap"><span class="home-inner-accent-bar" aria-hidden="true"></span><h2 class="cta-title">Build the skill. Then make it your own.</h2></div>
             <p class="cta-desc">
               Explore practical resources, build useful skills, and put what you learn into practice.
             </p>
@@ -2862,33 +2848,101 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
-  /* Corrected heading hierarchy: main section heading outside; inner card headings inside. */
-  .why-section .section-head h2 {
+
+  /* ==========================================================================
+     HOMEPAGE — RESOURCE-PAGE VISUAL SYSTEM
+     Main section titles and descriptions stay outside cards.
+     Yellow accent bars are reserved for headings inside cards.
+     Layout, order, grids, and existing interactions are preserved.
+     ========================================================================== */
+
+  /* Shared page and section surfaces */
+  .home-page {
+    background: #050505;
+    color: #F5F5F5;
+  }
+
+  :global([data-theme="light"]) .home-page,
+  :global(html.light-theme) .home-page {
+    background: #F8FAFC;
+    color: #0F172A;
+  }
+
+  /* Main section titles: plain heading outside cards, no eyebrow or yellow bar. */
+  .home-page .section-head h2,
+  .home-page .recent-works-title {
     margin: 0 0 8px;
     color: #FFFFFF;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: clamp(24px, 3vw, 30px);
+    font-size: clamp(22px, 2.6vw, 25px);
     font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
   }
 
-  .why-section .section-subcopy {
+  .home-page .section-subcopy {
     margin: 0;
     color: #B0B5C0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.6;
   }
 
-  .why-section .promise-card-title-wrap {
+  :global([data-theme="light"]) .home-page .section-head h2,
+  :global(html.light-theme) .home-page .section-head h2,
+  :global([data-theme="light"]) .home-page .recent-works-title,
+  :global(html.light-theme) .home-page .recent-works-title {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .home-page .section-subcopy,
+  :global(html.light-theme) .home-page .section-subcopy {
+    color: #475569;
+  }
+
+  /* Existing content cards: one restrained resource-page surface. */
+  .home-page .home-card {
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: none;
+    transition: none;
+  }
+
+  .home-page .home-card:hover,
+  .home-page .home-card:active,
+  .home-page .home-card:focus {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    transform: none;
+  }
+
+  :global([data-theme="light"]) .home-page .home-card,
+  :global(html.light-theme) .home-page .home-card,
+  :global([data-theme="light"]) .home-page .home-card:hover,
+  :global(html.light-theme) .home-page .home-card:hover,
+  :global([data-theme="light"]) .home-page .home-card:active,
+  :global(html.light-theme) .home-page .home-card:active,
+  :global([data-theme="light"]) .home-page .home-card:focus,
+  :global(html.light-theme) .home-page .home-card:focus {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  /* Headings inside cards get the small resource-page yellow accent. */
+  .home-page .home-inner-title-wrap,
+  .home-page .promise-card-title-wrap {
     display: flex;
     align-items: center;
     gap: 9px;
     margin: 0 0 9px;
   }
 
-  .why-section .promise-card-accent-bar {
+  .home-page .home-inner-accent-bar,
+  .home-page .promise-card-accent-bar {
     display: inline-block;
     flex: 0 0 3.5px;
     width: 3.5px;
@@ -2897,22 +2951,8 @@ const formatUploadDate = (d: Date | string | undefined) => {
     background: #FACC15;
   }
 
-  .why-section .home-card {
-    padding: 22px 20px;
-    background: #0B0D12;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    box-shadow: none;
-  }
-
-  .why-section .home-card:hover,
-  .why-section .home-card:active {
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: none;
-  }
-
-  .why-section .card-title {
+  .home-page .card-title,
+  .home-page .faq-submit-title {
     margin: 0;
     color: #FFFFFF;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -2922,43 +2962,314 @@ const formatUploadDate = (d: Date | string | undefined) => {
     letter-spacing: -0.01em;
   }
 
-  .why-section .card-description {
+  .home-page .card-description {
     margin: 0;
     color: #B0B5C0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.6;
   }
 
-  :global([data-theme="light"]) .why-section .section-head h2,
-  :global(html.light-theme) .why-section .section-head h2,
-  :global([data-theme="light"]) .why-section .card-title,
-  :global(html.light-theme) .why-section .card-title {
+  :global([data-theme="light"]) .home-page .card-title,
+  :global(html.light-theme) .home-page .card-title,
+  :global([data-theme="light"]) .home-page .faq-submit-title,
+  :global(html.light-theme) .home-page .faq-submit-title {
     color: #0F172A;
   }
 
-  :global([data-theme="light"]) .why-section .section-subcopy,
-  :global(html.light-theme) .why-section .section-subcopy,
-  :global([data-theme="light"]) .why-section .card-description,
-  :global(html.light-theme) .why-section .card-description {
+  :global([data-theme="light"]) .home-page .card-description,
+  :global(html.light-theme) .home-page .card-description {
     color: #475569;
   }
 
-  :global([data-theme="light"]) .why-section .home-card,
-  :global(html.light-theme) .why-section .home-card,
-  :global([data-theme="light"]) .why-section .home-card:hover,
-  :global(html.light-theme) .why-section .home-card:hover,
-  :global([data-theme="light"]) .why-section .home-card:active,
-  :global(html.light-theme) .why-section .home-card:active {
-    background: #FFFFFF;
-    border-color: #E2E8F0;
-    box-shadow: none;
+  /* Why It Exists keeps the same heading hierarchy as the other sections. */
+  .why-section .section-head h2 {
+    margin-bottom: 8px;
+  }
+
+  .why-section .section-subcopy {
+    color: #B0B5C0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .why-section .home-card {
+    padding: 22px 20px;
+  }
+
+  .why-section .promise-card-title-wrap {
+    margin-bottom: 9px;
   }
 
   @media (max-width: 640px) {
     .why-section .home-card {
       padding: 18px 16px;
       border-radius: 14px;
+    }
+  }
+
+  /* Skills icons stay neutral; no yellow flood across icon tiles. */
+  .home-page .skill-track-icon {
+    background: #111318;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #B0B5C0;
+  }
+
+  .home-page .skill-track-card:hover .skill-track-icon,
+  .home-page .skill-track-card:active .skill-track-icon {
+    background: #111318;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #B0B5C0;
+  }
+
+  :global([data-theme="light"]) .home-page .skill-track-icon,
+  :global(html.light-theme) .home-page .skill-track-icon,
+  :global([data-theme="light"]) .home-page .skill-track-card:hover .skill-track-icon,
+  :global(html.light-theme) .home-page .skill-track-card:hover .skill-track-icon {
+    background: #F1F5F9;
+    border-color: #E2E8F0;
+    color: #475569;
+  }
+
+  /* Recent Works cards keep the same carousel geometry and image placement. */
+  .home-page .recent-work-card {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: none;
+    transition: none;
+  }
+
+  .home-page .recent-work-card:hover,
+  .home-page .recent-work-card:active,
+  .home-page .recent-work-card:focus {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .home-page .recent-work-card-title,
+  .home-page .recent-work-card:hover .recent-work-card-title {
+    color: #F5F5F5;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .home-page .recent-works-header-link,
+  .home-page .recent-works-header-link:hover,
+  .home-page .recent-works-header-link:hover .recent-works-chevron {
+    color: #F5F5F5;
+  }
+
+  .home-page .recent-works-chevron {
+    transition: none;
+  }
+
+  :global([data-theme="light"]) .home-page .recent-work-card,
+  :global(html.light-theme) .home-page .recent-work-card,
+  :global([data-theme="light"]) .home-page .recent-work-card:hover,
+  :global(html.light-theme) .home-page .recent-work-card:hover,
+  :global([data-theme="light"]) .home-page .recent-work-card:active,
+  :global(html.light-theme) .home-page .recent-work-card:active {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .home-page .recent-work-card-title,
+  :global(html.light-theme) .home-page .recent-work-card-title,
+  :global([data-theme="light"]) .home-page .recent-work-card:hover .recent-work-card-title,
+  :global(html.light-theme) .home-page .recent-work-card:hover .recent-work-card-title,
+  :global([data-theme="light"]) .home-page .recent-works-header-link,
+  :global(html.light-theme) .home-page .recent-works-header-link,
+  :global([data-theme="light"]) .home-page .recent-works-header-link:hover,
+  :global(html.light-theme) .home-page .recent-works-header-link:hover {
+    color: #0F172A;
+  }
+
+  /* FAQ panels use the neutral surface. Only the plus control reflects open state. */
+  .home-page .faq-accordion-item,
+  .home-page .faq-accordion-item:hover,
+  .home-page .faq-accordion-item:active {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .home-page .faq-question-text {
+    position: relative;
+    display: block;
+    padding-left: 12px;
+    color: #F5F5F5;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .home-page .faq-question-text::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 3.5px;
+    height: 16px;
+    border-radius: 2px;
+    background: #FACC15;
+  }
+
+  .home-page .faq-accordion-trigger {
+    background: transparent;
+    transition: none;
+  }
+
+  .home-page .faq-accordion-trigger:hover,
+  .home-page .faq-accordion-trigger:active {
+    background: transparent;
+  }
+
+  .home-page .faq-accordion-trigger[aria-expanded="true"] .faq-plus-control {
+    background: #354453;
+    border-color: rgba(173, 190, 210, 0.32);
+    color: #FFFFFF;
+  }
+
+  .home-page .faq-answer-text {
+    color: #B0B5C0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .home-page .faq-search-field,
+  .home-page .faq-textarea {
+    background: #080A0E;
+    border-color: rgba(255, 255, 255, 0.10);
+  }
+
+  .home-page .faq-search-field:focus-within,
+  .home-page .faq-textarea:focus {
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: none;
+  }
+
+  .home-page .faq-search-input {
+    color: #F5F5F5;
+  }
+
+  .home-page .faq-more-btn:hover,
+  .home-page .faq-no-results-link:hover {
+    color: #F5F5F5;
+  }
+
+  .home-page .faq-no-results,
+  .home-page .home-card.faq-submit-card {
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .home-page .home-card.faq-submit-card {
+    padding: 22px 20px;
+  }
+
+  .home-page .faq-submit-head {
+    margin-bottom: 14px;
+  }
+
+  .home-page .faq-submit-desc {
+    margin: 0;
+    color: #B0B5C0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Final CTA remains the existing card; only its visual language is aligned. */
+  .home-page .home-cta-card {
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    box-shadow: none;
+    padding: 26px;
+  }
+
+  .home-page .cta-title {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .home-page .cta-desc {
+    color: #B0B5C0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .home-page .home-cta-card .home-inner-title-wrap {
+    margin-bottom: 9px;
+  }
+
+  /* Light theme equivalents for the same neutral system. */
+  :global([data-theme="light"]) .home-page .faq-accordion-item,
+  :global(html.light-theme) .home-page .faq-accordion-item,
+  :global([data-theme="light"]) .home-page .faq-accordion-item:hover,
+  :global(html.light-theme) .home-page .faq-accordion-item:hover,
+  :global([data-theme="light"]) .home-page .faq-accordion-item:active,
+  :global(html.light-theme) .home-page .faq-accordion-item:active,
+  :global([data-theme="light"]) .home-page .faq-no-results,
+  :global(html.light-theme) .home-page .faq-no-results,
+  :global([data-theme="light"]) .home-page .home-card.faq-submit-card,
+  :global(html.light-theme) .home-page .home-card.faq-submit-card,
+  :global([data-theme="light"]) .home-page .home-cta-card,
+  :global(html.light-theme) .home-page .home-cta-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: none;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-question-text,
+  :global(html.light-theme) .home-page .faq-question-text,
+  :global([data-theme="light"]) .home-page .faq-submit-title,
+  :global(html.light-theme) .home-page .faq-submit-title,
+  :global([data-theme="light"]) .home-page .cta-title,
+  :global(html.light-theme) .home-page .cta-title {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-answer-text,
+  :global(html.light-theme) .home-page .faq-answer-text,
+  :global([data-theme="light"]) .home-page .faq-submit-desc,
+  :global(html.light-theme) .home-page .faq-submit-desc,
+  :global([data-theme="light"]) .home-page .cta-desc,
+  :global(html.light-theme) .home-page .cta-desc {
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-search-field,
+  :global(html.light-theme) .home-page .faq-search-field,
+  :global([data-theme="light"]) .home-page .faq-textarea,
+  :global(html.light-theme) .home-page .faq-textarea {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
+    color: #0F172A;
+  }
+
+  @media (max-width: 640px) {
+    .home-page .home-card,
+    .home-page .home-card.faq-submit-card {
+      padding: 18px 16px;
+      border-radius: 14px;
+    }
+
+    .home-page .cta-title {
+      font-size: 18px;
     }
   }
 
