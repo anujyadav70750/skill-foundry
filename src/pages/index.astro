@@ -3617,6 +3617,89 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border-top-color: rgba(15, 23, 42, 0.10);
   }
 
+
+  /* WHAT YOU CAN LEARN & BUILD — HORIZONTAL SKILL CARD RAIL
+     Portrait cards with native horizontal scrolling on mobile and desktop. */
+  .home-page .skills-tracks-grid {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 10px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 2px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .home-page .skills-tracks-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .home-page .skill-track-card {
+    flex: 0 0 250px;
+    width: 250px;
+    min-width: 0;
+    min-height: 278px;
+    padding: 22px 20px;
+    border-radius: 16px;
+    scroll-snap-align: start;
+    justify-content: flex-start;
+    text-decoration: none;
+  }
+
+  .home-page .skill-track-icon {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    border-radius: 13px;
+  }
+
+  .home-page .skill-track-card .home-inner-title-wrap {
+    margin-bottom: 10px;
+  }
+
+  .home-page .skill-track-card .card-title {
+    font-size: 19px;
+    line-height: 1.28;
+    font-weight: 650;
+    margin-bottom: 0;
+  }
+
+  .home-page .skill-track-card .card-description {
+    font-size: 13px;
+    line-height: 1.58;
+  }
+
+  @media (max-width: 640px) {
+    .home-page .skills-tracks-grid {
+      gap: 14px;
+      padding: 2px 1px 8px;
+      margin-right: -18px;
+      padding-right: 18px;
+    }
+
+    .home-page .skill-track-card {
+      flex-basis: min(76vw, 250px);
+      width: min(76vw, 250px);
+      min-height: 264px;
+      padding: 20px 17px;
+      border-radius: 14px;
+    }
+
+    .home-page .skill-track-card .card-title {
+      font-size: 18px;
+    }
+
+    .home-page .skill-track-card .card-description {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+  }
+
 </style>
 
 <script>
