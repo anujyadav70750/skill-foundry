@@ -4138,7 +4138,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
             if (panel) panel.hidden = true;
           });
           if (noResults) noResults.style.display = 'none';
-          if (moreWrap) moreWrap.style.display = 'flex';
           return;
         }
 
@@ -4168,7 +4167,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
         });
 
         if (noResults) noResults.style.display = matchCount === 0 ? 'block' : 'none';
-        if (moreWrap) moreWrap.style.display = 'none';
       };
 
       searchInput.addEventListener('input', handleSearch);
