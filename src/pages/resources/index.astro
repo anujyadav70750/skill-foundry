@@ -2014,6 +2014,93 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #94A3B8;
   }
 
+
+  /* RECENT CAROUSEL — exact homepage visual language; category sections below are untouched. */
+  .recent-curated-section .recent-resource-card {
+    min-width: 280px;
+    padding: 14px;
+    border-radius: 18px;
+    background: rgba(17, 23, 34, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+  }
+  .recent-curated-section .recent-resource-thumb-wrap {
+    border-radius: 12px;
+  }
+  .recent-curated-section .recent-resource-card-body {
+    padding-top: 12px;
+  }
+  .recent-curated-section .recent-resource-meta-row {
+    margin-bottom: 7px;
+  }
+  .recent-curated-section .recent-resource-meta-category {
+    color: #9298A4;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    font-size: 10px;
+    letter-spacing: 0.07em;
+  }
+  .recent-curated-section .recent-resource-meta-date {
+    color: #9298A4;
+    font-size: 10.5px;
+  }
+  .recent-curated-section .recent-resource-card-title {
+    color: #F5F5F5;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.38;
+    -webkit-line-clamp: 2;
+  }
+  .recent-curated-section .recent-resource-card:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-card,
+  :global(html.light-theme) .recent-curated-section .recent-resource-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+  }
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-card-title,
+  :global(html.light-theme) .recent-curated-section .recent-resource-card-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-meta-category,
+  :global(html.light-theme) .recent-curated-section .recent-resource-meta-category,
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-meta-date,
+  :global(html.light-theme) .recent-curated-section .recent-resource-meta-date {
+    color: #64748B;
+  }
+  @media (max-width: 640px) {
+    .recent-curated-section .recent-scroll-wrapper {
+      gap: 18px !important;
+      padding: 3px 1px 8px !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      scroll-padding-left: 1px;
+    }
+    .recent-curated-section .recent-resource-card {
+      flex: 0 0 72%;
+      width: 72%;
+      min-width: 0;
+      max-width: 380px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .recent-curated-section .recent-resource-thumb-wrap {
+      border-radius: 10px;
+    }
+    :global([data-theme="light"]) .recent-curated-section .recent-resource-card,
+    :global(html.light-theme) .recent-curated-section .recent-resource-card {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+
 </style>
 
 <script>
