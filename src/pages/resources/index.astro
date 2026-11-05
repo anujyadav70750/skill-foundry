@@ -324,6 +324,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
           <div class="section-heading-row" id="flat-heading-row">
             <div class="flat-heading-capsule-wrap">
               <span class="category-capsule capsule-recent" id="flat-view-capsule">All Resources</span>
+              <h2 class="flat-view-title" id="flat-view-title" hidden>All Resources</h2>
               <p class="section-subcopy" id="flat-view-subcopy">
                 Explore step-by-step blueprints, workflows, and prompts ready for production.
               </p>
@@ -2329,6 +2330,150 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Category landing results: match the new unboxed category rows used on the library page.
+     Search-result styling remains on its original capsule + card presentation. */
+  .flat-library-view.is-category-view .flat-heading-capsule-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin: 0 0 20px;
+  }
+  .flat-library-view.is-category-view .flat-view-title {
+    display: block;
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(22px, 3.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+  .flat-library-view.is-category-view .flat-view-title[hidden] {
+    display: none !important;
+  }
+  .flat-library-view.is-category-view .section-subcopy {
+    margin: 0;
+    color: #9298A4;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .flat-library-view.is-category-view .resources-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .flat-library-view.is-category-view .resource-card-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    text-decoration: none;
+    transition: opacity 0.18s ease;
+  }
+  .flat-library-view.is-category-view .resource-card-horizontal:hover {
+    transform: none;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 0.88;
+  }
+  .flat-library-view.is-category-view .h-thumb-wrap {
+    flex: 0 0 42%;
+    width: 42%;
+    max-width: 300px;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 8px;
+    background: #090B10;
+    overflow: hidden;
+  }
+  .flat-library-view.is-category-view .h-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+  }
+  .flat-library-view.is-category-view .h-title {
+    margin: 0 0 5px;
+    color: #F5F5F5;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    -webkit-line-clamp: 2;
+  }
+  .flat-library-view.is-category-view .h-desc {
+    margin: 0;
+    color: #9298A4;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+  :global([data-theme="light"]) .flat-library-view.is-category-view .flat-view-title,
+  :global(html.light-theme) .flat-library-view.is-category-view .flat-view-title,
+  :global([data-theme="light"]) .flat-library-view.is-category-view .h-title,
+  :global(html.light-theme) .flat-library-view.is-category-view .h-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .flat-library-view.is-category-view .section-subcopy,
+  :global(html.light-theme) .flat-library-view.is-category-view .section-subcopy,
+  :global([data-theme="light"]) .flat-library-view.is-category-view .h-desc,
+  :global(html.light-theme) .flat-library-view.is-category-view .h-desc {
+    color: #64748B;
+  }
+  @media (max-width: 640px) {
+    .flat-library-view.is-category-view .flat-heading-capsule-wrap {
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .flat-library-view.is-category-view .flat-view-title {
+      font-size: 22px;
+    }
+    .flat-library-view.is-category-view .section-subcopy {
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    .flat-library-view.is-category-view .resources-list {
+      gap: 17px;
+    }
+    .flat-library-view.is-category-view .resource-card-horizontal {
+      gap: 12px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .flat-library-view.is-category-view .h-thumb-wrap {
+      flex: 0 0 42%;
+      width: 42%;
+      max-width: none;
+      aspect-ratio: 16 / 9;
+      border-radius: 7px;
+    }
+    .flat-library-view.is-category-view .h-title {
+      font-size: 13.5px;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .flat-library-view.is-category-view .h-desc {
+      font-size: 11.5px;
+      line-height: 1.35;
+    }
+  }
+
 </style>
 
 <script>
@@ -2579,6 +2724,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     const isCategoryFiltered = savedCategory.toLowerCase() !== 'all';
     const isSortCustom = savedSort !== 'newest';
     const isCuratedDefault = !isSearching && !isCategoryFiltered && !isSortCustom;
+    const isCategoryLanding = isCategoryFiltered && !isSearching;
 
     let matchCount = 0;
 
@@ -2597,10 +2743,19 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     } else {
       // 2. Flat Filtered / Search View
       if (curatedLibraryView) curatedLibraryView.hidden = true;
-      if (flatLibraryView) flatLibraryView.hidden = false;
+      if (flatLibraryView) {
+        flatLibraryView.hidden = false;
+        flatLibraryView.classList.toggle('is-category-view', isCategoryLanding);
+      }
 
-      // Update Flat Heading Capsule
+      // Category landings use the site's full-size section heading; search keeps its existing capsule.
+      const flatViewTitle = document.getElementById('flat-view-title');
+      if (flatViewTitle) {
+        flatViewTitle.textContent = savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory;
+        flatViewTitle.hidden = !isCategoryLanding;
+      }
       if (flatViewCapsule) {
+        flatViewCapsule.hidden = isCategoryLanding;
         if (isSearching) {
           flatViewCapsule.textContent = isCategoryFiltered
             ? `Search: ${savedCategory}`
@@ -2690,6 +2845,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
 
   // Open the complete category in the filtered resource view from either heading or bottom arrow.
   const openCategory = (category: string) => {
+    if (searchInput) searchInput.value = '';
     savedCategory = category;
     draftCategory = category;
     syncSavedFilterIcon();
