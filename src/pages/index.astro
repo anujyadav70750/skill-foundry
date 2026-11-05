@@ -346,40 +346,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-section faq-section" id="faq">
       <div class="container narrow">
         <div class="section-head">
-          <h2>Questions you might have</h2>
-        </div>
-
-        <!-- FAQ Search -->
-        <div class="faq-search-wrap">
-          <label for="faq-search-input" class="sr-only">Search for a question or topic</label>
-          <div class="faq-search-field">
-            <input
-              type="search"
-              id="faq-search-input"
-              class="faq-search-input"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="Search questions..."
-            />
-            <button
-              type="button"
-              id="faq-search-clear"
-              class="faq-search-clear"
-              aria-label="Clear search query"
-              style="display: none;"
-            >
-              <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="5" x2="15" y2="15"></line>
-                <line x1="15" y1="5" x2="5" y2="15"></line>
-              </svg>
-            </button>
-            <span class="faq-search-icon" aria-hidden="true">
-              <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="9" cy="9" r="6"></circle>
-                <line x1="13.5" y1="13.5" x2="18" y2="18"></line>
-              </svg>
-            </span>
-          </div>
+          <h2>Common questions, clear answers</h2>
         </div>
 
         <!-- FAQ Accordion List (Selected homepage questions only) -->
@@ -432,63 +399,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </a>
         </div>
 
-        <!-- Compact No-result State -->
-        <div class="faq-no-results" id="faq-no-results" style="display: none;">
-          <p class="faq-no-results-title">We couldn’t find an answer to that.</p>
-          <p class="faq-no-results-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
-          <a href="#faq-submit-card" class="faq-no-results-link">Go to question submission ↓</a>
-        </div>
-
-        <!-- Question Submission Card -->
-        <div class="home-card faq-submit-card" id="faq-submit-card">
-          <div class="faq-submit-head">
-            <div class="home-inner-title-wrap"><h3 class="faq-submit-title">Didn’t find your question?</h3></div>
-            <p class="faq-submit-desc">Ask us your question and we’ll consider adding it to the FAQ.</p>
-          </div>
-          <form id="faq-submit-form" class="faq-submit-form" novalidate>
-            <div class="faq-input-group">
-              <div class="faq-textarea-wrap">
-                <label for="faq-question-input" class="sr-only">Type your question</label>
-                <textarea
-                  id="faq-question-input"
-                  name="question"
-                  class="faq-textarea"
-                  rows="5"
-                  placeholder="Type your question…"
-                  required
-                ></textarea>
-                <button
-                  type="button"
-                  id="faq-expand-btn"
-                  class="faq-textarea-expand-btn"
-                  aria-label="Expand question editor"
-                  title="Expand question editor"
-                >
-                  <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <line x1="14" y1="10" x2="21" y2="3"></line>
-                    <polyline points="9 3 3 3 3 9"></polyline>
-                    <line x1="10" y1="10" x2="3" y2="3"></line>
-                    <polyline points="15 21 21 21 21 15"></polyline>
-                    <line x1="14" y1="14" x2="21" y2="21"></line>
-                    <polyline points="9 21 3 21 3 15"></polyline>
-                    <line x1="10" y1="14" x2="3" y2="21"></line>
-                  </svg>
-                  <span class="sr-only">Expand editor</span>
-                </button>
-              </div>
-              <p id="faq-validation-msg" class="faq-validation-msg" role="alert" style="display: none;"></p>
-            </div>
-            <div class="faq-form-footer">
-              <button type="button" id="faq-clear-btn" class="faq-action-btn faq-clear-btn" disabled>
-                Clear
-              </button>
-              <button type="submit" id="faq-submit-btn" class="faq-action-btn faq-submit-btn" disabled>
-                <span class="btn-text">Submit</span>
-              </button>
-            </div>
-            <p id="faq-form-status" class="faq-form-status" role="status" aria-live="polite"></p>
-          </form>
+        <!-- Compact support CTA -->
+        <div class="faq-support-cta">
+          <h3 class="faq-support-title">Need a hand?</h3>
+          <p class="faq-support-desc">Our team is available to help with questions about Skill Foundry and its resources.</p>
+          <a class="faq-support-button" href="/contact/">Contact Support</a>
         </div>
       </div>
     </section>
