@@ -4,8 +4,12 @@ import { getCollection } from 'astro:content';
 import { resourceSlug, resourceThumbnail, resourceImageAlt } from '../lib/resource';
 import { FAQ_DATA } from '../data/faqs';
 
-// Show approximately 10 important questions on the homepage
-const homepageFaqs = FAQ_DATA.slice(0, 10);
+// Show only the selected homepage FAQs, in the requested order.
+// The complete FAQ_DATA collection remains available on the dedicated FAQ page.
+const homepageFaqIds = ['faq-1', 'faq-3', 'faq-9', 'faq-5', 'faq-2', 'faq-8'];
+const homepageFaqs = homepageFaqIds
+  .map((id) => FAQ_DATA.find((faq) => faq.id === id))
+  .filter((faq): faq is (typeof FAQ_DATA)[number] => Boolean(faq));
 
 // 1. DYNAMIC PUBLISHED RESOURCES (Show all published resources in horizontal carousel)
 const allResources = await getCollection('resources');
@@ -378,10 +382,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
           </div>
         </div>
 
-        <!-- FAQ Accordion List (Complete FAQ dataset: first 10 shown by default, all searchable) -->
+        <!-- FAQ Accordion List (Selected homepage questions only) -->
         <div class="faq-accordion-list" id="faq-list">
-          {FAQ_DATA.map((faq, index) => {
-            const isDefaultPreview = index < 10;
+          {homepageFaqs.map((faq, index) => {
+            const isDefaultPreview = true;
             return (
               <div
                 class="faq-accordion-item"
