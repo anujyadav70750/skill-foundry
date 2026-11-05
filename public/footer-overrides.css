@@ -5,7 +5,7 @@
   width: 100% !important;
   margin: 0 !important;
   padding: 28px 0 36px !important;
-  background: transparent !important;
+  background: #050505 !important;
   border: 0 !important;
   border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 0 !important;
@@ -23,7 +23,7 @@
   flex-direction: column !important;
   align-items: center !important;
   text-align: center !important;
-  background: transparent !important;
+  background: #050505 !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
@@ -371,7 +371,7 @@
 /* Preserve the site's existing light-theme support. */
 :root[data-theme="light"] .site-footer#site-footer,
 html.light-theme .site-footer#site-footer {
-  background: transparent !important;
+  background: #F8FAFC !important;
   border: 0 !important;
   border-top: 1px solid #E2E8F0 !important;
   border-radius: 0 !important;
@@ -381,7 +381,7 @@ html.light-theme .site-footer#site-footer {
 
 :root[data-theme="light"] .site-footer#site-footer .footer-container,
 html.light-theme .site-footer#site-footer .footer-container {
-  background: transparent !important;
+  background: #FFFFFF !important;
   border: 0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
