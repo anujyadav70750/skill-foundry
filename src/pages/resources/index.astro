@@ -1947,6 +1947,73 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Keep the resource search controls on the same neutral surface as the homepage.
+     Category-specific cards and their accent colours below are intentionally untouched. */
+  .explore-toolbar-section .search-form {
+    background: #0B0D12;
+    border-color: rgba(255, 255, 255, 0.10);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.24);
+  }
+
+  .explore-toolbar-section .search-form:focus-within {
+    border-color: rgba(255, 255, 255, 0.24);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.045), 0 6px 18px rgba(0, 0, 0, 0.24);
+  }
+
+  .explore-toolbar-section .search-bar-circle-btn {
+    background: rgba(255, 255, 255, 0.045);
+    border-color: rgba(255, 255, 255, 0.10);
+    color: #AAB2BF;
+  }
+
+  .explore-toolbar-section .search-bar-circle-btn:hover,
+  .explore-toolbar-section .search-bar-circle-btn.is-active {
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(255, 255, 255, 0.20);
+    color: #F8FAFC;
+    box-shadow: none;
+  }
+
+  .explore-toolbar-section .search-form input {
+    color: #F8FAFC;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  .explore-toolbar-section .search-form input::placeholder {
+    color: #87909E;
+  }
+
+  :global([data-theme="light"]) .explore-toolbar-section .search-form,
+  :global(html.light-theme) .explore-toolbar-section .search-form {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+  }
+
+  :global([data-theme="light"]) .explore-toolbar-section .search-form:focus-within,
+  :global(html.light-theme) .explore-toolbar-section .search-form:focus-within {
+    border-color: #CBD5E1;
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.035), 0 4px 14px rgba(15, 23, 42, 0.05);
+  }
+
+  :global([data-theme="light"]) .explore-toolbar-section .search-bar-circle-btn,
+  :global(html.light-theme) .explore-toolbar-section .search-bar-circle-btn {
+    background: #F8FAFC;
+    border-color: #E2E8F0;
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .explore-toolbar-section .search-form input,
+  :global(html.light-theme) .explore-toolbar-section .search-form input {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .explore-toolbar-section .search-form input::placeholder,
+  :global(html.light-theme) .explore-toolbar-section .search-form input::placeholder {
+    color: #94A3B8;
+  }
+
 </style>
 
 <script>
