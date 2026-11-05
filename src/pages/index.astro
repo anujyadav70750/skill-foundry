@@ -355,6 +355,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
               class="faq-search-input"
               autocomplete="off"
               spellcheck="false"
+              placeholder="Search questions..."
             />
             <button
               type="button"
@@ -3895,16 +3896,40 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
 
-  /* FAQ search: keep the field blank and place the search icon on the right. */
+  /* FAQ search: visually distinct pill-shaped input, aligned with the accordion. */
+  .home-page .faq-search-wrap {
+    max-width: 760px;
+    margin: 22px auto 18px;
+  }
+
   .home-page .faq-search-field {
+    width: 88%;
+    min-height: 48px;
+    margin: 0 auto;
     gap: 10px;
-    padding: 0 10px 0 16px;
-    border-radius: 14px;
+    padding: 0 17px;
+    border: 1px solid rgba(148, 163, 184, 0.20);
+    border-radius: 999px;
+    background: rgba(17, 20, 28, 0.72);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  }
+
+  .home-page .faq-search-field:focus-within {
+    border-color: rgba(148, 163, 184, 0.42);
+    background: rgba(20, 24, 33, 0.92);
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.07);
   }
 
   .home-page .faq-search-input {
     order: 1;
+    min-width: 0;
     padding: 12px 0;
+    color: #E2E8F0;
+  }
+
+  .home-page .faq-search-input::placeholder {
+    color: #7F899B;
+    opacity: 1;
   }
 
   .home-page .faq-search-clear {
@@ -3914,35 +3939,66 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   .home-page .faq-search-icon {
     order: 3;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
     margin: 0;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.06);
-    color: #94A3B8;
+    color: #A8B3C5;
+    opacity: 0.9;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-search-field,
+  :global(html.light-theme) .home-page .faq-search-field {
+    border-color: #D7DEE8;
+    background: #F8FAFC;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  :global([data-theme="light"]) .home-page .faq-search-field:focus-within,
+  :global(html.light-theme) .home-page .faq-search-field:focus-within {
+    border-color: #94A3B8;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.09);
+  }
+
+  :global([data-theme="light"]) .home-page .faq-search-input {
+    color: #1E293B;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-search-input::placeholder,
+  :global(html.light-theme) .home-page .faq-search-input::placeholder {
+    color: #8491A3;
   }
 
   :global([data-theme="light"]) .home-page .faq-search-icon,
   :global(html.light-theme) .home-page .faq-search-icon {
-    border-color: #CBD5E1;
-    background: #F1F5F9;
     color: #64748B;
   }
 
   @media (max-width: 640px) {
+    .home-page .faq-search-wrap {
+      margin: 20px auto 16px;
+    }
+
     .home-page .faq-search-field {
+      width: 88%;
       min-height: 46px;
-      padding: 0 9px 0 13px;
+      padding: 0 14px;
       gap: 8px;
-      border-radius: 13px;
+    }
+
+    .home-page .faq-search-input {
+      font-size: 14px;
+      padding: 10px 0;
     }
 
     .home-page .faq-search-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 9px;
+      width: 19px;
+      height: 19px;
+      flex-basis: 19px;
     }
   }
 
