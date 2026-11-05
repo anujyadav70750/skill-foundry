@@ -4,7 +4,7 @@
 .site-footer#site-footer {
   width: 100% !important;
   margin: 0 !important;
-  padding: 28px 0 36px !important;
+  padding: 18px 0 20px !important;
   background: #050505 !important;
   border: 0 !important;
   border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
@@ -15,10 +15,10 @@
 }
 
 .site-footer#site-footer .footer-container {
-  width: min(1120px, calc(100% - 64px)) !important;
+  width: min(1120px, calc(100% - 40px)) !important;
   max-width: 1120px !important;
   margin: 0 auto !important;
-  padding: 34px 40px 26px !important;
+  padding: 22px 24px 16px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -44,25 +44,25 @@
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 12px !important;
+  gap: 10px !important;
   margin: 0 !important;
   text-decoration: none !important;
 }
 
 .site-footer#site-footer .footer-brand .brand-mark {
-  width: 48px !important;
-  height: 48px !important;
-  min-width: 48px !important;
-  min-height: 48px !important;
-  border-radius: 11px !important;
-  font-size: 15px !important;
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  border-radius: 9px !important;
+  font-size: 13px !important;
 }
 
 .site-footer#site-footer .footer-brand .brand-name {
   color: #FFFFFF !important;
-  font-size: 25px !important;
+  font-size: 21px !important;
   line-height: 1 !important;
-  letter-spacing: 0.12em !important;
+  letter-spacing: 0.10em !important;
   font-weight: 800 !important;
   white-space: nowrap !important;
 }
@@ -72,7 +72,7 @@
 }
 
 .site-footer#site-footer .footer-description {
-  margin: 11px auto 0 !important;
+  margin: 8px auto 0 !important;
   max-width: 760px !important;
   color: #A1A1AA !important;
   font-size: 15px !important;
@@ -86,7 +86,7 @@
   max-width: 1040px !important;
   height: 1px !important;
   min-height: 1px !important;
-  margin: 26px auto !important;
+  margin: 18px auto !important;
   padding: 0 !important;
   background: rgba(255, 255, 255, 0.11) !important;
   border: 0 !important;
@@ -244,12 +244,12 @@
 
 @media (max-width: 768px) {
   .site-footer#site-footer {
-    padding: 18px 0 24px !important;
+    padding: 12px 0 14px !important;
   }
 
   .site-footer#site-footer .footer-container {
-    width: min(1120px, calc(100% - 28px)) !important;
-    padding: 18px 14px 16px !important;
+    width: min(1120px, calc(100% - 20px)) !important;
+    padding: 12px 8px 8px !important;
     border: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
@@ -257,32 +257,32 @@
   }
 
   .site-footer#site-footer .footer-brand {
-    gap: 10px !important;
+    gap: 8px !important;
   }
 
   .site-footer#site-footer .footer-brand .brand-mark {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
-    border-radius: 10px !important;
-    font-size: 13px !important;
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    border-radius: 9px !important;
+    font-size: 11px !important;
   }
 
   .site-footer#site-footer .footer-brand .brand-name {
-    font-size: 19px !important;
-    letter-spacing: 0.105em !important;
+    font-size: 17px !important;
+    letter-spacing: 0.09em !important;
   }
 
   .site-footer#site-footer .footer-description {
     max-width: 430px !important;
-    margin-top: 10px !important;
-    font-size: 12.5px !important;
+    margin-top: 7px !important;
+    font-size: 12px !important;
     line-height: 1.5 !important;
   }
 
   .site-footer#site-footer .footer-divider {
-    margin: 19px auto !important;
+    margin: 13px auto !important;
   }
 
   .site-footer#site-footer .footer-nav-link {
@@ -296,7 +296,7 @@
 
   .site-footer#site-footer .footer-legal {
     gap: 11px !important;
-    margin-top: 13px !important;
+    margin-top: 8px !important;
   }
 
   .site-footer#site-footer .footer-legal-link {
@@ -308,25 +308,25 @@
   }
 
   .site-footer#site-footer .footer-social-heading {
-    margin-bottom: 12px !important;
-    font-size: 17px !important;
+    margin-bottom: 9px !important;
+    font-size: 15px !important;
   }
 
   .site-footer#site-footer .footer-social-list {
-    gap: 9px !important;
+    gap: 7px !important;
   }
 
   .site-footer#site-footer .footer-social-btn {
-    width: 42px !important;
-    height: 42px !important;
-    min-width: 42px !important;
-    min-height: 42px !important;
-    border-radius: 11px !important;
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    border-radius: 10px !important;
   }
 
   .site-footer#site-footer .footer-social-btn svg {
-    width: 19px !important;
-    height: 19px !important;
+    width: 17px !important;
+    height: 17px !important;
   }
 
   .site-footer#site-footer .footer-copyright {
