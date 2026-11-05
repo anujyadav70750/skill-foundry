@@ -2146,16 +2146,18 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 22px;
-    width: 22px;
-    height: 28px;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 24px;
     padding: 0;
     border: 0;
     background: transparent;
     color: #FFFFFF;
-    opacity: 0.62;
+    opacity: 0.58;
     cursor: pointer;
     transition: opacity 0.18s ease, transform 0.18s ease;
+    align-self: center;
+    transform: translateY(1px);
   }
   .category-heading-link:hover {
     opacity: 1;
@@ -2163,8 +2165,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
   .category-heading-chevron {
     display: block;
-    width: 13px;
-    height: 20px;
+    width: 16px;
+    height: 24px;
   }
   .category-bottom-action {
     display: flex;
