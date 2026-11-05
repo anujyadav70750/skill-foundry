@@ -240,26 +240,24 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                 </div>
               </section>
 
-              <!-- CATEGORY SECTIONS — YouTube-style heading and clean vertical resource rows -->
+              <!-- CATEGORY SECTIONS — YouTube-style heading arrows and clean vertical resource rows -->
               {dynamicCategories.map((cat) => {
                 const catResources = publishedResources.filter((r) => r.data.category?.trim() === cat.name);
+                const categoryQuery = encodeURIComponent(cat.name);
                 return (
                   <section class="curated-section category-curated-section" data-section-category={cat.name}>
                     <div class="category-section-heading">
                       <h2 class="recent-works-title">{cat.name}</h2>
-                      {catResources.length > 4 && (
-                        <button
-                          class="category-expand-btn"
-                          type="button"
-                          data-category-toggle
-                          aria-label={`Show all ${cat.name} resources`}
-                          aria-expanded="false"
-                        >
-                          <svg class="category-expand-chevron" aria-hidden="true" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M5 5L12 12L19 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                        </button>
-                      )}
+                      <button
+                        class="category-heading-link"
+                        type="button"
+                        data-category-open={cat.name}
+                        aria-label={`View all ${cat.name} resources`}
+                      >
+                        <svg class="category-heading-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </button>
                     </div>
 
                     <div class="curated-h-cards-stack">
@@ -290,6 +288,23 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                         );
                       })}
                     </div>
+
+                    {catResources.length > 0 && (
+                      <div class="category-bottom-action">
+                        <button
+                          class="category-expand-btn"
+                          type="button"
+                          data-category-toggle
+                          data-category-name={cat.name}
+                          aria-label={catResources.length > 4 ? `Show all ${cat.name} resources` : `Open all ${cat.name} resources`}
+                          aria-expanded="false"
+                        >
+                          <svg class="category-expand-chevron" aria-hidden="true" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 5L12 12L19 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
                   </section>
                 );
               })}
@@ -2127,12 +2142,43 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     line-height: 1.25;
     letter-spacing: -0.015em;
   }
+  .category-heading-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 22px;
+    width: 22px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #FFFFFF;
+    opacity: 0.62;
+    cursor: pointer;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+  .category-heading-link:hover {
+    opacity: 1;
+    transform: translateX(3px);
+  }
+  .category-heading-chevron {
+    display: block;
+    width: 13px;
+    height: 20px;
+  }
+  .category-bottom-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 18px;
+  }
   .category-expand-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 28px;
-    width: 28px;
+    flex: 0 0 32px;
+    width: 32px;
     height: 28px;
     padding: 0;
     border: 0;
@@ -2229,7 +2275,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #0F172A;
   }
   :global([data-theme="light"]) .category-expand-btn,
-  :global(html.light-theme) .category-expand-btn {
+  :global(html.light-theme) .category-expand-btn,
+  :global([data-theme="light"]) .category-heading-link,
+  :global(html.light-theme) .category-heading-link {
     color: #0F172A;
   }
   :global([data-theme="light"]) .category-curated-section .h-title,
@@ -2638,13 +2686,33 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     searchInput?.focus();
   });
 
-  // Expand/collapse each category independently; the first four resources are visible by default.
+  // Open the complete category in the filtered resource view from either heading or bottom arrow.
+  const openCategory = (category: string) => {
+    savedCategory = category;
+    draftCategory = category;
+    syncSavedFilterIcon();
+    updateLibrary();
+    const toolbar = document.querySelector('.explore-toolbar-section');
+    if (toolbar) toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('[data-category-open]').forEach((btn) => {
+    btn.addEventListener('click', () => openCategory(btn.dataset.categoryOpen || 'all'));
+  });
+
+  // Bottom arrow expands beyond the first four items; for shorter categories it opens the full category listing.
   categoryToggleButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const section = btn.closest('.category-curated-section') as HTMLElement | null;
       if (!section) return;
+      const resources = Array.from(section.querySelectorAll<HTMLElement>('.category-resource-row'));
+      const hasMoreThanPreview = resources.length > 4;
+      if (!hasMoreThanPreview) {
+        openCategory(btn.dataset.categoryName || section.dataset.sectionCategory || 'all');
+        return;
+      }
       const expanded = section.classList.toggle('is-expanded');
-      section.querySelectorAll<HTMLElement>('.category-resource-row').forEach((resource, index) => {
+      resources.forEach((resource, index) => {
         resource.hidden = !expanded && index >= 4;
       });
       btn.setAttribute('aria-expanded', String(expanded));
