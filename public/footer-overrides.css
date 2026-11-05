@@ -7,7 +7,6 @@
   padding: 18px 0 20px !important;
   background: #050505 !important;
   border: 0 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   color: #F5F7FA !important;
@@ -373,7 +372,6 @@
 html.light-theme .site-footer#site-footer {
   background: #F8FAFC !important;
   border: 0 !important;
-  border-top: 1px solid #E2E8F0 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   color: #0F172A !important;
