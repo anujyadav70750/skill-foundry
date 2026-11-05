@@ -983,7 +983,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         <div class="related-works-header">
           <a class="related-works-header-link" href="/resources/" aria-label="View all related resources">
             <h2 class="related-works-title">Related Resources</h2>
-            <span class="related-works-chevron" aria-hidden="true">›</span>
+            <svg class="related-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>
         </div>
 
@@ -3265,7 +3265,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       }
     }
 
-    /* Related Resources */
+    /* Related Resources — share the homepage Recent section visual language */
     .related-section {
       margin-top: 44px;
       padding: 0 18px;
@@ -3274,58 +3274,94 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       margin-right: auto;
     }
 
-    .related-works-header-link {
+    .related-works-header {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      margin-bottom: 13px;
+    }
+
+    .related-works-header-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       text-decoration: none;
       color: #FFFFFF;
-      margin-bottom: 12px;
+      transition: color 0.18s ease;
     }
 
     .related-works-title {
-      font-size: 20px;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: clamp(20px, 3.2vw, 25px);
       font-weight: 700;
+      letter-spacing: -0.015em;
+      line-height: 1.25;
       margin: 0;
       color: #FFFFFF;
     }
 
     .related-works-chevron {
-      font-size: 20px;
-      color: #70747D;
+      display: block;
+      width: 16px;
+      height: 24px;
+      flex: 0 0 16px;
+      color: currentColor;
+      opacity: 0.58;
+      align-self: center;
+      transform: translateY(1px);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .related-works-header-link:hover {
+      color: var(--brand-accent, #38BDF8);
+    }
+
+    .related-works-header-link:hover .related-works-chevron {
+      transform: translate(4px, 1px);
+      opacity: 1;
     }
 
     .related-horizontal-row {
       display: flex;
-      gap: 12px;
+      gap: 18px;
       overflow-x: auto;
-      scrollbar-width: thin;
-      padding-bottom: 8px;
+      padding: 3px 1px 8px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .related-horizontal-row::-webkit-scrollbar {
+      display: none;
     }
 
     .related-work-card {
-      flex: 0 0 240px;
-      width: 240px;
-      background: #111318;
-      border: 1px solid rgba(255, 255, 255, 0.10);
-      border-radius: 12px;
+      flex: 0 0 calc((100% - 40px) / 3.25);
+      width: calc((100% - 40px) / 3.25);
+      min-width: 250px;
+      max-width: 380px;
+      background: #0B0D12;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
       overflow: hidden;
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      padding: 14px;
+      color: inherit;
+      scroll-snap-align: start;
+      transition: border-color 0.2s ease;
     }
 
     .related-work-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.20);
+      border-color: rgba(255, 255, 255, 0.18);
     }
 
     .related-work-thumb-wrap {
       width: 100%;
-      height: 140px;
+      aspect-ratio: 16 / 9;
       overflow: hidden;
-      background: #080A0E;
+      background: #04070D;
+      border-radius: 10px;
     }
 
     .related-work-thumb-img {
@@ -3333,42 +3369,104 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .related-work-card:hover .related-work-thumb-img {
+      transform: scale(1.03);
     }
 
     .related-work-card-body {
-      padding: 10px 12px;
+      padding: 12px 0 0;
       display: flex;
       flex-direction: column;
-      gap: 3px;
+      flex: 1;
     }
 
     .related-work-meta-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 9px;
       font-size: 11px;
-      color: #70747D;
     }
 
     .related-work-meta-category {
-      color: #FACC15;
-      font-weight: 600;
+      color: #CBD5E1;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 3px 9px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
       text-transform: uppercase;
-      font-family: var(--font-mono, monospace);
-      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
+    .related-work-meta-date {
+      color: #94A3B8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      line-height: 1.2;
     }
 
     .related-work-card-title {
-      color: #FFFFFF;
-      font-size: 13.5px;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 15px;
       font-weight: 600;
       line-height: 1.35;
       margin: 0;
       overflow: hidden;
-      text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
+    }
+
+    @media (max-width: 640px) {
+      .related-section {
+        margin-top: 36px;
+        padding: 0 18px;
+      }
+
+      .related-works-header {
+        margin-bottom: 13px;
+      }
+
+      .related-horizontal-row {
+        gap: 18px;
+        padding: 3px 1px 8px;
+      }
+
+      .related-work-card {
+        flex: 0 0 72%;
+        width: 72%;
+        min-width: 0;
+        max-width: 380px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .related-work-thumb-wrap {
+        border-radius: 12px;
+      }
+
+      .related-work-card-body {
+        padding-top: 10px;
+      }
+
+      .related-work-meta-row {
+        margin-bottom: 8px;
+      }
     }
 
     /* CTA Section */
@@ -4151,9 +4249,30 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       border-color: #E2E8F0;
     }
 
+    html[data-theme="light"] .related-work-meta-category,
+    html.light-theme .related-work-meta-category {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      color: #475569;
+    }
+
+    html[data-theme="light"] .related-work-meta-date,
+    html.light-theme .related-work-meta-date {
+      color: #64748B;
+    }
+
     html[data-theme="light"] .related-work-card-title,
     html.light-theme .related-work-card-title {
       color: #0F172A;
+    }
+
+    @media (max-width: 640px) {
+      html[data-theme="light"] .related-work-card,
+      html.light-theme .related-work-card {
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+      }
     }
 
     html[data-theme="light"] .cta-card,

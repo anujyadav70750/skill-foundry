@@ -196,49 +196,48 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         <div id="curated-library-view" class="curated-library-view">
           {publishedResources.length > 0 ? (
             <>
-              <!-- RECENT SECTION -->
+              <!-- RECENT SECTION — aligned with the homepage Recent carousel -->
               <section class="curated-section recent-curated-section">
-                <div class="curated-section-header">
-                  <h2 class="category-capsule capsule-recent">Recent &gt;</h2>
+                <div class="recent-works-header">
+                  <a class="recent-works-header-link" href="/resources/" aria-label="View all resources">
+                    <h2 class="recent-works-title">Recent</h2>
+                    <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </a>
                 </div>
 
                 <div class="recent-scroll-wrapper">
                   {publishedResources.slice(0, 4).map((resource, index) => {
                     const slug = resourceSlug(resource);
-                    const isLatest = index === 0;
+                    const dateStr = resource.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
                     return (
                       <a
-                        class={`resource-card ${isLatest ? 'resource-card-prominent' : 'resource-card-horizontal'}`}
+                        class="recent-resource-card"
                         href={`/resources/${slug}/`}
                         aria-label={`Open ${resource.data.title}`}
                       >
-                        <div class={isLatest ? "prominent-thumb-wrap" : "h-thumb-wrap"}>
+                        <div class="recent-resource-thumb-wrap">
                           <img
-                            class={isLatest ? "prominent-thumb-img" : "h-thumb-img"}
+                            class="recent-resource-thumb-img"
                             src={resourceThumbnail(resource)}
                             alt={resourceImageAlt(resource)}
                             loading="eager"
-                            fetchpriority={isLatest ? "high" : "auto"}
+                            fetchpriority={index === 0 ? "high" : "auto"}
                             decoding="async"
                           />
                         </div>
-
-                        <div class={isLatest ? "prominent-content" : "h-content"}>
-                          <h3 class={isLatest ? "prominent-title" : "h-title"}>{resource.data.title}</h3>
-                          <p class={isLatest ? "prominent-desc" : "h-desc"}>{resource.data.description}</p>
+                        <div class="recent-resource-card-body">
+                          <div class="recent-resource-meta-row">
+                            <span class="recent-resource-meta-category">{resource.data.category}</span>
+                            <span class="recent-resource-meta-date">{dateStr}</span>
+                          </div>
+                          <h3 class="recent-resource-card-title">{resource.data.title}</h3>
                         </div>
                       </a>
                     );
                   })}
                 </div>
-
-                {publishedResources.length > 4 && (
-                  <div class="category-more-row">
-                    <button class="category-more-btn" type="button" data-target-category="all">
-                      <span>More &gt;</span>
-                    </button>
-                  </div>
-                )}
               </section>
 
               <!-- 2. POPULATED CATEGORY SECTIONS WITH REFINED CAPSULE HEADINGS -->
@@ -395,10 +394,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
      ========================================================================== */
 
   :global(body.no-header) {
-    background:
-      radial-gradient(ellipse 80% 55% at 50% -10%, rgba(56, 189, 248, 0.12) 0%, transparent 60%),
-      radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.06) 0%, transparent 40%),
-      #080D14 !important;
+    background: #050505 !important;
     padding-top: 0 !important;
     min-height: 100vh;
   }
@@ -1709,6 +1705,248 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #0284C7;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12), 0 0 10px rgba(2, 132, 199, 0.15);
   }
+
+  /* Recent carousel: mirror the homepage's typography, spacing and card treatment.
+     Scoped to this section so category cards below remain unchanged. */
+  .recent-curated-section {
+    margin-bottom: 28px;
+  }
+
+  .recent-curated-section .recent-works-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 13px;
+  }
+
+  .recent-curated-section .recent-works-header-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color 0.18s ease;
+  }
+
+  .recent-curated-section .recent-works-title {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(20px, 3.2vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .recent-curated-section .recent-works-chevron {
+    display: block;
+    width: 16px;
+    height: 24px;
+    flex: 0 0 16px;
+    color: currentColor;
+    opacity: 0.58;
+    align-self: center;
+    transform: translateY(1px);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .recent-curated-section .recent-works-header-link:hover {
+    color: var(--brand-accent, #38BDF8);
+  }
+
+  .recent-curated-section .recent-works-header-link:hover .recent-works-chevron {
+    transform: translate(4px, 1px);
+    opacity: 1;
+  }
+
+  .recent-curated-section .recent-scroll-wrapper {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding: 3px 1px 8px;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .recent-curated-section .recent-scroll-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+
+  .recent-curated-section .recent-resource-card {
+    flex: 0 0 calc((100% - 40px) / 3.25);
+    min-width: 250px;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    padding: 14px;
+    border-radius: 16px;
+    background: #0B0D12;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: inherit;
+    text-decoration: none;
+    scroll-snap-align: start;
+    transition: border-color 0.2s ease;
+  }
+
+  .recent-curated-section .recent-resource-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+
+  .recent-curated-section .recent-resource-thumb-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #04070D;
+  }
+
+  .recent-curated-section .recent-resource-thumb-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .recent-curated-section .recent-resource-card:hover .recent-resource-thumb-img {
+    transform: scale(1.03);
+  }
+
+  .recent-curated-section .recent-resource-card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-top: 12px;
+  }
+
+  .recent-curated-section .recent-resource-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 9px;
+  }
+
+  .recent-curated-section .recent-resource-meta-category {
+    color: #CBD5E1;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    padding: 3px 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .recent-curated-section .recent-resource-meta-date {
+    color: #94A3B8;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .recent-curated-section .recent-resource-card-title {
+    margin: 0;
+    color: #F8FAFC;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  :global([data-theme="light"]) .recent-curated-section .recent-works-header-link,
+  :global(html.light-theme) .recent-curated-section .recent-works-header-link,
+  :global([data-theme="light"]) .recent-curated-section .recent-works-title,
+  :global(html.light-theme) .recent-curated-section .recent-works-title {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-card,
+  :global(html.light-theme) .recent-curated-section .recent-resource-card {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+  }
+
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-meta-category,
+  :global(html.light-theme) .recent-curated-section .recent-resource-meta-category {
+    background: #F1F5F9;
+    border-color: #CBD5E1;
+    color: #475569;
+  }
+
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-meta-date,
+  :global(html.light-theme) .recent-curated-section .recent-resource-meta-date {
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .recent-curated-section .recent-resource-card-title,
+  :global(html.light-theme) .recent-curated-section .recent-resource-card-title {
+    color: #0F172A;
+  }
+
+  @media (max-width: 640px) {
+    .recent-curated-section {
+      margin-bottom: 24px;
+    }
+
+    .recent-curated-section .recent-works-header {
+      margin-bottom: 13px;
+    }
+
+    .recent-curated-section .recent-scroll-wrapper {
+      gap: 18px;
+      padding: 3px 1px 8px;
+    }
+
+    .recent-curated-section .recent-resource-card {
+      flex: 0 0 72%;
+      width: 72%;
+      min-width: 0;
+      max-width: 380px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .recent-curated-section .recent-resource-thumb-wrap {
+      border-radius: 12px;
+    }
+
+    .recent-curated-section .recent-resource-card-body {
+      padding-top: 10px;
+    }
+
+    .recent-curated-section .recent-resource-meta-row {
+      margin-bottom: 8px;
+    }
+
+    .recent-curated-section .recent-resource-card-title {
+      font-size: 15px;
+      line-height: 1.35;
+      -webkit-line-clamp: 3;
+    }
+
+    :global([data-theme="light"]) .recent-curated-section .recent-resource-card,
+    :global(html.light-theme) .recent-curated-section .recent-resource-card {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+  }
+
 </style>
 
 <script>
