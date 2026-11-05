@@ -2726,6 +2726,22 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     const isCuratedDefault = !isSearching && !isCategoryFiltered && !isSortCustom;
     const isCategoryLanding = isCategoryFiltered && !isSearching;
 
+    if (searchInput) {
+      searchInput.placeholder = isCategoryFiltered
+        ? `Search ${savedCategory} resources…`
+        : 'Search workflows, tools, or topics…';
+      searchInput.setAttribute(
+        'aria-label',
+        isCategoryFiltered ? `Search ${savedCategory} resources` : 'Search workflows, tools, or topics'
+      );
+    }
+    const searchLabel = document.querySelector<HTMLLabelElement>('label[for="resource-search-input"]');
+    if (searchLabel) {
+      searchLabel.textContent = isCategoryFiltered
+        ? `Search ${savedCategory} resources`
+        : 'Search workflows, tools, or topics';
+    }
+
     let matchCount = 0;
 
     if (isCuratedDefault) {
@@ -2843,11 +2859,19 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     searchInput?.focus();
   });
 
-  // Open the complete category in the filtered resource view from either heading or bottom arrow.
+  // Open the complete category as a browser-history entry so Back returns to the library view.
   const openCategory = (category: string) => {
     if (searchInput) searchInput.value = '';
     savedCategory = category;
     draftCategory = category;
+
+    const categoryUrl = new URL(window.location.href);
+    categoryUrl.searchParams.set('category', category);
+    categoryUrl.searchParams.delete('q');
+    if (categoryUrl.href !== window.location.href) {
+      window.history.pushState({ resourceCategoryView: true }, '', categoryUrl);
+    }
+
     syncSavedFilterIcon();
     updateLibrary();
     const toolbar = document.querySelector('.explore-toolbar-section');
@@ -2881,6 +2905,19 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
           : `Show all ${section.dataset.sectionCategory || ''} resources`
       );
     });
+  });
+
+  // Restore resource state when browser Back or Forward is used.
+  window.addEventListener('popstate', () => {
+    const params = new URLSearchParams(window.location.search);
+    savedCategory = params.get('category') || 'all';
+    savedSort = params.get('sort') || 'newest';
+    if (searchInput) searchInput.value = params.get('q') || '';
+    draftCategory = savedCategory;
+    draftSort = savedSort;
+    syncSavedFilterIcon();
+    syncDialogDraftUI();
+    updateLibrary(false);
   });
 
   // Empty Search State Reset Button
