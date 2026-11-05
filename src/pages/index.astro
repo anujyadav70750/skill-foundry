@@ -397,6 +397,14 @@ const formatUploadDate = (d: Date | string | undefined) => {
           })}
         </div>
 
+        <div class="faq-bottom-action">
+          <a class="faq-bottom-link" href="/faq/" aria-label="View all frequently asked questions">
+            <svg class="faq-bottom-chevron" aria-hidden="true" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 5L12 12L19 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
+
         <!-- Question submission CTA -->
         <div class="faq-support-cta">
           <h3 class="faq-support-title">Still have a question?</h3>
@@ -3706,6 +3714,47 @@ const formatUploadDate = (d: Date | string | undefined) => {
     max-width: 760px;
   }
 
+  .home-page .faq-bottom-action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 14px auto 0;
+  }
+
+  .home-page .faq-bottom-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #FFFFFF;
+    opacity: 0.62;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.18s ease, background 0.18s ease;
+  }
+
+  .home-page .faq-bottom-link:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .home-page .faq-bottom-chevron {
+    display: block;
+    width: 20px;
+    height: 14px;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-bottom-link,
+  :global(html.light-theme) .home-page .faq-bottom-link {
+    color: #0F172A;
+  }
+
   .home-page .faq-accordion-trigger {
     padding: 14px 18px;
     gap: 14px;
@@ -4065,6 +4114,17 @@ const formatUploadDate = (d: Date | string | undefined) => {
     .home-page .faq-section-desc {
       font-size: 14px;
       line-height: 1.6;
+    }
+
+    .home-page .faq-accordion-list {
+      width: calc(100% - 24px);
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .home-page .faq-bottom-action {
+      margin-top: 12px;
     }
 
     .home-page .faq-support-cta {
