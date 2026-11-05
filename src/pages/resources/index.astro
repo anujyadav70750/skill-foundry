@@ -240,34 +240,44 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                 </div>
               </section>
 
-              <!-- 2. POPULATED CATEGORY SECTIONS WITH REFINED CAPSULE HEADINGS -->
+              <!-- CATEGORY SECTIONS — YouTube-style heading and clean vertical resource rows -->
               {dynamicCategories.map((cat) => {
                 const catResources = publishedResources.filter((r) => r.data.category?.trim() === cat.name);
-                const previewCatResources = catResources.slice(0, 3);
-                const categoryClass = `capsule-${cat.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
                 return (
                   <section class="curated-section category-curated-section" data-section-category={cat.name}>
-                    <div class="curated-section-header">
-                      <h2 class={`category-capsule ${categoryClass}`}>
-                        {cat.name}
-                      </h2>
+                    <div class="category-section-heading">
+                      <h2 class="recent-works-title">{cat.name}</h2>
+                      {catResources.length > 4 && (
+                        <button
+                          class="category-expand-btn"
+                          type="button"
+                          data-category-toggle
+                          aria-label={`Show all ${cat.name} resources`}
+                          aria-expanded="false"
+                        >
+                          <svg class="category-expand-chevron" aria-hidden="true" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 5L12 12L19 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
 
                     <div class="curated-h-cards-stack">
-                      {previewCatResources.map((resource) => {
+                      {catResources.map((resource, index) => {
                         const slug = resourceSlug(resource);
                         return (
                           <a
-                            class="resource-card resource-card-horizontal"
+                            class="resource-card resource-card-horizontal category-resource-row"
                             href={`/resources/${slug}/`}
                             aria-label={`Open ${resource.data.title}`}
+                            hidden={index >= 4}
                           >
                             <div class="h-thumb-wrap">
                               <img
                                 class="h-thumb-img"
                                 src={resourceThumbnail(resource)}
                                 alt={resourceImageAlt(resource)}
-                                loading="eager"
+                                loading="lazy"
                                 decoding="async"
                               />
                             </div>
@@ -279,13 +289,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                           </a>
                         );
                       })}
-                    </div>
-
-                    <!-- Small rectangular bordered More > button aligned to the RIGHT -->
-                    <div class="category-more-row">
-                      <button class="category-more-btn" type="button" data-target-category={cat.name}>
-                        <span>More &gt;</span>
-                      </button>
                     </div>
                   </section>
                 );
@@ -2101,6 +2104,181 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* YouTube-style category lists. These rules are scoped to category sections;
+     the Recent carousel above is intentionally left unchanged. */
+  .category-curated-section {
+    margin-top: 34px;
+    margin-bottom: 34px;
+  }
+  .category-curated-section .category-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .category-curated-section .recent-works-title {
+    margin: 0;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(20px, 3.2vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+  .category-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #FFFFFF;
+    opacity: 0.62;
+    cursor: pointer;
+    transition: opacity 0.18s ease, background 0.18s ease;
+  }
+  .category-expand-btn:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.06);
+  }
+  .category-expand-chevron {
+    display: block;
+    width: 20px;
+    height: 14px;
+    transition: transform 0.22s ease;
+  }
+  .category-curated-section.is-expanded .category-expand-chevron {
+    transform: rotate(180deg);
+  }
+  .category-curated-section .curated-h-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 0;
+  }
+  .category-curated-section .category-resource-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    overflow: visible;
+    text-decoration: none;
+    transition: opacity 0.18s ease;
+  }
+  .category-curated-section .category-resource-row:hover {
+    transform: none;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    opacity: 0.88;
+  }
+  .category-curated-section .h-thumb-wrap {
+    flex: 0 0 42%;
+    width: 42%;
+    max-width: 260px;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 8px;
+    background: #090B10;
+    overflow: hidden;
+  }
+  .category-curated-section .h-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0;
+  }
+  .category-curated-section .h-title {
+    margin: 0 0 5px;
+    color: #F5F5F5;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.32;
+    letter-spacing: -0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .category-curated-section .h-desc {
+    margin: 0;
+    color: #9298A4;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 12.5px;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  :global([data-theme="light"]) .category-curated-section .recent-works-title,
+  :global(html.light-theme) .category-curated-section .recent-works-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .category-expand-btn,
+  :global(html.light-theme) .category-expand-btn {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .category-curated-section .h-title,
+  :global(html.light-theme) .category-curated-section .h-title {
+    color: #0F172A;
+  }
+  :global([data-theme="light"]) .category-curated-section .h-desc,
+  :global(html.light-theme) .category-curated-section .h-desc {
+    color: #64748B;
+  }
+  @media (max-width: 640px) {
+    .category-curated-section {
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .category-curated-section .category-section-heading {
+      margin-bottom: 15px;
+    }
+    .category-curated-section .curated-h-cards-stack {
+      gap: 17px;
+    }
+    .category-curated-section .category-resource-row {
+      gap: 12px;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .category-curated-section .h-thumb-wrap {
+      flex: 0 0 42%;
+      width: 42%;
+      max-width: none;
+      aspect-ratio: 16 / 9;
+      border-radius: 7px;
+    }
+    .category-curated-section .h-title {
+      font-size: 13.5px;
+      line-height: 1.3;
+      margin-bottom: 4px;
+      -webkit-line-clamp: 2;
+    }
+    .category-curated-section .h-desc {
+      font-size: 11.5px;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+    }
+  }
+
 </style>
 
 <script>
@@ -2116,7 +2294,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const filterResetActionBtn = document.getElementById('filter-reset-action-btn') as HTMLButtonElement | null;
   const filterApplyActionBtn = document.getElementById('filter-apply-action-btn') as HTMLButtonElement | null;
 
-  const moreButtons = Array.from(document.querySelectorAll('.category-more-btn')) as HTMLButtonElement[];
+  const categoryToggleButtons = Array.from(document.querySelectorAll('[data-category-toggle]')) as HTMLButtonElement[];
   const emptyResetBtn = document.getElementById('empty-reset-btn') as HTMLButtonElement | null;
   const emptySearchState = document.getElementById('empty-search-state') as HTMLElement | null;
   const resourcesGrid = document.getElementById('resources-grid') as HTMLElement | null;
@@ -2460,20 +2638,22 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     searchInput?.focus();
   });
 
-  // Category "More >" Action Button
-  moreButtons.forEach((btn) => {
+  // Expand/collapse each category independently; the first four resources are visible by default.
+  categoryToggleButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const targetCat = btn.dataset.targetCategory || 'all';
-      savedCategory = targetCat;
-      draftCategory = targetCat;
-      syncSavedFilterIcon();
-      updateLibrary();
-
-      // Smooth scroll up to search bar area
-      const toolbar = document.querySelector('.explore-toolbar-section');
-      if (toolbar) {
-        toolbar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      const section = btn.closest('.category-curated-section') as HTMLElement | null;
+      if (!section) return;
+      const expanded = section.classList.toggle('is-expanded');
+      section.querySelectorAll<HTMLElement>('.category-resource-row').forEach((resource, index) => {
+        resource.hidden = !expanded && index >= 4;
+      });
+      btn.setAttribute('aria-expanded', String(expanded));
+      btn.setAttribute(
+        'aria-label',
+        expanded
+          ? `Show fewer ${section.dataset.sectionCategory || ''} resources`
+          : `Show all ${section.dataset.sectionCategory || ''} resources`
+      );
     });
   });
 
