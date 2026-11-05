@@ -2360,6 +2360,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     font-size: 14px;
     line-height: 1.55;
   }
+  .flat-library-view.is-category-view #flat-view-subcopy[hidden] {
+    display: none !important;
+  }
   .flat-library-view.is-category-view .resources-list {
     display: flex;
     flex-direction: column;
@@ -2770,6 +2773,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         flatViewTitle.textContent = savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory;
         flatViewTitle.hidden = !isCategoryLanding;
       }
+      const flatViewSubcopy = document.getElementById('flat-view-subcopy');
+      if (flatViewSubcopy) flatViewSubcopy.hidden = isCategoryLanding;
       if (flatViewCapsule) {
         flatViewCapsule.hidden = isCategoryLanding;
         if (isSearching) {
