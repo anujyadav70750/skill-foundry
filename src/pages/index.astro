@@ -2837,15 +2837,19 @@ const formatUploadDate = (d: Date | string | undefined) => {
     box-shadow: none;
   }
 
-  /* Yellow accent belongs to main section headings, not the promise cards. */
+  /* Match resource-page section headings and accent-bar dimensions. */
   .home-page .why-section .section-head h2,
   .home-page .skills-section .section-head h2,
   .home-page .method-section .section-head h2,
   .home-page .trust-section .section-head h2,
   .home-page .faq-section .faq-section-title-link {
     display: flex;
-    align-items: center;
-    gap: 11px;
+    align-items: flex-start;
+    gap: 9px;
+    font-size: clamp(17px, 2.2vw, 19px);
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   .home-page .why-section .section-head h2::before,
@@ -2855,11 +2859,19 @@ const formatUploadDate = (d: Date | string | undefined) => {
   .home-page .faq-section .faq-section-title-link::before {
     content: "";
     display: inline-block;
-    flex: 0 0 4px;
-    width: 4px;
-    height: 1.05em;
-    border-radius: 3px;
+    flex: 0 0 3.5px;
+    width: 3.5px;
+    height: 16px;
+    margin-top: 3px;
+    border-radius: 2px;
     background: #FACC15;
+  }
+
+  .home-page .faq-section-title-link .recent-works-title {
+    font-size: clamp(17px, 2.2vw, 19px);
+    line-height: 1.3;
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   /* Headings inside cards get the small resource-page yellow accent. */
