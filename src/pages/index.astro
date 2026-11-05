@@ -1869,28 +1869,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #FFFFFF;
   }
 
-  .faq-more-wrap {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin: 14px auto 0 auto;
-    max-width: 820px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .faq-more-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 36px;
-    padding: 7px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    gap: 7px;
-    border-radius: 9999px;
-  }
-
     :global(.faq-match-mark) {
     background: rgba(255, 224, 130, 0.14);
     color: inherit;
@@ -3084,11 +3062,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     color: #F5F5F5;
   }
 
-  .home-page .faq-more-btn:hover,
-  .home-page .faq-no-results-link:hover {
-    color: #F5F5F5;
-  }
-
   .home-page .faq-no-results,
   .home-page .home-card.faq-submit-card {
     background: #0B0D12;
@@ -3711,10 +3684,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     min-width: 27px;
   }
 
-  .home-page .faq-more-wrap {
-    margin-top: 14px;
-  }
-
   .home-page .home-card.faq-submit-card {
     max-width: 760px;
     margin: 20px auto 0;
@@ -4118,7 +4087,6 @@ const formatUploadDate = (d: Date | string | undefined) => {
     const clearBtn = document.getElementById('faq-search-clear') as HTMLButtonElement | null;
     const accordionItems = Array.from(document.querySelectorAll<HTMLElement>('.faq-accordion-item'));
     const noResults = document.getElementById('faq-no-results');
-    const moreWrap = document.getElementById('faq-more-wrap');
 
     if (searchInput && accordionItems.length > 0) {
       const itemsData = accordionItems.map((item) => {
