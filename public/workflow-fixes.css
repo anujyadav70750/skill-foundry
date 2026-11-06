@@ -8150,3 +8150,138 @@ body.blueprint-fullscreen-open {
   margin: 0 !important;
   pointer-events: none !important;
 }
+
+ 
+/* ==========================================================================
+   POPUP THEME ALIGNMENT — MATCH THE ASK A QUESTION REFERENCE
+   Applies to expanded prompts and the step-details popup inside resource blueprints.
+   Dimensions, placement, content, scroll behavior and click handlers are preserved.
+   ========================================================================== */
+[data-prompt-modal] .prompt-modal-backdrop,
+.step-details-backdrop {
+  background: rgba(3, 7, 18, 0.82) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+[data-prompt-modal] .prompt-modal-dialog,
+.step-details-container {
+  background: #0D1422 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85) !important;
+  color: #F8FAFC !important;
+}
+[data-prompt-modal] .prompt-modal-head,
+[data-prompt-modal] .prompt-modal-actions {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-prompt-modal] .prompt-modal-head span {
+  color: #F8FAFC !important;
+  font: 500 18px/1.2 'Newsreader', 'Playfair Display', Georgia, serif !important;
+  letter-spacing: -0.02em !important;
+}
+[data-prompt-modal] .prompt-modal-head button,
+[data-prompt-modal] .prompt-modal-actions button {
+  min-height: 38px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: #CBD5E1 !important;
+  font: 600 12px/1.2 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+[data-prompt-modal] .prompt-modal-actions button:last-child {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(234, 85, 0, 0.38) !important;
+}
+[data-prompt-modal] .prompt-modal-dialog pre {
+  background: #060B14 !important;
+  color: #F8FAFC !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+}
+.step-details-close-btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #94A3B8 !important;
+  border-radius: 8px !important;
+}
+.step-details-badge {
+  color: #CBD5E1 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+.step-details-step-title {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
+  font-size: 21px !important;
+  font-weight: 500 !important;
+  color: #FFFFFF !important;
+  letter-spacing: -0.02em !important;
+}
+.step-details-step-desc,
+.step-details-section-title { color: #94A3B8 !important; }
+.step-details-input-card,
+.step-details-tool-box,
+.step-details-container .instruction-card,
+.step-details-container .step-modal-prompt-card,
+.step-details-container .workflow-prompt {
+  background: #060B14 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+.step-details-input-card { border-radius: 12px !important; }
+.step-details-container .step-modal-prompt-card,
+.step-details-container .workflow-prompt { border-radius: 14px !important; }
+.step-details-container .step-modal-prompt-head,
+.step-details-container .workflow-prompt-head {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.step-details-container [data-copy-step],
+.step-details-container [data-expand-step],
+.step-details-container .workflow-prompt-head button:first-child,
+.step-details-container .workflow-prompt-head button:last-child {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #CBD5E1 !important;
+}
+.step-details-container .step-modal-prompt-title,
+.step-details-container .workflow-prompt-head span {
+  background: rgba(255, 255, 255, 0.02) !important;
+  color: #94A3B8 !important;
+}
+.step-details-container .step-modal-prompt-pre,
+.step-details-container .workflow-prompt pre,
+.step-details-container .workflow-prompt [data-step-prompt] {
+  background: #060B14 !important;
+  color: #F8FAFC !important;
+}
+.step-details-container .step-modal-prompt-download,
+.step-details-container .workflow-prompt .workflow-download,
+.step-details-container .workflow-prompt [data-download-step] {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+@media (max-width: 640px) {
+  [data-prompt-modal] .prompt-modal-dialog,
+  .step-details-container { border-radius: 18px !important; }
+}
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-dialog,
+:root[data-theme="light"] .step-details-container,
+html.light-theme [data-prompt-modal] .prompt-modal-dialog,
+html.light-theme .step-details-container {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2) !important;
+}
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-dialog pre,
+:root[data-theme="light"] .step-details-container .step-modal-prompt-pre,
+html.light-theme [data-prompt-modal] .prompt-modal-dialog pre,
+html.light-theme .step-details-container .step-modal-prompt-pre {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}

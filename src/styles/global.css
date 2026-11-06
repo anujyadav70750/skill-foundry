@@ -244,59 +244,65 @@ img {
 }
 
 /* ==========================================================================
-   SHARED POPUP DESIGN SYSTEM
-   Visual reference: Ask a Question modal
-   Keep each popup's existing dimensions, placement and interactions intact.
+   SHARED POPUP THEME
+   Ask a Question (index.astro / faq.astro) remains the visual reference.
+   These styles align the other active popup components with that reference.
    ========================================================================== */
-:root:not([data-theme="light"]) .faq-modal-dialog,
 :root:not([data-theme="light"]) .search-modal-card,
 :root:not([data-theme="light"]) .filter-dialog,
 :root:not([data-theme="light"]) .dialog-card {
-  background: #0F1724 !important;
-  border: 1px solid rgba(148, 163, 184, 0.16) !important;
-  border-radius: 22px !important;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
+  background: #0D1422 !important;
+  color: #F8FAFC !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85) !important;
 }
-
-:root:not([data-theme="light"]) .faq-modal-backdrop,
 :root:not([data-theme="light"]) .search-backdrop,
 :root:not([data-theme="light"]) .filter-backdrop,
-:root:not([data-theme="light"]) .prompt-dialog::backdrop,
-:root:not([data-theme="light"]) .media-lightbox-backdrop {
-  background: rgba(3, 7, 15, 0.78) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+:root:not([data-theme="light"]) .media-lightbox-backdrop,
+:root:not([data-theme="light"]) .prompt-dialog::backdrop {
+  background: rgba(3, 7, 18, 0.82) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
 }
-
-:root:not([data-theme="light"]) .faq-modal-title,
+:root:not([data-theme="light"]) .search-header-bar,
+:root:not([data-theme="light"]) .search-modal-footer,
+:root:not([data-theme="light"]) .filter-dialog-header,
+:root:not([data-theme="light"]) .filter-dialog-footer {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+:root:not([data-theme="light"]) .search-modal-body { background: #0D1422 !important; }
+:root:not([data-theme="light"]) .search-result-card {
+  background: #060B14 !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+:root:not([data-theme="light"]) .search-result-card:hover,
+:root:not([data-theme="light"]) .search-result-card.is-selected {
+  background: #0A111D !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
 :root:not([data-theme="light"]) .filter-dialog-title,
 :root:not([data-theme="light"]) .dialog-card h1,
 :root:not([data-theme="light"]) .dialog-card h2,
 :root:not([data-theme="light"]) .dialog-card h3 {
-  color: #F8FAFC !important;
+  color: #FFFFFF !important;
   font-family: 'Newsreader', 'Playfair Display', Georgia, serif !important;
   font-weight: 500 !important;
   letter-spacing: -0.02em !important;
 }
-
-:root:not([data-theme="light"]) .faq-modal-subtitle,
+:root:not([data-theme="light"]) .filter-section-title,
 :root:not([data-theme="light"]) .search-status-bar,
-:root:not([data-theme="light"]) .filter-section-title {
-  color: #94A3B8 !important;
-}
-
-:root:not([data-theme="light"]) .faq-modal-textarea,
-:root:not([data-theme="light"]) .search-modal-input,
+:root:not([data-theme="light"]) .search-modal-card p,
+:root:not([data-theme="light"]) .filter-dialog p { color: #94A3B8 !important; }
 :root:not([data-theme="light"]) .filter-dialog input,
 :root:not([data-theme="light"]) .filter-dialog select,
 :root:not([data-theme="light"]) .filter-dialog textarea,
 :root:not([data-theme="light"]) .dialog-card pre {
-  background: #080E19 !important;
-  border-color: rgba(148, 163, 184, 0.2) !important;
+  background: #060B14 !important;
   color: #F8FAFC !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
 }
-
-:root:not([data-theme="light"]) .faq-modal-textarea:focus,
 :root:not([data-theme="light"]) .filter-dialog input:focus,
 :root:not([data-theme="light"]) .filter-dialog select:focus,
 :root:not([data-theme="light"]) .filter-dialog textarea:focus {
@@ -304,213 +310,64 @@ img {
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14) !important;
   outline: none !important;
 }
-
-:root:not([data-theme="light"]) .faq-modal-collapse-btn,
 :root:not([data-theme="light"]) .search-modal-close,
 :root:not([data-theme="light"]) .filter-dialog-close-btn,
 :root:not([data-theme="light"]) .lightbox-icon-btn,
 :root:not([data-theme="light"]) .dialog-close {
-  background: rgba(255, 255, 255, 0.045) !important;
-  border-color: rgba(148, 163, 184, 0.18) !important;
-  color: #AAB4C3 !important;
-  border-radius: 10px !important;
-}
-
-:root:not([data-theme="light"]) .faq-modal-clear-btn:disabled,
-:root:not([data-theme="light"]) .filter-reset-action-btn:disabled {
-  background: rgba(255, 255, 255, 0.035) !important;
-  border-color: rgba(148, 163, 184, 0.12) !important;
-  color: #64748B !important;
-  box-shadow: none !important;
-}
-
-:root:not([data-theme="light"]) .faq-modal-submit-btn,
-:root:not([data-theme="light"]) .filter-apply-action-btn,
-:root:not([data-theme="light"]) .empty-clear-btn {
-  background: #F97316 !important;
-  border-color: rgba(249, 115, 22, 0.5) !important;
-  color: #111827 !important;
-  box-shadow: 0 5px 16px rgba(249, 115, 22, 0.18) !important;
-}
-
-:root:not([data-theme="light"]) .faq-modal-submit-btn:disabled {
-  background: rgba(249, 115, 22, 0.38) !important;
-  border-color: rgba(249, 115, 22, 0.2) !important;
-  color: rgba(255, 255, 255, 0.6) !important;
-  box-shadow: none !important;
-}
-
-:root:not([data-theme="light"]) .faq-modal-clear-btn,
-:root:not([data-theme="light"]) .filter-reset-action-btn:not(:disabled) {
-  background: rgba(255, 255, 255, 0.045) !important;
-  border-color: rgba(148, 163, 184, 0.18) !important;
-  color: #CBD5E1 !important;
-  box-shadow: none !important;
-}
-
-:root:not([data-theme="light"]) .search-modal-footer,
-:root:not([data-theme="light"]) .search-header-bar,
-:root:not([data-theme="light"]) .filter-dialog-header,
-:root:not([data-theme="light"]) .filter-dialog-footer {
-  background: rgba(255, 255, 255, 0.018) !important;
-  border-color: rgba(148, 163, 184, 0.12) !important;
-}
-
-:root:not([data-theme="light"]) .filter-chip-option,
-:root:not([data-theme="light"]) .sort-option-btn {
-  background: rgba(255, 255, 255, 0.035) !important;
-  border-color: rgba(148, 163, 184, 0.15) !important;
-  color: #CBD5E1 !important;
-}
-
-:root:not([data-theme="light"]) .filter-chip-option.is-selected,
-:root:not([data-theme="light"]) .sort-option-btn.is-selected {
-  background: rgba(56, 189, 248, 0.1) !important;
-  border-color: rgba(56, 189, 248, 0.38) !important;
-  color: #E0F2FE !important;
-}
-
-:root:not([data-theme="light"]) .media-lightbox-body {
-  background: #080E19 !important;
-  border-color: rgba(148, 163, 184, 0.18) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.68) !important;
-}
-
-:root[data-theme="light"] .faq-modal-dialog,
-:root[data-theme="light"] .search-modal-card,
-:root[data-theme="light"] .filter-dialog,
-:root[data-theme="light"] .dialog-card,
-html.light-theme .faq-modal-dialog,
-html.light-theme .search-modal-card,
-html.light-theme .filter-dialog,
-html.light-theme .dialog-card {
-  background: #FFFFFF !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16) !important;
-  border-radius: 22px !important;
-}
-
-/* UNIFIED POPUP OVERRIDES V2
-   Apply the Ask a Question modal's navy/slate visual language to every other
-   interactive popup. The Ask a Question modal itself remains the reference. */
-:root:not([data-theme="light"]) .search-overlay .search-modal-card,
-:root:not([data-theme="light"]) .filter-dialog,
-:root:not([data-theme="light"]) .media-lightbox-body,
-:root:not([data-theme="light"]) .dialog-card,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-dialog,
-:root:not([data-theme="light"]) .step-details-modal,
-:root:not([data-theme="light"]) .step-overlay-panel {
-  background: #0F1724 !important;
-  color: #F8FAFC !important;
-  border: 1px solid rgba(148, 163, 184, 0.18) !important;
-  border-radius: 22px !important;
-  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.68), inset 0 1px 0 rgba(255, 255, 255, 0.025) !important;
-}
-
-:root:not([data-theme="light"]) .search-backdrop,
-:root:not([data-theme="light"]) .filter-backdrop,
-:root:not([data-theme="light"]) .media-lightbox-backdrop,
-:root:not([data-theme="light"]) .prompt-dialog::backdrop,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-backdrop,
-:root:not([data-theme="light"]) .step-details-backdrop {
-  background: rgba(3, 7, 15, 0.78) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-}
-
-:root:not([data-theme="light"]) .search-header-bar,
-:root:not([data-theme="light"]) .search-modal-footer,
-:root:not([data-theme="light"]) .filter-dialog-header,
-:root:not([data-theme="light"]) .filter-dialog-footer,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-head,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-actions {
-  background: rgba(255, 255, 255, 0.025) !important;
-  border-color: rgba(148, 163, 184, 0.14) !important;
-}
-
-:root:not([data-theme="light"]) .search-modal-input,
-:root:not([data-theme="light"]) .filter-dialog input,
-:root:not([data-theme="light"]) .filter-dialog select,
-:root:not([data-theme="light"]) .filter-dialog textarea,
-:root:not([data-theme="light"]) .dialog-card pre,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-dialog pre {
-  background: #080E19 !important;
-  color: #F8FAFC !important;
-  border-color: rgba(148, 163, 184, 0.2) !important;
-}
-
-:root:not([data-theme="light"]) .search-modal-input:focus,
-:root:not([data-theme="light"]) .filter-dialog input:focus,
-:root:not([data-theme="light"]) .filter-dialog select:focus,
-:root:not([data-theme="light"]) .filter-dialog textarea:focus {
-  border-color: rgba(56, 189, 248, 0.62) !important;
-  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.14) !important;
-  outline: none !important;
-}
-
-:root:not([data-theme="light"]) .search-modal-close,
-:root:not([data-theme="light"]) .filter-dialog-close-btn,
-:root:not([data-theme="light"]) .lightbox-icon-btn,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-head button,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-actions button,
-:root:not([data-theme="light"]) .dialog-close {
-  background: rgba(255, 255, 255, 0.045) !important;
-  border: 1px solid rgba(148, 163, 184, 0.18) !important;
-  color: #AAB4C3 !important;
-  border-radius: 10px !important;
-}
-
-:root:not([data-theme="light"]) .search-all-link,
-:root:not([data-theme="light"]) .filter-dialog-title,
-:root:not([data-theme="light"]) .search-section-label,
-:root:not([data-theme="light"]) .step-details-modal h1,
-:root:not([data-theme="light"]) .step-details-modal h2,
-:root:not([data-theme="light"]) .step-details-modal h3,
-:root:not([data-theme="light"]) .step-overlay-panel h1,
-:root:not([data-theme="light"]) .step-overlay-panel h2,
-:root:not([data-theme="light"]) .step-overlay-panel h3 {
-  color: #F8FAFC !important;
-}
-
-:root:not([data-theme="light"]) .search-status-bar,
-:root:not([data-theme="light"]) .filter-section-title,
-:root:not([data-theme="light"]) .search-modal-card p,
-:root:not([data-theme="light"]) .filter-dialog p,
-:root:not([data-theme="light"]) .step-details-modal p,
-:root:not([data-theme="light"]) .step-overlay-panel p {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #94A3B8 !important;
+  border-radius: 8px !important;
 }
-
 :root:not([data-theme="light"]) .filter-apply-action-btn:not(:disabled),
-:root:not([data-theme="light"]) .empty-clear-btn,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-actions button:last-child {
-  background: #F97316 !important;
-  border-color: rgba(249, 115, 22, 0.5) !important;
-  color: #111827 !important;
-  box-shadow: 0 5px 16px rgba(249, 115, 22, 0.18) !important;
+:root:not([data-theme="light"]) .empty-clear-btn {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(234, 85, 0, 0.38) !important;
 }
-
 :root:not([data-theme="light"]) .filter-reset-action-btn,
-:root:not([data-theme="light"]) .search-modal-clear,
-:root:not([data-theme="light"]) [data-prompt-modal] .prompt-modal-actions button:first-child {
-  background: rgba(255, 255, 255, 0.045) !important;
-  border-color: rgba(148, 163, 184, 0.18) !important;
+:root:not([data-theme="light"]) .search-modal-clear {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
   color: #CBD5E1 !important;
   box-shadow: none !important;
 }
-
+:root:not([data-theme="light"]) .media-lightbox-body {
+  background: #060B14 !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85) !important;
+}
 :root[data-theme="light"] .search-modal-card,
 :root[data-theme="light"] .filter-dialog,
-:root[data-theme="light"] .media-lightbox-body,
 :root[data-theme="light"] .dialog-card,
 html.light-theme .search-modal-card,
 html.light-theme .filter-dialog,
-html.light-theme .media-lightbox-body,
 html.light-theme .dialog-card {
   background: #FFFFFF !important;
   color: #0F172A !important;
-  border: 1px solid #E2E8F0 !important;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.16) !important;
+  border: 1px solid #CBD5E1 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2) !important;
 }
-
+:root[data-theme="light"] .search-backdrop,
+:root[data-theme="light"] .filter-backdrop,
+:root[data-theme="light"] .media-lightbox-backdrop,
+html.light-theme .search-backdrop,
+html.light-theme .filter-backdrop,
+html.light-theme .media-lightbox-backdrop {
+  background: rgba(15, 23, 42, 0.48) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+:root[data-theme="light"] .filter-dialog input,
+:root[data-theme="light"] .filter-dialog select,
+:root[data-theme="light"] .filter-dialog textarea,
+html.light-theme .filter-dialog input,
+html.light-theme .filter-dialog select,
+html.light-theme .filter-dialog textarea {
+  background: #F8FAFC !important;
+  color: #0F172A !important;
+  border-color: #CBD5E1 !important;
+}
