@@ -4118,16 +4118,61 @@ const formatUploadDate = (d: Date | string | undefined) => {
     gap: 9px !important;
   }
 
+  /* Align the main homepage content headings with the Resources page typography.
+     Keep the existing card and slide layout unchanged. */
+  .home-page .why-section .section-head h2,
+  .home-page .skills-section .section-head h2,
+  .home-page .method-section .section-head h2,
+  .home-page .trust-section .section-head h2 {
+    display: block !important;
+    margin: 0 0 8px !important;
+    color: #FFFFFF !important;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: clamp(20px, 3.2vw, 25px) !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -0.015em !important;
+  }
+
   .home-page .why-section .section-head h2::before,
   .home-page .skills-section .section-head h2::before,
   .home-page .method-section .section-head h2::before,
-  .home-page .trust-section .section-head h2::before,
-  .home-page .faq-section .faq-section-title-link::before {
-    width: 3.5px !important;
-    min-width: 3.5px !important;
-    height: 16px !important;
-    margin-top: 3px !important;
-    flex: 0 0 3.5px !important;
+  .home-page .trust-section .section-head h2::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .home-page .why-section .section-head .section-subcopy,
+  .home-page .skills-section .section-head .section-subcopy,
+  .home-page .method-section .section-head .section-subcopy,
+  .home-page .trust-section .section-head .section-subcopy {
+    color: #8C92A0 !important;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+  }
+
+  :global([data-theme="light"]) .home-page .why-section .section-head h2,
+  :global(html.light-theme) .home-page .why-section .section-head h2,
+  :global([data-theme="light"]) .home-page .skills-section .section-head h2,
+  :global(html.light-theme) .home-page .skills-section .section-head h2,
+  :global([data-theme="light"]) .home-page .method-section .section-head h2,
+  :global(html.light-theme) .home-page .method-section .section-head h2,
+  :global([data-theme="light"]) .home-page .trust-section .section-head h2,
+  :global(html.light-theme) .home-page .trust-section .section-head h2 {
+    color: #0F172A !important;
+  }
+
+  :global([data-theme="light"]) .home-page .why-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .why-section .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .skills-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .skills-section .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .method-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .method-section .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .trust-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .trust-section .section-head .section-subcopy {
+    color: #475569 !important;
   }
 
 </style>
