@@ -79,7 +79,7 @@ startxref
       <div class="prompt-modal-dialog" role="dialog" aria-modal="true" aria-label="Expanded prompt">
         <div class="prompt-modal-head">
           <span>FULL PROMPT</span>
-          <button type="button" data-close-prompt>Close</button>
+          <button type="button" data-close-prompt aria-label="Close expanded prompt" title="Close"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
         </div>
         <pre></pre>
         <div class="prompt-modal-actions">
