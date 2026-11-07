@@ -1,6 +1,6 @@
 # Skill Foundry
 
-Skill Foundry is a practical learning library for AI prompts, workflows and tutorials.
+Skill Foundry is a practical learning platform for useful skills people can understand, practise and use in their work, projects and everyday lives. Its guides cover AI and emerging technology, content creation, video editing, design, automation, productivity and other digital skills.
 
 ## Project structure
 
