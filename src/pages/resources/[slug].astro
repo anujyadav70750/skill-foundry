@@ -577,7 +577,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <span class="section-accent-bar" aria-hidden="true"></span>
               <h2 class="editorial-heading-title blueprint-callout-title">Create It Step by Step</h2>
             </div>
-            <p class="editorial-lead blueprint-callout-desc">Complete each step in order to reach the final result.</p>
+            <p class="editorial-lead blueprint-callout-desc">Follow each step in order to complete your project.</p>
           </div>
         )}
 
@@ -1960,41 +1960,60 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
        purely through its contrasting color fill without any outline border.
        ========================================================================== */
     .blueprint-callout-box {
-      background: rgba(56, 189, 248, 0.14);
+      background: #0B271F;
       border: none !important;
       border-radius: 14px;
-      padding: 18px 18px;
+      padding: 14px 18px;
       margin-top: 4px;
-      margin-bottom: 22px;
+      margin-bottom: 16px;
       box-sizing: border-box;
       width: 100%;
       box-shadow: none !important;
+      text-align: center;
     }
 
     @media (min-width: 641px) {
       .blueprint-callout-box {
-        padding: 22px 24px;
+        padding: 16px 22px;
         border-radius: 16px;
-        margin-bottom: 26px;
+        margin-bottom: 16px;
       }
     }
 
+    .blueprint-callout-box .section-title-wrap {
+      justify-content: center;
+      margin-bottom: 5px;
+    }
+
+    .blueprint-callout-box .section-accent-bar {
+      display: none;
+    }
+
     .blueprint-callout-title {
-      font-size: clamp(17px, 2.2vw, 19px);
+      font-size: 21px;
       font-weight: 700;
       color: #FFFFFF;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
       margin: 0;
       line-height: 1.3;
-      text-align: left;
+      text-align: center;
+    }
+
+    @media (min-width: 641px) {
+      .blueprint-callout-title { font-size: 23px; }
     }
 
     .blueprint-callout-desc {
-      color: #B0B5C0;
-      font-size: 14px;
+      color: #B9CAC1;
+      font-size: 13px;
       font-weight: 400;
-      line-height: 1.6;
+      line-height: 1.5;
       margin: 0;
+      text-align: center;
+    }
+
+    @media (min-width: 641px) {
+      .blueprint-callout-desc { font-size: 14px; }
     }
 
     .workflow-step-nav {
