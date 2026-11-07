@@ -4123,7 +4123,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     line-height: 1.55;
   }
 
-  /* Compact question panel — retain the existing surface colours and border. */
+  /* Open question CTA — keep the content centred without a separate panel surface. */
   .home-page .faq-support-cta {
     display: flex;
     flex-direction: column;
@@ -4133,23 +4133,17 @@ const formatUploadDate = (d: Date | string | undefined) => {
     width: 100%;
     max-width: 680px;
     margin: 14px auto 0;
-    padding: 16px 18px;
+    padding: 16px 0;
     text-align: center;
-    background: #0B0D12;
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    border-radius: 16px;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     box-sizing: border-box;
   }
 
   :global([data-theme="light"]) .home-page .faq-section-desc,
   :global(html.light-theme) .home-page .faq-section-desc {
     color: #64748B;
-  }
-
-  :global([data-theme="light"]) .home-page .faq-support-cta,
-  :global(html.light-theme) .home-page .faq-support-cta {
-    background: #FFFFFF;
-    border-color: rgba(15, 23, 42, 0.10);
   }
 
   .home-page .faq-support-title {
@@ -4178,10 +4172,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
     min-height: 44px;
     margin-top: 5px;
     padding: 0 19px;
-    border: 1px solid #303642;
+    border: 1px solid #A8C8DF;
     border-radius: 9px;
-    background: #151922;
-    color: #E7EDF5;
+    background: #C5DDED;
+    color: #183247;
     font-size: 13.5px;
     line-height: 1;
     font-weight: 700;
@@ -4190,14 +4184,23 @@ const formatUploadDate = (d: Date | string | undefined) => {
     white-space: nowrap;
     box-sizing: border-box;
     cursor: pointer;
-    transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
 
   .home-page .faq-support-button:hover {
-    background: #202733;
-    border-color: #465164;
-    box-shadow: none;
+    background: #C5DDED;
+    border-color: #A8C8DF;
+    color: #183247;
+    box-shadow: 0 3px 10px rgba(80, 126, 158, 0.16);
     transform: translateY(-1px);
+  }
+
+  .home-page .faq-support-button:active {
+    background: #C5DDED;
+    border-color: #A8C8DF;
+    color: #183247;
+    transform: translateY(0);
+    box-shadow: none;
   }
 
   .home-page .faq-support-button:focus-visible {
