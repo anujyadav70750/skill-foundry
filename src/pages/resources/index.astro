@@ -392,7 +392,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                 <line x1="8" y1="11" x2="14" y2="11"></line>
               </svg>
             </div>
-            <h3 class="empty-state-title">No matching resources found</h3>
+            <h3 class="empty-state-title" id="empty-state-title">No matching resources found</h3>
             <p class="empty-state-text" id="empty-state-desc">
               We couldn't find any resources matching your search. Try different keywords or reset your filters.
             </p>
@@ -2496,6 +2496,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const categoryToggleButtons = Array.from(document.querySelectorAll('[data-category-toggle]')) as HTMLButtonElement[];
   const emptyResetBtn = document.getElementById('empty-reset-btn') as HTMLButtonElement | null;
   const emptySearchState = document.getElementById('empty-search-state') as HTMLElement | null;
+  const emptyStateTitle = document.getElementById('empty-state-title') as HTMLElement | null;
+  const emptyStateDesc = document.getElementById('empty-state-desc') as HTMLElement | null;
+  const emptyResetBtnLabel = emptyResetBtn;
   const resourcesGrid = document.getElementById('resources-grid') as HTMLElement | null;
   const curatedLibraryView = document.getElementById('curated-library-view') as HTMLElement | null;
   const flatLibraryView = document.getElementById('flat-library-view') as HTMLElement | null;
@@ -2832,9 +2835,23 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       // Apply search highlights
       applyHighlights(trimmedQuery);
 
-      // Empty state (only shown if 0 items match inside filtered view)
+      // Empty state: explain whether the selected category is awaiting its first resource
+      // or the current search simply has no matches.
       if (emptySearchState) {
         emptySearchState.hidden = matchCount > 0;
+      }
+      if (matchCount === 0 && isCategoryLanding) {
+        if (emptyStateTitle) emptyStateTitle.textContent = 'New resources are on the way';
+        if (emptyStateDesc) {
+          emptyStateDesc.textContent = `We're preparing practical guides and step-by-step resources for ${savedCategory}. This section is being built, so please check back soon.`;
+        }
+        if (emptyResetBtnLabel) emptyResetBtnLabel.textContent = 'Browse all resources';
+      } else {
+        if (emptyStateTitle) emptyStateTitle.textContent = 'No matching resources found';
+        if (emptyStateDesc) {
+          emptyStateDesc.textContent = `We couldn't find any resources matching your search. Try different keywords or reset your filters.`;
+        }
+        if (emptyResetBtnLabel) emptyResetBtnLabel.textContent = 'Clear all filters & search';
       }
     }
 
