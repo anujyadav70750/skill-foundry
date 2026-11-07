@@ -6,7 +6,7 @@ import { FAQ_DATA } from '../data/faqs';
 
 // Show only the selected homepage FAQs, in the requested order.
 // The complete FAQ_DATA collection remains available on the dedicated FAQ page.
-const homepageFaqIds = ['faq-1', 'faq-3', 'faq-9', 'faq-5', 'faq-2', 'faq-8'];
+const homepageFaqIds = ['faq-1', 'faq-6', 'faq-3', 'faq-5', 'faq-2', 'faq-9'];
 const homepageFaqs = homepageFaqIds
   .map((id) => FAQ_DATA.find((faq) => faq.id === id))
   .filter((faq): faq is (typeof FAQ_DATA)[number] => Boolean(faq));
@@ -18,45 +18,7 @@ const displayResources = allResources
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const resources = displayResources;
 
-// 2. SKILLS & DISCIPLINES (Broad evergreen learning taxonomy based on content)
-const skillsDisciplines = [
-  {
-    name: 'AI Video',
-    filterCategory: 'AI Video',
-    description: 'Generating cinematic motion, camera dynamics, and visual character continuity.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>`
-  },
-  {
-    name: 'AI Image Creation',
-    filterCategory: 'AI Image',
-    description: 'Crafting consistent character references, visual styling, and asset generation.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`
-  },
-  {
-    name: 'Prompt Systems',
-    filterCategory: 'Prompt Engineering',
-    description: 'Structuring reusable prompt blueprints, model parameters, and scene directions.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>`
-  },
-  {
-    name: 'Creative Workflows',
-    filterCategory: 'Workflows',
-    description: 'Connecting multi-stage pipelines from raw concept to final media deliverable.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="6" height="6" rx="1"></rect><rect x="16" y="3" width="6" height="6" rx="1"></rect><rect x="9" y="15" width="6" height="6" rx="1"></rect><path d="M5 9v3a2 2 0 0 0 2 2h5m0 0h5a2 2 0 0 0 2-2V9"></path><path d="M12 14v1"></path></svg>`
-  },
-  {
-    name: 'AI Tools & Setup',
-    filterCategory: 'AI Tools',
-    description: 'Selecting and configuring verified creative software stacks and production environments.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>`
-  },
-  {
-    name: 'Automation & Productivity',
-    filterCategory: 'Projects',
-    description: 'Streamlining repeatable production tasks and accelerating creative output.',
-    iconSvg: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`
-  }
-];
+// Learning domains are presented as broad areas, not hard-coded resource filters.
 
 const formatUploadDate = (d: Date | string | undefined) => {
   if (!d) return '';
@@ -78,22 +40,22 @@ const formatUploadDate = (d: Date | string | undefined) => {
     <section class="home-hero">
       <div class="container narrow hero-content">
         <h1 class="hero-title">
-          Build practical skills that work in the <span class="hero-highlight">real world.</span>
+          Learn useful skills. <span class="hero-highlight">Put them to work.</span>
         </h1>
         <p class="hero-lead">
-          Skill Foundry is a practical learning platform for building useful skills through structured resources, tutorials, and real-world workflows.
+          From AI and video editing to design, automation and everyday digital skills, our guides explain things in plain language, show you how to do them and help you use what you learn in your own projects.
         </p>
         <div class="hero-actions">
           <a class="home-button home-button-primary" href="/resources/">Explore Resources</a>
         </div>
-        <div class="hero-pillars-strip" aria-label="Key highlights">
-          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Beginner friendly</span>
+        <div class="hero-pillars-strip" aria-label="What you can expect">
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Easy-to-follow guides</span>
           <span class="pillar-dot" aria-hidden="true">•</span>
-          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Step-by-step blueprints</span>
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Practical examples</span>
           <span class="pillar-dot" aria-hidden="true">•</span>
-          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Direct tool access</span>
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 011.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Skills beyond AI</span>
           <span class="pillar-dot" aria-hidden="true">•</span>
-          <span class="pillar-item" title="All resources are tested and verified before publication"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> Verified resources</span>
+          <span class="pillar-item"><svg class="pillar-check" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"/></svg> New tools and techniques</span>
         </div>
       </div>
     </section>
@@ -103,9 +65,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
       <div class="recent-work-container">
         <div class="recent-works-header">
           <a class="recent-works-header-link" href="/resources/" aria-label="View all resources">
-            <h2 class="recent-works-title">Recent</h2>
+            <h2 class="recent-works-title">Latest Guides &amp; Projects</h2>
             <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
           </a>
+          <p class="latest-work-subtitle">Fresh walkthroughs and useful ideas to try in your own work.</p>
         </div>
 
         {displayResources.length > 0 ? (
@@ -166,177 +129,126 @@ const formatUploadDate = (d: Date | string | undefined) => {
       </div>
     </section>
 
-    <!-- SECTION 3 — WHY SKILL FOUNDRY & WHY IT EXISTS -->
-    <section class="home-section why-section" id="why-it-exists">
-      <div class="container narrow">
-        <div class="section-head">
-          <h2>Skills you can understand, apply, and make your own</h2>
-          <p class="section-subcopy">
-            Skill Foundry exists to help people learn useful skills, apply those skills in real projects, and make work and life easier. We teach practical workflows that you can genuinely understand and adapt — not simply copy-paste without knowing how they work.
-          </p>
-        </div>
-
-        <div class="promise-grid">
-          <article class="home-card promise-card">
-              <div class="promise-card-title-wrap"><h3 class="card-title">Understand how it works</h3></div>
-            <p class="card-description">
-              Learn the core principles, tool mechanics, and prompt logic behind each workflow so you gain genuine, reusable skills.
-            </p>
-          </article>
-
-          <article class="home-card promise-card">
-              <div class="promise-card-title-wrap"><h3 class="card-title">Apply in everyday work</h3></div>
-            <p class="card-description">
-              Put what you learn directly into practice on real projects, creative deliverables, and daily tasks to make work easier.
-            </p>
-          </article>
-
-          <article class="home-card promise-card">
-              <div class="promise-card-title-wrap"><h3 class="card-title">Adapt to your own needs</h3></div>
-            <p class="card-description">
-              Take proven workflows and customize them to your specific goals, different tools, and unique project requirements.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION 4 — SKILLS & DISCIPLINES -->
+    <!-- SECTION 3 — THE SKILL AREAS SKILL FOUNDRY IS BUILDING -->
     <section class="home-section skills-section" id="what-you-can-build">
       <div class="container narrow">
         <div class="section-head">
-          <h2>What you can learn and build</h2>
+          <h2>Explore Skill Areas</h2>
           <p class="section-subcopy">
-            Understand the core capabilities and skill sets you can master and apply across digital disciplines, from motion to automation.
+            From new AI tools to creative work and everyday digital tasks, these are the areas Skill Foundry is building guides around.
           </p>
         </div>
 
         <div class="skills-tracks-grid">
-          <a class="home-card skill-track-card" href="/resources/?category=AI%20Video" aria-label="Explore Video Editing & Motion resources">
-            <div class="skill-track-icon">
+          <article class="home-card skill-track-card">
+            <div class="skill-track-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="23 7 16 12 23 17 23 7"></polygon>
-                <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                <path d="M12 3v2M12 19v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/>
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M10 12h4m-2-2v4"/>
               </svg>
             </div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">Video Editing &amp; Motion</h3></div>
-            <p class="card-description">
-              Multi-clip assembly, pacing, audio synchronization, motion control, and professional editing workflows.
-            </p>
-          </a>
+            <div class="home-inner-title-wrap"><h3 class="card-title">AI &amp; Emerging Tech</h3></div>
+            <p class="card-description">Learn to work with AI tools, create images and videos, and get better results from new technology.</p>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=AI%20Image" aria-label="Explore Content Creation & Visuals resources">
-            <div class="skill-track-icon">
+          <article class="home-card skill-track-card">
+            <div class="skill-track-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                <circle cx="8.5" cy="8.5" r="1.5"></circle>
-                <polyline points="21 15 16 10 5 21"></polyline>
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <circle cx="8.5" cy="8.5" r="1.5"/>
+                <path d="m21 15-5-5L5 21"/>
               </svg>
             </div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">Content Creation &amp; Visuals</h3></div>
-            <p class="card-description">
-              Consistent character styling, visual assets, brand imagery, and multi-format digital media production.
-            </p>
-          </a>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Content &amp; Creative Skills</h3></div>
+            <p class="card-description">Learn content creation, video editing, visual design and ways to make better creative work.</p>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=Prompt%20Engineering" aria-label="Explore AI Workflows & Prompting resources">
-            <div class="skill-track-icon">
+          <article class="home-card skill-track-card">
+            <div class="skill-track-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83"/>
-              </svg>
-            </div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">AI Workflows &amp; Prompting</h3></div>
-            <p class="card-description">
-              Structured prompt blueprints, model parameters, generative tools, and connected creative pipelines.
-            </p>
-          </a>
-
-          <a class="home-card skill-track-card" href="/resources/?category=Workflows" aria-label="Explore Automation & Productivity resources">
-            <div class="skill-track-icon">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
+                <rect x="3" y="3" width="7" height="7" rx="1"/>
+                <rect x="14" y="14" width="7" height="7" rx="1"/>
+                <path d="M10 6h4a3 3 0 0 1 3 3v5M14 18h-4a3 3 0 0 1-3-3v-5"/>
               </svg>
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Automation &amp; Productivity</h3></div>
-            <p class="card-description">
-              Workflow orchestration, tool integration, execution shortcuts, and repeatable digital production systems.
-            </p>
-          </a>
+            <p class="card-description">Make routine work easier, connect useful tools and build workflows that save time.</p>
+          </article>
+
+          <article class="home-card skill-track-card">
+            <div class="skill-track-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="14" rx="2"/>
+                <path d="M8 22h8m-4-4v4M7 9h10M7 13h6"/>
+              </svg>
+            </div>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Everyday Digital Skills</h3></div>
+            <p class="card-description">Get more comfortable with the tools and tasks people use for learning, work and personal projects.</p>
+          </article>
+        </div>
+        <div class="skill-areas-action">
+          <a class="home-button home-button-secondary" href="/resources/">Browse available resources</a>
         </div>
       </div>
     </section>
 
-    <!-- SECTION 5 — HOW IT WORKS -->
+    <!-- SECTION 4 — HOW PEOPLE LEARN AND USE A SKILL -->
     <section class="home-section method-section" id="how-it-works">
       <div class="container narrow">
         <div class="section-head">
-          <h2>A clear path from idea to result</h2>
+          <h2>Learn it. Try it. Make it your own.</h2>
           <p class="section-subcopy">
-            Follow a simple, beginner-friendly process designed to help you learn, execute, and adapt any workflow.
+            You don't need to be an expert to get started. Pick something you want to do, work through a guide and use what you've learned in your own way.
           </p>
         </div>
 
         <div class="steps-grid">
           <article class="home-card method-card">
             <div class="method-step-badge">01</div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">Find a practical topic or workflow</h3></div>
-            <p class="card-description">
-              Find a practical topic, skill or workflow relevant to what you want to create.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Choose what you want to learn</h3></div>
+            <p class="card-description">Start with a task, an idea or something you'd like to make easier.</p>
           </article>
 
           <article class="home-card method-card">
             <div class="method-step-badge">02</div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">Follow the instructions</h3></div>
-            <p class="card-description">
-              Follow clear instructions, examples, prompts, and tool settings.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Work through the guide</h3></div>
+            <p class="card-description">Learn the basics, see which tools you need and follow the steps at your own pace.</p>
           </article>
 
           <article class="home-card method-card">
             <div class="method-step-badge">03</div>
-            <div class="home-inner-title-wrap"><h3 class="card-title">Apply and create a real result</h3></div>
-            <p class="card-description">
-              Apply what you learned and create a real, practical result for your own project.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Use it in your own way</h3></div>
+            <p class="card-description">Try it on a project, change what doesn't fit and keep what works for you.</p>
           </article>
         </div>
       </div>
     </section>
 
-
-
-    <!-- SECTION 7 — WHY TRUST THE RESOURCES -->
+    <!-- SECTION 5 — WHAT TO EXPECT FROM THE GUIDES -->
     <section class="home-section trust-section" id="why-trust-the-resources">
       <div class="container narrow">
         <div class="section-head">
-          <h2>Why trust Skill Foundry resources</h2>
+          <h2>Guides that explain the how, not just the result</h2>
           <p class="section-subcopy">
-            Every blueprint and tutorial in our library is built for reliable, reproducible execution.
+            Before you start, you should know what you need, what to do and why each step matters.
           </p>
         </div>
 
-        <div class="promise-grid">
+        <div class="promise-grid trust-grid">
           <article class="home-card trust-card">
-            <div class="home-inner-title-wrap"><h3 class="card-title">Tested before publication</h3></div>
-            <p class="card-description">
-              Every blueprint is tested end-to-end to ensure prompts, settings, and step sequences work as described.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Know what you need</h3></div>
+            <p class="card-description">See the tools, access requirements and any paid features a guide calls for before you begin.</p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="home-inner-title-wrap"><h3 class="card-title">Clear tool access</h3></div>
-            <p class="card-description">
-              We clearly specify required tools, free tiers, and alternatives so you know exact requirements upfront.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Follow clear steps</h3></div>
+            <p class="card-description">Work through the process with the relevant prompts, settings, examples and instructions.</p>
           </article>
 
           <article class="home-card trust-card">
-            <div class="home-inner-title-wrap"><h3 class="card-title">Built for execution</h3></div>
-            <p class="card-description">
-              No filler or endless theory. Clean, actionable instructions designed to help you finish real projects.
-            </p>
+            <div class="home-inner-title-wrap"><h3 class="card-title">Understand why it works</h3></div>
+            <p class="card-description">Learn what each part does, so you can make sensible changes when your project needs something different.</p>
           </article>
         </div>
       </div>
@@ -348,10 +260,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <div class="section-head faq-section-head">
           <div class="faq-section-heading-group">
             <a class="recent-works-header-link faq-section-title-link" href="/faq/" aria-label="View all frequently asked questions">
-              <h2 class="recent-works-title">FAQs</h2>
+              <h2 class="recent-works-title">Frequently Asked Questions</h2>
               <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
             </a>
-            <p class="faq-section-desc">Find answers to common questions about Skill Foundry, its resources, and the tools we recommend.</p>
+            <p class="faq-section-desc">Answers about what you can learn here, how the guides work and which tools you may need.</p>
           </div>
         </div>
 
@@ -411,9 +323,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
       <div class="container narrow">
         <div class="home-cta-card">
           <div class="cta-text-content">
-              <h2 class="cta-title">Build the skill, then make it your own.</h2>
+              <h2 class="cta-title">What would you like to learn next?</h2>
             <p class="cta-desc">
-              Explore practical resources, build useful skills, and put what you learn into practice.
+              Find a guide, try something new and put the skill to use in your own project.
             </p>
           </div>
           <div class="cta-action-wrap">
