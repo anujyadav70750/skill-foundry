@@ -2107,34 +2107,34 @@ const platformLinks = [
         });
       }
     </script>
+      <style is:global>
+      /* Non-button menu/search rows retain their resting colours on touch. */
+      .dropdown-item:hover,
+      .dropdown-item.is-active {
+        background: rgba(255,255,255,.02) !important;
+        border-color: transparent !important;
+        transform: none !important;
+      }
+      .dropdown-item:hover .dropdown-title { color: #F8FAFC !important; }
+      .dropdown-item:hover .dropdown-arrow { color: #64748B !important; }
+      .search-result-card:hover,
+      .search-result-card.is-selected {
+        background: rgba(255,255,255,.02) !important;
+        border-color: rgba(255,255,255,.06) !important;
+        transform: none !important;
+      }
+      .search-result-card:hover .card-title,
+      .search-result-card.is-selected .card-title { color: #F8FAFC !important; }
+      .search-result-card:hover .card-arrow,
+      .search-result-card.is-selected .card-arrow { color: #64748B !important; transform: none !important; }
+      :global([data-theme="light"]) .search-result-item:hover,
+      :global(html.light-theme) .search-result-item:hover {
+        background: #F8FAFC !important; border-color: #E2E8F0 !important;
+      }
+      .footer-nav-link:hover,
+      .footer-nav-link:focus-visible,
+      .footer-legal-link:hover,
+      .footer-legal-link:focus-visible { color: inherit !important; }
+    </style>
   </body>
 </html>
-
-/* Non-button menu/search rows retain their resting colours on touch. */
-.dropdown-item:hover,
-.dropdown-item.is-active {
-  background: rgba(255,255,255,.02) !important;
-  border-color: transparent !important;
-  transform: none !important;
-}
-.dropdown-item:hover .dropdown-title { color: #F8FAFC !important; }
-.dropdown-item:hover .dropdown-arrow { color: #64748B !important; }
-.search-result-card:hover,
-.search-result-card.is-selected {
-  background: rgba(255,255,255,.02) !important;
-  border-color: rgba(255,255,255,.06) !important;
-  transform: none !important;
-}
-.search-result-card:hover .card-title,
-.search-result-card.is-selected .card-title { color: #F8FAFC !important; }
-.search-result-card:hover .card-arrow,
-.search-result-card.is-selected .card-arrow { color: #64748B !important; transform: none !important; }
-:global([data-theme="light"]) .search-result-item:hover,
-:global(html.light-theme) .search-result-item:hover {
-  background: #F8FAFC !important; border-color: #E2E8F0 !important;
-}
-.footer-nav-link:hover,
-.footer-nav-link:focus-visible,
-.footer-legal-link:hover,
-.footer-legal-link:focus-visible { color: inherit !important; }
-
