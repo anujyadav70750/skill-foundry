@@ -884,7 +884,7 @@ const platformLinks = [
       }
       .dropdown-item:hover, .dropdown-item.is-active {
         background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 102, 0, 0.40);
+        border-color: rgba(61, 214, 208, 0.40);
         transform: translateX(2px);
       }
       .dropdown-thumb {
@@ -908,7 +908,7 @@ const platformLinks = [
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #FF6600;
+        color: #3DD6D0;
         margin-bottom: 2px;
       }
       .dropdown-title {
@@ -921,7 +921,7 @@ const platformLinks = [
         margin: 0;
       }
       .dropdown-item:hover .dropdown-title {
-        color: #FF6600;
+        color: #3DD6D0;
       }
       .dropdown-desc {
         font-size: 11px;
@@ -938,7 +938,7 @@ const platformLinks = [
         transition: color 0.15s ease;
       }
       .dropdown-item:hover .dropdown-arrow {
-        color: #FF6600;
+        color: #3DD6D0;
       }
       .dropdown-empty {
         padding: 24px 12px;
@@ -964,7 +964,7 @@ const platformLinks = [
       .dropdown-view-all {
         font-size: 11.5px;
         font-weight: 700;
-        color: #FF6600;
+        color: #3DD6D0;
         text-decoration: none;
       }
       .dropdown-view-all:hover {
@@ -1058,7 +1058,7 @@ const platformLinks = [
       :global([data-theme="light"]) .theme-pill-light.is-active,
       :global(html.light-theme) .theme-pill-light.is-active {
         background: #FFFFFF;
-        color: #D97706;
+        color: #128C87;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
       }
       :global([data-theme="light"]) .site-footer,
@@ -1379,7 +1379,7 @@ const platformLinks = [
       }
       .search-modal-icon {
         flex: 0 0 auto;
-        color: #FF6600;
+        color: #3DD6D0;
       }
       .search-modal-input {
         width: 100%;
@@ -1477,7 +1477,7 @@ const platformLinks = [
       }
       .search-result-card:hover, .search-result-card.is-selected {
         background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 102, 0, 0.40);
+        border-color: rgba(61, 214, 208, 0.40);
         transform: translateX(2px);
       }
       .card-thumb-wrap {
@@ -1508,7 +1508,7 @@ const platformLinks = [
         font-weight: 800;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: #FF6600;
+        color: #3DD6D0;
       }
       .card-title {
         font-size: 14px;
@@ -1521,7 +1521,7 @@ const platformLinks = [
         text-overflow: ellipsis;
       }
       .search-result-card:hover .card-title {
-        color: #FF6600;
+        color: #3DD6D0;
       }
       .card-desc {
         font-size: 12px;
@@ -1539,7 +1539,7 @@ const platformLinks = [
         padding-right: 4px;
       }
       .search-result-card:hover .card-arrow {
-        color: #FF6600;
+        color: #3DD6D0;
         transform: translateX(3px);
       }
       .search-empty-state {
@@ -1579,16 +1579,16 @@ const platformLinks = [
         justify-content: center;
         padding: 8px 18px;
         border-radius: 9px;
-        background: rgba(255, 102, 0, 0.12);
-        border: 1px solid rgba(255, 102, 0, 0.35);
-        color: #FF8533;
+        background: rgba(61, 214, 208, 0.12);
+        border: 1px solid rgba(61, 214, 208, 0.35);
+        color: #75D8D2;
         font-size: 12px;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.15s ease;
       }
       .empty-clear-btn:hover {
-        background: #FF6600;
+        background: #3DD6D0;
         color: #FFFFFF;
       }
       .search-modal-footer {
@@ -1602,7 +1602,7 @@ const platformLinks = [
       .search-all-link {
         font-size: 12px;
         font-weight: 700;
-        color: #FF6600;
+        color: #3DD6D0;
         text-decoration: none;
       }
       .search-all-link:hover {
@@ -1725,7 +1725,7 @@ const platformLinks = [
         transition: color 0.15s ease;
       }
       .footer-nav-link:hover, .footer-nav-link:focus-visible {
-        color: #FF7711;
+        color: #238E8D;
         outline: none;
       }
       .footer-nav-separator {
@@ -1805,14 +1805,14 @@ const platformLinks = [
         box-sizing: border-box;
       }
       .footer-social-btn:hover {
-        color: #FF7711;
-        border-color: rgba(255, 102, 0, 0.45);
+        color: #238E8D;
+        border-color: rgba(61, 214, 208, 0.45);
         background: #182030;
         transform: translateY(-2px);
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
       }
       .footer-social-btn:focus-visible {
-        outline: 2px solid rgba(255, 102, 0, 0.6);
+        outline: 2px solid rgba(61, 214, 208, 0.6);
         outline-offset: 2px;
       }
       .footer-social-btn svg {
@@ -2103,3 +2103,32 @@ const platformLinks = [
     </script>
   </body>
 </html>
+
+/* Non-button menu/search rows retain their resting colours on touch. */
+.dropdown-item:hover,
+.dropdown-item.is-active {
+  background: rgba(255,255,255,.02) !important;
+  border-color: transparent !important;
+  transform: none !important;
+}
+.dropdown-item:hover .dropdown-title { color: #F8FAFC !important; }
+.dropdown-item:hover .dropdown-arrow { color: #64748B !important; }
+.search-result-card:hover,
+.search-result-card.is-selected {
+  background: rgba(255,255,255,.02) !important;
+  border-color: rgba(255,255,255,.06) !important;
+  transform: none !important;
+}
+.search-result-card:hover .card-title,
+.search-result-card.is-selected .card-title { color: #F8FAFC !important; }
+.search-result-card:hover .card-arrow,
+.search-result-card.is-selected .card-arrow { color: #64748B !important; transform: none !important; }
+:global([data-theme="light"]) .search-result-item:hover,
+:global(html.light-theme) .search-result-item:hover {
+  background: #F8FAFC !important; border-color: #E2E8F0 !important;
+}
+.footer-nav-link:hover,
+.footer-nav-link:focus-visible,
+.footer-legal-link:hover,
+.footer-legal-link:focus-visible { color: inherit !important; }
+
