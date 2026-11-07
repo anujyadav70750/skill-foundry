@@ -2510,6 +2510,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     el.dataset.original = el.textContent || '';
   });
 
+  // Homepage learning-domain links map to the existing resource categories.
+  // Keep this mapping aligned with the five homepage skill-area cards.
+  const CATEGORY_GROUPS: Record<string, string[]> = {
+    'ai & technology': ['ai image', 'ai video', 'prompt systems', 'prompt engineering', 'ai tools'],
+    'automation': ['ai automation', 'creative workflows', 'workflows', 'automation'],
+    'content creation & editing': ['content creation', 'video editing', 'video editing & motion', 'content creation & visuals', 'social media'],
+    'design & templates': ['design', 'templates', 'graphic design', 'poster design', 'thumbnails'],
+    'digital productivity': ['productivity', 'digital productivity', 'digital tools']
+  };
+
   // 1. SAVED / APPLIED STATE (Controls the actual resource listing)
   const urlParams = new URLSearchParams(window.location.search);
   let savedCategory = urlParams.get('category') || 'all';
@@ -2800,8 +2810,12 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         const cardSearchBlob = card.dataset.search || '';
 
         // Category check against SAVED category
+        const selectedCategory = savedCategory.toLowerCase();
+        const groupedCategories = CATEGORY_GROUPS[selectedCategory];
         const matchesCategory =
-          savedCategory.toLowerCase() === 'all' || cardCategory === savedCategory.toLowerCase();
+          selectedCategory === 'all' ||
+          cardCategory === selectedCategory ||
+          Boolean(groupedCategories?.includes(cardCategory));
 
         // Search query check
         const matchesQuery =
