@@ -46,6 +46,14 @@ const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = image ? new URL(image, siteUrl).href : undefined;
 const bodyClass = hideHeader ? 'no-header' : undefined;
 const twitterCard = socialImage ? 'summary_large_image' : 'summary';
+const menuHomeClass = currentPath === '/' ? 'menu-nav-item active' : 'menu-nav-item';
+const menuResourcesClass = currentPath === '/resources/' || (currentPath.startsWith('/resources') && !currentPath.includes('guides')) ? 'menu-nav-item active' : 'menu-nav-item';
+const menuGuidesClass = currentPath.startsWith('/guides') ? 'menu-nav-item active' : 'menu-nav-item';
+const menuFaqClass = currentPath.startsWith('/faq') ? 'menu-nav-item active' : 'menu-nav-item';
+const menuAboutClass = currentPath.startsWith('/about') ? 'menu-nav-item active' : 'menu-nav-item';
+const menuPrivacyClass = currentPath.startsWith('/privacy') ? 'menu-nav-item active' : 'menu-nav-item';
+const menuTermsClass = currentPath.startsWith('/terms') ? 'menu-nav-item active' : 'menu-nav-item';
+const menuContactClass = currentPath.startsWith('/contact') ? 'menu-nav-item active' : 'menu-nav-item';
 
 // Single Source of Truth: published resources for global search
 const allResources = await getCollection('resources');
@@ -213,7 +221,7 @@ const platformLinks = [
 
           <div class="nav-dropdown-menu" id="site-menu" hidden aria-labelledby="menu-toggle">
             <nav class="menu-nav-list" aria-label="Site menu navigation">
-              <a class={`menu-nav-item ${currentPath === '/' ? 'active' : ''}`} href="/">
+              <a class={menuHomeClass} href="/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -223,7 +231,7 @@ const platformLinks = [
                 <span class="menu-item-label">Home</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath === '/resources/' || (currentPath.startsWith('/resources') && !currentPath.includes('guides')) ? 'active' : ''}`} href="/resources/">
+              <a class={menuResourcesClass} href="/resources/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -233,7 +241,7 @@ const platformLinks = [
                 <span class="menu-item-label">Resources</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/guides') ? 'active' : ''}`} href="/guides/">
+              <a class={menuGuidesClass} href="/guides/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
@@ -243,7 +251,7 @@ const platformLinks = [
                 <span class="menu-item-label">Guides</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/faq') ? 'active' : ''}`} href="/faq/">
+              <a class={menuFaqClass} href="/faq/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -254,7 +262,7 @@ const platformLinks = [
                 <span class="menu-item-label">FAQ</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/about') ? 'active' : ''}`} href="/about/">
+              <a class={menuAboutClass} href="/about/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -265,7 +273,7 @@ const platformLinks = [
                 <span class="menu-item-label">About</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/privacy') ? 'active' : ''}`} href="/privacy/">
+              <a class={menuPrivacyClass} href="/privacy/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -278,7 +286,7 @@ const platformLinks = [
                 <span class="menu-item-label">Privacy Policy</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/terms') ? 'active' : ''}`} href="/terms/">
+              <a class={menuTermsClass} href="/terms/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -288,7 +296,7 @@ const platformLinks = [
                 <span class="menu-item-label">Terms &amp; Conditions</span>
               </a>
 
-              <a class={`menu-nav-item ${currentPath.startsWith('/contact') ? 'active' : ''}`} href="/contact/">
+              <a class={menuContactClass} href="/contact/">
                 <span class="menu-item-icon">
                   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
