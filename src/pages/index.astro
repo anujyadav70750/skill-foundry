@@ -184,7 +184,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <div class="skill-track-content">
               <div class="home-inner-title-wrap"><h3 class="card-title">AI &amp; Technology</h3></div>
               <p class="card-description">
-                Create AI images, videos, prompts and useful tools.
+                Create AI images and videos, improve prompts, and explore new tools.
               </p>
               <a class="skill-track-view-btn" href="/resources/?category=AI%20%26%20Technology" aria-label="Explore AI and Technology resources">View resources</a>
             </div>
@@ -197,7 +197,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <div class="skill-track-content">
               <div class="home-inner-title-wrap"><h3 class="card-title">Automation</h3></div>
               <p class="card-description">
-                Connect tools and automate repetitive everyday work.
+                Connect your tools and automate repetitive tasks and workflows.
               </p>
               <a class="skill-track-view-btn" href="/resources/?category=Automation" aria-label="Explore Automation resources">View resources</a>
             </div>
@@ -210,7 +210,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <div class="skill-track-content">
               <div class="home-inner-title-wrap"><h3 class="card-title">Content Creation &amp; Editing</h3></div>
               <p class="card-description">
-                Plan, create, edit and publish content for your projects.
+                Plan, produce and edit videos and content for your platforms.
               </p>
               <a class="skill-track-view-btn" href="/resources/?category=Content%20Creation%20%26%20Editing" aria-label="Explore Content Creation and Editing resources">View resources</a>
             </div>
@@ -223,7 +223,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <div class="skill-track-content">
               <div class="home-inner-title-wrap"><h3 class="card-title">Design &amp; Templates</h3></div>
               <p class="card-description">
-                Create posters, graphics, thumbnails and templates.
+                Create graphics, posters, thumbnails and reusable designs.
               </p>
               <a class="skill-track-view-btn" href="/resources/?category=Design%20%26%20Templates" aria-label="Explore Design and Templates resources">View resources</a>
             </div>
@@ -236,7 +236,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             <div class="skill-track-content">
               <div class="home-inner-title-wrap"><h3 class="card-title">Digital Productivity</h3></div>
               <p class="card-description">
-                Organise tasks and information with useful digital tools.
+                Organise information, manage tasks and work more efficiently.
               </p>
               <a class="skill-track-view-btn" href="/resources/?category=Digital%20Productivity" aria-label="Explore Digital Productivity resources">View resources</a>
             </div>
@@ -3697,47 +3697,47 @@ const formatUploadDate = (d: Date | string | undefined) => {
     flex: 1 1 auto;
     min-width: 0;
     min-height: 0;
-    display: grid;
-    grid-template-rows: minmax(2.6em, auto) minmax(0, 1fr) 36px;
-    gap: 8px;
-    align-content: stretch;
-    padding: 15px 17px 17px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 17px 16px;
+    gap: 0;
   }
 
   .home-page .skill-track-card .home-inner-title-wrap {
-    display: flex;
-    align-items: flex-start;
+    flex: 0 0 auto;
     min-width: 0;
-    min-height: 2.6em;
-    margin: 0;
+    min-height: 0;
+    margin: 0 0 8px;
   }
 
   .home-page .skill-track-card .card-title {
+    margin: 0;
     font-size: 18px;
     line-height: 1.3;
     font-weight: 700;
-    margin: 0;
   }
 
   .home-page .skill-track-card .card-description {
+    flex: 0 0 auto;
     min-width: 0;
     min-height: 0;
     margin: 0;
     font-size: 13.5px;
-    line-height: 1.5;
+    line-height: 1.48;
   }
 
   .home-page .skill-track-view-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    justify-self: center;
-    align-self: end;
+    align-self: center;
+    flex: 0 0 36px;
     width: 142px;
     max-width: 100%;
     height: 36px;
     min-height: 36px;
-    margin: 0;
+    margin: auto 0 0;
     padding: 0 12px;
     box-sizing: border-box;
     border: 1px solid #303642;
@@ -3769,9 +3769,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
   @media (max-width: 640px) {
     .home-page .skill-track-content {
-      grid-template-rows: minmax(2.6em, auto) minmax(0, 1fr) 35px;
-      gap: 7px;
-      padding: 14px 15px 16px;
+      padding: 13px 15px 15px;
+    }
+
+    .home-page .skill-track-card .home-inner-title-wrap {
+      margin-bottom: 7px;
     }
 
     .home-page .skill-track-card .card-title {
@@ -3785,6 +3787,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
 
     .home-page .skill-track-view-btn {
+      flex-basis: 35px;
       width: 142px;
       height: 35px;
       min-height: 35px;
