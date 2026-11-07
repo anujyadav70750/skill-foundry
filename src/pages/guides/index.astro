@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 
 const guideTracks = [
   {
@@ -63,6 +64,13 @@ const guideTracks = [
     icon: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>`
   }
 ];
+
+const publishedResourceCategories = new Set(
+  (await getCollection('resources'))
+    .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
+    .map((resource) => resource.data.category?.trim())
+    .filter((category): category is string => Boolean(category))
+);
 ---
 
 <BaseLayout
@@ -137,7 +145,9 @@ const guideTracks = [
         </div>
 
         <div class="tracks-grid">
-          {guideTracks.map((track) => (
+          {guideTracks.map((track) => {
+            const hasPublishedResources = publishedResourceCategories.has(track.category);
+            return (
             <div class="home-card track-card">
               <!-- Header: Icon container + small numbered index -->
               <div class="track-card-header">
@@ -169,13 +179,20 @@ const guideTracks = [
 
               <!-- Primary Action Button (Clean action button styled consistently across all cards) -->
               <div class="track-card-footer">
-                <a class="track-cta-btn" href={track.actionHref}>
-                  <span>{track.actionLabel}</span>
-                  <span class="btn-arrow" aria-hidden="true">→</span>
-                </a>
+                {hasPublishedResources ? (
+                  <a class="track-cta-btn" href={track.actionHref}>
+                    <span>{track.actionLabel}</span>
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                  </a>
+                ) : (
+                  <span class="track-cta-btn track-cta-unavailable" aria-disabled="true">
+                    Guides coming soon
+                  </span>
+                )}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -618,6 +635,13 @@ const guideTracks = [
     border-color: #CBD5E1;
     color: #0F172A;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+
+  .track-cta-unavailable {
+    cursor: default;
+    opacity: 0.55;
+    pointer-events: none;
+    box-shadow: none;
   }
 
   .track-cta-btn .btn-arrow {
