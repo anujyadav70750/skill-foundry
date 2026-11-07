@@ -174,13 +174,11 @@ const platformLinks = [
     {!hideHeader && (
       <header class="site-header" id="global-site-header">
         <nav class="nav-bar-container" aria-label="Main navigation">
-          <!-- LEFT SIDE: Brand Logo + Brand Name -->
           <a class="nav-brand" href="/" aria-label="Skill Foundry home">
             <span class="brand-mark">SF</span>
             <span class="brand-name">Skill <span class="brand-name-accent">Foundry</span></span>
           </a>
 
-          <!-- RIGHT SIDE: Search Capsule + Hamburger Menu Button -->
           <div class="nav-actions">
             {!hideHeaderSearch && (
               <div class="header-search-wrap" id="header-search-wrap">
@@ -215,7 +213,6 @@ const platformLinks = [
             </button>
           </div>
 
-          <!-- DROPDOWN MENU PANEL -->
           <div class="nav-dropdown-menu" id="site-menu" hidden aria-labelledby="menu-toggle">
             <nav class="menu-nav-list" aria-label="Site menu navigation">
               <a class={`menu-nav-item ${currentPath === '/' ? 'active' : ''}`} href="/">
@@ -306,7 +303,6 @@ const platformLinks = [
 
             <div class="menu-divider" role="separator"></div>
 
-            <!-- SINGLE COMBINED PILL THEME TOGGLE (Sun / Moon) -->
             <div class="menu-theme-wrap">
               <button
                 type="button"
