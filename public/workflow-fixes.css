@@ -8285,3 +8285,83 @@ html.light-theme .step-details-container .step-modal-prompt-pre {
   color: #0F172A !important;
   border-color: #CBD5E1 !important;
 }
+
+/* Resource workflow step-card heading refinement.
+   Keep the existing card and all step content containers. Only refine the
+   title/description composition shared by every step, on mobile and desktop. */
+.resource-page .tutorial-step-card {
+  border-color: rgba(126, 145, 169, 0.24) !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-header {
+  align-items: center !important;
+  text-align: center !important;
+  gap: 9px !important;
+  margin-bottom: 16px !important;
+}
+
+.resource-page .tutorial-step-card .step-title-wrap {
+  width: 100% !important;
+  justify-content: center !important;
+  gap: 0 !important;
+  text-align: center !important;
+}
+
+.resource-page .tutorial-step-card .step-title-wrap .section-accent-bar {
+  display: none !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-title {
+  width: 100% !important;
+  font-size: clamp(19px, 2.4vw, 22px) !important;
+  line-height: 1.28 !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.025em !important;
+  text-align: center !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-desc {
+  width: min(100%, 620px) !important;
+  margin: 0 auto !important;
+  color: #A3ACB9 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  text-align: center !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-header::after {
+  content: "" !important;
+  display: block !important;
+  width: 42px !important;
+  height: 2px !important;
+  margin: 3px auto 0 !important;
+  border-radius: 999px !important;
+  background: #71849A !important;
+  opacity: 0.8 !important;
+}
+
+.resource-page .tutorial-step-card .step-header-divider {
+  margin: 0 0 18px !important;
+  background: rgba(126, 145, 169, 0.16) !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-card,
+html.light-theme .resource-page .tutorial-step-card {
+  border-color: #CBD5E1 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-card .tutorial-step-desc,
+html.light-theme .resource-page .tutorial-step-card .tutorial-step-desc {
+  color: #64748B !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-card .tutorial-step-header::after,
+html.light-theme .resource-page .tutorial-step-card .tutorial-step-header::after {
+  background: #71849A !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-step-card .step-header-divider,
+html.light-theme .resource-page .tutorial-step-card .step-header-divider {
+  background: #E2E8F0 !important;
+}
+
