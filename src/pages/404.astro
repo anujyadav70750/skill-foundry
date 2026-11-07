@@ -8,9 +8,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h1>That page doesn't exist.</h1>
       <p>The link may be outdated or the page may have moved. You can continue from the resource library or head back home.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href="/resources/">Explore Resources</a>
+        <a class="button button-primary explore-resources-primary" href="/resources/">Explore Resources</a>
         <a class="button button-secondary" href="/">Go Home</a>
       </div>
     </div>
   </section>
+<style>
+  .explore-resources-primary {
+    background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #FFFFFF;
+    box-shadow: 0 5px 16px rgba(234, 85, 0, 0.3);
+  }
+
+  .explore-resources-primary:hover {
+    background: linear-gradient(180deg, #FF862B 0%, #F05E0A 100%);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #FFFFFF;
+  }
+</style>
 </BaseLayout>
