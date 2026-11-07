@@ -685,3 +685,91 @@ html.light-theme .sf-io-close {
   color: #334155 !important;
 }
 
+/* Popup typography and control polish across every modal surface. */
+:root:not([data-theme="light"]) .faq-modal-dialog,
+:root:not([data-theme="light"]) .search-modal-card,
+:root:not([data-theme="light"]) .filter-dialog,
+:root:not([data-theme="light"]) .media-lightbox-container,
+:root[data-theme="light"] .faq-modal-dialog,
+:root[data-theme="light"] .search-modal-card,
+:root[data-theme="light"] .filter-dialog,
+:root[data-theme="light"] .media-lightbox-container,
+html.light-theme .faq-modal-dialog,
+html.light-theme .search-modal-card,
+html.light-theme .filter-dialog,
+html.light-theme .media-lightbox-container {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-subtitle,
+:root:not([data-theme="light"]) .faq-modal-dialog p,
+:root:not([data-theme="light"]) .search-modal-card p,
+:root:not([data-theme="light"]) .filter-dialog p,
+:root:not([data-theme="light"]) .filter-section-title {
+  color: #9299A6 !important;
+}
+
+:root:not([data-theme="light"]) .lightbox-icon-btn {
+  background: #171C25 !important;
+  border-color: #303743 !important;
+  color: #E8EDF4 !important;
+  box-shadow: none !important;
+}
+
+:root:not([data-theme="light"]) .lightbox-icon-btn:hover {
+  background: #222A35 !important;
+  border-color: #465164 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+:root:not([data-theme="light"]) .filter-apply-action-btn:not(:disabled),
+:root:not([data-theme="light"]) .faq-modal-submit-btn:not(:disabled) {
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .faq-modal-clear-btn,
+html.light-theme .faq-modal-clear-btn {
+  background: #F1F4F8 !important;
+  border-color: #D7DEE8 !important;
+  color: #475569 !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .faq-modal-clear-btn:not(:disabled):hover,
+html.light-theme .faq-modal-clear-btn:not(:disabled):hover {
+  background: #E7ECF2 !important;
+  border-color: #C5CEDA !important;
+  color: #1F2937 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+:root[data-theme="light"] .lightbox-icon-btn,
+html.light-theme .lightbox-icon-btn {
+  background: #F1F4F8 !important;
+  border-color: #D7DEE8 !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .lightbox-icon-btn:hover,
+html.light-theme .lightbox-icon-btn:hover {
+  background: #E7ECF2 !important;
+  border-color: #C5CEDA !important;
+  color: #172033 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+:root[data-theme="light"] .faq-modal-submit-btn:not(:disabled),
+:root[data-theme="light"] .filter-apply-action-btn:not(:disabled),
+html.light-theme .faq-modal-submit-btn:not(:disabled),
+html.light-theme .filter-apply-action-btn:not(:disabled) {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
