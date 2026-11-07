@@ -8406,3 +8406,70 @@ html.light-theme .resource-page .tutorial-step-card .step-header-divider {
   margin: 0 0 18px !important;
 }
 
+/* Resource action buttons: preserve their existing inactive colours and use
+   darker, restrained success states after a successful action. */
+.resource-page .tutorial-copy-btn.is-copied {
+  background: #103B35 !important;
+  border-color: #23685D !important;
+  color: #B9E8DD !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22) !important;
+}
+
+.resource-page .tutorial-download-btn.is-downloaded {
+  background: #172638 !important;
+  border: 1px solid #344D6B !important;
+  color: #BBD0E9 !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.22) !important;
+}
+
+.resource-page .tutorial-copy-btn,
+.resource-page .tutorial-download-btn {
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease !important;
+}
+
+/* Give the workflow introduction a neutral slate identity so action buttons
+   remain the only teal/blue controls in this part of the resource. */
+.resource-page #intro.intro-section + .blueprint-callout-box {
+  background: #151B24 !important;
+  border: 1px solid rgba(148, 163, 184, 0.13) !important;
+  box-shadow: none !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-title {
+  color: #F1F5F9 !important;
+}
+
+.resource-page .blueprint-callout-box .blueprint-callout-desc {
+  color: #AAB6C5 !important;
+}
+
+html[data-theme="light"] .resource-page #intro.intro-section + .blueprint-callout-box,
+html.light-theme .resource-page #intro.intro-section + .blueprint-callout-box {
+  background: #E9EEF4 !important;
+  border-color: #D7E0EA !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-title,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-title {
+  color: #1E293B !important;
+}
+
+html[data-theme="light"] .resource-page .blueprint-callout-box .blueprint-callout-desc,
+html.light-theme .resource-page .blueprint-callout-box .blueprint-callout-desc {
+  color: #64748B !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-copy-btn.is-copied,
+html.light-theme .resource-page .tutorial-copy-btn.is-copied {
+  background: #103B35 !important;
+  border-color: #23685D !important;
+  color: #B9E8DD !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-download-btn.is-downloaded,
+html.light-theme .resource-page .tutorial-download-btn.is-downloaded {
+  background: #172638 !important;
+  border-color: #344D6B !important;
+  color: #BBD0E9 !important;
+}
+
