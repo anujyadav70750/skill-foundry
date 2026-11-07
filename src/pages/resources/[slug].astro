@@ -1318,7 +1318,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
         const text = pre?.textContent?.trim() || "";
         const name = btn.getAttribute("data-prompt-name") || "prompt";
         if (text) {
-          makePdf(text, name);
+          try {
+            makePdf(text, name);
+            btn.classList.add("is-downloaded");
+            window.setTimeout(() => btn.classList.remove("is-downloaded"), 1500);
+          } catch {
+            btn.classList.remove("is-downloaded");
+          }
         }
       });
     });
