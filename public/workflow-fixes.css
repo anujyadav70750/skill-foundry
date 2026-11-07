@@ -8365,3 +8365,44 @@ html.light-theme .resource-page .tutorial-step-card .step-header-divider {
   background: #E2E8F0 !important;
 }
 
+/* Final step-heading typography correction: rely on the existing full-width
+   divider below the description; do not add a second decorative line. */
+.resource-page .tutorial-step-card .tutorial-step-header {
+  gap: 6px !important;
+  margin-bottom: 14px !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-header::after {
+  content: none !important;
+  display: none !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-title {
+  font-size: 18px !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.018em !important;
+}
+
+.resource-page .tutorial-step-card .tutorial-step-desc {
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  font-weight: 400 !important;
+}
+
+@media (min-width: 641px) {
+  .resource-page .tutorial-step-card .tutorial-step-title {
+    font-size: 20px !important;
+  }
+
+  .resource-page .tutorial-step-card .tutorial-step-desc {
+    font-size: 13.5px !important;
+  }
+}
+
+/* The existing separator is the only line between the heading and content. */
+.resource-page .tutorial-step-card .step-header-divider {
+  display: block !important;
+  margin: 0 0 18px !important;
+}
+
