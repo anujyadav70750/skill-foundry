@@ -582,7 +582,7 @@ html.light-theme .resource-page .workflow-step-nav-button[aria-selected="true"] 
 }
 
 .resource-page .tutorial-prompt-file-dot.is-red { background: #F87171 !important; }
-.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FBBF24 !important; }
+.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FDE68A !important; }
 .resource-page .tutorial-prompt-file-dot.is-green { background: #4ADE80 !important; }
 
 .resource-page .tutorial-prompt-file-name {
@@ -867,7 +867,7 @@ html.light-theme .resource-page .tutorial-detail-tool-link {
 }
 
 .resource-page .tutorial-prompt-file-dot.is-yellow {
-  background: #FEBC2E !important;
+  background: #FDE68A !important;
 }
 
 .resource-page .tutorial-prompt-file-dot.is-green {
@@ -1050,7 +1050,7 @@ html.light-theme .resource-page .tutorial-step-disclosure-button[aria-selected="
 }
 
 .resource-page .tutorial-prompt-file-dot.is-red { background: #FF5F57 !important; }
-.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FEBC2E !important; }
+.resource-page .tutorial-prompt-file-dot.is-yellow { background: #FDE68A !important; }
 .resource-page .tutorial-prompt-file-dot.is-green { background: #28C840 !important; }
 
 /* Existing placement and dimensions are intentionally preserved. */
