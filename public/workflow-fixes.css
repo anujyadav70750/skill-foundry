@@ -177,7 +177,7 @@ body:not(:has(.testing-1-theme)) .transition-indicator-stem {
 
 /* Non-visual placeholders within strict 1:1 frames */
 .resource-page .media-frame.media-frame-nonvisual{aspect-ratio:1/1!important;background:linear-gradient(145deg,#0d1522 0%,#070c14 100%)!important;border:1px solid rgba(61,214,208,.2)!important}
-.resource-page .media-frame.media-frame-nonvisual .nonvisual-icon{width:36px;height:36px;border-radius:10px;background:rgba(61,214,208,.1);border:1px solid rgba(61,214,208,.25);color:#f59e0b;display:grid;place-items:center}
+.resource-page .media-frame.media-frame-nonvisual .nonvisual-icon{width:36px;height:36px;border-radius:10px;background:rgba(61,214,208,.1);border:1px solid rgba(61,214,208,.25);color:#3DD6D0;display:grid;place-items:center}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-icon svg{width:18px;height:18px}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-badge{color:#94a3b8;font:700 9px/1 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-title{font-size:11px;font-weight:700;color:#e2e8f0}
