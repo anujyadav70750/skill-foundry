@@ -826,8 +826,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                     )}
                                     <span class="tutorial-detail-label">{label}</span>
                                   </div>
-                                  {kind === "tool" && stepToolUrl ? (
-                                    <a class="tutorial-detail-tool-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer"><img class="tutorial-detail-tool-logo" src={stepToolLogo} alt="" width="22" height="22" loading="lazy" decoding="async" /><span>{detail.value}</span></a>
+                                  {kind === "tool" ? (
+                                    <div class="tutorial-detail-tool-value">
+                                      {stepToolUrl ? (
+                                        <a class="tutorial-detail-tool-logo-link" href={stepToolUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${detail.value}`}>
+                                          <img class="tutorial-detail-tool-logo" src={stepToolLogo} alt="" width="22" height="22" loading="lazy" decoding="async" />
+                                        </a>
+                                      ) : (
+                                        <img class="tutorial-detail-tool-logo" src={stepToolLogo} alt="" width="22" height="22" loading="lazy" decoding="async" />
+                                      )}
+                                      <span class="tutorial-detail-value">{detail.value}</span>
+                                    </div>
                                   ) : (
                                     <span class="tutorial-detail-value">{detail.value}</span>
                                   )}
