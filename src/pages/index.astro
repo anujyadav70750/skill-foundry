@@ -3149,24 +3149,29 @@ const formatUploadDate = (d: Date | string | undefined) => {
     width: auto;
     flex-shrink: 0;
     padding: 10px 18px;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6px;
-    background: #FACC15;
-    color: #050505;
-    box-shadow: none;
+    background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+    color: #FFFFFF;
+    box-shadow: 0 8px 24px rgba(234, 85, 0, 0.4);
     font-size: 13.5px;
     font-weight: 700;
     line-height: 1.35;
     white-space: nowrap;
     text-decoration: none;
-    transition: background 0.15s ease;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
   }
 
   .home-page .home-button-cta:hover {
-    background: #FDE047;
-    color: #050505;
-    transform: none;
-    box-shadow: none;
+    background: linear-gradient(180deg, #FF862B 0%, #F05E0A 100%);
+    color: #FFFFFF;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(234, 85, 0, 0.5);
+  }
+
+  .home-page .home-button-cta:focus-visible {
+    outline: 2px solid #FF7711;
+    outline-offset: 3px;
   }
 
   @media (max-width: 640px) {
