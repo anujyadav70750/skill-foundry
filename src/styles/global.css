@@ -1118,7 +1118,6 @@ html.light-theme .related-shelf-card:active {
 :root:not([data-theme="light"]) .faq-page .home-card.faq-submit-card:hover,
 :root:not([data-theme="light"]) .faq-page .home-card.faq-submit-card:active {
   transform: none !important;
-  background: inherit !important;
   border-color: rgba(255,255,255,.08) !important;
   box-shadow: none !important;
 }
@@ -1180,9 +1179,6 @@ html.light-theme .blueprint-step-container:not(.is-expanded):active {
 .resource-page .tool-grid-card:active .tool-logo-box,
 .resource-page .step-tool-logo-link:active .step-tool-logo-box {
   filter: none !important;
-  background-color: inherit !important;
-  border-color: inherit !important;
   transform: none !important;
-  box-shadow: inherit !important;
 }
 
