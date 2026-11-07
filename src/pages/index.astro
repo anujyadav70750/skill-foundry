@@ -177,7 +177,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         </div>
 
         <div class="skills-tracks-grid" role="region" aria-label="Skill areas">
-          <a class="home-card skill-track-card" href="/resources/?category=AI%20%26%20Technology" aria-label="Explore AI and Technology resources">
+          <article class="home-card skill-track-card">
             <div class="skill-track-image-wrap">
               <img class="skill-track-image" src="https://images.unsplash.com/photo-1758626042818-b05e9c91b84a?auto=format&amp;fit=crop&amp;w=720&amp;q=85" alt="" loading="lazy" decoding="async" />
             </div>
@@ -186,10 +186,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
               <p class="card-description">
                 Create images and videos, write better prompts, and explore useful AI tools.
               </p>
+              <a class="skill-track-view-btn" href="/resources/?category=AI%20%26%20Technology" aria-label="Explore AI and Technology resources">View resources</a>
             </div>
-          </a>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=Automation" aria-label="Explore Automation resources">
+          <article class="home-card skill-track-card">
             <div class="skill-track-image-wrap">
               <img class="skill-track-image" src="https://images.unsplash.com/photo-1743385779347-1549dabf1320?auto=format&amp;fit=crop&amp;w=720&amp;q=85" alt="" loading="lazy" decoding="async" />
             </div>
@@ -198,10 +199,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
               <p class="card-description">
                 Connect tools and automate repetitive tasks to make everyday work easier.
               </p>
+              <a class="skill-track-view-btn" href="/resources/?category=Automation" aria-label="Explore Automation resources">View resources</a>
             </div>
-          </a>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=Content%20Creation%20%26%20Editing" aria-label="Explore Content Creation and Editing resources">
+          <article class="home-card skill-track-card">
             <div class="skill-track-image-wrap">
               <img class="skill-track-image" src="https://images.unsplash.com/photo-1780642213026-cf15a7676c6b?auto=format&amp;fit=crop&amp;w=720&amp;q=85" alt="" loading="lazy" decoding="async" />
             </div>
@@ -210,10 +212,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
               <p class="card-description">
                 Plan, create, edit and publish content for your projects and platforms.
               </p>
+              <a class="skill-track-view-btn" href="/resources/?category=Content%20Creation%20%26%20Editing" aria-label="Explore Content Creation and Editing resources">View resources</a>
             </div>
-          </a>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=Design%20%26%20Templates" aria-label="Explore Design and Templates resources">
+          <article class="home-card skill-track-card">
             <div class="skill-track-image-wrap">
               <img class="skill-track-image" src="https://images.unsplash.com/photo-1776278806688-64ef6a7e2cc5?auto=format&amp;fit=crop&amp;w=720&amp;q=85" alt="" loading="lazy" decoding="async" />
             </div>
@@ -222,10 +225,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
               <p class="card-description">
                 Create posters, graphics, thumbnails and reusable templates.
               </p>
+              <a class="skill-track-view-btn" href="/resources/?category=Design%20%26%20Templates" aria-label="Explore Design and Templates resources">View resources</a>
             </div>
-          </a>
+          </article>
 
-          <a class="home-card skill-track-card" href="/resources/?category=Digital%20Productivity" aria-label="Explore Digital Productivity resources">
+          <article class="home-card skill-track-card">
             <div class="skill-track-image-wrap">
               <img class="skill-track-image" src="https://images.unsplash.com/photo-1743796055651-41c743ff2465?auto=format&amp;fit=crop&amp;w=720&amp;q=85" alt="" loading="lazy" decoding="async" />
             </div>
@@ -234,8 +238,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
               <p class="card-description">
                 Use digital tools to organise information, manage tasks and work more efficiently.
               </p>
+              <a class="skill-track-view-btn" href="/resources/?category=Digital%20Productivity" aria-label="Explore Digital Productivity resources">View resources</a>
             </div>
-          </a>
+          </article>
         </div>
       </div>
     </section>
@@ -3613,6 +3618,43 @@ const formatUploadDate = (d: Date | string | undefined) => {
     line-height: 1.55;
   }
 
+  .home-page .skill-track-card .card-description {
+    margin: 0 0 12px;
+  }
+
+  .home-page .skill-track-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    min-height: 36px;
+    padding: 0 15px;
+    border: 1px solid #303642;
+    border-radius: 9px;
+    background: #151922;
+    color: #F8FAFC;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 650;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+
+  .home-page .skill-track-view-btn:hover {
+    background: #202733;
+    border-color: #465164;
+  }
+
+  .home-page .skill-track-view-btn:focus-visible {
+    outline: 2px solid var(--accent, #F5C928);
+    outline-offset: 3px;
+  }
+
+  .home-page .skill-track-view-btn:active {
+    transform: translateY(1px);
+  }
+
   @media (max-width: 640px) {
     .home-page .skills-tracks-grid {
       gap: 13px;
@@ -3641,6 +3683,12 @@ const formatUploadDate = (d: Date | string | undefined) => {
     .home-page .skill-track-card .card-description {
       font-size: 13.5px;
       line-height: 1.55;
+    }
+
+    .home-page .skill-track-view-btn {
+      min-height: 35px;
+      padding-inline: 14px;
+      font-size: 12px;
     }
   }
 
