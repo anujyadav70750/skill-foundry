@@ -896,3 +896,62 @@ html.light-theme .sf-io-actions .primary {
   box-shadow: none !important;
 }
 
+/* Light-theme popup backdrops and selected/action states. */
+:root[data-theme="light"] .faq-modal-backdrop,
+html.light-theme .faq-modal-backdrop,
+:root[data-theme="light"] .search-backdrop,
+html.light-theme .search-backdrop,
+:root[data-theme="light"] .filter-backdrop,
+html.light-theme .filter-backdrop,
+:root[data-theme="light"] .media-lightbox-backdrop,
+html.light-theme .media-lightbox-backdrop,
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-backdrop,
+html.light-theme [data-prompt-modal] .prompt-modal-backdrop,
+:root[data-theme="light"] .sf-thumb-dialog::backdrop,
+html.light-theme .sf-thumb-dialog::backdrop,
+:root[data-theme="light"] .sf-io-ratio::backdrop,
+html.light-theme .sf-io-ratio::backdrop {
+  background: rgba(15,23,42,.48) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+:root[data-theme="light"] .filter-chip-option.is-selected,
+:root[data-theme="light"] .sort-option-btn.is-selected,
+html.light-theme .filter-chip-option.is-selected,
+html.light-theme .sort-option-btn.is-selected {
+  background: rgba(234,101,8,.09) !important;
+  border-color: rgba(234,101,8,.45) !important;
+  color: #C45105 !important;
+}
+
+:root[data-theme="light"] .sort-option-btn.is-selected .sort-radio-circle,
+html.light-theme .sort-option-btn.is-selected .sort-radio-circle {
+  border-color: #EA6508 !important;
+  background: #EA6508 !important;
+  box-shadow: inset 0 0 0 2.5px #FFFFFF !important;
+}
+
+:root[data-theme="light"] .filter-apply-action-btn:not(:disabled),
+html.light-theme .filter-apply-action-btn:not(:disabled) {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-actions button,
+html.light-theme [data-prompt-modal] .prompt-modal-actions button {
+  background: #F1F4F8 !important;
+  border-color: #D7DEE8 !important;
+  color: #334155 !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-actions button:hover,
+html.light-theme [data-prompt-modal] .prompt-modal-actions button:hover {
+  background: #E7ECF2 !important;
+  border-color: #C5CEDA !important;
+  color: #172033 !important;
+}
+
