@@ -1,27 +1,37 @@
-/* Resource Details — final visual refinement
-   The detail icons and tool logo are rendered from the page markup.
-   This stylesheet only controls the tool capsule's finish and sizing. */
-
-.resource-page .tutorial-detail-tool-link {
+/* Tool Used detail: keep it in the normal detail-value flow.
+   Only the compact logo is a link; the tool name uses the same typography as other values. */
+.resource-page .tutorial-detail-tool-value {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: flex-start !important;
-  gap: 9px !important;
-  width: fit-content !important;
+  gap: 8px !important;
+  width: auto !important;
   max-width: 100% !important;
-  min-height: 40px !important;
-  box-sizing: border-box !important;
-  padding: 8px 14px !important;
-  border: 1px solid rgba(255,255,255,.11) !important;
-  border-radius: 11px !important;
-  background: linear-gradient(180deg, #223044 0%, #1B2636 100%) !important;
-  color: #F4F8FF !important;
-  box-shadow: 0 2px 7px rgba(0,0,0,.18) !important;
+  min-height: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  font: inherit !important;
+}
+
+.resource-page .tutorial-detail-tool-logo-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 0 0 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  box-shadow: none !important;
   text-decoration: none !important;
-  font-weight: 650 !important;
-  line-height: 1.2 !important;
-  transform: none !important;
-  transition: background .16s ease, border-color .16s ease !important;
   -webkit-tap-highlight-color: transparent !important;
 }
 
@@ -30,45 +40,21 @@
   width: 22px !important;
   height: 22px !important;
   min-width: 22px !important;
-  flex: 0 0 22px !important;
+  min-height: 22px !important;
   object-fit: contain !important;
   border-radius: 4px !important;
 }
 
-.resource-page .tutorial-detail-tool-link > span {
-  min-width: 0 !important;
-}
-
-.resource-page .tutorial-detail-tool-link::before,
-.resource-page .tutorial-detail-tool-link::after {
-  content: none !important;
-  display: none !important;
-}
-
-.resource-page .tutorial-detail-tool-link:hover {
-  transform: none !important;
-  box-shadow: 0 2px 7px rgba(0,0,0,.18) !important;
-  border-color: rgba(255,255,255,.17) !important;
-  background: linear-gradient(180deg, #26364B 0%, #202D40 100%) !important;
-}
-
-.resource-page .tutorial-detail-tool-link:focus-visible {
+.resource-page .tutorial-detail-tool-logo-link:focus-visible {
   outline: 2px solid rgba(45,212,191,.55) !important;
-  outline-offset: 2px !important;
+  outline-offset: 3px !important;
 }
 
-html[data-theme="light"] .resource-page .tutorial-detail-tool-link,
-html.light-theme .resource-page .tutorial-detail-tool-link {
-  background: linear-gradient(180deg, #F8FAFC 0%, #EEF2F7 100%) !important;
-  color: #1E293B !important;
-  border-color: rgba(15,23,42,.11) !important;
-  box-shadow: 0 2px 7px rgba(15,23,42,.10) !important;
-}
-
-html[data-theme="light"] .resource-page .tutorial-detail-tool-link:hover,
-html.light-theme .resource-page .tutorial-detail-tool-link:hover {
-  background: linear-gradient(180deg, #FFFFFF 0%, #F1F5F9 100%) !important;
-  box-shadow: 0 2px 7px rgba(15,23,42,.10) !important;
+html[data-theme="light"] .resource-page .tutorial-detail-tool-value,
+html.light-theme .resource-page .tutorial-detail-tool-value {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: inherit !important;
 }
 
 /* Give the Guide/Details switch a small inset from the full-width Prompt box.
