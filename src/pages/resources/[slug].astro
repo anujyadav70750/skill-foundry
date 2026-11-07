@@ -572,7 +572,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
         {/* WORKFLOW INTRODUCTION CALLOUT — shared section heading and description styling */}
         {workflowSteps.length > 0 && (
-          <div class="blueprint-callout-box" id="workflow" role="region" aria-label="Workflow blueprint introduction">
+          <div class="blueprint-callout-box workflow-intro-open" id="workflow" role="region" aria-label="Workflow blueprint introduction">
             <div class="section-title-wrap">
               <span class="section-accent-bar" aria-hidden="true"></span>
               <h2 class="editorial-heading-title blueprint-callout-title">Create It <span>Step by Step</span></h2>
@@ -1959,8 +1959,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
        Frameless light transparent blue callout that creates visual boundary
        purely through its contrasting color fill without any outline border.
        ========================================================================== */
-    .blueprint-callout-box {
+    .blueprint-callout-box.workflow-intro-open {
       background: transparent !important;
+      background-image: none !important;
       border: none !important;
       border-radius: 0;
       padding: 12px 8px 0;
@@ -1973,18 +1974,18 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     @media (min-width: 641px) {
-      .blueprint-callout-box {
+      .blueprint-callout-box.workflow-intro-open {
         padding: 16px 12px 0;
         margin-bottom: 24px;
       }
     }
 
-    .blueprint-callout-box .section-title-wrap {
+    .blueprint-callout-box.workflow-intro-open .section-title-wrap {
       justify-content: center;
       margin-bottom: 5px;
     }
 
-    .blueprint-callout-box .section-accent-bar {
+    .blueprint-callout-box.workflow-intro-open .section-accent-bar {
       display: none;
     }
 
@@ -4172,8 +4173,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       color: #64748B;
     }
 
-    html[data-theme="light"] .blueprint-callout-box,
-    html.light-theme .blueprint-callout-box {
+    html[data-theme="light"] .blueprint-callout-box.workflow-intro-open,
+    html.light-theme .blueprint-callout-box.workflow-intro-open {
       background: transparent !important;
       border: none !important;
       box-shadow: none !important;
