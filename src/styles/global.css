@@ -773,3 +773,126 @@ html.light-theme .filter-apply-action-btn:not(:disabled) {
   box-shadow: none !important;
 }
 
+/* Keep close-button hover feedback neutral in light mode too. */
+:root[data-theme="light"] .faq-modal-collapse-btn:hover,
+:root[data-theme="light"] .search-modal-close:hover,
+:root[data-theme="light"] .filter-dialog-close-btn:hover,
+:root[data-theme="light"] .lightbox-close-btn:hover,
+:root[data-theme="light"] [data-close-prompt]:hover,
+:root[data-theme="light"] .sf-thumb-close:hover,
+:root[data-theme="light"] .sf-io-close:hover,
+html.light-theme .faq-modal-collapse-btn:hover,
+html.light-theme .search-modal-close:hover,
+html.light-theme .filter-dialog-close-btn:hover,
+html.light-theme .lightbox-close-btn:hover,
+html.light-theme [data-close-prompt]:hover,
+html.light-theme .sf-thumb-close:hover,
+html.light-theme .sf-io-close:hover {
+  background: #E7ECF2 !important;
+  border-color: #C5CEDA !important;
+  color: #172033 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+:root[data-theme="light"] .faq-modal-collapse-btn svg,
+:root[data-theme="light"] .search-modal-close svg,
+:root[data-theme="light"] .filter-dialog-close-btn svg,
+:root[data-theme="light"] .lightbox-close-btn svg,
+:root[data-theme="light"] [data-close-prompt] svg,
+:root[data-theme="light"] .sf-thumb-close svg,
+:root[data-theme="light"] .sf-io-close svg,
+html.light-theme .faq-modal-collapse-btn svg,
+html.light-theme .search-modal-close svg,
+html.light-theme .filter-dialog-close-btn svg,
+html.light-theme .lightbox-close-btn svg,
+html.light-theme [data-close-prompt] svg,
+html.light-theme .sf-thumb-close svg,
+html.light-theme .sf-io-close svg {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* The dynamically-created prompt and image-adjustment dialogs follow the
+   active site theme, just like the static FAQ, search and filter dialogs. */
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-dialog,
+html.light-theme [data-prompt-modal] .prompt-modal-dialog,
+:root[data-theme="light"] .sf-thumb-dialog,
+html.light-theme .sf-thumb-dialog,
+:root[data-theme="light"] .sf-io-ratio,
+html.light-theme .sf-io-ratio {
+  background: #FFFFFF !important;
+  color: #172033 !important;
+  border-color: #D9E0E8 !important;
+  box-shadow: 0 24px 60px rgba(15,23,42,.16) !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-head,
+html.light-theme [data-prompt-modal] .prompt-modal-head {
+  background: #F8FAFC !important;
+  border-bottom-color: #E2E8F0 !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-head span,
+html.light-theme [data-prompt-modal] .prompt-modal-head span,
+:root[data-theme="light"] .sf-thumb-crop-title,
+html.light-theme .sf-thumb-crop-title,
+:root[data-theme="light"] .sf-io-title,
+html.light-theme .sf-io-title {
+  color: #172033 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-dialog pre,
+html.light-theme [data-prompt-modal] .prompt-modal-dialog pre {
+  background: #F8FAFC !important;
+  color: #334155 !important;
+  border-color: #E2E8F0 !important;
+}
+
+:root[data-theme="light"] [data-prompt-modal] .prompt-modal-actions,
+html.light-theme [data-prompt-modal] .prompt-modal-actions {
+  background: #F8FAFC !important;
+  border-top-color: #E2E8F0 !important;
+}
+
+:root[data-theme="light"] .sf-thumb-frame,
+html.light-theme .sf-thumb-frame,
+:root[data-theme="light"] .sf-io-stage,
+html.light-theme .sf-io-stage,
+:root[data-theme="light"] .sf-io-ratio select,
+html.light-theme .sf-io-ratio select {
+  background: #F8FAFC !important;
+  border-color: #D9E0E8 !important;
+  color: #172033 !important;
+}
+
+:root[data-theme="light"] .sf-thumb-help,
+html.light-theme .sf-thumb-help,
+:root[data-theme="light"] .sf-thumb-crop-badge,
+html.light-theme .sf-thumb-crop-badge,
+:root[data-theme="light"] .sf-io-help,
+html.light-theme .sf-io-help {
+  color: #64748B !important;
+}
+
+:root[data-theme="light"] .sf-thumb-actions button,
+html.light-theme .sf-thumb-actions button,
+:root[data-theme="light"] .sf-io-ratio button,
+html.light-theme .sf-io-ratio button {
+  background: #F1F4F8 !important;
+  border-color: #D7DEE8 !important;
+  color: #334155 !important;
+}
+
+:root[data-theme="light"] .sf-thumb-actions .primary,
+html.light-theme .sf-thumb-actions .primary,
+:root[data-theme="light"] .sf-io-actions .primary,
+html.light-theme .sf-io-actions .primary {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
