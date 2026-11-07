@@ -11,18 +11,21 @@
 
   const style = document.createElement('style');
   style.textContent = `
-    .sf-thumb-dialog{box-sizing:border-box;position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(640px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);margin:0;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:#0D1422;color:#F8FAFC;box-shadow:0 24px 60px rgba(0,0,0,.85);overflow:hidden}
+    .sf-thumb-dialog{box-sizing:border-box;position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);width:min(640px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100vh - 32px);margin:0;padding:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:#0B0D12;color:#F5F6F8;box-shadow:0 24px 64px rgba(0,0,0,.72);overflow:hidden}
     .sf-thumb-dialog::backdrop{background:rgba(3,7,18,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .sf-thumb-modal{box-sizing:border-box;width:100%;max-height:calc(100vh - 32px);overflow:auto;padding:18px}
-    .sf-thumb-crop-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;color:#FFFFFF;font-family:'Newsreader','Playfair Display',Georgia,serif;font-size:21px;font-weight:500;line-height:1.2;letter-spacing:-.02em}
+    .sf-thumb-crop-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px;color:#F5F6F8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.02em}
     .sf-thumb-crop-badge{color:#94A3B8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;font-weight:500;white-space:nowrap}
-    .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#060B14;touch-action:none;cursor:grab}
+    .sf-thumb-frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid rgba(255,255,255,.10);border-radius:14px;background:#050608;touch-action:none;cursor:grab}
     .sf-thumb-frame:active{cursor:grabbing}
     .sf-thumb-frame img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none}
-    .sf-thumb-help{margin-top:10px;color:#94A3B8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;line-height:1.5}
+    .sf-thumb-help{margin-top:10px;color:#9299A6;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;line-height:1.5}
     .sf-thumb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-    .sf-thumb-actions button{min-height:42px;padding:0 18px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);color:#CBD5E1;font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer}
-    .sf-thumb-actions .primary{border-color:rgba(255,255,255,.2);background:linear-gradient(180deg,#FF7711 0%,#EA5500 100%);color:#FFFFFF;box-shadow:0 4px 14px rgba(234,85,0,.38)}
+    .sf-thumb-actions button{min-height:42px;padding:0 18px;border:1px solid #303743;border-radius:10px;background:#171C25;color:#CBD2DC;font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer}
+    .sf-thumb-actions .primary{border-color:rgba(255,255,255,.16);background:linear-gradient(180deg,#FF7711 0%,#EA5500 100%);color:#FFFFFF;box-shadow:none}
+    .sf-thumb-close{display:inline-flex;align-items:center;justify-content:center;flex:0 0 38px;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border:1px solid #303743;border-radius:10px;background:#171C25;color:#E8EDF4;cursor:pointer}
+    .sf-thumb-close svg{display:block;width:18px;height:18px}
+    .sf-thumb-close:hover{background:#222A35;border-color:#465164;color:#FFFFFF}
     .sf-thumb-actions button:disabled{opacity:.55;cursor:wait}
     .builder-page .sf-thumb-result{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(7,17,31,.45)}
     .builder-page .sf-thumb-result-media{min-width:0}
@@ -206,7 +209,7 @@
     const dialog = document.createElement('dialog');
     dialog.className = 'sf-thumb-dialog';
     dialog.setAttribute('aria-labelledby', 'sf-thumb-dialog-title');
-    dialog.innerHTML = `<div class="sf-thumb-modal"><div class="sf-thumb-crop-title"><span id="sf-thumb-dialog-title">Adjust ${role === 'thumbnail' ? 'thumbnail' : 'hero image'}</span><span class="sf-thumb-crop-badge">16:9 fixed</span></div><div class="sf-thumb-frame"><img alt="Crop preview"></div><div class="sf-thumb-help">Drag the image with your finger. Pinch with two fingers to zoom and position it exactly where you want.</div><div class="sf-thumb-actions"><button type="button" class="primary sf-use">Done</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
+    dialog.innerHTML = `<div class="sf-thumb-modal"><div class="sf-thumb-crop-title"><span id="sf-thumb-dialog-title">Adjust ${role === 'thumbnail' ? 'thumbnail' : 'hero image'}</span><span class="sf-thumb-crop-badge">16:9 fixed</span><button type="button" class="sf-thumb-close" aria-label="Close image crop" title="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div><div class="sf-thumb-frame"><img alt="Crop preview"></div><div class="sf-thumb-help">Drag the image with your finger. Pinch with two fingers to zoom and position it exactly where you want.</div><div class="sf-thumb-actions"><button type="button" class="primary sf-use">Done</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
     document.body.append(dialog);
     state.dialog = dialog;
 
@@ -264,6 +267,7 @@
       if (f) f.value = '';
     };
     cancel.addEventListener('click', closeCancel);
+    dialog.querySelector('.sf-thumb-close')?.addEventListener('click', closeCancel);
     dialog.addEventListener('cancel', event => { event.preventDefault(); closeCancel(); });
 
     done.addEventListener('click', async () => {
