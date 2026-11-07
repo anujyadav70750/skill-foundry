@@ -514,10 +514,10 @@ html.light-theme .sf-io-close {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 38px !important;
-  height: 38px !important;
-  min-width: 38px !important;
-  min-height: 38px !important;
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
   padding: 0 !important;
   border: 1px solid #303743 !important;
   border-radius: 10px !important;
@@ -567,8 +567,8 @@ html.light-theme .sf-io-close:hover {
 :root:not([data-theme="light"]) .sf-thumb-close svg,
 :root:not([data-theme="light"]) .sf-io-close svg {
   display: block !important;
-  width: 18px !important;
-  height: 18px !important;
+  width: 15px !important;
+  height: 15px !important;
 }
 
 :root:not([data-theme="light"]) .faq-modal-clear-btn,
