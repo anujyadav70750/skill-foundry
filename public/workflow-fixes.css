@@ -21,7 +21,7 @@
 [data-prompt-modal] .prompt-modal-head{display:flex!important;align-items:center!important;justify-content:space-between!important;min-height:54px!important;padding:0 16px!important;border-bottom:1px solid rgba(255,255,255,.08)!important;background:#10141b!important}
 [data-prompt-modal] .prompt-modal-head span{color:#9299a6!important;font:700 11px/1.2 'Plus Jakarta Sans',system-ui,sans-serif!important;letter-spacing:.08em!important}
 [data-prompt-modal] .prompt-modal-head button,[data-prompt-modal] .prompt-modal-actions button{border:1px solid rgba(255,255,255,.1)!important;border-radius:10px!important;background:#182232!important;color:#e2e8f0!important;min-height:38px!important;padding:0 14px!important;font:700 12px/1 inherit!important;cursor:pointer!important;transition:border-color .15s ease,color .15s ease!important}
-[data-prompt-modal] .prompt-modal-head button:hover,[data-prompt-modal] .prompt-modal-actions button:hover{color:#ff9a52!important;border-color:rgba(255,119,17,.5)!important}
+[data-prompt-modal] .prompt-modal-head button:hover,[data-prompt-modal] .prompt-modal-actions button:hover{color:#ff9a52!important;border-color:rgba(61,214,208,.5)!important}
 [data-prompt-modal] .prompt-modal-dialog pre{min-height:0!important;margin:0!important;padding:22px!important;overflow:auto!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:break-word!important;color:#dce8f4!important;background:#050608!important;font:14px/1.7 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace!important}
 [data-prompt-modal] .prompt-modal-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;padding:12px 16px!important;border-top:1px solid rgba(255,255,255,.08)!important;background:#111a28!important}
 [data-prompt-modal] .prompt-modal-actions button{width:100%!important}
@@ -176,8 +176,8 @@ body:not(:has(.testing-1-theme)) .transition-indicator-stem {
 .resource-page .publisher-identity::before{content:none!important;display:none!important}
 
 /* Non-visual placeholders within strict 1:1 frames */
-.resource-page .media-frame.media-frame-nonvisual{aspect-ratio:1/1!important;background:linear-gradient(145deg,#0d1522 0%,#070c14 100%)!important;border:1px solid rgba(245,158,11,.2)!important}
-.resource-page .media-frame.media-frame-nonvisual .nonvisual-icon{width:36px;height:36px;border-radius:10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);color:#f59e0b;display:grid;place-items:center}
+.resource-page .media-frame.media-frame-nonvisual{aspect-ratio:1/1!important;background:linear-gradient(145deg,#0d1522 0%,#070c14 100%)!important;border:1px solid rgba(61,214,208,.2)!important}
+.resource-page .media-frame.media-frame-nonvisual .nonvisual-icon{width:36px;height:36px;border-radius:10px;background:rgba(61,214,208,.1);border:1px solid rgba(61,214,208,.25);color:#f59e0b;display:grid;place-items:center}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-icon svg{width:18px;height:18px}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-badge{color:#94a3b8;font:700 9px/1 'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.1em}
 .resource-page .media-frame.media-frame-nonvisual .nonvisual-title{font-size:11px;font-weight:700;color:#e2e8f0}
@@ -663,8 +663,8 @@ body:not(:has(.testing-1-theme)) .tags a {
 }
 
 body:not(:has(.testing-1-theme)) .tags a:hover {
-  background: #FFF7ED !important;
-  border-color: #FDBA74 !important;
+  background: #E6FFFB !important;
+  border-color: #75D8D2 !important;
   color: #EA580C !important;
 }
 
@@ -718,7 +718,7 @@ html:not(.light-theme) .site-footer,
 
 :root:not([data-theme="light"]) .site-footer .footer-nav a:hover,
 :root:not([data-theme="light"]) body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
-  color: #FF6600 !important;
+  color: #3DD6D0 !important;
 }
 
 :root:not([data-theme="light"]) .site-footer .footer-legal a,
@@ -728,7 +728,7 @@ html:not(.light-theme) .site-footer,
 
 :root:not([data-theme="light"]) .site-footer .footer-legal a:hover,
 :root:not([data-theme="light"]) body:has(.testing-1-theme) .site-footer .footer-legal a:hover {
-  color: #FF6600 !important;
+  color: #3DD6D0 !important;
 }
 
 :root:not([data-theme="light"]) .site-footer .footer-copyright,
@@ -930,13 +930,13 @@ html.light-theme .blueprint-step-container {
   --step-subnode-border-light: #86EFAC !important;
 }
 .blueprint-step-container.step-theme-orange {
-  border-color: #F59E0B !important;
-  --step-accent: #F59E0B !important;
+  border-color: #3DD6D0 !important;
+  --step-accent: #3DD6D0 !important;
   --step-accent-rgb: 245, 158, 11 !important;
-  --step-accent-dark: #D97706 !important;
-  --step-accent-text: #D97706 !important;
-  --step-accent-bg: #FFFBEB !important;
-  --step-subnode-border: rgba(245, 158, 11, 0.35) !important;
+  --step-accent-dark: #128C87 !important;
+  --step-accent-text: #128C87 !important;
+  --step-accent-bg: #E6FFFB !important;
+  --step-subnode-border: rgba(61, 214, 208, 0.35) !important;
   --step-subnode-border-light: #FDE68A !important;
 }
 .blueprint-step-container.step-theme-cyan {
@@ -1337,9 +1337,9 @@ html:not(.light-theme) .step-header-purpose {
   font-weight: 800 !important;
   letter-spacing: 0.08em !important;
   text-transform: uppercase !important;
-  background: rgba(245, 158, 11, 0.15) !important;
-  color: #FBBF24 !important;
-  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  background: rgba(61, 214, 208, 0.15) !important;
+  color: #75D8D2 !important;
+  border: 1px solid rgba(61, 214, 208, 0.35) !important;
 }
 .blueprint-settings-row {
   display: flex !important;
@@ -1624,9 +1624,9 @@ html.light-theme body:has(.testing-1-theme) .blueprint-step-container.step-theme
 html.light-theme .testing-1-theme .blueprint-step-container.step-theme-orange {
   background: #FEF3C7 !important;
   border: 1px solid #FDE68A !important;
-  --step-accent: #D97706;
-  --step-accent-dark: #B45309;
-  --step-accent-text: #D97706;
+  --step-accent: #128C87;
+  --step-accent-dark: #0D746F;
+  --step-accent-text: #128C87;
   --step-accent-bg: #FDE68A;
 }
 :root[data-theme="light"] body:has(.testing-1-theme) .blueprint-step-container.step-theme-cyan,
@@ -2214,7 +2214,7 @@ body:has(.testing-1-theme) .blueprint-instruction-text,
     min-width: 40px !important;
     border-radius: 11px !important;
     font-size: 14px !important;
-    box-shadow: 0 5px 18px rgba(255, 102, 0, .28) !important;
+    box-shadow: 0 5px 18px rgba(61, 214, 208, .28) !important;
   }
 
   .site-footer .footer-brand-wrap .brand-name {
@@ -3377,9 +3377,9 @@ html.light-theme body:has(.testing-1-theme) .blueprint-step-container.step-theme
 html.light-theme body:has(.testing-1-theme) .blueprint-step-container.step-theme-orange {
   background: #FEEBD8 !important;
   border: 1px solid #FED7AA !important;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.08) !important;
-  --step-accent: #D97706 !important;
-  --step-accent-text: #D97706 !important;
+  box-shadow: 0 4px 14px rgba(61, 214, 208, 0.08) !important;
+  --step-accent: #128C87 !important;
+  --step-accent-text: #128C87 !important;
 }
 
 :root[data-theme="light"] .blueprint-step-container.step-theme-lavender,
@@ -3440,7 +3440,7 @@ html.light-theme .step-theme-peach .blueprint-step-capsule,
 html.light-theme .step-theme-orange .blueprint-step-capsule {
   background: #FFF4E8 !important;
   border: 1px solid #FED7AA !important;
-  color: #D97706 !important;
+  color: #128C87 !important;
   box-shadow: 0 2px 8px rgba(217, 119, 6, 0.15) !important;
 }
 
@@ -3493,7 +3493,7 @@ html.light-theme .step-theme-green .step-expand-chevron {
 html.light-theme .step-theme-peach .step-expand-chevron,
 html.light-theme .step-theme-orange .step-expand-chevron {
   background: #FED7AA !important;
-  color: #D97706 !important;
+  color: #128C87 !important;
 }
 
 :root[data-theme="light"] .step-theme-lavender .step-expand-chevron,
@@ -3531,7 +3531,7 @@ html:not(.light-theme) .step-theme-green .step-expand-chevron {
 html:not(.light-theme) .step-theme-peach .step-expand-chevron,
 html:not(.light-theme) .step-theme-orange .step-expand-chevron {
   background: rgba(251, 191, 36, 0.18) !important;
-  color: #FBBF24 !important;
+  color: #75D8D2 !important;
 }
 
 :root:not([data-theme="light"]) .step-theme-lavender .step-expand-chevron,
@@ -5332,8 +5332,8 @@ html:not(.light-theme) .blueprint-step-container.is-expanded .blueprint-step-cap
 
 .related-shelf-card:hover {
   transform: translateY(-3px) !important;
-  border-color: rgba(255, 102, 0, 0.45) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 102, 0, 0.15) !important;
+  border-color: rgba(61, 214, 208, 0.45) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(61, 214, 208, 0.15) !important;
 }
 
 :root[data-theme="light"] .related-shelf-card,
@@ -5345,7 +5345,7 @@ html.light-theme .related-shelf-card {
 
 :root[data-theme="light"] .related-shelf-card:hover,
 html.light-theme .related-shelf-card:hover {
-  border-color: #FDBA74 !important;
+  border-color: #75D8D2 !important;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1) !important;
 }
 
@@ -5382,7 +5382,7 @@ html.light-theme .related-shelf-card:hover {
   font-size: 10.5px !important;
   font-weight: 700 !important;
   letter-spacing: 0.05em !important;
-  color: #FF6600 !important;
+  color: #3DD6D0 !important;
   text-transform: uppercase !important;
 }
 
@@ -5437,7 +5437,7 @@ html.light-theme .related-shelf-action {
 }
 
 .related-shelf-card:hover .related-shelf-action {
-  color: #FF6600 !important;
+  color: #3DD6D0 !important;
 }
 
 /* 5. Tag Spacing — aligns with unified section gap system */
@@ -8195,10 +8195,10 @@ body.blueprint-fullscreen-open {
   font: 600 12px/1.2 'Plus Jakarta Sans', system-ui, sans-serif !important;
 }
 [data-prompt-modal] .prompt-modal-actions button:last-child {
-  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  background: linear-gradient(180deg, #238E8D 0%, #176E73 100%) !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
   color: #FFFFFF !important;
-  box-shadow: 0 4px 14px rgba(234, 85, 0, 0.38) !important;
+  box-shadow: 0 4px 14px rgba(23, 110, 115, 0.38) !important;
 }
 [data-prompt-modal] .prompt-modal-dialog pre {
   background: #060B14 !important;
@@ -8264,7 +8264,7 @@ body.blueprint-fullscreen-open {
 .step-details-container .step-modal-prompt-download,
 .step-details-container .workflow-prompt .workflow-download,
 .step-details-container .workflow-prompt [data-download-step] {
-  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  background: linear-gradient(180deg, #238E8D 0%, #176E73 100%) !important;
   color: #FFFFFF !important;
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
