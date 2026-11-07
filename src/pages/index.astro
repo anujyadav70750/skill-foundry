@@ -259,10 +259,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
       <div class="container narrow">
         <div class="section-head faq-section-head">
           <div class="faq-section-heading-group">
-            <a class="recent-works-header-link faq-section-title-link" href="/faq/" aria-label="View all frequently asked questions">
-              <h2 class="recent-works-title">Frequently Asked Questions</h2>
-              <svg class="recent-works-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-            </a>
+            <div class="faq-section-heading-row">
+              <h2 class="faq-section-title">Frequently Asked Questions</h2>
+              <a class="faq-all-link" href="/faq/">View all</a>
+            </div>
             <p class="faq-section-desc">Answers about what you can learn here, how the guides work and which tools you may need.</p>
           </div>
         </div>
@@ -311,9 +311,9 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
         <!-- Question submission CTA -->
         <div class="faq-support-cta">
-          <h3 class="faq-support-title">Still have a question?</h3>
-          <p class="faq-support-desc">If you couldn't find the answer you're looking for, contact our team. We're happy to help.</p>
-          <button type="button" id="faq-open-question-modal" class="faq-support-button">Ask a Question</button>
+          <h3 class="faq-support-title">Didn't find your answer?</h3>
+          <p class="faq-support-desc">Send us your question or suggest a skill you'd like us to cover.</p>
+          <button type="button" id="faq-open-question-modal" class="faq-support-button">Send a question</button>
         </div>
       </div>
     </section>
@@ -4085,6 +4085,222 @@ const formatUploadDate = (d: Date | string | undefined) => {
   :global([data-theme="light"]) .home-page .trust-section .section-head .section-subcopy,
   :global(html.light-theme) .home-page .trust-section .section-head .section-subcopy {
     color: #475569 !important;
+  }
+
+
+  
+  /* Homepage refinements: clearer category layout and lighter trust section. */
+  .home-page .latest-work-subtitle {
+    margin: 7px 0 0;
+    max-width: 620px;
+    color: #929BA8;
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .home-page .skills-tracks-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    align-items: stretch;
+    gap: 14px !important;
+    width: 100%;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .home-page .skill-track-card {
+    display: flex;
+    flex-direction: column;
+    flex: initial !important;
+    width: auto !important;
+    min-width: 0;
+    min-height: 218px;
+    height: 100%;
+    padding: 20px 18px !important;
+    border-radius: 16px;
+    text-decoration: none;
+  }
+
+  .home-page .skill-track-card .skill-track-icon {
+    width: 42px;
+    height: 42px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+  }
+
+  .home-page .skill-track-card .home-inner-title-wrap {
+    margin-bottom: 8px;
+  }
+
+  .home-page .skill-track-card .card-title {
+    margin: 0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+
+  .home-page .skill-track-card .card-description {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #A5AFBE;
+  }
+
+  .home-page .skill-areas-action {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 18px;
+  }
+
+  .home-page .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+  }
+
+  .home-page .trust-section .trust-grid .trust-card {
+    min-width: 0;
+    padding: 18px 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.13) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .home-page .trust-section .trust-grid .trust-card:hover,
+  .home-page .trust-section .trust-grid .trust-card:active,
+  .home-page .trust-section .trust-grid .trust-card:focus {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.13) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  .home-page .trust-section .trust-grid .trust-card .card-title {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 7px;
+  }
+
+  .home-page .trust-section .trust-grid .trust-card .card-description {
+    color: #9DA8B6;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .home-page .faq-section-heading-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .home-page .faq-section-title {
+    margin: 0 0 8px;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(20px, 3.2vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .home-page .faq-all-link {
+    flex-shrink: 0;
+    color: #AEB8C6;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .home-page .faq-all-link:hover {
+    color: #FFFFFF;
+  }
+
+  .home-page .faq-section-desc {
+    margin: 0;
+    max-width: 660px;
+    color: #929BA8;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+
+  :global([data-theme="light"]) .home-page .latest-work-subtitle,
+  :global(html.light-theme) .home-page .latest-work-subtitle,
+  :global([data-theme="light"]) .home-page .trust-section .trust-grid .trust-card .card-description,
+  :global(html.light-theme) .home-page .trust-section .trust-grid .trust-card .card-description,
+  :global([data-theme="light"]) .home-page .faq-section-desc,
+  :global(html.light-theme) .home-page .faq-section-desc {
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .home-page .trust-section .trust-grid .trust-card,
+  :global(html.light-theme) .home-page .trust-section .trust-grid .trust-card {
+    border-top-color: #D8E0E9 !important;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-section-title,
+  :global(html.light-theme) .home-page .faq-section-title {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .home-page .faq-all-link,
+  :global(html.light-theme) .home-page .faq-all-link {
+    color: #475569;
+  }
+
+  @media (max-width: 900px) {
+    .home-page .skills-tracks-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+    .home-page .skill-track-card {
+      min-height: 190px;
+    }
+    .home-page .trust-grid {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .home-page .skills-tracks-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 11px !important;
+    }
+    .home-page .skill-track-card {
+      min-height: 190px;
+      padding: 16px 14px !important;
+      border-radius: 14px;
+    }
+    .home-page .skill-track-card .skill-track-icon {
+      width: 38px;
+      height: 38px;
+      margin-bottom: 12px;
+    }
+    .home-page .skill-track-card .card-title {
+      font-size: 15px;
+      line-height: 1.32;
+    }
+    .home-page .skill-track-card .card-description {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .home-page .skill-areas-action {
+      margin-top: 15px;
+    }
+    .home-page .faq-section-heading-row {
+      align-items: center;
+    }
+    .home-page .faq-section-title {
+      font-size: 19px;
+    }
+    .home-page .faq-all-link {
+      font-size: 12px;
+    }
   }
 
 </style>
