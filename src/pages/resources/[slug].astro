@@ -575,7 +575,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <div class="blueprint-callout-box" id="workflow" role="region" aria-label="Workflow blueprint introduction">
             <div class="section-title-wrap">
               <span class="section-accent-bar" aria-hidden="true"></span>
-              <h2 class="editorial-heading-title blueprint-callout-title">Create It Step by Step</h2>
+              <h2 class="editorial-heading-title blueprint-callout-title">Create It <span>Step by Step</span></h2>
             </div>
             <p class="editorial-lead blueprint-callout-desc">Follow each step in order to complete your project.</p>
           </div>
@@ -1960,12 +1960,12 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
        purely through its contrasting color fill without any outline border.
        ========================================================================== */
     .blueprint-callout-box {
-      background: #0B271F;
+      background: transparent !important;
       border: none !important;
-      border-radius: 14px;
-      padding: 14px 18px;
+      border-radius: 0;
+      padding: 12px 8px 0;
       margin-top: 4px;
-      margin-bottom: 16px;
+      margin-bottom: 22px;
       box-sizing: border-box;
       width: 100%;
       box-shadow: none !important;
@@ -1974,9 +1974,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     @media (min-width: 641px) {
       .blueprint-callout-box {
-        padding: 16px 22px;
-        border-radius: 16px;
-        margin-bottom: 16px;
+        padding: 16px 12px 0;
+        margin-bottom: 24px;
       }
     }
 
@@ -1989,7 +1988,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: none;
     }
 
-    .blueprint-callout-title {
+     .blueprint-callout-title {
       font-size: 21px;
       font-weight: 700;
       color: #FFFFFF;
@@ -1999,12 +1998,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       text-align: center;
     }
 
+    .blueprint-callout-title span { color: #35C9C1; }
+
     @media (min-width: 641px) {
       .blueprint-callout-title { font-size: 23px; }
     }
 
     .blueprint-callout-desc {
-      color: #B9CAC1;
+      color: #A1A9B6;
       font-size: 13px;
       font-weight: 400;
       line-height: 1.5;
@@ -4173,9 +4174,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     html[data-theme="light"] .blueprint-callout-box,
     html.light-theme .blueprint-callout-box {
-      background: rgba(14, 165, 233, 0.12) !important;
+      background: transparent !important;
       border: none !important;
       box-shadow: none !important;
+    }
+
+    html[data-theme="light"] .blueprint-callout-title span,
+    html.light-theme .blueprint-callout-title span {
+      color: #087F83;
     }
 
     html[data-theme="light"] .blueprint-callout-title,
