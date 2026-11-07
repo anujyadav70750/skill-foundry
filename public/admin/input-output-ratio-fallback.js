@@ -12,11 +12,15 @@
 
   const style = document.createElement('style');
   style.textContent = `
-    .sf-io-ratio{box-sizing:border-box;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 28px));height:min(620px,calc(100vh - 28px));max-width:calc(100vw - 28px);max-height:calc(100vh - 28px);margin:0;padding:0;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:#0D1422;color:#F8FAFC;box-shadow:0 24px 60px rgba(0,0,0,.85);overflow:hidden;z-index:2147483647}
-    .sf-io-ratio::backdrop{background:rgba(3,7,18,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+    .sf-io-ratio{box-sizing:border-box;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 28px));height:min(620px,calc(100vh - 28px));max-width:calc(100vw - 28px);max-height:calc(100vh - 28px);margin:0;padding:0;border:1px solid rgba(255,255,255,.10);border-radius:18px;background:#0B0D12;color:#F5F6F8;box-shadow:0 24px 64px rgba(0,0,0,.72);overflow:hidden;z-index:2147483647}
+    .sf-io-ratio::backdrop{background:rgba(0,0,0,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .sf-io-modal{box-sizing:border-box;width:100%;height:100%;padding:16px;display:flex;flex-direction:column;min-height:0}
-    .sf-io-title{color:#FFFFFF;font-family:'Newsreader','Playfair Display',Georgia,serif;font-size:21px;font-weight:500;line-height:1.2;letter-spacing:-.02em;flex:0 0 auto}
-    .sf-io-ratio select{min-height:40px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:#060B14;color:#F8FAFC;font:inherit;padding:0 12px}.sf-io-ratio button{min-height:40px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);color:#CBD5E1;font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;padding:0 16px}
+    .sf-io-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex:0 0 auto;margin-bottom:8px}
+    .sf-io-close{display:inline-flex;align-items:center;justify-content:center;flex:0 0 38px;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border:1px solid #303743;border-radius:10px;background:#171C25;color:#E8EDF4;cursor:pointer}
+    .sf-io-close svg{display:block;width:18px;height:18px}
+    .sf-io-close:hover{background:#222A35;border-color:#465164;color:#FFFFFF}
+    .sf-io-title{color:#F5F6F8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.02em;flex:0 0 auto}
+    .sf-io-ratio select{min-height:40px;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:#050608;color:#F5F6F8;font:inherit;padding:0 12px}.sf-io-ratio button{min-height:40px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);color:#CBD5E1;font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;padding:0 16px}
     .sf-io-ratio select{width:100%;margin:8px 0 10px;flex:0 0 auto}
     .sf-io-stage-wrap{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:4px 0}
     .sf-io-stage{position:relative;overflow:hidden;aspect-ratio:1/1;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:#060B14;touch-action:none;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025)}
@@ -24,18 +28,18 @@
     .sf-io-backdrop{position:absolute!important;inset:-18px!important;width:calc(100% + 36px)!important;height:calc(100% + 36px)!important;max-width:none!important;object-fit:cover!important;filter:blur(18px);opacity:.55;transform:scale(1.06);user-select:none;pointer-events:none;-webkit-user-drag:none}
     .sf-io-crop-window{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);overflow:hidden;border:1px solid rgba(255,255,255,.38);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,255,255,.06);touch-action:none}
     .sf-io-crop-window img{position:absolute;max-width:none;width:auto;height:auto;user-select:none;pointer-events:none;-webkit-user-drag:none;transform-origin:0 0}
-    .sf-io-help{color:#94A3B8;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;line-height:1.5;margin-top:7px;flex:0 0 auto;text-align:center}
+    .sf-io-help{color:#9299A6;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11px;line-height:1.5;margin-top:7px;flex:0 0 auto;text-align:center}
     .sf-io-zoom{display:flex;justify-content:center;align-items:center;gap:7px;margin-top:8px;flex:0 0 auto}
     .sf-io-zoom button{width:40px;padding:0;font-size:18px;font-weight:700}
     .sf-io-zoom output{min-width:54px;text-align:center;color:#CBD5E1;font-size:11px}
     .sf-io-actions{display:flex;gap:8px;margin-top:10px;flex:0 0 auto}
     .sf-io-actions button{flex:1}
-    .sf-io-actions .primary{border-color:rgba(255,255,255,.2);color:#FFFFFF;background:linear-gradient(180deg,#FF7711 0%,#EA5500 100%);box-shadow:0 4px 14px rgba(234,85,0,.38)}
-    .sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(7,17,31,.45)}
+    .sf-io-actions .primary{border-color:rgba(255,255,255,.16);color:#FFFFFF;background:linear-gradient(180deg,#FF7711 0%,#EA5500 100%);box-shadow:none}
+    .sf-io-result{position:relative;margin-top:9px;padding:10px;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:#10141B}
     .sf-io-preview-box{position:relative;width:min(100%,420px);aspect-ratio:1/1;overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#050b13;display:flex;align-items:center;justify-content:center}
     .sf-io-preview-box .sf-preview-backdrop{position:absolute;inset:-16px;width:calc(100% + 32px);height:calc(100% + 32px);object-fit:cover;filter:blur(16px);opacity:.55;transform:scale(1.06);pointer-events:none;user-select:none;-webkit-user-drag:none}
     .sf-io-preview-box .sf-preview-foreground{position:relative;z-index:1;display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;border-radius:7px;box-shadow:0 6px 22px rgba(0,0,0,.24)}
-    .sf-io-result .sf-upload{margin-top:9px;color:#3dd6d0;border-color:rgba(61,214,208,.4)}
+    .sf-io-result .sf-upload{margin-top:9px;color:#FF9A52;border-color:rgba(255,119,17,.42)}
     .sf-io-clear{position:absolute!important;top:8px;right:8px;width:30px!important;min-width:30px;padding:0!important;border-radius:50%!important;z-index:3}
     @media(max-width:600px){
       .sf-io-ratio{width:calc(100vw - 24px);height:min(560px,calc(100vh - 24px));max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);border-radius:18px}
@@ -123,7 +127,7 @@
     close();
     const d = document.createElement('dialog'); d.className = 'sf-io-ratio';
     const role = input.dataset.fileRole === 'input' ? 'input' : 'output';
-    d.innerHTML = `<div class="sf-io-modal"><strong class="sf-io-title">Adjust ${role} image</strong><select aria-label="Image ratio">${RATIOS.map(([a,v]) => `<option value="${v}">${a}</option>`).join('')}</select><div class="sf-io-stage-wrap"><div class="sf-io-stage"><img class="sf-io-backdrop" alt=""><div class="sf-io-crop-window"><img class="sf-io-crop-image" alt="Crop preview"></div></div></div><div class="sf-io-zoom"><button type="button" class="sf-zoom-out" aria-label="Zoom out">−</button><output>100%</output><button type="button" class="sf-zoom-in" aria-label="Zoom in">+</button></div><div class="sf-io-help">Drag to move the image. Pinch or use + / − to zoom. Only the part inside the selected ratio will be saved.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Use image</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
+    d.innerHTML = `<div class="sf-io-modal"><div class="sf-io-header"><strong class="sf-io-title">Adjust ${role} image</strong><button type="button" class="sf-io-close" aria-label="Close image adjustment" title="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button></div><select aria-label="Image ratio">${RATIOS.map(([a,v]) => `<option value="${v}">${a}</option>`).join('')}</select><div class="sf-io-stage-wrap"><div class="sf-io-stage"><img class="sf-io-backdrop" alt=""><div class="sf-io-crop-window"><img class="sf-io-crop-image" alt="Crop preview"></div></div></div><div class="sf-io-zoom"><button type="button" class="sf-zoom-out" aria-label="Zoom out">−</button><output>100%</output><button type="button" class="sf-zoom-in" aria-label="Zoom in">+</button></div><div class="sf-io-help">Drag to move the image. Pinch or use + / − to zoom. Only the part inside the selected ratio will be saved.</div><div class="sf-io-actions"><button type="button" class="primary sf-done">Use image</button><button type="button" class="sf-cancel">Cancel</button></div></div>`;
     document.body.append(d); dialog = d;
 
     const stage = d.querySelector('.sf-io-stage'), cropWindow = d.querySelector('.sf-io-crop-window'), backdrop = d.querySelector('.sf-io-backdrop'), img = d.querySelector('.sf-io-crop-image'), wrap = d.querySelector('.sf-io-stage-wrap'), select = d.querySelector('select');
@@ -185,8 +189,10 @@
     const setZoom = value => { crop.zoom = Math.max(1, Math.min(4, value)); updateImage(); };
     zoomIn.addEventListener('click', () => setZoom(crop.zoom + .25)); zoomOut.addEventListener('click', () => setZoom(crop.zoom - .25));
 
-    d.querySelector('.sf-cancel').onclick = () => { URL.revokeObjectURL(url); close(); input.value = ''; const st = state(input); if (st) st.textContent = ''; };
-    d.addEventListener('cancel', event => { event.preventDefault(); URL.revokeObjectURL(url); close(); input.value = ''; const st = state(input); if (st) st.textContent = ''; });
+    const closeCropDialog = () => { URL.revokeObjectURL(url); close(); input.value = ''; const st = state(input); if (st) st.textContent = ''; };
+    d.querySelector('.sf-cancel').onclick = closeCropDialog;
+    d.querySelector('.sf-io-close').onclick = closeCropDialog;
+    d.addEventListener('cancel', event => { event.preventDefault(); closeCropDialog(); });
     d.querySelector('.sf-done').onclick = async () => {
       const done = d.querySelector('.sf-done'); done.disabled = true; done.textContent = 'Preparing…';
       try {
