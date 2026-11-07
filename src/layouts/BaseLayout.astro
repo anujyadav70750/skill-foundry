@@ -44,6 +44,8 @@ const fullTitle = title
   : defaultTitle;
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = image ? new URL(image, siteUrl).href : undefined;
+const bodyClass = hideHeader ? 'no-header' : undefined;
+const twitterCard = socialImage ? 'summary_large_image' : 'summary';
 
 // Single Source of Truth: published resources for global search
 const allResources = await getCollection('resources');
@@ -163,13 +165,13 @@ const platformLinks = [
     <meta property="og:description" content={description} />
     {socialImage && <meta property="og:image" content={socialImage} />}
     {socialImage && imageAlt && <meta property="og:image:alt" content={imageAlt} />}
-    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:card" content={twitterCard} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     {socialImage && <meta name="twitter:image" content={socialImage} />}
     {socialImage && imageAlt && <meta name="twitter:image:alt" content={imageAlt} />}
   </head>
-  <body class={hideHeader && 'no-header'}>
+  <body class={bodyClass}>
     <header class="site-header" id="global-site-header">
         <nav class="nav-bar-container" aria-label="Main navigation">
           <a class="nav-brand" href="/" aria-label="Skill Foundry home">
