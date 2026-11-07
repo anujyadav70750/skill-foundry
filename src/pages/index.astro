@@ -4345,28 +4345,64 @@ const formatUploadDate = (d: Date | string | undefined) => {
     gap: 9px !important;
   }
 
-  /* Align the main homepage content headings with the Resources page typography.
-     Keep the existing card and slide layout unchanged. */
-  .home-page .why-section .section-head h2,
+  /* Unified section heading treatment: match the FAQ title + description hierarchy.
+     Only the three section heading groups are changed; cards and section layout stay intact. */
   .home-page .skills-section .section-head h2,
   .home-page .method-section .section-head h2,
   .home-page .trust-section .section-head h2 {
-    display: block !important;
-    margin: 0 0 8px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 9px !important;
+    margin: 0 0 7px !important;
     color: #FFFFFF !important;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
-    font-size: clamp(20px, 3.2vw, 25px) !important;
+    font-size: clamp(17px, 2.2vw, 19px) !important;
     font-weight: 700 !important;
-    line-height: 1.25 !important;
-    letter-spacing: -0.015em !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.01em !important;
   }
 
-  .home-page .why-section .section-head h2::before,
   .home-page .skills-section .section-head h2::before,
   .home-page .method-section .section-head h2::before,
   .home-page .trust-section .section-head h2::before {
-    content: none !important;
-    display: none !important;
+    content: "" !important;
+    display: inline-block !important;
+    flex: 0 0 3.5px !important;
+    width: 3.5px !important;
+    height: 16px !important;
+    margin-top: 3px !important;
+    border-radius: 2px !important;
+    background: #FACC15 !important;
+  }
+
+  .home-page .skills-section .section-head .section-subcopy,
+  .home-page .method-section .section-head .section-subcopy,
+  .home-page .trust-section .section-head .section-subcopy {
+    max-width: 620px !important;
+    margin: 0 !important;
+    color: var(--text-secondary, #A7ADB8) !important;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+  }
+
+  :global([data-theme="light"]) .home-page .skills-section .section-head h2,
+  :global(html.light-theme) .home-page .skills-section .section-head h2,
+  :global([data-theme="light"]) .home-page .method-section .section-head h2,
+  :global(html.light-theme) .home-page .method-section .section-head h2,
+  :global([data-theme="light"]) .home-page .trust-section .section-head h2,
+  :global(html.light-theme) .home-page .trust-section .section-head h2 {
+    color: #0F172A !important;
+  }
+
+  :global([data-theme="light"]) .home-page .skills-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .skills-section .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .method-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .method-section .section-head .section-subcopy,
+  :global([data-theme="light"]) .home-page .trust-section .section-head .section-subcopy,
+  :global(html.light-theme) .home-page .trust-section .section-head .section-subcopy {
+    color: #A7ADB8 !important;
   }
 
   .home-page .why-section .section-head .section-subcopy,
