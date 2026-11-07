@@ -371,3 +371,317 @@ html.light-theme .filter-dialog textarea {
   color: #0F172A !important;
   border-color: #CBD5E1 !important;
 }
+
+/* ==========================================================================
+   SKILL FOUNDRY POPUP SYSTEM
+   Shared surface, typography, form and close-button styling for every dialog.
+   ========================================================================== */
+:root:not([data-theme="light"]) .faq-modal-dialog,
+:root:not([data-theme="light"]) .search-modal-card,
+:root:not([data-theme="light"]) .filter-dialog,
+:root:not([data-theme="light"]) .dialog-card,
+:root:not([data-theme="light"]) .media-lightbox-body {
+  background: #0B0D12 !important;
+  color: #F5F6F8 !important;
+  border-color: rgba(255,255,255,.10) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,.72) !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-backdrop,
+:root:not([data-theme="light"]) .search-backdrop,
+:root:not([data-theme="light"]) .filter-backdrop,
+:root:not([data-theme="light"]) .media-lightbox-backdrop {
+  background: rgba(0,0,0,.78) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-title,
+:root:not([data-theme="light"]) .filter-dialog-title,
+:root:not([data-theme="light"]) .search-modal-card h1,
+:root:not([data-theme="light"]) .search-modal-card h2,
+:root:not([data-theme="light"]) .search-modal-card h3,
+:root:not([data-theme="light"]) .dialog-card h1,
+:root:not([data-theme="light"]) .dialog-card h2,
+:root:not([data-theme="light"]) .dialog-card h3 {
+  color: #F5F6F8 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.02em !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-subtitle,
+:root:not([data-theme="light"]) .faq-modal-dialog p,
+:root:not([data-theme="light"]) .filter-dialog p,
+:root:not([data-theme="light"]) .filter-section-title,
+:root:not([data-theme="light"]) .search-status-bar,
+:root:not([data-theme="light"]) .search-result-desc {
+  color: #9299A6 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-textarea,
+:root:not([data-theme="light"]) .filter-dialog input,
+:root:not([data-theme="light"]) .filter-dialog select,
+:root:not([data-theme="light"]) .filter-dialog textarea,
+:root:not([data-theme="light"]) .search-modal-input {
+  background: #050608 !important;
+  color: #F5F6F8 !important;
+  border-color: #2A303A !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-textarea::placeholder,
+:root:not([data-theme="light"]) .search-modal-input::placeholder {
+  color: #717986 !important;
+  opacity: 1 !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-textarea:focus,
+:root:not([data-theme="light"]) .filter-dialog input:focus,
+:root:not([data-theme="light"]) .filter-dialog select:focus,
+:root:not([data-theme="light"]) .filter-dialog textarea:focus {
+  border-color: rgba(255,119,17,.72) !important;
+  box-shadow: 0 0 0 3px rgba(255,119,17,.13) !important;
+  outline: none !important;
+}
+
+:root:not([data-theme="light"]) .search-header-bar,
+:root:not([data-theme="light"]) .search-modal-footer,
+:root:not([data-theme="light"]) .filter-dialog-header,
+:root:not([data-theme="light"]) .filter-dialog-footer {
+  background: #10141B !important;
+  border-color: #242A34 !important;
+}
+
+:root:not([data-theme="light"]) .search-modal-body {
+  background: #0B0D12 !important;
+}
+
+:root:not([data-theme="light"]) .search-result-card,
+:root:not([data-theme="light"]) .filter-chip-option,
+:root:not([data-theme="light"]) .sort-option-btn {
+  background: #11161E !important;
+  color: #D5DAE2 !important;
+  border-color: #292F3A !important;
+}
+
+:root:not([data-theme="light"]) .search-result-card:hover,
+:root:not([data-theme="light"]) .search-result-card.is-selected,
+:root:not([data-theme="light"]) .filter-chip-option:hover,
+:root:not([data-theme="light"]) .sort-option-btn:hover {
+  background: #171E28 !important;
+  border-color: #3A4350 !important;
+}
+
+:root:not([data-theme="light"]) .filter-chip-option.is-selected,
+:root:not([data-theme="light"]) .sort-option-btn.is-selected {
+  background: rgba(255,119,17,.12) !important;
+  border-color: rgba(255,119,17,.55) !important;
+  color: #FF9A52 !important;
+}
+
+:root:not([data-theme="light"]) .sort-option-btn.is-selected .sort-radio-circle {
+  border-color: #FF7711 !important;
+  background: #FF7711 !important;
+  box-shadow: inset 0 0 0 2.5px #0B0D12 !important;
+}
+
+/* One consistent square close control: X icon only, no text. */
+:root:not([data-theme="light"]) .faq-modal-collapse-btn,
+:root:not([data-theme="light"]) .search-modal-close,
+:root:not([data-theme="light"]) .filter-dialog-close-btn,
+:root:not([data-theme="light"]) .lightbox-close-btn,
+:root:not([data-theme="light"]) [data-close-prompt],
+:root:not([data-theme="light"]) .sf-thumb-close,
+:root:not([data-theme="light"]) .sf-io-close,
+:root[data-theme="light"] .faq-modal-collapse-btn,
+:root[data-theme="light"] .search-modal-close,
+:root[data-theme="light"] .filter-dialog-close-btn,
+:root[data-theme="light"] .lightbox-close-btn,
+:root[data-theme="light"] [data-close-prompt],
+:root[data-theme="light"] .sf-thumb-close,
+:root[data-theme="light"] .sf-io-close,
+html.light-theme .faq-modal-collapse-btn,
+html.light-theme .search-modal-close,
+html.light-theme .filter-dialog-close-btn,
+html.light-theme .lightbox-close-btn,
+html.light-theme [data-close-prompt],
+html.light-theme .sf-thumb-close,
+html.light-theme .sf-io-close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  padding: 0 !important;
+  border: 1px solid #303743 !important;
+  border-radius: 10px !important;
+  background: #171C25 !important;
+  color: #E8EDF4 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-size: 0 !important;
+  line-height: 1 !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+  transition: background-color .16s ease, border-color .16s ease, color .16s ease !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-collapse-btn:hover,
+:root:not([data-theme="light"]) .search-modal-close:hover,
+:root:not([data-theme="light"]) .filter-dialog-close-btn:hover,
+:root:not([data-theme="light"]) .lightbox-close-btn:hover,
+:root:not([data-theme="light"]) [data-close-prompt]:hover,
+:root:not([data-theme="light"]) .sf-thumb-close:hover,
+:root:not([data-theme="light"]) .sf-io-close:hover,
+:root[data-theme="light"] .faq-modal-collapse-btn:hover,
+:root[data-theme="light"] .search-modal-close:hover,
+:root[data-theme="light"] .filter-dialog-close-btn:hover,
+:root[data-theme="light"] .lightbox-close-btn:hover,
+:root[data-theme="light"] [data-close-prompt]:hover,
+:root[data-theme="light"] .sf-thumb-close:hover,
+:root[data-theme="light"] .sf-io-close:hover,
+html.light-theme .faq-modal-collapse-btn:hover,
+html.light-theme .search-modal-close:hover,
+html.light-theme .filter-dialog-close-btn:hover,
+html.light-theme .lightbox-close-btn:hover,
+html.light-theme [data-close-prompt]:hover,
+html.light-theme .sf-thumb-close:hover,
+html.light-theme .sf-io-close:hover {
+  background: #222A35 !important;
+  border-color: #465164 !important;
+  color: #FFFFFF !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-collapse-btn svg,
+:root:not([data-theme="light"]) .search-modal-close svg,
+:root:not([data-theme="light"]) .filter-dialog-close-btn svg,
+:root:not([data-theme="light"]) .lightbox-close-btn svg,
+:root:not([data-theme="light"]) [data-close-prompt] svg,
+:root:not([data-theme="light"]) .sf-thumb-close svg,
+:root:not([data-theme="light"]) .sf-io-close svg {
+  display: block !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-clear-btn,
+:root:not([data-theme="light"]) .filter-reset-action-btn,
+:root:not([data-theme="light"]) .search-modal-clear {
+  background: #171C25 !important;
+  border-color: #303743 !important;
+  color: #CBD2DC !important;
+  box-shadow: none !important;
+}
+
+:root:not([data-theme="light"]) .faq-modal-submit-btn:not(:disabled),
+:root:not([data-theme="light"]) .filter-apply-action-btn:not(:disabled) {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255,255,255,.16) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+:root:not([data-theme="light"]) .media-lightbox-body {
+  background: #050608 !important;
+  border-color: #252B35 !important;
+}
+
+/* Light theme equivalents keep the same typography and control hierarchy. */
+:root[data-theme="light"] .faq-modal-dialog,
+:root[data-theme="light"] .search-modal-card,
+:root[data-theme="light"] .filter-dialog,
+:root[data-theme="light"] .dialog-card,
+html.light-theme .faq-modal-dialog,
+html.light-theme .search-modal-card,
+html.light-theme .filter-dialog,
+html.light-theme .dialog-card {
+  background: #FFFFFF !important;
+  color: #172033 !important;
+  border-color: #D9E0E8 !important;
+  box-shadow: 0 24px 60px rgba(15,23,42,.16) !important;
+}
+
+:root[data-theme="light"] .faq-modal-title,
+:root[data-theme="light"] .filter-dialog-title,
+:root[data-theme="light"] .search-modal-card h1,
+:root[data-theme="light"] .search-modal-card h2,
+:root[data-theme="light"] .search-modal-card h3,
+:root[data-theme="light"] .dialog-card h1,
+:root[data-theme="light"] .dialog-card h2,
+:root[data-theme="light"] .dialog-card h3,
+html.light-theme .faq-modal-title,
+html.light-theme .filter-dialog-title,
+html.light-theme .search-modal-card h1,
+html.light-theme .search-modal-card h2,
+html.light-theme .search-modal-card h3,
+html.light-theme .dialog-card h1,
+html.light-theme .dialog-card h2,
+html.light-theme .dialog-card h3 {
+  color: #172033 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+:root[data-theme="light"] .faq-modal-subtitle,
+:root[data-theme="light"] .faq-modal-dialog p,
+:root[data-theme="light"] .filter-dialog p,
+:root[data-theme="light"] .filter-section-title,
+html.light-theme .faq-modal-subtitle,
+html.light-theme .faq-modal-dialog p,
+html.light-theme .filter-dialog p,
+html.light-theme .filter-section-title {
+  color: #64748B !important;
+}
+
+:root[data-theme="light"] .faq-modal-textarea,
+:root[data-theme="light"] .filter-dialog input,
+:root[data-theme="light"] .filter-dialog select,
+:root[data-theme="light"] .filter-dialog textarea,
+html.light-theme .faq-modal-textarea,
+html.light-theme .filter-dialog input,
+html.light-theme .filter-dialog select,
+html.light-theme .filter-dialog textarea {
+  background: #F8FAFC !important;
+  color: #172033 !important;
+  border-color: #D9E0E8 !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+}
+
+:root[data-theme="light"] .faq-modal-textarea:focus,
+:root[data-theme="light"] .filter-dialog input:focus,
+:root[data-theme="light"] .filter-dialog select:focus,
+:root[data-theme="light"] .filter-dialog textarea:focus,
+html.light-theme .faq-modal-textarea:focus,
+html.light-theme .filter-dialog input:focus,
+html.light-theme .filter-dialog select:focus,
+html.light-theme .filter-dialog textarea:focus {
+  border-color: #EA6508 !important;
+  box-shadow: 0 0 0 3px rgba(234,101,8,.12) !important;
+}
+
+:root[data-theme="light"] .faq-modal-collapse-btn,
+:root[data-theme="light"] .search-modal-close,
+:root[data-theme="light"] .filter-dialog-close-btn,
+:root[data-theme="light"] .lightbox-close-btn,
+:root[data-theme="light"] [data-close-prompt],
+:root[data-theme="light"] .sf-thumb-close,
+:root[data-theme="light"] .sf-io-close,
+html.light-theme .faq-modal-collapse-btn,
+html.light-theme .search-modal-close,
+html.light-theme .filter-dialog-close-btn,
+html.light-theme .lightbox-close-btn,
+html.light-theme [data-close-prompt],
+html.light-theme .sf-thumb-close,
+html.light-theme .sf-io-close {
+  background: #F1F4F8 !important;
+  border-color: #D7DEE8 !important;
+  color: #334155 !important;
+}
+
