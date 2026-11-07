@@ -22,9 +22,9 @@
     .sf-thumb-help{margin-top:10px;color:#9299A6;font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;line-height:1.5}
     .sf-thumb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
     .sf-thumb-actions button{min-height:42px;padding:0 18px;border:1px solid #303743;border-radius:10px;background:#171C25;color:#CBD2DC;font:600 13px 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer}
-    .sf-thumb-actions .primary{border-color:rgba(255,255,255,.16);background:linear-gradient(180deg,#FF7711 0%,#EA5500 100%);color:#FFFFFF;box-shadow:none}
-    .sf-thumb-close{display:inline-flex;align-items:center;justify-content:center;flex:0 0 38px;width:38px;height:38px;min-width:38px;min-height:38px;padding:0;border:1px solid #303743;border-radius:10px;background:#171C25;color:#E8EDF4;cursor:pointer}
-    .sf-thumb-close svg{display:block;width:18px;height:18px}
+    .sf-thumb-actions .primary{border-color:rgba(255,255,255,.16);background:linear-gradient(180deg,#238E8D 0%,#176E73 100%);color:#FFFFFF;box-shadow:none}
+    .sf-thumb-close{display:inline-flex;align-items:center;justify-content:center;flex:0 0 32px;width:32px;height:32px;min-width:32px;min-height:32px;padding:0;border:1px solid #303743;border-radius:10px;background:#171C25;color:#E8EDF4;cursor:pointer}
+    .sf-thumb-close svg{display:block;width:15px;height:15px}
     .sf-thumb-close:hover{background:#222A35;border-color:#465164;color:#FFFFFF}
     .sf-thumb-actions button:disabled{opacity:.55;cursor:wait}
     .builder-page .sf-thumb-result{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(7,17,31,.45)}
