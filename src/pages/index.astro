@@ -3645,6 +3645,37 @@ const formatUploadDate = (d: Date | string | undefined) => {
     border-top-color: rgba(15, 23, 42, 0.10);
   }
 
+  /* Inset dividers only after Explore Skill Areas and before the final CTA.
+     Keep the existing divider tone and weight; shorten the line, not the section. */
+  .home-page .skills-section ~ .home-section:not(.final-cta-section) {
+    position: relative;
+    border-top: 0 !important;
+  }
+
+  .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: calc(100% - 80px);
+    height: 1px;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    pointer-events: none;
+  }
+
+  :global([data-theme="light"]) .home-page .skills-section ~ .home-section:not(.final-cta-section)::before,
+  :global(html.light-theme) .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+    background: rgba(15, 23, 42, 0.10);
+  }
+
+  @media (max-width: 640px) {
+    .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+      width: calc(100% - 40px);
+    }
+  }
+
+
 
   /* SKILL AREAS — IMAGE-LED TALL PORTRAIT CARDS IN A HORIZONTAL RAIL */
   .home-page .skills-tracks-grid {
