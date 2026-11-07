@@ -171,8 +171,7 @@ const platformLinks = [
   </head>
   <body class={hideHeader ? 'no-header' : ''}>
     <!-- GLOBAL UNIFIED NAVIGATION HEADER (ROUNDED RECTANGLE WITH BRAND LEFT, SEARCH & MENU RIGHT) -->
-    {!hideHeader && (
-      <header class="site-header" id="global-site-header">
+    <header class="site-header" id="global-site-header">
         <nav class="nav-bar-container" aria-label="Main navigation">
           <a class="nav-brand" href="/" aria-label="Skill Foundry home">
             <span class="brand-mark">SF</span>
@@ -180,8 +179,7 @@ const platformLinks = [
           </a>
 
           <div class="nav-actions">
-            {!hideHeaderSearch && (
-              <div class="header-search-wrap" id="header-search-wrap">
+            <div class="header-search-wrap" id="header-search-wrap" hidden={hideHeaderSearch}>
                 <a class="header-search-box" id="header-search-box" href={searchHref} aria-label="Search resources">
                   <span class="header-search-submit" aria-hidden="true">
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -190,8 +188,7 @@ const platformLinks = [
                     </svg>
                   </span>
                 </a>
-              </div>
-            )}
+            </div>
 
             <button
               type="button"
@@ -337,7 +334,6 @@ const platformLinks = [
           </div>
         </nav>
       </header>
-    )}
 
     {!hideBackButton && (
       <aside class="site-back-bar" id="site-back-bar" aria-label="Page navigation">
@@ -434,6 +430,12 @@ const platformLinks = [
     <style>
       :global(body.no-header) {
         padding-top: 0 !important;
+      }
+
+      :global(body.no-header .site-header),
+      :global(.site-header[hidden]),
+      :global(.header-search-wrap[hidden]) {
+        display: none !important;
       }
 
       /* ==========================================================================
