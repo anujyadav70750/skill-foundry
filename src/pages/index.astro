@@ -298,7 +298,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
         <div class="promise-grid trust-grid">
           <article class="home-card trust-card">
             <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 16 9 5 9-5"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18V5a2 2 0 0 1 2-2h3a4 4 0 0 1 4 4 4 4 0 0 1 4-4h3a2 2 0 0 1 2 2v13"/><path d="M3 18c4.5 0 7 1 9 3 2-2 4.5-3 9-3"/></svg>
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Beginner-Friendly</h3></div>
             <p class="card-description">
@@ -308,7 +308,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card trust-card">
             <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-3 8h7l-6 12 1-9H5l8-11Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h5"/><path d="m9 17 2 2 4-4"/></svg>
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Practical &amp; Project-Based</h3></div>
             <p class="card-description">
@@ -318,7 +318,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
           <article class="home-card trust-card">
             <div class="trust-card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Tested &amp; Reliable</h3></div>
             <p class="card-description">
@@ -1628,26 +1628,28 @@ const formatUploadDate = (d: Date | string | undefined) => {
   }
 
   .home-page .trust-section .trust-card-icon {
-    width: 48px;
-    height: 48px;
-    flex: 0 0 48px;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
     display: grid;
     place-items: center;
-    margin-bottom: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 13px;
-    background: rgba(148, 163, 184, 0.12);
-    color: #E2E8F0;
+    margin: 0 0 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    background: #171C25;
+    color: #DCE4EE;
   }
 
   .home-page .trust-section .trust-card-icon svg {
-    width: 25px;
-    height: 25px;
+    display: block;
+    width: 23px;
+    height: 23px;
+    overflow: visible;
   }
 
   .home-page .trust-section .trust-card .home-inner-title-wrap {
     min-height: 0;
-    margin: 0 0 5px;
+    margin: 0 0 6px;
   }
 
   .home-page .trust-section .trust-card .card-title {
@@ -1685,7 +1687,12 @@ const formatUploadDate = (d: Date | string | undefined) => {
       width: 44px;
       height: 44px;
       flex-basis: 44px;
-      margin-bottom: 11px;
+      margin-bottom: 10px;
+    }
+
+    .home-page .trust-section .trust-card-icon svg {
+      width: 22px;
+      height: 22px;
     }
 
     .home-page .trust-section .trust-card .card-title {
