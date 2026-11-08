@@ -435,6 +435,11 @@ body.no-header {
   transform: none !important;
 }
 
+.search-resource-card:focus-visible {
+  outline: 2px solid var(--sf-page-focus) !important;
+  outline-offset: 2px !important;
+}
+
 .search-resource-card .card-title {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
   font-size: 14px !important;
@@ -526,6 +531,135 @@ body.no-header {
   font-size: 16px !important;
   font-weight: 700 !important;
   color: var(--sf-page-heading) !important;
+}
+
+/* 404 route: reuse the same editorial page heading and button treatment. */
+.page-heading {
+  background: transparent !important;
+  border-bottom: 1px solid var(--sf-page-divider) !important;
+}
+
+.page-heading h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: clamp(27px, 4vw, 34px) !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.page-heading p:last-child {
+  color: var(--sf-page-copy) !important;
+  font-size: 14.5px !important;
+  line-height: 1.6 !important;
+}
+
+.page-heading .explore-resources-primary {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.page-heading .button-secondary {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+}
+
+/* Private resource builder: retain its multi-panel workflow, unify its palette. */
+.builder-page {
+  background: transparent !important;
+  color: var(--sf-page-heading) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.builder-heading h1 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: clamp(27px, 4vw, 34px) !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.builder-heading p:not(.eyebrow),
+.panel-help,
+.field-note {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.builder-page .panel,
+.builder-page .repeat-item,
+.builder-page .preview-tool,
+.builder-page .preview-prompt {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.builder-page .panel-heading h2 {
+  color: var(--sf-page-heading) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+
+.builder-page input,
+.builder-page textarea,
+.builder-page select {
+  background: var(--sf-page-bg) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.builder-page input:focus,
+.builder-page textarea:focus,
+.builder-page select:focus {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+.builder-page .mini-button,
+.builder-page .add-button,
+.builder-page .file-button,
+.builder-page .remove-button {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-copy) !important;
+  box-shadow: none !important;
+}
+
+.builder-page .mini-button:hover,
+.builder-page .add-button:hover,
+.builder-page .file-button:hover {
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+}
+
+.builder-page .panel-heading span {
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-accent) !important;
+  background: transparent !important;
+}
+
+.builder-page .notice {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-copy) !important;
+}
+
+.builder-page .notice strong,
+.builder-page .subheading h3,
+.builder-page .preview-tool strong {
+  color: var(--sf-page-heading) !important;
+}
+
+.builder-page .preview-image {
+  border-color: var(--sf-page-border) !important;
 }
 
 /* Light theme: page and component text follows the same neutral contrast scale. */
