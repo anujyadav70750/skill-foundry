@@ -1085,3 +1085,84 @@ html.light-theme .explore-page .recent-resource-card {
     padding: 20px 16px !important;
   }
 }
+
+
+/* One shared bottom CTA, rendered by BaseLayout on every public page. */
+.sf-global-cta {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 36px 0 48px;
+}
+.sf-global-cta .home-cta-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 22px;
+  background: #111318;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 16px;
+  box-shadow: none;
+}
+.sf-global-cta .cta-text-content { flex: 1 1 auto; min-width: 0; }
+.sf-global-cta .cta-title {
+  margin: 0 0 8px;
+  color: #F5F5F5;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+.sf-global-cta .cta-desc {
+  margin: 0;
+  color: #9A9FAA;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.sf-global-cta .cta-action-wrap { flex: 0 0 auto; }
+.sf-global-cta .home-button-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 6px;
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%);
+  color: #FFFFFF;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.sf-global-cta .home-button-cta:hover {
+  background: linear-gradient(180deg, #FF8428 0%, #F0640A 100%);
+}
+.sf-global-cta .home-button-cta:focus-visible {
+  outline: 2px solid #35C9C1;
+  outline-offset: 3px;
+}
+:root[data-theme="light"] .sf-global-cta .home-cta-card,
+html.light-theme .sf-global-cta .home-cta-card {
+  background: #FFFFFF;
+  border-color: #E2E8F0;
+}
+:root[data-theme="light"] .sf-global-cta .cta-title,
+html.light-theme .sf-global-cta .cta-title { color: #0F172A; }
+:root[data-theme="light"] .sf-global-cta .cta-desc,
+html.light-theme .sf-global-cta .cta-desc { color: #475569; }
+@media (max-width: 640px) {
+  .sf-global-cta { padding: 28px 0 36px; }
+  .sf-global-cta .home-cta-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 22px 18px;
+  }
+  .sf-global-cta .cta-action-wrap { width: 100%; }
+  .sf-global-cta .home-button-cta { width: auto; }
+}
