@@ -840,6 +840,140 @@ html.light-theme .explore-page .search-hl {
   color: var(--sf-page-heading) !important;
 }
 
+/* Shared CTA: exact layout, proportions and button treatment used by
+   the homepage and resource-detail page. Page content remains page-specific. */
+.guides-page .home-cta-card,
+.about-page .sf-shared-cta {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #111318 !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+  padding: 24px 22px !important;
+  text-align: left !important;
+}
+
+.guides-page .home-cta-card .cta-text-content,
+.about-page .sf-shared-cta .cta-text-content {
+  max-width: none !important;
+  min-width: 0 !important;
+}
+
+.guides-page .home-cta-card .cta-capsule {
+  display: none !important;
+}
+
+.guides-page .home-cta-card .cta-title,
+.about-page .sf-shared-cta .cta-title {
+  margin: 0 0 4px !important;
+  color: #FFFFFF !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.015em !important;
+}
+
+.guides-page .home-cta-card .cta-desc,
+.about-page .sf-shared-cta .cta-desc {
+  margin: 0 !important;
+  color: #9A9FAA !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.guides-page .home-cta-card .cta-action-wrap,
+.about-page .sf-shared-cta .cta-action-wrap {
+  width: auto !important;
+  flex: 0 0 auto !important;
+}
+
+.guides-page .home-cta-card .home-button-cta,
+.about-page .sf-shared-cta .home-button-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  flex-shrink: 0 !important;
+  padding: 10px 18px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 6px !important;
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  transition: background 0.18s ease, transform 0.18s ease !important;
+}
+
+.guides-page .home-cta-card .home-button-cta:hover,
+.about-page .sf-shared-cta .home-button-cta:hover {
+  background: linear-gradient(180deg, #FF862B 0%, #F05E0A 100%) !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) !important;
+  box-shadow: none !important;
+}
+
+.guides-page .home-cta-card .home-button-cta:focus-visible,
+.about-page .sf-shared-cta .home-button-cta:focus-visible {
+  outline: 2px solid #3DD6D0 !important;
+  outline-offset: 3px !important;
+}
+
+:root[data-theme="light"] .guides-page .home-cta-card,
+:root[data-theme="light"] .about-page .sf-shared-cta,
+html.light-theme .guides-page .home-cta-card,
+html.light-theme .about-page .sf-shared-cta {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+}
+
+:root[data-theme="light"] .guides-page .home-cta-card .cta-title,
+:root[data-theme="light"] .about-page .sf-shared-cta .cta-title,
+html.light-theme .guides-page .home-cta-card .cta-title,
+html.light-theme .about-page .sf-shared-cta .cta-title {
+  color: #0F172A !important;
+}
+
+:root[data-theme="light"] .guides-page .home-cta-card .cta-desc,
+:root[data-theme="light"] .about-page .sf-shared-cta .cta-desc,
+html.light-theme .guides-page .home-cta-card .cta-desc,
+html.light-theme .about-page .sf-shared-cta .cta-desc {
+  color: #475569 !important;
+}
+
+@media (max-width: 640px) {
+  .guides-page .home-cta-card,
+  .about-page .sf-shared-cta {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    padding: 22px 18px !important;
+  }
+
+  .guides-page .home-cta-card .cta-action-wrap,
+  .about-page .sf-shared-cta .cta-action-wrap {
+    width: auto !important;
+  }
+
+  .guides-page .home-cta-card .home-button-cta,
+  .about-page .sf-shared-cta .home-button-cta {
+    width: auto !important;
+  }
+}
+
 /* Light theme: page and component text follows the same neutral contrast scale. */
 :root[data-theme="light"] .about-title,
 :root[data-theme="light"] .legal-title,
