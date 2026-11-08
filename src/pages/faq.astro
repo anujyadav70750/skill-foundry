@@ -50,6 +50,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
         <p class="faq-support-desc">Didn't find your answer? Send us a message.</p>
         <a href="/contact/" class="faq-support-button">Contact us</a>
       </section>
+      <div class="faq-cta-divider" aria-hidden="true"></div>
     </div>
   </main>
 </BaseLayout>
@@ -244,6 +245,14 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     box-sizing: border-box;
   }
 
+  .faq-page .faq-cta-divider {
+    width: 100%;
+    max-width: 780px;
+    height: 1px;
+    margin: 24px auto 0;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   .faq-page .faq-support-mark {
     display: flex;
     align-items: center;
@@ -345,6 +354,11 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     background: rgba(15, 23, 42, 0.10);
   }
 
+  :global([data-theme="light"]) .faq-page .faq-cta-divider,
+  :global(html.light-theme) .faq-page .faq-cta-divider {
+    background: rgba(15, 23, 42, 0.10);
+  }
+
   :global([data-theme="light"]) .faq-page .faq-support-title,
   :global(html.light-theme) .faq-page .faq-support-title {
     color: #172033;
@@ -374,6 +388,11 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       gap: 6px;
       margin: 0 auto;
       padding: 0 8px 6px;
+    }
+
+    .faq-page .faq-cta-divider {
+      width: calc(100% - 28px);
+      margin-top: 20px;
     }
 
     .faq-page .faq-support-title {
