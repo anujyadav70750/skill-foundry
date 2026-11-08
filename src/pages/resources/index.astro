@@ -323,8 +323,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         <div id="flat-library-view" class="flat-library-view" hidden>
           <div class="section-heading-row" id="flat-heading-row">
             <div class="flat-heading-capsule-wrap">
-              <span class="category-capsule capsule-recent" id="flat-view-capsule">All Resources</span>
-              <h2 class="flat-view-title" id="flat-view-title" hidden>All Resources</h2>
+              <h2 class="flat-view-title" id="flat-view-title">All Resources</h2>
               <p class="section-subcopy" id="flat-view-subcopy">
                 Explore step-by-step blueprints, workflows, and prompts ready for production.
               </p>
@@ -2784,21 +2783,13 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       // Category landings use the site's full-size section heading; search keeps its existing capsule.
       const flatViewTitle = document.getElementById('flat-view-title');
       if (flatViewTitle) {
-        flatViewTitle.textContent = savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory;
-        flatViewTitle.hidden = !isCategoryLanding;
+        flatViewTitle.textContent = isSearching
+          ? (isCategoryFiltered ? `Search: ${savedCategory}` : 'Search Results')
+          : (savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory);
+        flatViewTitle.hidden = false;
       }
       const flatViewSubcopy = document.getElementById('flat-view-subcopy');
-      if (flatViewSubcopy) flatViewSubcopy.hidden = isCategoryLanding;
-      if (flatViewCapsule) {
-        flatViewCapsule.hidden = isCategoryLanding;
-        if (isSearching) {
-          flatViewCapsule.textContent = isCategoryFiltered
-            ? `Search: ${savedCategory}`
-            : 'Search Results';
-        } else {
-          flatViewCapsule.textContent = savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory;
-        }
-      }
+      if (flatViewSubcopy) flatViewSubcopy.hidden = false;
 
       if (flatViewSubcopy) {
         if (isSearching) {
