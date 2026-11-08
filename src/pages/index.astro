@@ -390,6 +390,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
           <p class="faq-support-desc">Didn't find your answer? Send us a message.</p>
           <a href="/contact/" class="faq-support-button">Contact us</a>
         </div>
+        <div class="faq-cta-divider" aria-hidden="true"></div>
       </div>
     </section>
 
@@ -1531,13 +1532,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
   /* ==========================================================================
      SECTION 7 — WHY TRUST THE RESOURCES
      ========================================================================== */
-  .trust-section {
-    padding-top: 24px;
-    padding-bottom: 32px;
-  }
-
+  .trust-section,
   .faq-section {
-    padding-top: 32px;
+    padding-top: 28px;
+    padding-bottom: 24px;
   }
 
   .home-page .trust-section .trust-grid {
@@ -2708,13 +2706,10 @@ const formatUploadDate = (d: Date | string | undefined) => {
       padding-top: 20px;
       padding-bottom: 16px;
     }
-    .trust-section {
-      padding-top: 24px;
-      padding-bottom: 30px;
-    }
+    .trust-section,
     .faq-section {
-      padding-top: 26px;
-      padding-bottom: 12px;
+      padding-top: 20px;
+      padding-bottom: 16px;
     }
     .final-cta-section {
       padding-top: 12px;
@@ -4056,9 +4051,14 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
 
   /* FAQ heading and supporting description */
+  .home-page .skills-section .section-head,
+  .home-page .trust-section .section-head {
+    margin-bottom: 20px;
+  }
+
   .home-page .faq-section-head {
     display: block;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     text-align: left;
   }
 
@@ -4622,8 +4622,21 @@ const formatUploadDate = (d: Date | string | undefined) => {
     margin: 0 auto 0 !important;
   }
 
+  .home-page .faq-cta-divider {
+    width: 100%;
+    max-width: 820px;
+    height: 1px;
+    margin: 24px auto 0;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   :global([data-theme="light"]) .home-page .faq-support-divider,
   :global(html.light-theme) .home-page .faq-support-divider {
+    background: rgba(15, 23, 42, 0.10);
+  }
+
+  :global([data-theme="light"]) .home-page .faq-cta-divider,
+  :global(html.light-theme) .home-page .faq-cta-divider {
     background: rgba(15, 23, 42, 0.10);
   }
 
@@ -4634,6 +4647,11 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
     .home-page .faq-support-cta {
       margin: 0 auto 0 !important;
+    }
+
+    .home-page .faq-cta-divider {
+      width: calc(100% - 28px);
+      margin-top: 20px;
     }
   }
 
