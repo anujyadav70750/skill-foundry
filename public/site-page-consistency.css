@@ -62,7 +62,7 @@ body.no-header {
 
 .faq-page-container {
   max-width: 780px !important;
-  gap: 24px !important;
+  gap: 0 !important;
 }
 
 .search-page-inner {
@@ -1050,11 +1050,11 @@ html.light-theme .explore-page .recent-resource-card {
   }
 
   .faq-page {
-    padding: 24px 16px 30px !important;
+    padding: 24px 16px 16px !important;
   }
 
   .faq-page-container {
-    gap: 20px !important;
+    gap: 0 !important;
   }
 
   .guides-page .guides-section {
@@ -1222,7 +1222,7 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
   gap: 24px !important;
 }
 .faq-page-container {
-  gap: 24px !important;
+  gap: 0 !important;
 }
 @media (max-width: 640px) {
   .guides-page .guides-hero {
@@ -1239,6 +1239,6 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
     gap: 20px !important;
   }
   .faq-page-container {
-    gap: 20px !important;
+    gap: 0 !important;
   }
 }
