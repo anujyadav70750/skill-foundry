@@ -312,6 +312,10 @@ body.no-header {
   max-width: 680px !important;
 }
 
+.faq-page .faq-search-wrap {
+  margin: 0 !important;
+}
+
 .faq-card,
 .faq-page .faq-submit-card,
 .faq-page .faq-no-results {
@@ -457,6 +461,14 @@ body.no-header {
   background: var(--sf-page-surface) !important;
   border-color: var(--sf-page-border) !important;
   box-shadow: none !important;
+}
+
+.search-empty-box .empty-text {
+  color: var(--sf-page-copy) !important;
+}
+
+.search-bar-form input::placeholder {
+  color: var(--sf-page-copy-soft) !important;
 }
 
 /* Resource library listing: same restrained card surface as homepage and resource detail pages. */
