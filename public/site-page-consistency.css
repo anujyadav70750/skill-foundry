@@ -674,6 +674,145 @@ body.no-header {
   border-color: var(--sf-page-border) !important;
 }
 
+/* Normalize legacy blue interaction states to the site's teal accent.
+   These are interactive/focus states; fixed content-icon colours remain independent. */
+
+/* FAQ search, pagination, submission controls and modal actions. */
+.faq-page .faq-capsule .capsule-dot {
+  background: var(--sf-page-accent) !important;
+}
+
+.faq-page .faq-no-results {
+  border-color: var(--sf-page-border) !important;
+  background: var(--sf-page-surface) !important;
+}
+
+.faq-page .faq-no-results-link {
+  color: var(--sf-page-accent) !important;
+}
+
+.faq-page .faq-page-btn:not(:disabled):hover,
+.faq-page .faq-page-num:not(.active):hover {
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  box-shadow: none !important;
+}
+
+.faq-page .faq-page-num.active {
+  background: #176E73 !important;
+  border-color: #35C9C1 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .faq-page .faq-page-num.active,
+html.light-theme .faq-page .faq-page-num.active {
+  background: #128C87 !important;
+  border-color: #128C87 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.faq-page .faq-textarea-expand-btn:hover,
+.faq-page .faq-modal-collapse-btn:hover,
+.faq-page .faq-modal-clear-btn:not(:disabled):hover {
+  background: rgba(53, 201, 193, 0.10) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  box-shadow: none !important;
+}
+
+.faq-page .faq-modal-textarea:focus {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+/* Resource library filters, category controls, selected states and highlights. */
+.explore-page .filter-chip-option.is-selected {
+  background: rgba(53, 201, 193, 0.10) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  box-shadow: none !important;
+}
+
+.explore-page .sort-option-btn.is-selected {
+  background: rgba(53, 201, 193, 0.08) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.explore-page .sort-option-btn.is-selected .sort-radio-circle {
+  border-color: var(--sf-page-accent) !important;
+  background: var(--sf-page-accent) !important;
+  box-shadow: inset 0 0 0 2.5px var(--sf-page-surface) !important;
+}
+
+.explore-page .filter-apply-action-btn:not(:disabled) {
+  background: #176E73 !important;
+  border-color: #35C9C1 !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .explore-page .filter-apply-action-btn:not(:disabled),
+html.light-theme .explore-page .filter-apply-action-btn:not(:disabled) {
+  background: #128C87 !important;
+  border-color: #128C87 !important;
+  color: #FFFFFF !important;
+}
+
+.explore-page .filter-apply-action-btn:not(:disabled):hover {
+  background: #0F5F61 !important;
+  border-color: #35C9C1 !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .explore-page .filter-apply-action-btn:not(:disabled):hover,
+html.light-theme .explore-page .filter-apply-action-btn:not(:disabled):hover {
+  background: #0D746F !important;
+  border-color: #0D746F !important;
+}
+
+.explore-page .category-more-btn:hover {
+  background: rgba(53, 201, 193, 0.08) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.explore-page .resource-card-prominent:hover .prominent-title,
+.explore-page .resource-card-horizontal:hover .h-title,
+.explore-page .recent-resource-card:hover .recent-resource-card-title {
+  color: var(--sf-page-heading) !important;
+}
+
+.explore-page .search-hl {
+  background: rgba(53, 201, 193, 0.12) !important;
+  border-bottom-color: rgba(53, 201, 193, 0.24) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme="light"] .explore-page .search-hl,
+html.light-theme .explore-page .search-hl {
+  background: rgba(18, 140, 135, 0.10) !important;
+  color: #0D746F !important;
+  border-bottom-color: rgba(18, 140, 135, 0.24) !important;
+}
+
+/* Search-page hover and back navigation retain clear but restrained feedback. */
+.search-back-btn:hover {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.search-page-container .search-resource-card:hover .card-title {
+  color: var(--sf-page-heading) !important;
+}
+
 /* Light theme: page and component text follows the same neutral contrast scale. */
 :root[data-theme="light"] .about-title,
 :root[data-theme="light"] .legal-title,
