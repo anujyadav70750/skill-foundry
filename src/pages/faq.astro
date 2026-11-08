@@ -20,26 +20,8 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
       <section class="faq-search-section" aria-label="Search frequently asked questions">
         <div class="faq-search-field">
-          <span class="faq-search-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <path d="m20 20-4-4"></path>
-            </svg>
-          </span>
-          <input
-            id="faq-search-input"
-            class="faq-search-input"
-            type="search"
-            placeholder="Search questions and answers..."
-            autocomplete="off"
-            spellcheck="false"
-            aria-label="Search questions and answers"
-          />
-          <button id="faq-search-clear" class="faq-search-clear" type="button" aria-label="Clear search" hidden>
-            <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor" aria-hidden="true">
-              <path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
+          <input id="faq-search-input" class="faq-search-input" type="text" placeholder="Search questions and answers..." autocomplete="off" spellcheck="false" aria-label="Search questions and answers" />
+          <span class="faq-search-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg></span>
         </div>
       </section>
 
@@ -47,34 +29,9 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
         <div class="faq-list" id="faq-list">
           {FAQ_DATA.map((item, index) => (
             <article class="faq-item" data-faq-id={item.id}>
-              <h2 class="faq-item-heading">
-                <button
-                  class="faq-question-trigger"
-                  id={`faq-question-${item.id}`}
-                  type="button"
-                  aria-expanded="false"
-                  aria-controls={`faq-answer-${item.id}`}
-                >
-                  <span class="faq-question-text">{item.question}</span>
-                  <span class="faq-toggle" aria-hidden="true">
-                    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <path class="faq-toggle-vertical" d="M10 3v14"></path>
-                      <path d="M3 10h14"></path>
-                    </svg>
-                  </span>
-                </button>
-              </h2>
-              <div
-                class="faq-answer-panel"
-                id={`faq-answer-${item.id}`}
-                role="region"
-                aria-labelledby={`faq-question-${item.id}`}
-                hidden
-              >
-                <div class="faq-answer-inner">
-                  <p class="faq-answer-text">{item.answer}</p>
-                </div>
-              </div>
+              <h2 class="faq-item-heading faq-question-text">{item.question}</h2>
+              <div class="faq-answer-divider" aria-hidden="true"></div>
+              <div class="faq-answer-inner"><p class="faq-answer-text">{item.answer}</p></div>
             </article>
           ))}
         </div>
@@ -98,7 +55,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 <style>
   .faq-page {
     min-height: 70vh;
-    padding: clamp(42px, 5vw, 64px) 20px 40px;
+    padding: clamp(42px, 5vw, 64px) 20px 76px;
     color: #F8FAFC;
     box-sizing: border-box;
   }
@@ -146,10 +103,10 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     max-width: 620px;
     min-height: 50px;
     margin: 0 auto;
-    padding: 0 14px;
+    padding: 0 10px 0 18px;
     display: flex;
     align-items: center;
-    gap: 11px;
+    gap: 14px;
     background: rgba(13, 20, 34, 0.78);
     border: 1px solid rgba(255, 255, 255, 0.13);
     border-radius: 12px;
@@ -162,11 +119,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     box-shadow: 0 0 0 3px rgba(45, 190, 180, 0.10);
   }
 
-  .faq-search-icon {
-    display: flex;
-    color: #94A3B8;
-    flex: 0 0 auto;
-  }
+  .faq-search-icon { width:42px;height:42px;flex:0 0 42px;display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12);border-radius:10px;background:rgba(255,255,255,.055);color:#A9B7C8; }
 
   .faq-search-input {
     width: 100%;
@@ -182,25 +135,6 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
   .faq-search-input::placeholder {
     color: #78869A;
-  }
-
-  .faq-search-clear {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-    color: #CBD5E1;
-    cursor: pointer;
-  }
-
-  .faq-search-clear[hidden] {
-    display: none;
   }
 
   .faq-list {
@@ -222,67 +156,9 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     border-color: rgba(45, 190, 180, 0.28);
   }
 
-  .faq-item-heading {
-    margin: 0;
-    font: inherit;
-  }
-
-  .faq-question-trigger {
-    width: 100%;
-    min-height: 66px;
-    padding: 17px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    border: 0;
-    background: transparent;
-    color: #F1F5F9;
-    text-align: left;
-    font: inherit;
-    font-size: 15px;
-    font-weight: 650;
-    line-height: 1.45;
-    cursor: pointer;
-  }
-
-  .faq-question-trigger:focus-visible {
-    outline: 2px solid #2DBEB4;
-    outline-offset: -4px;
-    border-radius: 12px;
-  }
-
-  .faq-toggle {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-    color: #9FB3C8;
-  }
-
-  .faq-toggle svg {
-    display: block;
-  }
-
-  .faq-toggle-vertical {
-    transition: opacity 0.18s ease;
-  }
-
-  .faq-question-trigger[aria-expanded="true"] .faq-toggle-vertical {
-    opacity: 0;
-  }
-
-  .faq-answer-panel[hidden] {
-    display: none;
-  }
-
-  .faq-answer-inner {
-    padding: 0 20px 19px;
-  }
+  .faq-item-heading { margin:0;padding:20px 20px 17px;color:#F1F5F9;font-size:16px;font-weight:700;line-height:1.45;letter-spacing:-.01em; }
+  .faq-answer-divider { height:1px;margin:0 20px;background:rgba(255,255,255,.12); }
+  .faq-answer-inner { padding:16px 20px 20px; }
 
   .faq-answer-text {
     margin: 0;
@@ -337,8 +213,9 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
   }
 
   .faq-contact-section {
-    margin-top: 4px;
-    padding: 22px 12px 8px;
+    margin-top: 18px;
+    margin-bottom: 28px;
+    padding: 26px 12px 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.10);
     display: flex;
     flex-direction: column;
@@ -407,17 +284,6 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     border-color: #DCE3EC;
   }
 
-  :global([data-theme="light"]) .faq-question-trigger,
-  :global(html.light-theme) .faq-question-trigger {
-    color: #172033;
-  }
-
-  :global([data-theme="light"]) .faq-toggle,
-  :global(html.light-theme) .faq-toggle {
-    color: #526174;
-    border-color: #DCE3EC;
-  }
-
   :global([data-theme="light"]) .faq-answer-text,
   :global(html.light-theme) .faq-answer-text {
     color: #526174;
@@ -457,7 +323,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
   @media (max-width: 640px) {
     .faq-page {
-      padding: 34px 16px 30px;
+      padding: 34px 16px 64px;
     }
 
     .faq-page-container {
@@ -472,16 +338,10 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       font-size: clamp(30px, 8vw, 38px);
     }
 
-    .faq-question-trigger {
-      min-height: 62px;
-      padding: 15px 15px;
-      gap: 12px;
-      font-size: 14px;
-    }
-
-    .faq-answer-inner {
-      padding: 0 15px 16px;
-    }
+    .faq-item-heading { padding:17px 15px 15px;font-size:14.5px; }
+    .faq-answer-divider { margin:0 15px; }
+    .faq-answer-inner { padding:14px 15px 17px; }
+    .faq-search-icon { width:40px;height:40px;flex-basis:40px; }
 
     .faq-answer-text {
       font-size: 13.5px;
@@ -496,103 +356,38 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
 <script>
   function initDedicatedFaqPage() {
-    const root = document.querySelector<HTMLElement>('.faq-page');
-    if (!root || root.dataset.initialized === 'true') return;
-    root.dataset.initialized = 'true';
-
-    const searchInput = root.querySelector<HTMLInputElement>('#faq-search-input');
-    const clearButton = root.querySelector<HTMLButtonElement>('#faq-search-clear');
-    const list = root.querySelector<HTMLElement>('#faq-list');
-    const noResults = root.querySelector<HTMLElement>('#faq-no-results');
-    if (!list) return;
-
-    const items = Array.from(list.querySelectorAll<HTMLElement>('.faq-item'));
-    const itemData = items.map((item) => {
-      const question = item.querySelector<HTMLElement>('.faq-question-text');
-      const answer = item.querySelector<HTMLElement>('.faq-answer-text');
-      const trigger = item.querySelector<HTMLButtonElement>('.faq-question-trigger');
-      const panel = item.querySelector<HTMLElement>('.faq-answer-panel');
-      return {
-        item,
-        question,
-        answer,
-        trigger,
-        panel,
-        rawQuestion: question?.textContent || '',
-        rawAnswer: answer?.textContent || ''
-      };
-    });
-
-    const escapeHtml = (value: string) => value
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-
-    const highlight = (value: string, terms: string[]) => {
-      if (!terms.length) return escapeHtml(value);
-      const escapedTerms = terms
-        .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-        .filter(Boolean);
-      if (!escapedTerms.length) return escapeHtml(value);
-      const pattern = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
-      return value.split(pattern).map((part) => {
-        const isMatch = escapedTerms.some((term) => new RegExp(`^${term}$`, 'i').test(part));
-        return isMatch
-          ? `<mark class="faq-match-mark">${escapeHtml(part)}</mark>`
-          : escapeHtml(part);
-      }).join('');
+    const root=document.querySelector<HTMLElement>('.faq-page');
+    if(!root||root.dataset.initialized==='true')return;
+    root.dataset.initialized='true';
+    const input=root.querySelector<HTMLInputElement>('#faq-search-input');
+    const list=root.querySelector<HTMLElement>('#faq-list');
+    const empty=root.querySelector<HTMLElement>('#faq-no-results');
+    if(!list)return;
+    const entries=Array.from(list.querySelectorAll<HTMLElement>('.faq-item')).map(item=>({
+      item,q:item.querySelector<HTMLElement>('.faq-question-text'),a:item.querySelector<HTMLElement>('.faq-answer-text'),
+      rawQ:item.querySelector<HTMLElement>('.faq-question-text')?.textContent||'',
+      rawA:item.querySelector<HTMLElement>('.faq-answer-text')?.textContent||''
+    }));
+    const escapeHtml=(s:string)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    const highlight=(s:string,terms:string[])=>{
+      if(!terms.length)return escapeHtml(s);
+      const safe=terms.map(t=>t.replace(/[.*+?^${}()|[\\]\\\\]/g,'\\\\$&')).filter(Boolean);
+      const re=new RegExp(`(${safe.join('|')})`,'gi');
+      return s.split(re).map(p=>safe.some(t=>new RegExp(`^${t}$`,'i').test(p))?`<mark class="faq-match-mark">${escapeHtml(p)}</mark>`:escapeHtml(p)).join('');
     };
-
-    const closeAll = () => {
-      itemData.forEach(({ trigger, panel }) => {
-        trigger?.setAttribute('aria-expanded', 'false');
-        if (panel) panel.hidden = true;
+    const search=()=>{
+      const terms=(input?.value||'').trim().toLowerCase().split(/\\s+/).filter(Boolean);
+      let count=0;
+      entries.forEach(({item,q,a,rawQ,rawA})=>{
+        const show=!terms.length||terms.every(t=>(rawQ+' '+rawA).toLowerCase().includes(t));
+        item.hidden=!show;if(show)count++;
+        if(q)q.innerHTML=highlight(rawQ,terms);
+        if(a)a.innerHTML=highlight(rawA,terms);
       });
+      if(empty)empty.hidden=count>0;
     };
-
-    itemData.forEach(({ trigger, panel }) => {
-      trigger?.addEventListener('click', () => {
-        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
-        closeAll();
-        if (!isOpen) {
-          trigger.setAttribute('aria-expanded', 'true');
-          if (panel) panel.hidden = false;
-        }
-      });
-    });
-
-    const updateSearch = () => {
-      const query = (searchInput?.value || '').trim().toLowerCase();
-      const terms = query ? query.split(/\s+/).filter(Boolean) : [];
-      if (clearButton) clearButton.hidden = !query;
-
-      let visibleCount = 0;
-      itemData.forEach(({ item, question, answer, trigger, panel, rawQuestion, rawAnswer }) => {
-        const combinedText = `${rawQuestion} ${rawAnswer}`.toLowerCase();
-        const matches = !terms.length || terms.every((term) => combinedText.includes(term));
-
-        item.hidden = !matches;
-        if (matches) visibleCount++;
-        if (question) question.innerHTML = highlight(rawQuestion, terms);
-        if (answer) answer.innerHTML = highlight(rawAnswer, terms);
-        trigger?.setAttribute('aria-expanded', 'false');
-        if (panel) panel.hidden = true;
-      });
-
-      if (noResults) noResults.hidden = visibleCount > 0;
-    };
-
-    searchInput?.addEventListener('input', updateSearch);
-    clearButton?.addEventListener('click', () => {
-      if (!searchInput) return;
-      searchInput.value = '';
-      updateSearch();
-      searchInput.focus();
-    });
+    input?.addEventListener('input',search);
   }
-
   initDedicatedFaqPage();
-  document.addEventListener('astro:page-load', initDedicatedFaqPage);
+  document.addEventListener('astro:page-load',initDedicatedFaqPage);
 </script>
