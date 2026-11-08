@@ -988,7 +988,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     {/* RELATED RESOURCES */}
     {related.length > 0 && (
-      <section class="resource-editorial-section related-section" id="related-resources">
+      <div class="resource-related-group">
+        <div class="resource-related-divider" aria-hidden="true"></div>
+        <section class="resource-editorial-section related-section" id="related-resources">
         <div class="related-works-header">
           <a class="related-works-header-link" href="/resources/" aria-label="View all related resources">
             <h2 class="related-works-title">Related Resources</h2>
@@ -1019,7 +1021,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             );
           })}
         </div>
-      </section>
+        </section>
+        <div class="resource-related-divider resource-related-divider-after" aria-hidden="true"></div>
+      </div>
     )}
 
   </div>
@@ -3290,8 +3294,31 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     /* Related Resources — share the homepage Recent section visual language */
+    .resource-related-group {
+      width: 100%;
+    }
+
+    /* Match the homepage divider width exactly. */
+    .resource-related-divider {
+      display: block;
+      width: min(820px, calc(100% - 48px));
+      height: 1px;
+      margin: 24px auto;
+      box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .resource-related-divider-after {
+      margin: 24px auto 0;
+    }
+
+    html[data-theme="light"] .resource-related-divider,
+    html.light-theme .resource-related-divider {
+      background: rgba(15, 23, 42, 0.10);
+    }
+
     .related-section {
-      margin-top: 44px;
+      margin-top: 0;
       padding: 0 18px;
       max-width: 920px;
       margin-left: auto;
@@ -3454,8 +3481,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
 
     @media (max-width: 640px) {
+      .resource-related-divider {
+        width: calc(100% - 28px);
+        margin: 20px auto;
+      }
+
+      .resource-related-divider-after {
+        margin: 20px auto 0;
+      }
+
       .related-section {
-        margin-top: 36px;
+        margin-top: 0;
         padding: 0 18px;
       }
 
