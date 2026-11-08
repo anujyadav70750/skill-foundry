@@ -677,6 +677,12 @@ body.no-header {
 /* Normalize legacy blue interaction states to the site's teal accent.
    These are interactive/focus states; fixed content-icon colours remain independent. */
 
+.faq-page .faq-capsule {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-copy) !important;
+}
+
 /* FAQ search, pagination, submission controls and modal actions. */
 .faq-page .faq-capsule .capsule-dot {
   background: var(--sf-page-accent) !important;
@@ -798,6 +804,27 @@ html.light-theme .explore-page .search-hl {
   background: rgba(18, 140, 135, 0.10) !important;
   color: #0D746F !important;
   border-bottom-color: rgba(18, 140, 135, 0.24) !important;
+}
+
+.explore-page .resources-back-home-btn:hover {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  box-shadow: none !important;
+}
+
+.explore-page .empty-reset-btn {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  box-shadow: none !important;
+}
+
+.explore-page .empty-reset-btn:hover {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  box-shadow: none !important;
 }
 
 /* Search-page hover and back navigation retain clear but restrained feedback. */
