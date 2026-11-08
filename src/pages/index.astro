@@ -4704,6 +4704,102 @@ const formatUploadDate = (d: Date | string | undefined) => {
     }
   }
 
+
+  /* FINAL SECTION RHYTHM — applies only after Recent Works.
+     Recent Works and its existing upper/lower dividers remain untouched. */
+  .home-page .skills-section,
+  .home-page .method-section,
+  .home-page .trust-section,
+  .home-page .faq-section {
+    padding: 28px 0 !important;
+  }
+
+  /* The heading-to-description gap is 8px; description-to-content is 20px. */
+  .home-page .skills-section .section-head,
+  .home-page .method-section .section-head,
+  .home-page .trust-section .section-head,
+  .home-page .faq-section .faq-section-head {
+    margin: 0 0 20px !important;
+  }
+
+  .home-page .skills-section .section-head h2,
+  .home-page .method-section .section-head h2,
+  .home-page .trust-section .section-head h2 {
+    margin: 0 0 8px !important;
+  }
+
+  .home-page .faq-section-heading-group {
+    gap: 8px !important;
+  }
+
+  /* All dividers after Explore Skill Areas use the same content-column width.
+     The divider at the Recent Works / Explore Skill Areas boundary is excluded. */
+  .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+    left: 50% !important;
+    right: auto !important;
+    width: min(820px, calc(100% - 48px)) !important;
+    height: 1px !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* The two FAQ support dividers use the exact same width and vertical rhythm. */
+  .home-page .faq-support-divider,
+  .home-page .faq-cta-divider {
+    display: block;
+    width: 100% !important;
+    max-width: none !important;
+    height: 1px;
+    margin: 28px 0 0 !important;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .home-page .faq-support-divider {
+    margin-top: 28px !important;
+    margin-bottom: 28px !important;
+  }
+
+  .home-page .faq-support-cta {
+    margin: 0 auto !important;
+    padding: 0 8px !important;
+  }
+
+  /* Keep the line-to-CTA distance equal to the other divider spacing. */
+  :global(main:has(.home-page) > .sf-global-cta) {
+    padding-top: 0 !important;
+  }
+
+  :global([data-theme="light"]) .home-page .skills-section ~ .home-section:not(.final-cta-section)::before,
+  :global(html.light-theme) .home-page .skills-section ~ .home-section:not(.final-cta-section)::before,
+  :global([data-theme="light"]) .home-page .faq-support-divider,
+  :global(html.light-theme) .home-page .faq-support-divider,
+  :global([data-theme="light"]) .home-page .faq-cta-divider,
+  :global(html.light-theme) .home-page .faq-cta-divider {
+    background: rgba(15, 23, 42, 0.10);
+  }
+
+  @media (max-width: 640px) {
+    .home-page .skills-section,
+    .home-page .method-section,
+    .home-page .trust-section,
+    .home-page .faq-section {
+      padding: 20px 0 !important;
+    }
+
+    .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+      width: calc(100% - 28px) !important;
+    }
+
+    .home-page .faq-support-divider,
+    .home-page .faq-cta-divider {
+      margin-top: 20px !important;
+    }
+
+    .home-page .faq-support-divider {
+      margin-bottom: 20px !important;
+    }
+  }
+
 </style>
 
 <script>
