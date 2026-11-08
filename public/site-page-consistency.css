@@ -1,0 +1,641 @@
+/* Skill Foundry shared page design system.
+   Applies to public information, guide, FAQ, search and resource-library pages.
+   The homepage and resource-detail pages remain the visual references. */
+
+:root {
+  --sf-page-bg: #050505;
+  --sf-page-surface: #0B0D12;
+  --sf-page-surface-raised: #111318;
+  --sf-page-border: rgba(255, 255, 255, 0.08);
+  --sf-page-heading: #F5F5F5;
+  --sf-page-copy: #A1A9B6;
+  --sf-page-copy-soft: #8C92A0;
+  --sf-page-accent: #35C9C1;
+  --sf-page-focus: rgba(53, 201, 193, 0.45);
+  --sf-page-divider: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="light"],
+html.light-theme {
+  --sf-page-bg: #F8FAFC;
+  --sf-page-surface: #FFFFFF;
+  --sf-page-surface-raised: #F1F5F9;
+  --sf-page-border: #E2E8F0;
+  --sf-page-heading: #0F172A;
+  --sf-page-copy: #475569;
+  --sf-page-copy-soft: #64748B;
+  --sf-page-accent: #087F83;
+  --sf-page-focus: rgba(18, 140, 135, 0.35);
+  --sf-page-divider: #E2E8F0;
+}
+
+/* One canvas colour across all routes, including pages with a hidden header. */
+body,
+body.no-header {
+  background: var(--sf-page-bg) !important;
+  color: var(--sf-page-heading);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.about-page,
+.legal-page,
+.contact-page,
+.guides-page,
+.faq-page,
+.search-page-container,
+.explore-page {
+  background: transparent !important;
+  color: var(--sf-page-heading) !important;
+}
+
+/* Shared content width and mobile gutters. */
+.about-container,
+.legal-container,
+.contact-container {
+  width: min(780px, calc(100% - 48px)) !important;
+}
+
+.guides-page .container.narrow {
+  width: min(780px, calc(100% - 48px)) !important;
+  max-width: 780px !important;
+}
+
+.faq-page-container {
+  max-width: 780px !important;
+  gap: 24px !important;
+}
+
+.search-page-inner {
+  max-width: 780px !important;
+}
+
+/* Common internal-page hero surface: plain, aligned, no competing glow. */
+.about-hero,
+.legal-hero,
+.contact-hero,
+.guides-hero {
+  background: transparent !important;
+  border-bottom: 1px solid var(--sf-page-divider) !important;
+  text-align: left !important;
+  padding: clamp(28px, 3.5vw, 40px) 0 20px !important;
+}
+
+.about-body,
+.legal-body,
+.contact-body {
+  padding: 24px 0 40px !important;
+}
+
+.about-title,
+.legal-title,
+.contact-title,
+.guides-title,
+.faq-page-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: clamp(27px, 4vw, 34px) !important;
+  font-weight: 750 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.025em !important;
+  color: var(--sf-page-heading) !important;
+  text-wrap: balance;
+}
+
+.about-lead,
+.legal-lead,
+.contact-lead,
+.guides-lead,
+.faq-page-desc {
+  max-width: 680px !important;
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  margin-top: 0 !important;
+}
+
+.about-eyebrow,
+.legal-eyebrow,
+.contact-eyebrow {
+  color: var(--sf-page-accent) !important;
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  margin-bottom: 9px !important;
+}
+
+/* Editorial section headings share the small yellow accent used on the homepage
+   and resource pages. Text sections remain open rather than becoming card grids. */
+.about-section-block h2,
+.legal-section-block h2,
+.guides-page .section-head > h2 {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 9px !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: clamp(18px, 2.4vw, 20px) !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.015em !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.about-section-block h2::before,
+.legal-section-block h2::before,
+.guides-page .section-head > h2::before {
+  content: "";
+  display: inline-block;
+  flex: 0 0 3.5px;
+  width: 3.5px;
+  height: 16px;
+  margin-top: 4px;
+  border-radius: 2px;
+  background: #FACC15;
+}
+
+.about-section-block p,
+.legal-section-block p {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14.5px !important;
+  line-height: 1.68 !important;
+}
+
+.about-content,
+.legal-content {
+  gap: 24px !important;
+}
+
+.about-section-block + .about-section-block,
+.legal-section-block + .legal-section-block {
+  border-top: 1px solid var(--sf-page-divider);
+  padding-top: 22px;
+}
+
+.about-cta-link {
+  color: var(--sf-page-accent) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Guides: same typography, surface, border and restrained card treatment. */
+.guides-page .guides-hero {
+  text-align: left !important;
+}
+
+.guides-page .guides-capsule-row {
+  text-align: left !important;
+}
+
+.guides-page .guides-highlight {
+  background: none !important;
+  color: var(--sf-page-accent) !important;
+  font-style: normal !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+.guides-page .guides-section {
+  padding: 26px 0 !important;
+}
+
+.guides-page .section-head {
+  max-width: 680px !important;
+  margin: 0 0 20px !important;
+  text-align: left !important;
+}
+
+.guides-page .section-head .home-capsule {
+  margin-bottom: 9px !important;
+}
+
+.guides-page .section-head > h2 {
+  margin: 0 0 7px !important;
+}
+
+.guides-page .section-subcopy {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+}
+
+.guides-page .home-card,
+.guides-page .home-card:hover,
+.guides-page .home-card:active,
+.guides-page .home-card:focus {
+  background: var(--sf-page-surface) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: border-color 0.16s ease !important;
+}
+
+.guides-page .methodology-grid,
+.guides-page .tracks-grid {
+  gap: 14px !important;
+}
+
+.guides-page .method-title,
+.guides-page .track-title,
+.guides-page .cta-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: clamp(16px, 2vw, 18px) !important;
+  font-weight: 700 !important;
+  line-height: 1.32 !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.guides-page .method-description,
+.guides-page .track-lead,
+.guides-page .track-topics-list li,
+.guides-page .cta-desc {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+}
+
+.guides-page .track-divider {
+  background: var(--sf-page-divider) !important;
+}
+
+.guides-page .track-cta-btn {
+  background: var(--sf-page-surface-raised) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  box-shadow: none !important;
+}
+
+.guides-page .track-cta-btn:hover {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+  transform: none !important;
+}
+
+.guides-page .home-cta-card {
+  background: var(--sf-page-surface) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.guides-page .home-button-cta {
+  background: linear-gradient(180deg, #FF7711 0%, #EA5500 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  color: #FFFFFF !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* FAQ: keep its search, question list, pagination and modal behaviour;
+   bring the surfaces and heading hierarchy into the shared system. */
+.faq-page {
+  background: transparent !important;
+  color: var(--sf-page-heading) !important;
+  padding-top: clamp(28px, 3.5vw, 40px) !important;
+}
+
+.faq-page-header {
+  text-align: left !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+}
+
+.faq-page-title {
+  margin: 0 !important;
+}
+
+.faq-page-desc {
+  max-width: 680px !important;
+}
+
+.faq-card,
+.faq-page .faq-submit-card,
+.faq-page .faq-no-results {
+  background: var(--sf-page-surface) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+.faq-card:hover,
+.faq-page .faq-submit-card:hover {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.faq-page .faq-item-question,
+.faq-page .faq-submit-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: var(--sf-page-heading) !important;
+  font-weight: 700 !important;
+}
+
+.faq-page .faq-answer-text,
+.faq-page .faq-submit-desc,
+.faq-page .faq-no-results-desc {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: var(--sf-page-copy) !important;
+}
+
+.faq-page .faq-search-field,
+.faq-page .faq-textarea {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  box-shadow: none !important;
+}
+
+.faq-page .faq-search-field:focus-within,
+.faq-page .faq-textarea:focus {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+.faq-page .faq-search-input,
+.faq-page .faq-textarea {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.faq-page .faq-page-btn,
+.faq-page .faq-page-num {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* Contact form: keep the form and validation behaviour; use the common card and field surfaces. */
+.contact-card {
+  background: var(--sf-page-surface) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.contact-form label > span {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.contact-form input:not([type="checkbox"]),
+.contact-form textarea {
+  background: var(--sf-page-bg) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-heading) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--sf-page-copy-soft) !important;
+}
+
+/* Search page: keep compact horizontal results, but remove the older navy gradients and glow. */
+.search-page-container {
+  background: transparent !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.search-bar-form {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.search-bar-form:focus-within {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+.search-bar-form input {
+  color: var(--sf-page-heading) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.search-resource-card,
+.search-resource-card:hover,
+.search-resource-card:focus-visible {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.search-resource-card .card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.search-resource-card .card-desc {
+  color: var(--sf-page-copy) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+.search-empty-box {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  box-shadow: none !important;
+}
+
+/* Resource library listing: same restrained card surface as homepage and resource detail pages. */
+.explore-page .resource-card-prominent,
+.explore-page .resource-card-horizontal,
+.explore-page .recent-resource-card {
+  background: var(--sf-page-surface) !important;
+  border: 1px solid var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.explore-page .resource-card-prominent:hover,
+.explore-page .resource-card-horizontal:hover,
+.explore-page .recent-resource-card:hover {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.explore-page .recent-resource-card-title,
+.explore-page .prominent-title,
+.explore-page .h-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  color: var(--sf-page-heading) !important;
+}
+
+.explore-page .prominent-desc,
+.explore-page .h-desc,
+.explore-page .recent-resource-card-desc {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  color: var(--sf-page-copy) !important;
+}
+
+.explore-page .search-form {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  box-shadow: none !important;
+}
+
+.explore-page .search-form:focus-within {
+  border-color: var(--sf-page-focus) !important;
+  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+}
+
+.explore-page .search-bar-circle-btn {
+  background: var(--sf-page-surface-raised) !important;
+  border-color: var(--sf-page-border) !important;
+  color: var(--sf-page-copy) !important;
+}
+
+.explore-page .search-bar-circle-btn.is-active,
+.explore-page .search-submit-btn:active,
+.explore-page .search-submit-btn.is-active {
+  background: rgba(53, 201, 193, 0.10) !important;
+  border-color: var(--sf-page-focus) !important;
+  color: var(--sf-page-accent) !important;
+}
+
+.explore-page .filter-dialog {
+  background: var(--sf-page-surface) !important;
+  border-color: var(--sf-page-border) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+}
+
+.explore-page .filter-dialog-title {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--sf-page-heading) !important;
+}
+
+/* Light theme: page and component text follows the same neutral contrast scale. */
+:root[data-theme="light"] .about-title,
+:root[data-theme="light"] .legal-title,
+:root[data-theme="light"] .contact-title,
+:root[data-theme="light"] .guides-title,
+:root[data-theme="light"] .faq-page-title,
+html.light-theme .about-title,
+html.light-theme .legal-title,
+html.light-theme .contact-title,
+html.light-theme .guides-title,
+html.light-theme .faq-page-title,
+:root[data-theme="light"] .guides-page .method-title,
+:root[data-theme="light"] .guides-page .track-title,
+html.light-theme .guides-page .method-title,
+html.light-theme .guides-page .track-title {
+  color: var(--sf-page-heading) !important;
+}
+
+:root[data-theme="light"] .guides-page .guides-highlight,
+html.light-theme .guides-page .guides-highlight {
+  color: var(--sf-page-accent) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+:root[data-theme="light"] .guides-page .home-card,
+:root[data-theme="light"] .guides-page .home-card:hover,
+:root[data-theme="light"] .guides-page .home-cta-card,
+:root[data-theme="light"] .faq-card,
+:root[data-theme="light"] .faq-page .faq-submit-card,
+:root[data-theme="light"] .contact-card,
+:root[data-theme="light"] .search-resource-card,
+:root[data-theme="light"] .search-empty-box,
+:root[data-theme="light"] .explore-page .resource-card-prominent,
+:root[data-theme="light"] .explore-page .resource-card-horizontal,
+:root[data-theme="light"] .explore-page .recent-resource-card,
+html.light-theme .guides-page .home-card,
+html.light-theme .guides-page .home-card:hover,
+html.light-theme .guides-page .home-cta-card,
+html.light-theme .faq-card,
+html.light-theme .faq-page .faq-submit-card,
+html.light-theme .contact-card,
+html.light-theme .search-resource-card,
+html.light-theme .search-empty-box,
+html.light-theme .explore-page .resource-card-prominent,
+html.light-theme .explore-page .resource-card-horizontal,
+html.light-theme .explore-page .recent-resource-card {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 640px) {
+  .about-container,
+  .legal-container,
+  .contact-container {
+    width: calc(100% - 32px) !important;
+  }
+
+  .guides-page .container.narrow {
+    width: calc(100% - 32px) !important;
+  }
+
+  .about-hero,
+  .legal-hero,
+  .contact-hero,
+  .guides-hero {
+    padding: 26px 0 18px !important;
+  }
+
+  .about-body,
+  .legal-body,
+  .contact-body {
+    padding: 20px 0 32px !important;
+  }
+
+  .faq-page {
+    padding: 24px 16px 30px !important;
+  }
+
+  .faq-page-container {
+    gap: 20px !important;
+  }
+
+  .guides-page .guides-section {
+    padding: 22px 0 !important;
+  }
+
+  .guides-page .section-head {
+    margin-bottom: 16px !important;
+  }
+
+  .guides-page .home-card {
+    padding: 18px 16px !important;
+  }
+
+  .guides-page .track-card {
+    padding: 18px 16px !important;
+  }
+
+  .search-page-container {
+    padding: 22px 16px 36px !important;
+  }
+
+  .search-resource-card {
+    border-radius: 12px !important;
+  }
+
+  .contact-card {
+    padding: 20px 16px !important;
+  }
+}
