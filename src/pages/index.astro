@@ -4611,48 +4611,96 @@ const formatUploadDate = (d: Date | string | undefined) => {
 
 
 
-  /* Align the FAQ/support divider with the same narrow content column. */
-   .home-page .faq-support-divider {
-    width: 100%;
+  /* Consistent divider geometry and spacing for sections after Recent Works.
+     The Recent Works section and its existing divider are intentionally untouched. */
+  .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+    width: min(820px, calc(100% - 48px)) !important;
+    height: 1px !important;
+  }
+
+  .home-page .faq-support-divider,
+  .home-page .faq-cta-divider {
+    display: block;
+    width: 100% !important;
+    max-width: none !important;
     height: 1px;
-    margin: 14px auto 32px;
+    box-sizing: border-box;
     background: rgba(255, 255, 255, 0.08);
   }
 
-  .home-page .faq-support-cta {
-    margin: 0 auto 0 !important;
+  .home-page .faq-support-divider {
+    margin: 24px auto !important;
   }
 
   .home-page .faq-cta-divider {
-    width: 100%;
-    max-width: 820px;
-    height: 1px;
-    margin: 24px auto 0;
-    background: rgba(255, 255, 255, 0.08);
+    margin: 24px auto 0 !important;
   }
 
   :global([data-theme="light"]) .home-page .faq-support-divider,
-  :global(html.light-theme) .home-page .faq-support-divider {
-    background: rgba(15, 23, 42, 0.10);
-  }
-
+  :global(html.light-theme) .home-page .faq-support-divider,
   :global([data-theme="light"]) .home-page .faq-cta-divider,
   :global(html.light-theme) .home-page .faq-cta-divider {
     background: rgba(15, 23, 42, 0.10);
   }
 
+  /* One vertical rhythm for Explore Skill Areas and every section after it.
+     Padding controls the line-to-content and content-to-next-line distances. */
+  .home-page .skills-section,
+  .home-page .method-section,
+  .home-page .trust-section,
+  .home-page .faq-section {
+    padding: 28px 0 24px !important;
+  }
+
+  .home-page .skills-section .section-head,
+  .home-page .method-section .section-head,
+  .home-page .trust-section .section-head,
+  .home-page .faq-section .faq-section-head {
+    margin: 0 0 20px !important;
+  }
+
+  .home-page .skills-section .section-head h2,
+  .home-page .method-section .section-head h2,
+  .home-page .trust-section .section-head h2 {
+    margin-bottom: 8px !important;
+  }
+
+  .home-page .faq-section-heading-group {
+    gap: 8px !important;
+  }
+
   @media (max-width: 640px) {
-     .home-page .faq-support-divider {
-      margin: 12px auto 32px;
+    .home-page .skills-section ~ .home-section:not(.final-cta-section)::before {
+      width: calc(100% - 28px) !important;
     }
 
-    .home-page .faq-support-cta {
-      margin: 0 auto 0 !important;
+    .home-page .faq-support-divider {
+      margin: 24px auto !important;
     }
 
     .home-page .faq-cta-divider {
-      width: calc(100% - 28px);
-      margin-top: 20px;
+      width: 100% !important;
+      margin: 24px auto 0 !important;
+    }
+
+    .home-page .skills-section,
+    .home-page .method-section,
+    .home-page .trust-section,
+    .home-page .faq-section {
+      padding: 20px 0 16px !important;
+    }
+
+    .home-page .skills-section .section-head,
+    .home-page .method-section .section-head,
+    .home-page .trust-section .section-head,
+    .home-page .faq-section .faq-section-head {
+      margin-bottom: 20px !important;
+    }
+
+    .home-page .skills-section .section-head h2,
+    .home-page .method-section .section-head h2,
+    .home-page .trust-section .section-head h2 {
+      margin-bottom: 8px !important;
     }
   }
 
