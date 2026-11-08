@@ -55,7 +55,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 <style>
   .faq-page {
     min-height: 70vh;
-    padding: clamp(42px, 5vw, 64px) 20px 18px;
+    padding: clamp(42px, 5vw, 64px) 20px 20px;
     color: #F8FAFC;
     box-sizing: border-box;
   }
@@ -97,6 +97,12 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
   .faq-search-section {
     width: 100%;
+    margin-top: 24px;
+  }
+
+  .faq-list-section {
+    width: 100%;
+    margin-top: 24px;
   }
 
   .faq-search-field {
@@ -341,6 +347,11 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
   }
 
   @media (max-width: 640px) {
+    .faq-search-section,
+    .faq-list-section {
+      margin-top: 20px;
+    }
+
     .faq-page .faq-support-cta {
       gap: 7px;
       margin: 12px auto 0;
@@ -417,7 +428,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
 
   @media (max-width: 640px) {
     .faq-page {
-      padding: 34px 16px 14px;
+      padding: 34px 16px 16px;
     }
 
     .faq-page-container {
