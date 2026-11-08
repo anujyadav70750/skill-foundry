@@ -28,6 +28,7 @@ html.light-theme {
   color: var(--sf-content-icon) !important;
 }
 
+.home-page .skill-track-icon,
 .home-page .skill-discipline-icon-wrap {
   color: var(--sf-content-icon) !important;
   background: transparent !important;
@@ -35,7 +36,10 @@ html.light-theme {
   box-shadow: none !important;
 }
 
+.home-page .skill-track-icon svg,
 .home-page .skill-discipline-icon-wrap svg {
+  width: 28px !important;
+  height: 28px !important;
   color: var(--sf-content-icon) !important;
 }
 
