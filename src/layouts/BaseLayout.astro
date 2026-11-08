@@ -15,6 +15,7 @@ export interface Props {
   hideFooter?: boolean;
   hideHeader?: boolean;
   hideBackButton?: boolean;
+  hideCTA?: boolean;
 }
 
 const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
@@ -36,7 +37,8 @@ const {
   hideHeaderSearch = false,
   hideFooter = false,
   hideHeader = false,
-  hideBackButton = isHomePage
+  hideBackButton = isHomePage,
+  hideCTA = false
 } = Astro.props;
 
 const fullTitle = title
@@ -362,7 +364,24 @@ const platformLinks = [
       </aside>
     )}
 
-    <main><slot /></main>
+    <main>
+      <slot />
+      {!hideCTA && (
+        <section class="sf-global-cta" aria-label="Continue learning with Skill Foundry">
+          <div class="container narrow">
+            <div class="home-cta-card">
+              <div class="cta-text-content">
+                <h2 class="cta-title">Your next useful skill starts here.</h2>
+                <p class="cta-desc">Explore practical guides, practise new skills, and use what you learn in your own projects.</p>
+              </div>
+              <div class="cta-action-wrap">
+                <a class="home-button home-button-cta" href="/resources/">Explore resources →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
 
     <!-- EMBEDDED PUBLISHED RESOURCE SEARCH DATA -->
     <script type="application/json" id="sf-search-data" set:html={JSON.stringify(publishedSearchData)}></script>
