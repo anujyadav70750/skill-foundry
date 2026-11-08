@@ -1166,3 +1166,78 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
   .sf-global-cta .cta-action-wrap { width: 100%; }
   .sf-global-cta .home-button-cta { width: auto; }
 }
+
+
+/* Page-heading cleanup: use the same title + description hierarchy as Home and resource detail pages. */
+.site-back-bar,
+#site-back-bar,
+.site-back-container,
+#site-global-back-btn {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+.guides-capsule-row,
+.guides-page .section-head > .home-capsule,
+.guides-page .method-capsule,
+.faq-page .faq-capsule,
+.about-page .about-eyebrow,
+.contact-page .contact-eyebrow,
+.legal-page .legal-eyebrow,
+.page-heading > .container > .eyebrow,
+#flat-view-capsule {
+  display: none !important;
+}
+
+/* Keep the heading and its description together after removing the old eyebrow labels. */
+.guides-page .guides-hero {
+  padding-top: 28px !important;
+}
+.guides-page .section-head {
+  margin-bottom: 30px !important;
+}
+.guides-page .section-head > h2 {
+  margin-top: 0 !important;
+}
+.flat-library-view .flat-heading-capsule-wrap {
+  gap: 7px !important;
+}
+.flat-library-view .flat-view-title {
+  margin: 0 !important;
+}
+.flat-library-view .flat-view-title[hidden] {
+  display: none !important;
+}
+
+/* Match the section rhythm used by the Home page and individual resource pages. */
+.guides-page .guides-section {
+  padding: 28px 0 20px !important;
+}
+.about-page .about-content,
+.legal-page .legal-content {
+  gap: 24px !important;
+}
+.faq-page-container {
+  gap: 24px !important;
+}
+@media (max-width: 640px) {
+  .guides-page .guides-hero {
+    padding-top: 24px !important;
+  }
+  .guides-page .guides-section {
+    padding: 20px 0 16px !important;
+  }
+  .guides-page .section-head {
+    margin-bottom: 22px !important;
+  }
+  .about-page .about-content,
+  .legal-page .legal-content {
+    gap: 20px !important;
+  }
+  .faq-page-container {
+    gap: 20px !important;
+  }
+}
