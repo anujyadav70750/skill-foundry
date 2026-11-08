@@ -1188,6 +1188,7 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
 .contact-page .contact-eyebrow,
 .legal-page .legal-eyebrow,
 .page-heading > .container > .eyebrow,
+.builder-heading > .eyebrow,
 #flat-view-capsule {
   display: none !important;
 }
