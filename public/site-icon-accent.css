@@ -1,0 +1,91 @@
+/* Skill Foundry content-icon system
+   A fixed teal accent separates meaningful icons from headings and body copy.
+   It is intentionally identical in light and dark themes.
+   Functional controls (search, tabs, arrows, close, download, FAQ plus) remain neutral. */
+:root,
+:root[data-theme="light"],
+html.light-theme {
+  --sf-content-icon: #0B9F9A;
+}
+
+/* Homepage: remove the grey icon tiles and let the icon itself carry the accent. */
+.home-page .trust-section .trust-card-icon {
+  color: var(--sf-content-icon) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 40px !important;
+  height: 40px !important;
+  flex: 0 0 40px !important;
+  padding: 0 !important;
+}
+
+.home-page .trust-section .trust-card-icon svg {
+  display: block !important;
+  width: 30px !important;
+  height: 30px !important;
+  color: var(--sf-content-icon) !important;
+}
+
+.home-page .skill-discipline-icon-wrap {
+  color: var(--sf-content-icon) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.home-page .skill-discipline-icon-wrap svg {
+  color: var(--sf-content-icon) !important;
+}
+
+/* Learning-track icons: same standalone treatment as the reference design. */
+.guides-page .track-icon-wrap {
+  color: var(--sf-content-icon) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.guides-page .track-icon-wrap svg {
+  width: 28px !important;
+  height: 28px !important;
+  color: var(--sf-content-icon) !important;
+}
+
+/* Small content indicators and resource metadata icons. */
+.home-page .pillar-check,
+.guides-page .topic-check,
+.resource-page .meta-calendar-icon,
+.resource-page .tutorial-detail-icon,
+.resource-page .tutorial-detail-design-services-icon,
+.resource-page .tutorial-pdf-preview-icon,
+.resource-page .tutorial-pdf-preview-icon svg {
+  color: var(--sf-content-icon) !important;
+}
+
+.resource-page .tutorial-detail-heading:has(.tutorial-detail-icon path[d^="M18.018 15.518"])::before {
+  background-color: var(--sf-content-icon) !important;
+}
+
+/* Navigation-menu item icons are content/navigation markers, not action controls.
+   Keep their accent fixed when the theme or hover state changes. */
+.menu-item-icon,
+.menu-nav-item:hover .menu-item-icon,
+.menu-nav-item.active .menu-item-icon {
+  color: var(--sf-content-icon) !important;
+}
+
+/* Empty-state illustrations use the same fixed icon accent, while retaining
+   their existing containers and spacing. */
+.empty-icon-wrap,
+.empty-icon-box,
+.empty-icon-circle {
+  color: var(--sf-content-icon) !important;
+}
+
+.empty-icon-wrap svg,
+.empty-icon-box svg,
+.empty-icon-circle svg {
+  color: var(--sf-content-icon) !important;
+}
