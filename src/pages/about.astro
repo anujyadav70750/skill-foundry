@@ -86,7 +86,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <style>
   .about-page {
-    min-height: 80vh;
     padding-bottom: 0;
   }
 
@@ -95,18 +94,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-inline: auto;
   }
 
-  /* Match the section rhythm used on Resource pages without stacking
-     the shared About body padding on top of the global CTA padding. */
-  :global(.about-body) {
+  /* Keep the About-to-CTA transition on the same single spacing rhythm
+     as the homepage and Resource pages. Remove the inherited body bottom
+     padding, then let the shared CTA own the visible gap. */
+  :global(main:has(.about-page) .about-body) {
     padding-bottom: 0 !important;
   }
 
-  :global(.about-page + .sf-global-cta) {
+  :global(main:has(.about-page) > .sf-global-cta) {
     padding-top: 36px !important;
   }
 
-  :global(.about-section-block h2) {
-    margin: 0 0 14px !important;
+  :global(.about-page .about-title) {
+    margin: 0 0 18px !important;
+  }
+
+  :global(.about-page .about-section-block h2) {
+    margin: 0 0 18px !important;
   }
 
   :global(.about-section-block p) {
@@ -118,11 +122,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .about-trust-panel h3 {
-    margin-bottom: 14px;
+    margin: 0 0 16px !important;
   }
 
   .about-trust-panel {
-    margin-top: 8px;
+    margin-top: 0;
   }
 
   .about-trust-panel p + p {
@@ -208,7 +212,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .about-trust-panel h3 {
-    margin: 0 0 10px;
+    margin: 0 0 16px !important;
     color: var(--sf-page-heading, #F5F5F5);
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 16px;
@@ -234,7 +238,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   @media (max-width: 640px) {
-    :global(.about-page + .sf-global-cta) {
+    :global(main:has(.about-page) > .sf-global-cta) {
       padding-top: 24px !important;
     }
 
@@ -244,7 +248,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     .about-trust-panel h3 {
-      margin-bottom: 12px;
+      margin-bottom: 16px !important;
     }
 
     .about-container {
