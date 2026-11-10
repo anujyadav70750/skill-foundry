@@ -71,6 +71,44 @@
   const status = dialog.querySelector('.sf-contact-status');
   const submit = dialog.querySelector('.sf-contact-submit');
   let opener = null;
+  let lockedScrollY = 0;
+  let savedHtmlOverflow = '';
+  let savedBodyStyles = null;
+
+  const lockPageScroll = () => {
+    if (savedBodyStyles) return;
+    lockedScrollY = window.scrollY || window.pageYOffset || 0;
+    const body = document.body;
+    const html = document.documentElement;
+    savedHtmlOverflow = html.style.overflow;
+    savedBodyStyles = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+      touchAction: body.style.touchAction
+    };
+    html.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.top = '-' + lockedScrollY + 'px';
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    body.style.touchAction = 'none';
+  };
+
+  const unlockPageScroll = () => {
+    if (!savedBodyStyles) return;
+    const body = document.body;
+    const html = document.documentElement;
+    html.style.overflow = savedHtmlOverflow;
+    Object.assign(body.style, savedBodyStyles);
+    savedBodyStyles = null;
+    window.scrollTo(0, lockedScrollY);
+  };
 
   document.querySelectorAll('[data-open-contact]').forEach(button => {
     button.addEventListener('click', () => {
@@ -84,7 +122,10 @@
       status.textContent = '';
       status.className = 'sf-contact-status';
       submit.disabled = false;
-      if (!dialog.open) dialog.showModal();
+      if (!dialog.open) {
+        lockPageScroll();
+        dialog.showModal();
+      }
       // Do not focus an input on open: that can shift the dialog and clip its heading.
       close.focus({ preventScroll: true });
     });
@@ -95,6 +136,8 @@
     if (opener?.isConnected) opener.focus({ preventScroll: true });
   };
 
+  // Also restore the page when the user closes the dialog with Android's Back/Escape key.
+  dialog.addEventListener('close', unlockPageScroll);
   close.addEventListener('click', closeDialog);
   dialog.addEventListener('click', event => {
     if (event.target === dialog) closeDialog();
