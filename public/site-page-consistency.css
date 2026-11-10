@@ -53,6 +53,7 @@ body.no-header {
 .legal-container,
 .contact-container {
   width: min(780px, calc(100% - 48px)) !important;
+  margin-inline: auto !important;
 }
 
 .guides-page .container.narrow {
