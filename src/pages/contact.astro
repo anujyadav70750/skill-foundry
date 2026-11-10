@@ -38,6 +38,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     <section class="contact-body">
       <div class="contact-container">
         <div class="contact-form-section">
+        <div class="contact-form-card">
         <form class="contact-form" id="contact-form" novalidate>
           <label class="contact-field">
             <span class="contact-field-title">Name <span class="contact-required" aria-hidden="true">*</span></span>
@@ -83,6 +84,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
             <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
           </div>
         </form>
+        </div>
         </div>
       </div>
     </section>
@@ -243,6 +245,17 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
   .contact-form-section {
     width: 100%;
     max-width: 720px;
+  }
+
+  .contact-form-card {
+    width: 100%;
+    max-width: 720px;
+    box-sizing: border-box;
+    padding: 24px;
+    border: 1px solid var(--sf-page-border, rgba(255,255,255,.08));
+    border-radius: 15px;
+    background: var(--sf-page-surface, #0B0D12);
+    box-shadow: none;
   }
 
   .contact-form {
@@ -471,6 +484,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
   .contact-status.error { color: #F87171; }
 
   @media (max-width: 520px) {
+    .contact-form-card { padding: 18px; border-radius: 13px; }
     .contact-page { padding-bottom: 0; }
     .contact-body { padding-bottom: 28px; }
     .contact-form { gap: 16px; }
