@@ -1,0 +1,103 @@
+<dialog class="sf-contact-dialog" id="sf-contact-dialog" aria-labelledby="sf-contact-title">
+  <div class="sf-contact-panel">
+    <div class="sf-contact-heading">
+      <div><p class="sf-contact-eyebrow">CONTACT</p><h2 id="sf-contact-title">Send us a message</h2><p class="sf-contact-intro">All fields marked <span aria-hidden="true">*</span> are required.</p></div>
+      <button class="sf-contact-close" type="button" aria-label="Close contact form">×</button>
+    </div>
+    <form class="sf-contact-form" id="sf-contact-form" novalidate>
+      <div class="sf-contact-grid">
+        <label>Name <span>*</span><input name="name" type="text" autocomplete="name" maxlength="100" placeholder="Your name" required /></label>
+        <label>Email <span>*</span><input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required /></label>
+      </div>
+      <label>Subject <span>*</span>
+        <select name="subject-choice" id="sf-contact-subject" required>
+          <option value="">Choose a subject</option>
+          <option>General question</option><option>Website or technical issue</option><option>Question about a resource</option><option>Feedback or suggestion</option><option>Collaboration or business enquiry</option><option value="Other">Other</option>
+        </select>
+      </label>
+      <label id="sf-contact-other-wrap" hidden>Enter your subject <span>*</span><input name="otherSubject" id="sf-contact-other" type="text" maxlength="160" placeholder="Write your subject" /></label>
+      <label>Message <span>*</span><textarea name="message" rows="5" maxlength="5000" placeholder="Write your message here…" required></textarea></label>
+      <label class="sf-contact-honey" aria-hidden="true">Website<input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+      <div class="sf-contact-actions"><button type="submit" class="sf-contact-submit">Send message <span aria-hidden="true">→</span></button><p class="sf-contact-status" role="status" aria-live="polite"></p></div>
+    </form>
+  </div>
+</dialog>
+<script is:inline>
+(() => {
+  const dialog = document.getElementById('sf-contact-dialog');
+  if (!dialog || dialog.dataset.ready) return;
+  dialog.dataset.ready = 'true';
+  const form = dialog.querySelector('#sf-contact-form');
+  const close = dialog.querySelector('.sf-contact-close');
+  const subject = dialog.querySelector('#sf-contact-subject');
+  const otherWrap = dialog.querySelector('#sf-contact-other-wrap');
+  const other = dialog.querySelector('#sf-contact-other');
+  const status = dialog.querySelector('.sf-contact-status');
+  const submit = dialog.querySelector('.sf-contact-submit');
+  let opener = null;
+  document.querySelectorAll('[data-open-contact]').forEach(button => button.addEventListener('click', () => {
+    opener = button;
+    status.textContent = '';
+    status.className = 'sf-contact-status';
+    if (!dialog.open) dialog.showModal();
+    form.querySelector('[name="name"]').focus();
+  }));
+  const closeDialog = () => { dialog.close(); opener?.focus(); };
+  close.addEventListener('click', closeDialog);
+  dialog.addEventListener('click', event => { if (event.target === dialog) closeDialog(); });
+  subject.addEventListener('change', () => {
+    const isOther = subject.value === 'Other';
+    otherWrap.hidden = !isOther;
+    other.required = isOther;
+    if (!isOther) other.value = '';
+  });
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const email = form.elements.email.value.trim();
+    if (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      status.textContent = 'Enter a valid email address.';
+      status.className = 'sf-contact-status error'; return;
+    }
+    const chosenSubject = subject.value === 'Other' ? other.value.trim() : subject.value;
+    if (!chosenSubject) { other.reportValidity(); return; }
+    submit.disabled = true;
+    status.textContent = 'Sending message…';
+    status.className = 'sf-contact-status';
+    const data = { name: form.elements.name.value.trim(), email, subject: chosenSubject, message: form.elements.message.value.trim(), website: form.elements.website.value };
+    try {
+      const response = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data) });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.ok) throw new Error(result.error || 'We could not send your message. Please try again.');
+      form.reset(); otherWrap.hidden = true; other.required = false;
+      status.textContent = 'Message sent successfully. Thanks for reaching out.';
+      status.className = 'sf-contact-status success';
+    } catch (error) {
+      status.textContent = error.message || 'We could not send your message. Please try again.';
+      status.className = 'sf-contact-status error';
+    } finally { submit.disabled = false; }
+  });
+})();
+</script>
+<style>
+.sf-contact-dialog{width:min(560px,calc(100% - 28px));max-width:560px;max-height:90dvh;padding:0;border:1px solid rgba(148,163,184,.24);border-radius:16px;background:#0B0D12;color:#F8FAFC;box-shadow:0 24px 80px rgba(0,0,0,.55);overflow:auto}
+.sf-contact-dialog::backdrop{background:rgba(2,6,12,.78);backdrop-filter:blur(4px)}
+.sf-contact-panel{padding:22px}
+.sf-contact-heading{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}
+.sf-contact-eyebrow{margin:0 0 6px;color:#3DD6C8;font-size:10px;font-weight:800;letter-spacing:.14em}
+.sf-contact-heading h2{margin:0;color:#F8FAFC;font-size:22px;line-height:1.25}
+.sf-contact-intro{margin:7px 0 0;color:#94A3B8;font-size:12px}.sf-contact-intro span,.sf-contact-form label>span{color:#F87171}
+.sf-contact-close{width:36px;height:36px;flex:0 0 36px;border:1px solid rgba(255,255,255,.14);border-radius:9px;background:rgba(255,255,255,.05);color:#E2E8F0;font-size:24px;line-height:1;cursor:pointer}
+.sf-contact-form{display:flex;flex-direction:column;gap:15px}.sf-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sf-contact-form label{display:flex;flex-direction:column;gap:7px;color:#CBD5E1;font-size:12.5px;font-weight:700}
+.sf-contact-form input,.sf-contact-form select,.sf-contact-form textarea{width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px 12px;border:1px solid rgba(255,255,255,.13);border-radius:9px;background:#070A10;color:#F8FAFC;font:inherit;font-size:14px;font-weight:400;outline:none}
+.sf-contact-form textarea{min-height:112px;resize:vertical}.sf-contact-form input:focus,.sf-contact-form select:focus,.sf-contact-form textarea:focus{border-color:#3DD6C8;box-shadow:0 0 0 3px rgba(61,214,200,.1)}
+.sf-contact-form [hidden]{display:none!important}.sf-contact-honey{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+.sf-contact-actions{display:flex;flex-wrap:wrap;align-items:center;gap:12px}.sf-contact-submit{min-height:42px;padding:0 18px;border:1px solid #A8C8DF;border-radius:9px;background:#C5DDED;color:#183247;font-size:13px;font-weight:750;cursor:pointer}.sf-contact-submit:disabled{opacity:.55;cursor:wait}
+.sf-contact-status{margin:0;color:#94A3B8;font-size:12.5px;line-height:1.45}.sf-contact-status.success{color:#34D399}.sf-contact-status.error{color:#F87171}
+:global([data-theme="light"]) .sf-contact-dialog,:global(html.light-theme) .sf-contact-dialog{background:#fff;color:#172033}
+:global([data-theme="light"]) .sf-contact-heading h2,:global(html.light-theme) .sf-contact-heading h2{color:#172033}
+:global([data-theme="light"]) .sf-contact-form label,:global(html.light-theme) .sf-contact-form label{color:#334155}
+:global([data-theme="light"]) .sf-contact-form input,:global([data-theme="light"]) .sf-contact-form select,:global([data-theme="light"]) .sf-contact-form textarea,:global(html.light-theme) .sf-contact-form input,:global(html.light-theme) .sf-contact-form select,:global(html.light-theme) .sf-contact-form textarea{background:#F8FAFC;border-color:#CBD5E1;color:#172033}
+@media(max-width:520px){.sf-contact-panel{padding:18px 16px}.sf-contact-grid{grid-template-columns:1fr}.sf-contact-heading h2{font-size:20px}}
+</style>
