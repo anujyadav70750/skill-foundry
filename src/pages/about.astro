@@ -103,8 +103,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding-top: 36px !important;
   }
 
-  :global(.about-page .about-title) {
-    margin: 0 0 18px !important;
+  /* Match the hero's title, description and divider rhythm to the
+     spacing used between editorial section headings and their copy. */
+  :global(.about-page .about-hero) {
+    padding-bottom: 22px !important;
+  }
+
+  :global(.about-page .about-hero .about-title) {
+    margin: 0 0 16px !important;
+  }
+
+  :global(.about-page .about-hero .about-lead) {
+    margin: 0 !important;
   }
 
   :global(.about-page .about-section-block h2) {
@@ -227,6 +237,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   @media (max-width: 640px) {
+    :global(.about-page .about-hero) {
+      padding-bottom: 20px !important;
+    }
+
+    :global(.about-page .about-hero .about-title) {
+      margin-bottom: 14px !important;
+    }
+
     :global(main:has(.about-page) > .sf-global-cta) {
       padding-top: 24px !important;
     }
