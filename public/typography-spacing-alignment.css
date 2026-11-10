@@ -141,14 +141,6 @@
   line-height: 1.35 !important;
 }
 
-/* Resource detail pages retain their existing workflow and card hierarchy. */
-.resource-editorial-layout .resource-main-title {
-  font-family: var(--sf-editorial-font) !important;
-  font-size: clamp(27px, 4vw, 34px) !important;
-  font-weight: 750 !important;
-  line-height: 1.2 !important;
-  letter-spacing: -0.025em !important;
-}
 .resource-editorial-layout .resource-header-description { margin-bottom: 18px !important; }
 .resource-editorial-layout .resource-editorial-section { margin-bottom: 16px !important; }
 .resource-editorial-layout .tutorial-step-header { gap: 7px !important; margin-bottom: 14px !important; }
@@ -163,8 +155,7 @@
   .faq-page-title,
   .home-page .hero-title,
   .page-heading h1,
-  .builder-heading h1,
-  .resource-editorial-layout .resource-main-title {
+  .builder-heading h1 {
     font-size: clamp(27px, 8vw, 34px) !important;
   }
   .about-hero,
