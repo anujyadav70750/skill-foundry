@@ -27,32 +27,56 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <section class="about-section-block">
             <h2>How we help you learn</h2>
             <p>We believe learning should go beyond following instructions. Every workflow should help you build understanding, practise a process and become capable of adapting it.</p>
-            <div class="about-learning-steps">
-              <div class="about-learning-step">
+
+            <div class="about-learning-grid" aria-label="Skill Foundry learning approach">
+              <article class="about-learning-card">
                 <h3>Understand</h3>
                 <p>Learn the concepts, tools and techniques behind a process.</p>
-              </div>
-              <div class="about-learning-step">
+              </article>
+              <article class="about-learning-card">
                 <h3>Execute</h3>
                 <p>Follow practical instructions and learn through real examples and projects.</p>
-              </div>
-              <div class="about-learning-step">
+              </article>
+              <article class="about-learning-card">
                 <h3>Adapt</h3>
                 <p>Modify what you have learned to suit your own needs, goals and projects.</p>
-              </div>
+              </article>
             </div>
           </section>
 
           <section class="about-section-block">
             <h2>What you’ll find here</h2>
-            <p>Skill Foundry is being built as a library of practical tutorials, step-by-step blueprints, prompts, tool guidance and creative workflows.</p>
-            <p>The focus is on helping you create, solve problems, improve everyday work and turn ideas into practical results. As the library grows, it will cover more tools, techniques and skill areas that help people stay capable and adaptable.</p>
+            <p>Skill Foundry brings together practical learning resources in formats that help turn ideas into real work.</p>
+
+            <div class="about-formats-grid" aria-label="Types of learning resources">
+              <article class="about-format-card">
+                <h3>Practical tutorials</h3>
+                <p>Clear explanations that guide you through useful tasks.</p>
+              </article>
+              <article class="about-format-card">
+                <h3>Step-by-step blueprints</h3>
+                <p>Structured workflows that show how a process fits together.</p>
+              </article>
+              <article class="about-format-card">
+                <h3>Prompts and tool guidance</h3>
+                <p>Understand the choices behind the tools and instructions you use.</p>
+              </article>
+              <article class="about-format-card">
+                <h3>Creative workflows</h3>
+                <p>Combine techniques to develop practical results of your own.</p>
+              </article>
+            </div>
+
+            <p class="about-growth-copy">The focus is on helping you create, solve problems, improve everyday work and turn ideas into practical results. As the library grows, it will cover more tools, techniques and skill areas that help people stay capable and adaptable.</p>
           </section>
 
           <section class="about-section-block about-section-last">
             <h2>Our approach to practical learning</h2>
-            <p>We aim to make every published resource useful, understandable and actionable. Every published resource is personally tested through actual execution before it is published.</p>
-            <p>Instructions are designed to explain the process, not just reproduce an output. The goal is to help you develop skills you can continue using, improving and adapting beyond a single tutorial.</p>
+            <div class="about-trust-panel">
+              <h3>Personally tested through actual execution.</h3>
+              <p>We aim to make every published resource useful, understandable and actionable. Every published resource is personally tested through actual execution before it is published.</p>
+              <p>Instructions are designed to explain the process, not just reproduce an output. The goal is to help you develop skills you can continue using, improving and adapting beyond a single tutorial.</p>
+            </div>
           </section>
         </div>
       </div>
@@ -67,150 +91,165 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .about-container {
-    width: min(740px, calc(100% - 48px));
+    width: min(780px, calc(100% - 48px));
     margin-inline: auto;
   }
 
-  .about-hero {
-    padding: clamp(48px, 6vw, 72px) 0 clamp(28px, 3.5vw, 36px);
-    border-bottom: 1px solid var(--line, #1E293B);
-    background: transparent;
-  }
-
-  .about-title {
-    margin: 0 0 16px 0;
-    color: #F8FAFC;
-    font-size: clamp(34px, 5.5vw, 54px);
-    font-weight: 800;
-    line-height: 1.12;
-    letter-spacing: -0.035em;
-    max-width: 740px;
-  }
-
-  .about-lead {
-    margin: 0;
-    max-width: 680px;
-    color: #94A3B8;
-    font-size: clamp(16px, 2.2vw, 18px);
-    line-height: 1.62;
-  }
-
-  .about-body {
-    padding: 36px 0 40px;
-  }
-
+  /* The shared page stylesheet controls hero and body spacing. */
   .about-content {
     display: flex;
     flex-direction: column;
-    gap: 34px;
+    gap: 0 !important;
   }
 
-  .about-section-block h2 {
-    margin: 0 0 12px 0;
-    color: #F8FAFC;
-    font-size: clamp(21px, 3.2vw, 26px);
-    font-weight: 750;
-    line-height: 1.22;
-    letter-spacing: -0.025em;
-  }
-
-  .about-section-block p {
-    margin: 0 0 14px 0;
-    color: #CBD5E1;
-    font-size: 15.5px;
-    line-height: 1.68;
-    max-width: 680px;
-  }
-
-  .about-section-block p:last-of-type {
-    margin-bottom: 0;
-  }
-
-  .about-learning-steps {
+  .about-learning-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 20px;
+    gap: 14px;
+    margin-top: 18px;
+    width: 100%;
   }
 
-  .about-learning-step h3 {
-    margin: 0 0 7px;
-    color: #F8FAFC;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+  .about-learning-card,
+  .about-format-card,
+  .about-trust-panel {
+    box-sizing: border-box;
+    min-width: 0;
+    background: var(--sf-page-surface, #0B0D12);
+    border: 1px solid var(--sf-page-border, rgba(255, 255, 255, 0.08));
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .about-learning-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px 18px;
+    min-height: 132px;
+  }
+
+  .about-learning-card h3,
+  .about-format-card h3 {
+    margin: 0;
+    color: var(--sf-page-heading, #F5F5F5);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 15px;
     font-weight: 700;
     line-height: 1.35;
+    letter-spacing: -0.01em;
   }
 
-  .about-learning-step p {
+  .about-learning-card p,
+  .about-format-card p {
     margin: 0;
+    color: var(--sf-page-copy, #A1A9B6);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 13.5px;
+    line-height: 1.58;
+  }
+
+  .about-formats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+    width: 100%;
+  }
+
+  .about-format-card {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    padding: 18px 16px;
+  }
+
+  .about-trust-panel {
+    margin-top: 4px;
+    padding: 22px 20px;
+  }
+
+  .about-trust-panel h3 {
+    margin: 0 0 10px;
+    color: var(--sf-page-heading, #F5F5F5);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-weight: 750;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+  }
+
+  .about-trust-panel p {
+    margin: 0 0 12px;
+    color: var(--sf-page-copy, #A1A9B6);
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
   }
 
-  :global([data-theme="light"]) .about-title,
-  :global(html.light-theme) .about-title,
-  :global([data-theme="light"]) .about-learning-step h3,
-  :global(html.light-theme) .about-learning-step h3 {
-    color: #0F172A;
+  .about-trust-panel p:last-child {
+    margin-bottom: 0;
   }
 
-  :global([data-theme="light"]) .about-lead,
-  :global(html.light-theme) .about-lead {
-    color: #475569;
-  }
-
-  :global([data-theme="light"]) .about-section-block h2,
-  :global(html.light-theme) .about-section-block h2 {
-    color: #0F172A;
-  }
-
-  :global([data-theme="light"]) .about-section-block p,
-  :global(html.light-theme) .about-section-block p {
-    color: #334155;
+  .about-growth-copy {
+    margin-top: 16px !important;
   }
 
   @media (max-width: 640px) {
     .about-container {
-      width: min(740px, calc(100% - 32px));
+      width: min(780px, calc(100% - 32px));
     }
 
-    .about-hero {
-      padding: 40px 0 24px;
+    /* Zero the flex gap so the shared divider and its padding are the
+       single source of vertical spacing between editorial sections. */
+    .about-page.about-page .about-content {
+      gap: 0 !important;
     }
 
-    .about-body {
-      padding: 28px 0 48px;
-    }
-
-    .about-content {
-      gap: 26px;
-    }
-
-    .about-title {
-      margin-bottom: 12px;
-      font-size: clamp(27px, 7.2vw, 34px);
-      line-height: 1.18;
-    }
-
-    .about-section-block h2 {
-      margin-bottom: 10px;
-    }
-
-    .about-section-block p {
-      font-size: 15px;
-      line-height: 1.65;
-      margin-bottom: 12px;
-    }
-
-    .about-learning-steps {
+    .about-learning-grid {
       grid-template-columns: 1fr;
-      gap: 15px;
-      margin-top: 16px;
+      gap: 12px;
+      margin-top: 15px;
     }
 
-    .about-learning-step h3 {
-      margin-bottom: 4px;
+    .about-learning-card {
+      min-height: 0;
+      padding: 18px 16px;
+      gap: 6px;
+    }
+
+    .about-formats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .about-format-card {
+      padding: 16px 13px;
+      gap: 6px;
+    }
+
+    .about-learning-card p,
+    .about-format-card p {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .about-trust-panel {
+      padding: 18px 16px;
+    }
+
+    .about-growth-copy {
+      margin-top: 14px !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .about-learning-card,
+    .about-format-card,
+    .about-trust-panel {
+      scroll-behavior: auto;
+      transition: none;
     }
   }
 </style>
