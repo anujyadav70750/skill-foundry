@@ -12,15 +12,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p class="legal-eyebrow">PRIVACY</p>
         <h1 class="legal-title">Privacy Policy</h1>
         <p class="legal-lead">This policy explains what information Skill Foundry receives when you use the website, how it is handled, and the choices available to you.</p>
-        <div class="legal-updated" aria-label="Last updated">
-          <svg class="privacy-date-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-          </svg>
-          <span class="privacy-date-text">Nov 10, 2026</span>
-        </div>
       </div>
     </section>
 
@@ -94,30 +85,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-weight: 750;
     line-height: 1.2;
     letter-spacing: -0.025em;
-  }
-
-  .legal-updated {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin: 10px 0 0;
-    color: #8C92A0;
-    font-size: 13px;
-    line-height: 1.2;
-  }
-
-  .privacy-date-icon {
-    width: 14px;
-    height: 14px;
-    color: #7E8492;
-    flex-shrink: 0;
-    display: block;
-  }
-
-  .privacy-date-text {
-    color: inherit;
-    font-size: 13px;
-    line-height: 1.2;
   }
 
   .legal-contact-button {
@@ -219,9 +186,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   :global(main:has(.privacy-page) > .sf-global-cta) {
     padding-top: 28px !important;
   }
-
-  :global([data-theme="light"]) .legal-updated,
-  :global(html.light-theme) .legal-updated { color: #64748B; }
 
   :global([data-theme="light"]) .legal-title,
   :global(html.light-theme) .legal-title {
