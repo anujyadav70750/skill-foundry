@@ -10,7 +10,6 @@
 .contact-title,
 .guides-title,
 .faq-page-title,
-.home-page .hero-title,
 .page-heading h1,
 .builder-heading h1 {
   font-family: var(--sf-editorial-font) !important;
@@ -153,7 +152,6 @@
   .contact-title,
   .guides-title,
   .faq-page-title,
-  .home-page .hero-title,
   .page-heading h1,
   .builder-heading h1 {
     font-size: clamp(27px, 8vw, 34px) !important;
