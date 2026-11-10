@@ -6,7 +6,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   description="Read the terms for using Skill Foundry, its educational resources, and original materials."
   canonical="https://hub.skillfoundry-web.workers.dev/terms/"
 >
-  <div class="legal-page">
+  <div class="legal-page terms-page">
     <section class="legal-hero">
       <div class="legal-container">
         <p class="legal-eyebrow">TERMS</p>
@@ -111,7 +111,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   :global(main .legal-page .legal-content) { gap: 0 !important; }
 
-  .legal-contact-button { display:inline-flex; align-items:center; justify-content:center; width:fit-content; margin-top:18px; min-height:40px; padding:0 16px; border:1px solid #A8C8DF; border-radius:9px; background:#C5DDED; color:#183247; font-size:12.5px; font-weight:750; text-align:center; text-decoration:none; cursor:pointer; }
+  .legal-contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-top: 18px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid #A8C8DF;
+    border-radius: 9px;
+    background: #C5DDED;
+    color: #183247 !important;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none !important;
+    text-underline-offset: 0;
+    cursor: pointer;
+  }
 
   :global(.legal-page .legal-section-block) {
     padding: 0 0 22px;
@@ -155,8 +174,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     text-underline-offset: 3px;
   }
 
-  :global(main:has(.legal-page) > .sf-global-cta) {
-    padding-top: 36px !important;
+  .terms-page .legal-body {
+    padding-bottom: 0 !important;
+  }
+
+  :global(main:has(.terms-page) > .sf-global-cta) {
+    padding-top: 28px !important;
   }
 
   :global([data-theme="light"]) .legal-title,
@@ -222,8 +245,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       padding-bottom: 0;
     }
 
-    :global(main:has(.legal-page) > .sf-global-cta) {
-      padding-top: 24px !important;
+    .terms-page .legal-body {
+      padding-bottom: 0 !important;
+    }
+
+    :global(main:has(.terms-page) > .sf-global-cta) {
+      padding-top: 20px !important;
     }
   }
 </style>
