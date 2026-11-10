@@ -95,6 +95,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-inline: auto;
   }
 
+  /* Match the section rhythm used on Resource pages without stacking
+     the shared About body padding on top of the global CTA padding. */
+  :global(.about-body) {
+    padding-bottom: 0 !important;
+  }
+
+  :global(.about-page + .sf-global-cta) {
+    padding-top: 36px !important;
+  }
+
+  :global(.about-section-block h2) {
+    margin: 0 0 14px !important;
+  }
+
+  :global(.about-section-block p) {
+    margin: 0 0 14px !important;
+  }
+
+  :global(.about-section-block p:last-child) {
+    margin-bottom: 0 !important;
+  }
+
+  .about-trust-panel h3 {
+    margin-bottom: 14px;
+  }
+
+  .about-trust-panel {
+    margin-top: 8px;
+  }
+
+  .about-trust-panel p + p {
+    margin-top: 14px !important;
+  }
+
+  .about-trust-panel p:last-child {
+    margin-bottom: 0 !important;
+  }
+
   /* The shared page stylesheet controls hero and body spacing. */
   .about-page.about-page .about-content {
     display: flex;
@@ -196,6 +234,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   @media (max-width: 640px) {
+    :global(.about-page + .sf-global-cta) {
+      padding-top: 24px !important;
+    }
+
+    .about-trust-panel {
+      margin-top: 6px;
+      padding: 18px 16px;
+    }
+
+    .about-trust-panel h3 {
+      margin-bottom: 12px;
+    }
+
     .about-container {
       width: min(780px, calc(100% - 32px));
     }
