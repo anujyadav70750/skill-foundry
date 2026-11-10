@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ContactModal from '../components/ContactModal.astro';
 ---
 <BaseLayout
   title="Privacy Policy | Skill Foundry"
@@ -55,13 +54,12 @@ import ContactModal from '../components/ContactModal.astro';
           <section class="legal-section-block legal-section-last">
             <h2>6. Policy updates and contact</h2>
             <p>This policy may be revised when the website's features or data practices change. The version published on this page is the current version. For a privacy-related question or request, contact Skill Foundry using the button below.</p>
-            <button type="button" class="legal-contact-button" data-open-contact data-contact-context="privacy">Contact us</button>
+            <a class="legal-contact-button" href="/contact/?subject=Question%20about%20this%20Privacy%20Policy">Contact us</a>
           </section>
         </div>
       </div>
     </section>
   </div>
-  <ContactModal />
 </BaseLayout>
 
 <style>
