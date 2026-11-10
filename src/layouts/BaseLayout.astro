@@ -1309,10 +1309,18 @@ const platformLinks = [
           min-width: 32px;
           border-radius: 8px;
         }
+        /* Mobile navigation: right-aligned vertical drawer, not a near-full-width card. */
         .nav-dropdown-menu {
-          width: calc(100vw - 20px);
+          width: min(300px, calc(100vw - 88px));
+          max-width: min(300px, calc(100vw - 88px));
+          max-height: calc(100dvh - 112px);
+          overflow-y: auto;
+          overscroll-behavior: contain;
           right: 0;
+          left: auto;
           top: calc(100% + 8px);
+          padding: 12px;
+          border-radius: 18px;
         }
       }
 
