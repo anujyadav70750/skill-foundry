@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from '../components/ContactModal.astro';
 ---
 <BaseLayout
   title="Privacy Policy | Skill Foundry"
@@ -12,6 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p class="legal-eyebrow">PRIVACY</p>
         <h1 class="legal-title">Privacy Policy</h1>
         <p class="legal-lead">This policy explains what information Skill Foundry receives when you use the website, how it is handled, and the choices available to you.</p>
+        <p class="legal-updated">Last updated: 10 November 2026</p>
       </div>
     </section>
 
@@ -47,17 +49,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <section class="legal-section-block">
             <h2>5. Data retention and your choices</h2>
             <p>Skill Foundry does not currently publish a fixed retention period for contact enquiries. If a message is successfully delivered by email, it may remain in the receiving email account and related service records according to the settings and retention practices of those services. We aim to keep information only for as long as it is reasonably needed to handle the enquiry, maintain records or meet applicable obligations.</p>
-            <p>You can choose not to submit the contact form and can clear the saved theme preference through your browser's site-data settings. If you want to ask about, correct or request deletion of information you have sent, use the <a href="/contact/">Contact page</a>. We will consider the request and explain if any information must be retained for a legitimate or legal reason.</p>
+            <p>You can choose not to submit the contact form and can clear the saved theme preference through your browser's site-data settings. If you want to ask about, correct or request deletion of information you have sent, use the Contact us button in the final section. We will consider the request and explain if any information must be retained for a legitimate or legal reason.</p>
           </section>
 
           <section class="legal-section-block legal-section-last">
             <h2>6. Policy updates and contact</h2>
-            <p>This policy may be revised when the website's features or data practices change. The version published on this page is the current version. For a privacy-related question or request, contact Skill Foundry through the <a href="/contact/">Contact page</a>.</p>
+            <p>This policy may be revised when the website's features or data practices change. The version published on this page is the current version. For a privacy-related question or request, contact Skill Foundry using the button below.
+            <button type="button" class="legal-contact-button" data-open-contact data-contact-context="privacy">Contact us</button></p>
           </section>
         </div>
       </div>
     </section>
   </div>
+  <ContactModal />
 </BaseLayout>
 
 <style>
@@ -85,6 +89,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.2;
     letter-spacing: -0.025em;
   }
+
+  .legal-updated { margin: 10px 0 0; color: #64748B; font-size: 11.5px; line-height: 1.4; }
+
+  .legal-contact-button { margin-top: 18px; min-height: 40px; padding: 0 16px; border: 1px solid #A8C8DF; border-radius: 9px; background: #C5DDED; color: #183247; font-family: inherit; font-size: 12.5px; font-weight: 750; cursor: pointer; }
 
   .legal-lead {
     margin: 0;
@@ -160,6 +168,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   :global(main:has(.legal-page) > .sf-global-cta) {
     padding-top: 36px !important;
   }
+
+  :global([data-theme="light"]) .legal-updated,
+  :global(html.light-theme) .legal-updated { color: #64748B; }
 
   :global([data-theme="light"]) .legal-title,
   :global(html.light-theme) .legal-title {
