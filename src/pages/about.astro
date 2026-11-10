@@ -3,15 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout
   title="About Skill Foundry | Practical Skills Platform"
-  description="Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows."
+  description="Skill Foundry helps people understand practical digital skills, learn how tools and workflows work, and create independently."
   canonical="https://hub.skillfoundry-web.workers.dev/about/"
 >
   <div class="about-page">
     <section class="about-hero">
       <div class="about-container">
-        <p class="about-eyebrow">ABOUT SKILL FOUNDRY</p>
-        <h1 class="about-title">Learn by building.</h1>
-        <p class="about-lead">Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.</p>
+        <h1 class="about-title">Practical skills. Real understanding. Independent creation.</h1>
+        <p class="about-lead">Skill Foundry helps you understand useful digital skills, learn how tools and workflows work, and turn that knowledge into something you can create and apply independently.</p>
       </div>
     </section>
 
@@ -19,20 +18,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="about-container">
         <div class="about-content">
           <section class="about-section-block">
-            <h2>What Skill Foundry is for</h2>
-            <p>Modern tools and technology are moving quickly, and it can be difficult to know which workflows, techniques, and skills are actually worth learning. Skill Foundry focuses on turning useful knowledge into practical resources you can understand and use.</p>
-            <p>Each resource is built around a real task or outcome — so you can discover an idea, understand how it works, follow the process, and apply it to your own project.</p>
+            <h2>Why Skill Foundry exists</h2>
+            <p>Technology is evolving quickly, bringing new tools, possibilities and ways to work. But having access to powerful tools does not automatically mean knowing how to use them effectively.</p>
+            <p>Many people follow tutorials, copy prompts and repeat workflows without understanding the decisions behind them. When something changes or does not work as expected, they can struggle to adapt.</p>
+            <p>Skill Foundry exists to bridge that gap by turning useful skills and techniques into clear, practical learning experiences.</p>
+          </section>
+
+          <section class="about-section-block">
+            <h2>How we help you learn</h2>
+            <p>We believe learning should go beyond following instructions. Every workflow should help you build understanding, practise a process and become capable of adapting it.</p>
+            <div class="about-learning-steps">
+              <div class="about-learning-step">
+                <h3>Understand</h3>
+                <p>Learn the concepts, tools and techniques behind a process.</p>
+              </div>
+              <div class="about-learning-step">
+                <h3>Execute</h3>
+                <p>Follow practical instructions and learn through real examples and projects.</p>
+              </div>
+              <div class="about-learning-step">
+                <h3>Adapt</h3>
+                <p>Modify what you have learned to suit your own needs, goals and projects.</p>
+              </div>
+            </div>
           </section>
 
           <section class="about-section-block">
             <h2>What you’ll find here</h2>
-            <p>Practical tutorials, step-by-step blueprints, and executable workflows covering AI, content creation, video editing, design, automation, productivity, and other digital skills.</p>
-            <p>The goal is simple: give you something useful to learn, try, and build with.</p>
+            <p>Skill Foundry is being built as a library of practical tutorials, step-by-step blueprints, prompts, tool guidance and creative workflows.</p>
+            <p>The focus is on helping you create, solve problems, improve everyday work and turn ideas into practical results. As the library grows, it will cover more tools, techniques and skill areas that help people stay capable and adaptable.</p>
           </section>
 
           <section class="about-section-block about-section-last">
-            <h2>Built to grow with you</h2>
-            <p>Our current resource library is free to access. Individual resources may recommend third-party tools with their own independent pricing. As new tools, workflows, and practical skills emerge, the library will continue to grow.</p>
+            <h2>Our approach to practical learning</h2>
+            <p>We aim to make every published resource useful, understandable and actionable. Every published resource is personally tested through actual execution before it is published.</p>
+            <p>Instructions are designed to explain the process, not just reproduce an output. The goal is to help you develop skills you can continue using, improving and adapting beyond a single tutorial.</p>
           </section>
         </div>
       </div>
@@ -51,20 +71,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-inline: auto;
   }
 
-  /* 1. Hero Section */
   .about-hero {
     padding: clamp(48px, 6vw, 72px) 0 clamp(28px, 3.5vw, 36px);
     border-bottom: 1px solid var(--line, #1E293B);
-    background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 61, 214, 208), 0.08), transparent 38%);
-  }
-
-  .about-eyebrow {
-    margin: 0 0 10px 0;
-    color: var(--accent, #3DD6D0);
-    font-size: 11.5px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    background: transparent;
   }
 
   .about-title {
@@ -72,8 +82,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #F8FAFC;
     font-size: clamp(34px, 5.5vw, 54px);
     font-weight: 800;
-    line-height: 1.08;
+    line-height: 1.12;
     letter-spacing: -0.035em;
+    max-width: 740px;
   }
 
   .about-lead {
@@ -84,7 +95,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.62;
   }
 
-  /* 2. Body Narrative Section */
   .about-body {
     padding: 36px 0 40px;
   }
@@ -116,66 +126,50 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 0;
   }
 
-  .about-cta-wrap {
-    margin-top: 18px;
+  .about-learning-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 20px;
   }
 
-  .about-cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--accent, #3DD6D0);
-    font-size: 15.5px;
+  .about-learning-step h3 {
+    margin: 0 0 7px;
+    color: #F8FAFC;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
     font-weight: 700;
-    text-decoration: none;
-    transition: color 0.15s ease, transform 0.15s ease;
+    line-height: 1.35;
   }
 
-  .about-cta-link .arrow {
-    display: inline-block;
-    transition: transform 0.15s ease;
+  .about-learning-step p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
   }
 
-  .about-cta-link:hover {
-    color: #75D8D2;
-  }
-
-  .about-cta-link:hover .arrow {
-    transform: translateX(3px);
-  }
-
-  /* Light Theme Overrides */
-  :global([data-theme="light"]) .about-hero,
-  :global(html.light-theme) .about-hero {
-    border-bottom-color: #E2E8F0;
-    background: radial-gradient(circle at 75% 20%, rgba(18, 140, 135, 0.06), transparent 38%);
-  }
   :global([data-theme="light"]) .about-title,
-  :global(html.light-theme) .about-title {
+  :global(html.light-theme) .about-title,
+  :global([data-theme="light"]) .about-learning-step h3,
+  :global(html.light-theme) .about-learning-step h3 {
     color: #0F172A;
   }
+
   :global([data-theme="light"]) .about-lead,
   :global(html.light-theme) .about-lead {
     color: #475569;
   }
+
   :global([data-theme="light"]) .about-section-block h2,
   :global(html.light-theme) .about-section-block h2 {
     color: #0F172A;
   }
+
   :global([data-theme="light"]) .about-section-block p,
   :global(html.light-theme) .about-section-block p {
     color: #334155;
   }
-  :global([data-theme="light"]) .about-eyebrow,
-  :global(html.light-theme) .about-eyebrow {
-    color: #128C87;
-  }
-  :global([data-theme="light"]) .about-cta-link,
-  :global(html.light-theme) .about-cta-link {
-    color: #128C87;
-  }
 
-  /* Mobile Responsive Rhythm */
   @media (max-width: 640px) {
     .about-container {
       width: min(740px, calc(100% - 32px));
@@ -195,6 +189,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     .about-title {
       margin-bottom: 12px;
+      font-size: clamp(27px, 7.2vw, 34px);
+      line-height: 1.18;
     }
 
     .about-section-block h2 {
@@ -207,8 +203,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       margin-bottom: 12px;
     }
 
-    .about-cta-wrap {
-      margin-top: 14px;
+    .about-learning-steps {
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 16px;
+    }
+
+    .about-learning-step h3 {
+      margin-bottom: 4px;
     }
   }
 </style>
