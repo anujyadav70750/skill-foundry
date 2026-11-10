@@ -2247,7 +2247,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   .category-curated-section .h-content {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 0;
+    padding: 8px 10px;
+    box-sizing: border-box;
   }
   .category-curated-section .h-title {
     margin: 0 0 5px;
@@ -2316,6 +2317,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       max-width: none;
       aspect-ratio: 16 / 9;
       border-radius: 7px;
+    }
+    .category-curated-section .h-content {
+      padding: 6px 8px;
     }
     .category-curated-section .h-title {
       font-size: 13.5px;
@@ -2404,7 +2408,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   .flat-library-view.is-category-view .h-content {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 0;
+    padding: 8px 10px;
+    box-sizing: border-box;
   }
   .flat-library-view.is-category-view .h-title {
     margin: 0 0 5px;
@@ -2465,6 +2470,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       max-width: none;
       aspect-ratio: 16 / 9;
       border-radius: 7px;
+    }
+    .flat-library-view.is-category-view .h-content {
+      padding: 6px 8px;
     }
     .flat-library-view.is-category-view .h-title {
       font-size: 13.5px;
