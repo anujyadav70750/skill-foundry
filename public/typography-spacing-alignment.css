@@ -44,9 +44,6 @@
 .contact-form .form-status,
 .search-resource-card .card-desc,
 .search-empty-box .empty-text,
-.explore-page .prominent-desc,
-.explore-page .h-desc,
-.explore-page .recent-resource-card-desc,
 .resource-editorial-layout .editorial-lead,
 .resource-editorial-layout .editorial-subcopy,
 .resource-editorial-layout .section-subcopy,
@@ -75,8 +72,6 @@
 .resource-editorial-layout .tutorial-step-title,
 .resource-editorial-layout .related-works-title,
 .resource-editorial-layout .blueprint-callout-title,
-.explore-page .section-head h2,
-.explore-page .section-title,
 .search-page-container .search-section-title {
   font-family: var(--sf-editorial-font) !important;
   font-size: clamp(18px, 2.4vw, 20px) !important;
