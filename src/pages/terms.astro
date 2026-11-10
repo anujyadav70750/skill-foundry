@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout
   title="Terms of Use | Skill Foundry"
-  description="These terms describe the general use of the Skill Foundry website and its educational resources."
+  description="Read the terms for using Skill Foundry, its educational resources, and original materials."
   canonical="https://hub.skillfoundry-web.workers.dev/terms/"
 >
   <div class="legal-page">
@@ -11,7 +11,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="legal-container">
         <p class="legal-eyebrow">TERMS</p>
         <h1 class="legal-title">Terms of Use</h1>
-        <p class="legal-lead">These terms describe the general use of the Skill Foundry website and its educational resources.</p>
+        <p class="legal-lead">These terms explain how you may access and use Skill Foundry and its original educational resources.</p>
       </div>
     </section>
 
@@ -19,28 +19,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="legal-container">
         <div class="legal-content">
           <section class="legal-section-block">
-            <h2>1. Use of resources</h2>
-            <p>Skill Foundry provides prompts, tutorials, workflows, and related educational material for practical learning and experimentation. Users are responsible for how they use the resources and for reviewing the rules and policies of any third-party tool used with them.</p>
+            <h2>1. Using Skill Foundry</h2>
+            <p>By accessing or using this website, you agree to follow these terms. Skill Foundry provides tutorials, prompts, workflows and related material to support practical learning, experimentation and personal projects.</p>
+            <p>You may use the instructions and adapt them for your own personal and educational projects, subject to these terms and the rules of any third-party tools involved.</p>
           </section>
 
           <section class="legal-section-block">
-            <h2>2. No guarantee of results</h2>
-            <p>AI tools can change their models, features, availability, and outputs over time. Resources are educational and do not guarantee a particular result, accuracy, availability, or suitability for a specific project.</p>
+            <h2>2. Ownership and permitted use</h2>
+            <p>Unless a page states otherwise, the original written content, guides, prompts, designs and other materials published by Skill Foundry belong to Skill Foundry or are used with permission. They are provided for personal and educational use.</p>
+            <p>You may not sell, commercially exploit, republish, redistribute or present Skill Foundry's original materials as your own without prior permission. This restriction does not claim ownership of independent work you create yourself or of third-party materials, which remain subject to their respective owners' terms.</p>
           </section>
 
           <section class="legal-section-block">
-            <h2>3. Third-party services</h2>
-            <p>Links or tutorials may reference third-party websites and tools. Skill Foundry does not control those services and is not responsible for their availability, policies, content, or results.</p>
+            <h2>3. Responsible use</h2>
+            <p>You are responsible for how you use the resources, prompts and workflows provided on this website. Do not use them to violate applicable laws, infringe another person's rights, or breach the terms or policies of a service you use.</p>
+            <p>Before using an external tool, check its current rules, permissions and usage limits. You are responsible for reviewing the material you submit to third-party services.</p>
           </section>
 
           <section class="legal-section-block">
-            <h2>4. Content and availability</h2>
-            <p>Website content may be updated, replaced, or removed as the library evolves. The site is provided on an ongoing basis without promising that every page or feature will always remain available.</p>
+            <h2>4. Results and limitations</h2>
+            <p>Skill Foundry aims to make its published resources useful, understandable and actionable, and resources are personally tested through actual execution before publication. However, tools, models, features and interfaces can change after a resource is published.</p>
+            <p>AI-generated results may vary between attempts, even when the same instructions are followed. Examples and tutorials are educational guidance; they do not guarantee identical outputs, specific outcomes, accuracy or suitability for every project.</p>
+          </section>
+
+          <section class="legal-section-block">
+            <h2>5. Third-party services</h2>
+            <p>Some resources may refer to or link to external websites, software, AI tools or other services. These services are operated independently and have their own terms, privacy policies, availability and practices.</p>
+            <p>Skill Foundry does not control third-party services. You should review their terms before using them. Any interaction you have with those services is between you and the relevant provider.</p>
+          </section>
+
+          <section class="legal-section-block">
+            <h2>6. Website content and availability</h2>
+            <p>Skill Foundry may update, revise, replace or remove website content and features as the resource library develops. We may also correct errors or change how parts of the website work.</p>
+            <p>We aim to keep the website accessible, but do not guarantee uninterrupted availability or that every resource or feature will remain available at all times.</p>
           </section>
 
           <section class="legal-section-block legal-section-last">
-            <h2>5. Contact</h2>
-            <p>Questions, feedback, corrections, or website issues can be submitted through the contact form, and messages are handled for responding to the enquiry.</p>
+            <h2>7. Questions and contact</h2>
+            <p>If you have a question about these terms, want to request permission to use original Skill Foundry material, or need to report an issue, contact us through the <a href="/contact/">Contact page</a>.</p>
           </section>
         </div>
       </div>
@@ -50,137 +66,159 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <style>
   .legal-page {
-    min-height: 80vh;
+    min-height: 0;
     padding-bottom: 0;
   }
 
   .legal-container {
-    width: min(740px, calc(100% - 48px));
+    width: min(780px, calc(100% - 48px));
     margin-inline: auto;
   }
 
-  /* 1. Hero Section */
   .legal-hero {
-    padding: clamp(48px, 6vw, 72px) 0 clamp(28px, 3.5vw, 36px);
+    padding: clamp(28px, 3.5vw, 40px) 0 22px;
     border-bottom: 1px solid var(--line, #1E293B);
-    background: radial-gradient(circle at 75% 20%, rgba(var(--accent-rgb, 61, 214, 208), 0.08), transparent 38%);
-  }
-
-  .legal-eyebrow {
-    margin: 0 0 10px 0;
-    color: var(--accent, #3DD6D0);
-    font-size: 11.5px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    background: transparent;
   }
 
   .legal-title {
-    margin: 0 0 16px 0;
+    margin: 0 0 16px;
     color: #F8FAFC;
-    font-size: clamp(34px, 5.5vw, 52px);
-    font-weight: 800;
-    line-height: 1.1;
-    letter-spacing: -0.035em;
+    font-size: clamp(27px, 4vw, 34px);
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
   }
 
   .legal-lead {
     margin: 0;
     max-width: 680px;
     color: #94A3B8;
-    font-size: clamp(16px, 2.2vw, 17.5px);
-    line-height: 1.62;
+    font-size: 14.5px;
+    line-height: 1.6;
   }
 
-  /* 2. Body Narrative Section */
   .legal-body {
-    padding: 36px 0 40px;
+    padding: 24px 0 0;
   }
 
   .legal-content {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 0;
   }
 
-  .legal-section-block h2 {
-    margin: 0 0 12px 0;
-    color: #F8FAFC;
-    font-size: clamp(20px, 3vw, 24px);
-    font-weight: 750;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+  :global(.legal-page .legal-section-block) {
+    padding: 0 0 22px;
   }
 
-  .legal-section-block p {
-    margin: 0 0 14px 0;
-    color: #CBD5E1;
-    font-size: 15.5px;
-    line-height: 1.68;
+  :global(.legal-page .legal-section-block + .legal-section-block) {
+    border-top: 1px solid var(--sf-page-divider);
+    padding-top: 22px;
+  }
+
+  :global(.legal-page .legal-section-block h2) {
+    margin: 0 0 18px !important;
+    color: var(--sf-page-heading);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: clamp(18px, 2.4vw, 20px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+  }
+
+  :global(.legal-page .legal-section-block p) {
     max-width: 680px;
+    margin: 0 0 14px !important;
+    color: var(--sf-page-copy);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14.5px;
+    line-height: 1.68;
   }
 
-  .legal-section-block p:last-of-type {
-    margin-bottom: 0;
+  :global(.legal-page .legal-section-block p:last-of-type) {
+    margin-bottom: 0 !important;
   }
 
-  /* Light Theme Overrides */
-  :global([data-theme="light"]) .legal-hero,
-  :global(html.light-theme) .legal-hero {
-    border-bottom-color: #E2E8F0;
-    background: radial-gradient(circle at 75% 20%, rgba(18, 140, 135, 0.06), transparent 38%);
+  :global(.legal-page .legal-section-last) {
+    padding-bottom: 0;
   }
+
+  :global(.legal-page .legal-section-block a) {
+    color: var(--sf-page-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  :global(main:has(.legal-page) > .sf-global-cta) {
+    padding-top: 36px !important;
+  }
+
   :global([data-theme="light"]) .legal-title,
   :global(html.light-theme) .legal-title {
     color: #0F172A;
   }
+
   :global([data-theme="light"]) .legal-lead,
   :global(html.light-theme) .legal-lead {
     color: #475569;
   }
+
   :global([data-theme="light"]) .legal-section-block h2,
   :global(html.light-theme) .legal-section-block h2 {
     color: #0F172A;
   }
+
   :global([data-theme="light"]) .legal-section-block p,
   :global(html.light-theme) .legal-section-block p {
     color: #334155;
   }
-  :global([data-theme="light"]) .legal-eyebrow,
-  :global(html.light-theme) .legal-eyebrow {
-    color: #128C87;
-  }
 
-  /* Mobile Responsive Rhythm */
   @media (max-width: 640px) {
     .legal-container {
-      width: min(740px, calc(100% - 32px));
+      width: calc(100% - 32px);
     }
 
     .legal-hero {
-      padding: 40px 0 24px;
-    }
-
-    .legal-body {
-      padding: 28px 0 48px;
-    }
-
-    .legal-content {
-      gap: 24px;
+      padding: 26px 0 20px;
     }
 
     .legal-title {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
-    .legal-section-block h2 {
-      margin-bottom: 10px;
+    .legal-body {
+      padding-top: 20px;
     }
 
-    .legal-section-block p {
-      font-size: 15px;
+    :global(.legal-page .legal-section-block) {
+      padding-bottom: 20px;
+    }
+
+    :global(.legal-page .legal-section-block + .legal-section-block) {
+      padding-top: 20px;
+    }
+
+    :global(.legal-page .legal-section-block h2) {
+      margin-bottom: 16px !important;
+    }
+
+    :global(.legal-page .legal-section-block p) {
+      margin-bottom: 12px !important;
+      font-size: 14.5px;
       line-height: 1.65;
-      margin-bottom: 12px;
+    }
+
+    :global(.legal-page .legal-section-block p:last-of-type) {
+      margin-bottom: 0 !important;
+    }
+
+    :global(.legal-page .legal-section-last) {
+      padding-bottom: 0;
+    }
+
+    :global(main:has(.legal-page) > .sf-global-cta) {
+      padding-top: 24px !important;
     }
   }
 </style>
