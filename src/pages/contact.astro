@@ -48,15 +48,19 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
             <input name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@example.com" required />
           </label>
 
-          <label class="contact-field">
-            <span class="contact-field-title">Subject <span class="contact-required" aria-hidden="true">*</span></span>
-            <select name="subject" id="contact-subject" required>
-              <option value="" selected={!selectedSubject}>Choose a subject</option>
+          <div class="contact-field" id="contact-subject-field">
+            <span class="contact-field-title" id="contact-subject-label">Subject <span class="contact-required" aria-hidden="true">*</span></span>
+            <input type="hidden" name="subject" id="contact-subject" value={selectedSubject} />
+            <button type="button" class="contact-subject-trigger" id="contact-subject-trigger" aria-labelledby="contact-subject-label contact-subject-value" aria-haspopup="listbox" aria-expanded="false">
+              <span id="contact-subject-value">{selectedSubject || 'Choose a subject'}</span>
+              <svg class="contact-subject-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="contact-subject-menu" id="contact-subject-menu" role="listbox" aria-labelledby="contact-subject-label" hidden>
               {subjectOptions.map((subject) => (
-                <option value={subject} selected={selectedSubject === subject}>{subject}</option>
+                <button type="button" class="contact-subject-option" role="option" aria-selected={selectedSubject === subject} data-subject={subject}>{subject}</button>
               ))}
-            </select>
-          </label>
+            </div>
+          </div>
 
           <label class="contact-field" id="contact-other-wrap" hidden>
             <span class="contact-field-title">Enter your subject <span class="contact-required" aria-hidden="true">*</span></span>
@@ -89,20 +93,86 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
       form.dataset.ready = 'true';
 
       const subject = form.querySelector('#contact-subject');
+      const subjectField = form.querySelector('#contact-subject-field');
+      const subjectTrigger = form.querySelector('#contact-subject-trigger');
+      const subjectValue = form.querySelector('#contact-subject-value');
+      const subjectMenu = form.querySelector('#contact-subject-menu');
+      const subjectOptions = [...form.querySelectorAll('.contact-subject-option')];
       const otherWrap = form.querySelector('#contact-other-wrap');
       const other = form.querySelector('#contact-other');
       const submit = form.querySelector('#contact-submit');
       const status = form.querySelector('#contact-status');
 
-      subject.addEventListener('change', () => {
-        const isOther = subject.value === 'Other';
+      const closeSubjectMenu = () => {
+        subjectMenu.hidden = true;
+        subjectTrigger.setAttribute('aria-expanded', 'false');
+        subjectTrigger.querySelector('svg').classList.remove('is-open');
+      };
+
+      const openSubjectMenu = () => {
+        subjectMenu.hidden = false;
+        subjectTrigger.setAttribute('aria-expanded', 'true');
+        subjectTrigger.querySelector('svg').classList.add('is-open');
+      };
+
+      const updateSubject = (value) => {
+        subject.value = value;
+        subjectValue.textContent = value || 'Choose a subject';
+        subjectOptions.forEach((option) => {
+          option.setAttribute('aria-selected', String(option.dataset.subject === value));
+        });
+        const isOther = value === 'Other';
         otherWrap.hidden = !isOther;
         other.required = isOther;
         if (!isOther) other.value = '';
+        closeSubjectMenu();
+      };
+
+      subjectTrigger.addEventListener('click', () => {
+        if (subjectMenu.hidden) openSubjectMenu();
+        else closeSubjectMenu();
       });
+
+      subjectOptions.forEach((option, index) => {
+        option.addEventListener('click', () => {
+          updateSubject(option.dataset.subject);
+          subjectTrigger.focus();
+        });
+        option.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            const direction = event.key === 'ArrowDown' ? 1 : -1;
+            subjectOptions[(index + direction + subjectOptions.length) % subjectOptions.length].focus();
+          }
+          if (event.key === 'Escape') {
+            closeSubjectMenu();
+            subjectTrigger.focus();
+          }
+        });
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!subjectField.contains(event.target)) closeSubjectMenu();
+      });
+
+      subjectTrigger.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          openSubjectMenu();
+          subjectOptions[0]?.focus();
+        }
+      });
+
+      subject.addEventListener('change', () => updateSubject(subject.value));
 
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
+        if (!subject.value) {
+          status.textContent = 'Please choose a subject.';
+          status.className = 'contact-status error';
+          subjectTrigger.focus();
+          return;
+        }
         if (!form.reportValidity()) return;
 
         const email = form.elements.email.value.trim();
@@ -143,6 +213,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
           }
 
           form.reset();
+          updateSubject('');
           otherWrap.hidden = true;
           other.required = false;
           status.textContent = 'Message sent successfully. Thanks for reaching out.';
@@ -235,7 +306,6 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     font-weight: 800;
   }
   .contact-form input,
-  .contact-form select,
   .contact-form textarea {
     display: block;
     width: 100%;
@@ -255,18 +325,83 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     outline: none;
     color-scheme: dark;
   }
-  .contact-form select {
-    appearance: none;
-    -webkit-appearance: none;
-    padding-right: 42px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23CBD5E1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px 16px;
+  .contact-subject-trigger {
+    display: flex;
+    width: 100%;
+    min-height: 43px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, .13);
+    border-radius: 9px;
+    background: #070A10;
+    color: #F8FAFC;
+    font: 400 13px/1.4 inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .contact-subject-trigger:focus-visible {
+    outline: none;
+    border-color: #3DD6C8;
+    box-shadow: 0 0 0 3px rgba(61, 214, 200, .1);
+  }
+  .contact-subject-chevron {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: #CBD5E1;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform .18s ease;
+  }
+  .contact-subject-chevron.is-open { transform: rotate(180deg); }
+  .contact-subject-menu {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-height: 260px;
+    margin-top: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border: 1px solid rgba(148, 163, 184, .24);
+    border-radius: 10px;
+    background: #111720;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, .32);
+    scrollbar-width: thin;
+    scrollbar-color: #465365 transparent;
+  }
+  .contact-subject-menu[hidden] { display: none !important; }
+  .contact-subject-option {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    padding: 11px 13px;
+    border: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    background: transparent;
+    color: #DCE3EC;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+  .contact-subject-option:last-child { border-bottom: 0; }
+  .contact-subject-option:hover,
+  .contact-subject-option:focus-visible,
+  .contact-subject-option[aria-selected="true"] {
+    outline: none;
+    background: #102638;
+    color: #55C8BE;
   }
   .contact-form textarea { min-height: 125px; resize: vertical; }
   .contact-form input:focus,
-  .contact-form select:focus,
   .contact-form textarea:focus {
     border-color: #3DD6C8;
     box-shadow: 0 0 0 3px rgba(61, 214, 200, .1);
@@ -344,19 +479,41 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
   :global([data-theme="light"]) .contact-field-title,
   :global(html.light-theme) .contact-field-title { color: #334155; }
   :global([data-theme="light"]) .contact-form input,
-  :global([data-theme="light"]) .contact-form select,
   :global([data-theme="light"]) .contact-form textarea,
   :global(html.light-theme) .contact-form input,
-  :global(html.light-theme) .contact-form select,
   :global(html.light-theme) .contact-form textarea {
     background-color: #F8FAFC;
     border-color: #CBD5E1;
     color: #172033;
     color-scheme: light;
   }
-  :global([data-theme="light"]) .contact-form select,
-  :global(html.light-theme) .contact-form select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23334155' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  :global([data-theme="light"]) .contact-subject-trigger,
+  :global(html.light-theme) .contact-subject-trigger {
+    background: #F8FAFC;
+    border-color: #CBD5E1;
+    color: #172033;
+  }
+  :global([data-theme="light"]) .contact-subject-chevron,
+  :global(html.light-theme) .contact-subject-chevron { stroke: #334155; }
+  :global([data-theme="light"]) .contact-subject-menu,
+  :global(html.light-theme) .contact-subject-menu {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, .14);
+  }
+  :global([data-theme="light"]) .contact-subject-option,
+  :global(html.light-theme) .contact-subject-option {
+    color: #334155;
+    border-bottom-color: rgba(15, 23, 42, .08);
+  }
+  :global([data-theme="light"]) .contact-subject-option:hover,
+  :global([data-theme="light"]) .contact-subject-option:focus-visible,
+  :global([data-theme="light"]) .contact-subject-option[aria-selected="true"],
+  :global(html.light-theme) .contact-subject-option:hover,
+  :global(html.light-theme) .contact-subject-option:focus-visible,
+  :global(html.light-theme) .contact-subject-option[aria-selected="true"] {
+    background: #EAF5F7;
+    color: #087E79;
   }
   :global([data-theme="light"]) .contact-form input::placeholder,
   :global([data-theme="light"]) .contact-form textarea::placeholder,
@@ -382,7 +539,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     .contact-form { gap: 13px; }
     .contact-field { gap: 6px; }
     .contact-form input,
-    .contact-form select { min-height: 42px; padding-top: 9px; padding-bottom: 9px; }
+    .contact-subject-trigger { min-height: 42px; padding-top: 9px; padding-bottom: 9px; }
     .contact-form textarea { min-height: 120px; }
     .contact-actions { align-items: stretch; flex-direction: column; }
     .contact-submit { width: 100%; min-height: 44px; }
