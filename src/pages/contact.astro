@@ -105,12 +105,14 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
 
       const closeSubjectMenu = () => {
         subjectMenu.hidden = true;
+        subjectField.classList.remove('is-menu-open');
         subjectTrigger.setAttribute('aria-expanded', 'false');
         subjectTrigger.querySelector('svg').classList.remove('is-open');
       };
 
       const openSubjectMenu = () => {
         subjectMenu.hidden = false;
+        subjectField.classList.add('is-menu-open');
         subjectTrigger.setAttribute('aria-expanded', 'true');
         subjectTrigger.querySelector('svg').classList.add('is-open');
       };
@@ -282,6 +284,7 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     gap: 15px;
   }
   .contact-field {
+    position: relative;
     display: flex;
     min-width: 0;
     flex-direction: column;
@@ -362,12 +365,17 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     transition: transform .18s ease;
   }
   .contact-subject-chevron.is-open { transform: rotate(180deg); }
+  .contact-field.is-menu-open {
+    z-index: 20;
+  }
   .contact-subject-menu {
-    position: relative;
-    z-index: 5;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 30;
     width: 100%;
     max-height: 260px;
-    margin-top: 6px;
+    margin-top: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
     border: 1px solid rgba(148, 163, 184, .24);
