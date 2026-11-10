@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from '../components/ContactModal.astro';
 import { FAQ_DATA } from '../data/faqs';
 
 const pageTitle = 'Frequently Asked Questions';
@@ -39,7 +40,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
         <div class="faq-no-results" id="faq-no-results" hidden>
           <h2 class="faq-no-results-title">We couldn’t find an answer to that.</h2>
           <p class="faq-no-results-desc">Try a different search, or contact us and describe what you need help with.</p>
-          <a class="faq-no-results-link" href="/contact/">Contact Skill Foundry</a>
+          <button class="faq-no-results-link" type="button" data-open-contact>Contact Skill Foundry</button>
         </div>
       </section>
 
@@ -48,9 +49,10 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       <section class="faq-support-cta" aria-label="Contact Skill Foundry">
         <h3 class="faq-support-title">Still have a <span>question?</span></h3>
         <p class="faq-support-desc">Didn't find your answer? Send us a message.</p>
-        <a href="/contact/" class="faq-support-button">Contact us</a>
+        <button type="button" data-open-contact class="faq-support-button">Contact us</button>
       </section>
       <div class="faq-cta-divider" aria-hidden="true"></div>
+      <ContactModal />
     </div>
   </main>
 </BaseLayout>
@@ -215,6 +217,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     font-size: 13.5px;
     font-weight: 650;
     text-decoration: none;
+    font-family: inherit;\n    cursor: pointer;\n    appearance: none;
   }
 
   .faq-no-results-link:hover {
