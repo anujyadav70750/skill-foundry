@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactModal from '../components/ContactModal.astro';
 ---
 <BaseLayout
   title="Terms of Use | Skill Foundry"
@@ -56,12 +57,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
           <section class="legal-section-block legal-section-last">
             <h2>7. Questions and contact</h2>
-            <p>If you have a question about these terms, want to request permission to use original Skill Foundry material, or need to report an issue, contact us through the <a href="/contact/">Contact page</a>.</p>
+            <p>If you have a question about these terms, want to request permission to use original Skill Foundry material, or need to report an issue, contact us using the Contact us button below.</p>
+            <button type="button" class="legal-contact-button" data-open-contact>Contact us</button>
           </section>
         </div>
       </div>
     </section>
   </div>
+  <ContactModal />
 </BaseLayout>
 
 <style>
@@ -107,6 +110,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     flex-direction: column;
     gap: 0;
   }
+
+  :global(main .legal-page .legal-content) { gap: 0 !important; }
+
+  .legal-contact-button { margin-top:18px; min-height:40px; padding:0 16px; border:1px solid #A8C8DF; border-radius:9px; background:#C5DDED; color:#183247; font-size:12.5px; font-weight:750; cursor:pointer; }
 
   :global(.legal-page .legal-section-block) {
     padding: 0 0 22px;
