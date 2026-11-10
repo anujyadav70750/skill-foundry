@@ -406,7 +406,18 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     color: var(--sf-page-accent, #35C9C1);
   }
 
-  .contact-form textarea { min-height: 130px; resize: vertical; }
+  .contact-form textarea { min-height: 160px; resize: vertical; }
+
+  /* Match the Privacy page's 24px divider-to-content spacing and let the
+     shared CTA control the gap after the form card. */
+  :global(main:has(.contact-page) .contact-body) {
+    padding-top: 24px !important;
+    padding-bottom: 0 !important;
+  }
+
+  :global(main:has(.contact-page) > .sf-global-cta) {
+    padding-top: 36px !important;
+  }
 
   .contact-form input:focus,
   .contact-form textarea:focus {
@@ -491,7 +502,11 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     .contact-field { gap: 6px; }
     .contact-form input,
     .contact-subject-trigger { min-height: 44px; }
-    .contact-form textarea { min-height: 120px; }
+    .contact-form textarea { min-height: 145px; }
+
+    :global(main:has(.contact-page) > .sf-global-cta) {
+      padding-top: 24px !important;
+    }
     .contact-actions { align-items: stretch; flex-direction: column; }
     .contact-submit { width: 100%; min-height: 46px; }
   }
