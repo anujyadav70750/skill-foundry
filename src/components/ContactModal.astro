@@ -27,12 +27,6 @@
         <span class="sf-contact-field-title">Subject <span class="sf-contact-required" aria-hidden="true">*</span></span>
         <select name="subject-choice" id="sf-contact-subject" required>
           <option value="">Choose a subject</option>
-          <option>General question</option>
-          <option>Website or technical issue</option>
-          <option>Question about a resource</option>
-          <option>Feedback or suggestion</option>
-          <option>Collaboration or business enquiry</option>
-          <option value="Other">Other</option>
         </select>
       </label>
 
@@ -110,11 +104,34 @@
     window.scrollTo(0, lockedScrollY);
   };
 
+  const subjectSets = {
+    faq: [
+      'Question not covered in FAQs',
+      'Website or technical issue',
+      'Question about a resource',
+      'Feedback or suggestion',
+      'Collaboration or business enquiry',
+      'Other'
+    ],
+    terms: [
+      'Question about these terms',
+      'Permission to use Skill Foundry content',
+      'Report a terms or copyright concern',
+      'General question',
+      'Other'
+    ]
+  };
+
   document.querySelectorAll('[data-open-contact]').forEach(button => {
     button.addEventListener('click', () => {
       opener = button;
       // Keep browser-saved name/email suggestions, but start every message fresh.
-      subject.value = '';
+      const context = button.dataset.contactContext || 'general';
+      const choices = subjectSets[context] || ['General question', 'Website or technical issue', 'Feedback or suggestion', 'Other'];
+      subject.replaceChildren(new Option('Choose a subject', ''));
+      choices.forEach(choice => subject.add(new Option(choice, choice)));
+      // Preselect the option most relevant to the page that opened this shared popup.
+      subject.value = choices[0];
       message.value = '';
       other.value = '';
       other.required = false;
