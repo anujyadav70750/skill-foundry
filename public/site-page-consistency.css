@@ -496,7 +496,7 @@ body.no-header {
 .explore-page .prominent-title,
 .explore-page .h-title {
   font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-weight: 700 !important;
+  font-weight: 650 !important;
   color: var(--sf-page-heading) !important;
 }
 
@@ -514,7 +514,7 @@ body.no-header {
 }
 
 .explore-page .search-form:focus-within {
-  border-color: var(--sf-page-focus) !important;
+  border-color: var(--sf-page-border) !important;
   box-shadow: none !important;
 }
 
@@ -1007,6 +1007,11 @@ html.light-theme .guides-page .guides-highlight {
 :root[data-theme="light"] .contact-card,
 :root[data-theme="light"] .search-resource-card,
 :root[data-theme="light"] .search-empty-box,
+:root[data-theme="light"] .explore-page .recent-resource-meta-calendar,
+html.light-theme .explore-page .recent-resource-meta-calendar {
+  color: #64748B !important;
+}
+
 :root[data-theme="light"] .explore-page .resource-card-prominent,
 :root[data-theme="light"] .explore-page .resource-card-horizontal,
 :root[data-theme="light"] .explore-page .recent-resource-card,
