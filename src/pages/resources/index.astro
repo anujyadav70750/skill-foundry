@@ -335,7 +335,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               const slug = resourceSlug(resource);
               const thumbnail = resourceThumbnail(resource);
               const alt = resourceImageAlt(resource);
-              const dateLabel = resource.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+              const dateLabel = resource.data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
               const toolsList = Array.isArray(resource.data.toolsUsed)
                 ? resource.data.toolsUsed.map((t) => t.name).join(' ')
                 : '';
@@ -371,7 +371,15 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   <div class="h-content">
                     <div class="h-meta">
                       <span class="h-meta-category">{resource.data.category}</span>
-                      <time class="h-meta-date" datetime={resource.data.date.toISOString()}>{dateLabel}</time>
+                      <time class="h-meta-date" datetime={resource.data.date.toISOString()}>
+                        <svg class="h-meta-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span>{dateLabel}</span>
+                      </time>
                     </div>
                     <h3 class="h-title">
                       <span class="searchable-target">{resource.data.title}</span>
@@ -925,7 +933,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   :global([data-theme="light"]) .h-meta-category,
   :global(html.light-theme) .h-meta-category,
   :global([data-theme="light"]) .h-meta-date,
-  :global(html.light-theme) .h-meta-date {
+  :global(html.light-theme) .h-meta-date,
+  :global([data-theme="light"]) .h-meta-calendar-icon,
+  :global(html.light-theme) .h-meta-calendar-icon {
     color: #64748B;
   }
 
@@ -1089,6 +1099,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   .h-meta {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
     min-width: 0;
     margin-bottom: 5px;
@@ -1109,11 +1120,31 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
 
   .h-meta-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
     flex-shrink: 0;
     color: #9298A4;
     font-size: 10px;
     line-height: 1.2;
     white-space: nowrap;
+  }
+
+  .h-meta-calendar-icon {
+    width: 12px;
+    height: 12px;
+    color: #7E8492;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .flat-library-view.is-category-view .h-meta-category {
+    display: none;
+  }
+
+  .flat-library-view.is-search-view .h-desc {
+    display: none;
   }
 
   .h-title {
@@ -2821,6 +2852,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       if (flatLibraryView) {
         flatLibraryView.hidden = false;
         flatLibraryView.classList.toggle('is-category-view', isCategoryLanding);
+        flatLibraryView.classList.toggle('is-search-view', isSearching);
       }
 
       // Search and category views share the same resource list and card structure.
