@@ -1178,3 +1178,43 @@ html.light-theme .blueprint-step-container:not(.is-expanded):active {
   transform: none !important;
 }
 
+
+
+/* Unified black X controls across the entire site, including light theme. */
+:root .faq-modal-collapse-btn,
+:root .search-modal-close,
+:root .filter-dialog-close-btn,
+:root .lightbox-close-btn,
+:root [data-close-prompt],
+:root .sf-thumb-close,
+:root .sf-io-close,
+html.light-theme .faq-modal-collapse-btn,
+html.light-theme .search-modal-close,
+html.light-theme .filter-dialog-close-btn,
+html.light-theme .lightbox-close-btn,
+html.light-theme [data-close-prompt],
+html.light-theme .sf-thumb-close,
+html.light-theme .sf-io-close {
+  background: #080B10 !important;
+  border-color: #303743 !important;
+  color: #E8EDF4 !important;
+}
+
+:root .faq-modal-collapse-btn:hover,
+:root .search-modal-close:hover,
+:root .filter-dialog-close-btn:hover,
+:root .lightbox-close-btn:hover,
+:root [data-close-prompt]:hover,
+:root .sf-thumb-close:hover,
+:root .sf-io-close:hover,
+html.light-theme .faq-modal-collapse-btn:hover,
+html.light-theme .search-modal-close:hover,
+html.light-theme .filter-dialog-close-btn:hover,
+html.light-theme .lightbox-close-btn:hover,
+html.light-theme [data-close-prompt]:hover,
+html.light-theme .sf-thumb-close:hover,
+html.light-theme .sf-io-close:hover {
+  background: #111722 !important;
+  border-color: #465164 !important;
+  color: #FFFFFF !important;
+}
