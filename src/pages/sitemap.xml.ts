@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { resourceSlug } from '../lib/resource';
 
-const staticPaths = ['/'];
+const staticPaths = ['/', '/resources/'];
 
 const escapeXml = (value: string) => value
   .replace(/&/g, '&amp;')
