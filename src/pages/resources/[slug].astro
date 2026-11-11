@@ -3674,6 +3674,44 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       flex: 0 0 auto;
     }
 
+    /* Keep both lightbox actions visually equal; only their fills differ. */
+    #media-lightbox .media-lightbox-toolbar .lightbox-icon-btn {
+      width: 46px !important;
+      height: 46px !important;
+      min-width: 46px !important;
+      min-height: 46px !important;
+      flex: 0 0 46px !important;
+      border-radius: 12px !important;
+      padding: 0 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    #media-lightbox .media-lightbox-toolbar .lightbox-download-btn {
+      background: #263449 !important;
+      border: 1px solid #34465F !important;
+      color: #EAF2FF !important;
+      box-shadow: 0 3px 0 #151E2D, 0 6px 12px rgba(0,0,0,.24) !important;
+    }
+
+    #media-lightbox .media-lightbox-toolbar .lightbox-close-btn {
+      background: #080B10 !important;
+      border: 1px solid #303743 !important;
+      color: #E8EDF4 !important;
+      box-shadow: none !important;
+    }
+
+    #media-lightbox .media-lightbox-toolbar .lightbox-download-btn:hover {
+      background: #30435B !important;
+    }
+
+    #media-lightbox .media-lightbox-toolbar .lightbox-close-btn:hover {
+      background: #111722 !important;
+      border-color: #465164 !important;
+      color: #FFFFFF !important;
+    }
+
     .lightbox-icon-btn {
       width: 46px;
       height: 46px;
