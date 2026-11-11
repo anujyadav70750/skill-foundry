@@ -1248,3 +1248,39 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
     gap: 0 !important;
   }
 }
+
+/* Touch devices: resource links keep their resting visual state.
+   Desktop hover feedback remains available; real buttons keep their own states. */
+@media (hover: none) and (pointer: coarse) {
+  .resource-card-horizontal:hover,
+  .resource-card-horizontal:active {
+    transform: none !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .resource-card-horizontal:hover .h-thumb-img,
+  .resource-card-horizontal:active .h-thumb-img {
+    transform: none !important;
+  }
+
+  .resource-card-horizontal:hover .h-title,
+  .resource-card-horizontal:active .h-title {
+    color: #FFFFFF !important;
+  }
+
+  :root[data-theme="light"] .resource-card-horizontal:hover,
+  :root[data-theme="light"] .resource-card-horizontal:active,
+  html.light-theme .resource-card-horizontal:hover,
+  html.light-theme .resource-card-horizontal:active {
+    border-color: #E2E8F0 !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  :root[data-theme="light"] .resource-card-horizontal:hover .h-title,
+  :root[data-theme="light"] .resource-card-horizontal:active .h-title,
+  html.light-theme .resource-card-horizontal:hover .h-title,
+  html.light-theme .resource-card-horizontal:active .h-title {
+    color: #0F172A !important;
+  }
+}
