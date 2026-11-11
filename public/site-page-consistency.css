@@ -707,15 +707,15 @@ body.no-header {
 
 .faq-page .faq-page-num.active {
   background: #176E73 !important;
-  border-color: #35C9C1 !important;
+  border-color: #258E8B !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
 
 :root[data-theme="light"] .faq-page .faq-page-num.active,
 html.light-theme .faq-page .faq-page-num.active {
-  background: #128C87 !important;
-  border-color: #128C87 !important;
+  background: #087F83 !important;
+  border-color: #087F83 !important;
   color: #FFFFFF !important;
   box-shadow: none !important;
 }
@@ -736,22 +736,22 @@ html.light-theme .faq-page .faq-page-num.active {
 
 /* Resource library filters, category controls, selected states and highlights. */
 .explore-page .filter-chip-option.is-selected {
-  background: rgba(53, 201, 193, 0.10) !important;
-  border-color: var(--sf-page-focus) !important;
+  background: rgba(53, 201, 193, 0.07) !important;
+  border-color: rgba(53, 201, 193, 0.32) !important;
   color: var(--sf-page-accent) !important;
   box-shadow: none !important;
 }
 
 .explore-page .sort-option-btn.is-selected {
-  background: rgba(53, 201, 193, 0.08) !important;
-  border-color: var(--sf-page-focus) !important;
+  background: rgba(53, 201, 193, 0.05) !important;
+  border-color: rgba(53, 201, 193, 0.28) !important;
   color: var(--sf-page-heading) !important;
 }
 
 .explore-page .sort-option-btn.is-selected .sort-radio-circle {
   border-color: var(--sf-page-accent) !important;
   background: var(--sf-page-accent) !important;
-  box-shadow: inset 0 0 0 2.5px var(--sf-page-surface) !important;
+  box-shadow: inset 0 0 0 3px var(--sf-page-surface) !important;
 }
 
 .explore-page .filter-apply-action-btn:not(:disabled) {
@@ -769,15 +769,15 @@ html.light-theme .explore-page .filter-apply-action-btn:not(:disabled) {
 }
 
 .explore-page .filter-apply-action-btn:not(:disabled):hover {
-  background: #0F5F61 !important;
-  border-color: #35C9C1 !important;
+  background: #0F5F63 !important;
+  border-color: #1B817D !important;
   box-shadow: none !important;
 }
 
 :root[data-theme="light"] .explore-page .filter-apply-action-btn:not(:disabled):hover,
 html.light-theme .explore-page .filter-apply-action-btn:not(:disabled):hover {
-  background: #0D746F !important;
-  border-color: #0D746F !important;
+  background: #066C70 !important;
+  border-color: #066C70 !important;
 }
 
 .explore-page .category-more-btn:hover {
