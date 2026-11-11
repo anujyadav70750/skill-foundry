@@ -44,7 +44,7 @@ function injectFooterStyles() {
         const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">';
         const aspectRatioCorrectionStylesheet = '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">';
         const iconAccentStylesheet = '<link rel="stylesheet" href="/site-icon-accent.css?v=20261108-icon-accent-v2">';
-        const pageConsistencyStylesheet = '<link rel="stylesheet" href="/site-page-consistency.css?v=20261108-page-theme-v1">';
+        const pageConsistencyStylesheet = '<link rel="stylesheet" href="/site-page-consistency.css?v=20261111-resource-library-v2">';
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
