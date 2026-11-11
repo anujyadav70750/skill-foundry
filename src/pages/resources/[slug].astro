@@ -1032,6 +1032,11 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   <div id="media-lightbox" class="media-lightbox" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
     <div class="media-lightbox-backdrop" data-close-lightbox></div>
     <div class="media-lightbox-container">
+      <div class="media-lightbox-body">
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Resource Preview" style="display: none;" />
+        <video id="lightbox-video" class="lightbox-video" src="" controls playsinline preload="auto" style="display: none;"></video>
+        <iframe id="lightbox-pdf" class="lightbox-pdf" title="PDF preview" style="display: none;"></iframe>
+      </div>
       <div class="media-lightbox-toolbar">
         <a
           id="lightbox-download-btn"
@@ -1060,11 +1065,6 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-      </div>
-      <div class="media-lightbox-body">
-        <img id="lightbox-img" class="lightbox-img" src="" alt="Resource Preview" style="display: none;" />
-        <video id="lightbox-video" class="lightbox-video" src="" controls playsinline preload="auto" style="display: none;"></video>
-        <iframe id="lightbox-pdf" class="lightbox-pdf" title="PDF preview" style="display: none;"></iframe>
       </div>
     </div>
   </div>
@@ -3644,10 +3644,16 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      max-width: min(92vw, 1100px);
-      max-height: min(90vh, 880px);
-      width: auto;
+      gap: 14px;
+      width: min(90vw, 720px);
+      max-width: 720px;
+      max-height: 86vh;
+      padding: 14px;
       box-sizing: border-box;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 18px;
+      background: #0B1019;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58);
       transform: scale(0.96);
       transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -3656,30 +3662,24 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       transform: scale(1);
     }
 
-    /* Floating Toolbar: professional rounded action buttons with NO text */
+    /* Actions sit inside the preview card, below the media. */
     .media-lightbox-toolbar {
-      position: absolute;
-      top: -52px;
-      right: 0;
+      position: static;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
       z-index: 10;
-    }
-
-    @media (max-width: 640px) {
-      .media-lightbox-toolbar {
-        top: -46px;
-        gap: 8px;
-      }
+      flex: 0 0 auto;
     }
 
     .lightbox-icon-btn {
-      width: 40px;
-      height: 40px;
-      min-width: 40px;
-      min-height: 40px;
-      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      min-width: 46px;
+      min-height: 46px;
+      border-radius: 12px;
       background: rgba(17, 24, 39, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.2);
       color: #FFFFFF;
@@ -3724,12 +3724,12 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       overflow: hidden;
       box-shadow: 0 28px 72px rgba(0, 0, 0, 0.68);
       max-width: 100%;
-      max-height: calc(88vh - 60px);
+      max-height: calc(76vh - 110px);
     }
 
     .lightbox-img {
       max-width: 100%;
-      max-height: calc(88vh - 60px);
+      max-height: calc(76vh - 110px);
       width: auto;
       height: auto;
       object-fit: contain;
@@ -3748,8 +3748,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     .lightbox-pdf {
       display: block;
-      width: min(88vw, 980px);
-      height: min(78vh, 820px);
+      width: 100%;
+      height: min(68vh, 620px);
       max-width: 100%;
       border: 0;
       background: #FFFFFF;
