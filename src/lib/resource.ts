@@ -36,15 +36,25 @@ export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
   );
 }
 
-export function resourceDisplayImage(image: string | null | undefined, width: 640 | 1280 = 640) {
+export function resourceDisplayImage(image: string | null | undefined, width: 320 | 480 | 640 | 960 | 1280 | 1600 = 640) {
   const source = image?.trim() || PLACEHOLDER_IMAGE;
   if (!source.startsWith('/images/') || source.startsWith('/media/')) return source;
 
   const pathname = source.split(/[?#]/, 1)[0];
   if (!/\.(?:png|jpe?g|webp)$/i.test(pathname)) return source;
 
-  const displayWidth = width === 1280 ? 1280 : 640;
-  return `/media${pathname}?w=${displayWidth}`;
+  return `/media${pathname}?w=${width}`;
+}
+
+export function resourceDisplaySrcSet(image: string | null | undefined, widths: Array<320 | 480 | 640 | 960 | 1280 | 1600> = [320, 480, 640]) {
+  const source = image?.trim() || PLACEHOLDER_IMAGE;
+  if (!source.startsWith('/images/') || source.startsWith('/media/')) return undefined;
+  const pathname = source.split(/[?#]/, 1)[0];
+  if (!/\\.(?:png|jpe?g|webp)$/i.test(pathname)) return undefined;
+  return [...new Set(widths)]
+    .sort((a, b) => a - b)
+    .map((width) => `/media${pathname}?w=${width} ${width}w`)
+    .join(', ');
 }
 
 export function resourceThumbnail(resource: CollectionEntry<'resources'>) {

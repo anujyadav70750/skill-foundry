@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceDisplayImage, resourceThumbnail } from '../../lib/resource';
+import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceDisplayImage, resourceDisplaySrcSet, resourceThumbnail } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const resources = (await getCollection('resources'))
@@ -455,7 +455,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
           {/* 2. Hero Image / Thumbnail (No outer frame/card/border, clean rounded image) */}
           <div class="hero-image-wrap">
-            <img class="hero-image" src={heroImage} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
+            <img class="hero-image" src={heroImage} srcset={resourceDisplaySrcSet(resourceHeroImage(resource), [960, 1280])} sizes="(max-width: 600px) 100vw, 1200px" alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
           </div>
           <script is:inline>
             (() => {

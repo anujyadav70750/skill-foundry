@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceSlug, resourceThumbnail, resourceImageAlt } from '../../lib/resource';
+import { resourceSlug, resourceThumbnail, resourceImageAlt, resourceDisplaySrcSet } from '../../lib/resource';
 
 // 1. SINGLE SOURCE OF TRUTH: Published resources sorted by date descending (Newest first)
 const allResources = await getCollection('resources');
@@ -228,6 +228,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                           <img
                             class="recent-resource-thumb-img"
                             src={resourceThumbnail(resource)}
+                            srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)}
+                            sizes="(max-width: 600px) 78vw, 420px"
                             alt={resourceImageAlt(resource)}
                             loading={index === 0 ? "eager" : "lazy"}
                             fetchpriority={index === 0 ? "high" : "auto"}
@@ -291,6 +293,8 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                               <img
                                 class="h-thumb-img"
                                 src={resourceThumbnail(resource)}
+                                srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)}
+                                sizes="(max-width: 600px) 46vw, 280px"
                                 alt={resourceImageAlt(resource)}
                                 loading="lazy"
                                 decoding="async"
@@ -383,7 +387,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   data-slug={slug}
                 >
                   <div class="h-thumb-wrap">
-                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="lazy" decoding="async" />
+                    <img class="h-thumb-img" src={thumbnail} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 46vw, 280px" alt={alt} loading="lazy" decoding="async" />
                   </div>
 
                   <div class="h-content">
