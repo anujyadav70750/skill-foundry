@@ -339,8 +339,11 @@ async function fetchToolLogoImage(request) {
 }
 
 const injectHeadCss = (response, pathname) => {
-  const isResourceDetailPage = /^\\/resources\\/[^/]+\\/?$/.test(pathname);
-  const needsImageDisplayFixes = pathname === '/' || /^\\/resources\\/?$/.test(pathname) || pathname.startsWith('/resources/') || pathname === '/admin' || pathname.startsWith('/admin/');
+  const pathSegments = pathname.split('/').filter(Boolean);
+  const isResourceLibraryPage = pathSegments.length === 1 && pathSegments[0] === 'resources';
+  const isResourceDetailPage = pathSegments.length === 2 && pathSegments[0] === 'resources';
+  const isAdminPage = pathSegments[0] === 'admin';
+  const needsImageDisplayFixes = pathname === '/' || isResourceLibraryPage || isResourceDetailPage || isAdminPage;
   return new HTMLRewriter().on('head', { element(element) {
     if (needsImageDisplayFixes) element.append('<link rel="stylesheet" href="/image-display-fixes.css?v=20261111-route-scope-v1">', { html: true });
     if (isResourceDetailPage) element.append('<link rel="stylesheet" href="/tools-workflow-overrides.css?v=20261111-route-scope-v1">', { html: true });
