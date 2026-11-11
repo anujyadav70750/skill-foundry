@@ -338,6 +338,80 @@ async function fetchToolLogoImage(request) {
   }
 }
 
+async function serveOptimizedImage(request, env) {
+  const url = new URL(request.url);
+  let imagePath;
+  try {
+    imagePath = decodeURIComponent(url.pathname.slice('/media/'.length));
+  } catch {
+    return new Response('Invalid image path.', { status: 400 });
+  }
+
+  const segments = imagePath.split('/');
+  const invalidPath = segments[0] !== 'images' ||
+    segments.length < 2 ||
+    segments.some((segment) => !segment || segment === '.' || segment === '..' || !/^[A-Za-z0-9._-]+$/.test(segment)) ||
+    !/\.(?:png|jpe?g|webp)$/i.test(imagePath);
+  if (invalidPath) return new Response('Unsupported image path.', { status: 400 });
+  if (request.method !== 'GET' && request.method !== 'HEAD') return new Response('Method not allowed.', { status: 405 });
+
+  const width = Number(url.searchParams.get('w') || 640);
+  if (![320, 480, 640, 960, 1280, 1600].includes(width)) {
+    return new Response('Unsupported image width.', { status: 400 });
+  }
+
+  const originalUrl = new URL(`/${imagePath}`, url.origin);
+  const originalRequest = new Request(originalUrl.href, {
+    method: request.method,
+    headers: { Accept: request.headers.get('Accept') || '*/*' }
+  });
+  const fallback = async () => {
+    const original = await env.ASSETS.fetch(originalRequest);
+    const headers = new Headers(original.headers);
+    headers.set('X-Content-Type-Options', 'nosniff');
+    return new Response(request.method === 'HEAD' ? null : original.body, {
+      status: original.status,
+      statusText: original.statusText,
+      headers
+    });
+  };
+
+  try {
+    const transformed = await fetch(originalUrl.href, {
+      method: 'GET',
+      headers: {
+        Accept: request.headers.get('Accept') || 'image/avif,image/webp,image/*,*/*;q=0.8'
+      },
+      cf: {
+        image: {
+          width,
+          fit: 'scale-down',
+          quality: width <= 640 ? 76 : 82,
+          format: 'auto'
+        }
+      }
+    });
+
+    const mimeType = (transformed.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase();
+    if (!transformed.ok || !mimeType.startsWith('image/')) {
+      await transformed.body?.cancel().catch(() => {});
+      return fallback();
+    }
+
+    const headers = new Headers(transformed.headers);
+    headers.set('Cache-Control', 'public, max-age=31536000, immutable');
+    headers.set('X-Content-Type-Options', 'nosniff');
+    headers.set('Cross-Origin-Resource-Policy', 'same-origin');
+    return new Response(request.method === 'HEAD' ? null : transformed.body, {
+      status: transformed.status,
+      statusText: transformed.statusText,
+      headers
+    });
+  } catch {
+    return fallback();
+  }
+}
+
 const injectHeadCss = (response, pathname) => {
   const pathSegments = pathname.split('/').filter(Boolean);
   const isResourceLibraryPage = pathSegments.length === 1 && pathSegments[0] === 'resources';
@@ -349,7 +423,7 @@ const injectHeadCss = (response, pathname) => {
     if (isResourceDetailPage) element.append('<link rel="stylesheet" href="/tools-workflow-overrides.css?v=20261111-route-scope-v1">', { html: true });
   } }).transform(response);
 };
-export default { async fetch(request, env) { const url = new URL(request.url); if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) return new Response(null, { status: 204, headers: { ...corsHeaders(request), 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-File-Name' } }); if (request.method === 'POST' && url.pathname === '/api/upload-image') { try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/publish-resource') { try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/contact') { try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo') { const limited = await enforceRateLimit(request, env, 'tool-logo', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo-image') { const limited = await enforceRateLimit(request, env, 'tool-logo-image', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogoImage(request); } catch (error) { return new Response('', { status: 500 }); } } const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/'); if ((request.method === 'GET' || request.method === 'HEAD') && isAdminPage && !hasAdminBasicAuth(request, env)) { const limited = await enforceRateLimit(request, env, 'admin-login', [{ key: 'attempts', limit: 10, windowSeconds: 900 }]); if (limited) return limited; return adminUnauthorized(); } let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || ''; if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response, url.pathname); if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) { response = injectBodyScript(response, '/admin/input-output-ratio-fallback.js?v=20261106-popup-theme-v1'); response = injectBodyScript(response, '/admin/image-ratio-ui.js?v=20260909-2'); response = injectBodyScript(response, '/admin/thumbnail-crop-ui.js?v=20260909-5'); response = injectBodyScript(response, '/admin/resource-builder.js?v=20260914-5'); response = injectBodyScript(response, '/admin/resource-publisher.js?v=20260914-8'); response = injectBodyScript(response, '/admin/resource-builder-ratio.js?v=20260909-3'); response = injectBodyScript(response, '/admin/image-ratio-publisher.js?v=20260909-2'); response = injectBodyScript(response, '/admin/admin-shell-fix.js?v=20260913-2'); } 
+export default { async fetch(request, env) { if ((request.headers.get('via') || '').toLowerCase().includes('image-resizing')) return env.ASSETS.fetch(request); const url = new URL(request.url); if ((request.method === 'GET' || request.method === 'HEAD') && url.pathname.startsWith('/media/images/')) return serveOptimizedImage(request, env); if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) return new Response(null, { status: 204, headers: { ...corsHeaders(request), 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-File-Name' } }); if (request.method === 'POST' && url.pathname === '/api/upload-image') { try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/publish-resource') { try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/contact') { try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo') { const limited = await enforceRateLimit(request, env, 'tool-logo', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo-image') { const limited = await enforceRateLimit(request, env, 'tool-logo-image', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogoImage(request); } catch (error) { return new Response('', { status: 500 }); } } const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/'); if ((request.method === 'GET' || request.method === 'HEAD') && isAdminPage && !hasAdminBasicAuth(request, env)) { const limited = await enforceRateLimit(request, env, 'admin-login', [{ key: 'attempts', limit: 10, windowSeconds: 900 }]); if (limited) return limited; return adminUnauthorized(); } let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || ''; if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response, url.pathname); if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) { response = injectBodyScript(response, '/admin/input-output-ratio-fallback.js?v=20261106-popup-theme-v1'); response = injectBodyScript(response, '/admin/image-ratio-ui.js?v=20260909-2'); response = injectBodyScript(response, '/admin/thumbnail-crop-ui.js?v=20260909-5'); response = injectBodyScript(response, '/admin/resource-builder.js?v=20260914-5'); response = injectBodyScript(response, '/admin/resource-publisher.js?v=20260914-8'); response = injectBodyScript(response, '/admin/resource-builder-ratio.js?v=20260909-3'); response = injectBodyScript(response, '/admin/image-ratio-publisher.js?v=20260909-2'); response = injectBodyScript(response, '/admin/admin-shell-fix.js?v=20260913-2'); } 
     const securityHeaders = new Headers(response.headers);
     securityHeaders.set('X-Content-Type-Options', 'nosniff');
     securityHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');

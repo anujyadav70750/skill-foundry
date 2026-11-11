@@ -36,7 +36,18 @@ export function resourceHeroImage(resource: CollectionEntry<'resources'>) {
   );
 }
 
+export function resourceDisplayImage(image: string | null | undefined, width: 640 | 1280 = 640) {
+  const source = image?.trim() || PLACEHOLDER_IMAGE;
+  if (!source.startsWith('/images/') || source.startsWith('/media/')) return source;
+
+  const pathname = source.split(/[?#]/, 1)[0];
+  if (!/\.(?:png|jpe?g|webp)$/i.test(pathname)) return source;
+
+  const displayWidth = width === 1280 ? 1280 : 640;
+  return `/media${pathname}?w=${displayWidth}`;
+}
+
 export function resourceThumbnail(resource: CollectionEntry<'resources'>) {
-  // Keep the legacy helper name for existing callers, but always use the canonical hero image.
-  return resourceHeroImage(resource);
+  // Use a cached, smaller display copy for cards while keeping the original file for downloads.
+  return resourceDisplayImage(resourceHeroImage(resource), 640);
 }
