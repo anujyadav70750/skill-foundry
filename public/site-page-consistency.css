@@ -515,7 +515,7 @@ body.no-header {
 
 .explore-page .search-form:focus-within {
   border-color: var(--sf-page-focus) !important;
-  box-shadow: 0 0 0 3px rgba(53, 201, 193, 0.10) !important;
+  box-shadow: none !important;
 }
 
 .explore-page .search-bar-circle-btn {
