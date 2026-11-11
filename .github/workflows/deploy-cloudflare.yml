@@ -33,3 +33,6 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy ./src/worker.js --config ./wrangler.jsonc
+
+      - name: Verify deployed responsive image delivery
+        run: node scripts/verify-image-delivery.mjs
