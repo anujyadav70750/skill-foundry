@@ -335,7 +335,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               const slug = resourceSlug(resource);
               const thumbnail = resourceThumbnail(resource);
               const alt = resourceImageAlt(resource);
-              const isLatest = index === 0;
+              const dateLabel = resource.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
               const toolsList = Array.isArray(resource.data.toolsUsed)
                 ? resource.data.toolsUsed.map((t) => t.name).join(' ')
                 : '';
@@ -363,13 +363,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   data-date={timestamp}
                   data-title={resource.data.title.toLowerCase()}
                   data-slug={slug}
-                  data-is-latest={isLatest ? "true" : "false"}
                 >
                   <div class="h-thumb-wrap">
-                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="eager" decoding="async" />
+                    <img class="h-thumb-img" src={thumbnail} alt={alt} loading="lazy" decoding="async" />
                   </div>
 
                   <div class="h-content">
+                    <div class="h-meta">
+                      <span class="h-meta-category">{resource.data.category}</span>
+                      <time class="h-meta-date" datetime={resource.data.date.toISOString()}>{dateLabel}</time>
+                    </div>
                     <h3 class="h-title">
                       <span class="searchable-target">{resource.data.title}</span>
                     </h3>
@@ -919,6 +922,13 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #475569 !important;
   }
 
+  :global([data-theme="light"]) .h-meta-category,
+  :global(html.light-theme) .h-meta-category,
+  :global([data-theme="light"]) .h-meta-date,
+  :global(html.light-theme) .h-meta-date {
+    color: #64748B;
+  }
+
   .resources-list {
     display: flex;
     flex-direction: column;
@@ -1074,6 +1084,36 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     flex: 1 1 auto;
     min-width: 0;
     box-sizing: border-box;
+  }
+
+  .h-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    margin-bottom: 5px;
+  }
+
+  .h-meta-category {
+    min-width: 0;
+    overflow: hidden;
+    color: #9298A4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .h-meta-date {
+    flex-shrink: 0;
+    color: #9298A4;
+    font-size: 10px;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .h-title {
@@ -2715,11 +2755,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const sortCards = (cards: HTMLElement[], sortType: string) => {
     if (!resourcesGrid) return;
     cards.sort((a, b) => {
-      const aIsLatest = a.dataset.isLatest === 'true';
-      const bIsLatest = b.dataset.isLatest === 'true';
-      if (aIsLatest && !bIsLatest) return -1;
-      if (!aIsLatest && bIsLatest) return 1;
-
       if (sortType === 'oldest') {
         const dateA = Number(a.dataset.date || 0);
         const dateB = Number(b.dataset.date || 0);
@@ -2789,24 +2824,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         flatLibraryView.classList.toggle('is-category-view', isCategoryLanding);
       }
 
-      // Category landings use the site's full-size section heading; search keeps its existing capsule.
+      // Search and category views share the same resource list and card structure.
       const flatViewTitle = document.getElementById('flat-view-title');
       if (flatViewTitle) {
         flatViewTitle.textContent = isSearching
-          ? (isCategoryFiltered ? `Search: ${savedCategory}` : 'Search Results')
+          ? 'Search results'
           : (savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory);
         flatViewTitle.hidden = false;
       }
       const flatViewSubcopy = document.getElementById('flat-view-subcopy');
       if (flatViewSubcopy) flatViewSubcopy.hidden = false;
-
-      if (flatViewSubcopy) {
-        if (isSearching) {
-          flatViewSubcopy.textContent = `Workflows and blueprints matching "${trimmedQuery}".`;
-        } else {
-          flatViewSubcopy.textContent = `Complete collection of practical blueprints and workflows in ${savedCategory}.`;
-        }
-      }
 
       cardElements.forEach((card) => {
         const cardCategory = (card.dataset.category || '').toLowerCase();
@@ -2829,7 +2856,24 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         if (isVisible) matchCount += 1;
       });
 
-      // Sort matching cards by SAVED sort
+      // Display a useful result count and the active ordering.
+      if (flatViewSubcopy) {
+        const sortLabel = savedSort === 'oldest'
+          ? 'Oldest first'
+          : savedSort === 'title'
+            ? 'Alphabetical (A–Z)'
+            : 'Newest first';
+        if (isSearching) {
+          const categoryContext = isCategoryFiltered ? ` in ${savedCategory}` : '';
+          flatViewSubcopy.textContent = `${matchCount} matching resource${matchCount === 1 ? '' : 's'}${categoryContext} for "${trimmedQuery}" · ${sortLabel}.`;
+        } else if (isCategoryLanding) {
+          flatViewSubcopy.textContent = `${matchCount} resource${matchCount === 1 ? '' : 's'} in ${savedCategory}.`;
+        } else {
+          flatViewSubcopy.textContent = `${matchCount} resources · ${sortLabel}.`;
+        }
+      }
+
+      // Sort matching cards by the selected order (without pinning the latest item).
       sortCards(cardElements, savedSort);
 
       // Apply search highlights
@@ -2868,6 +2912,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
 
       if (savedSort !== 'newest') url.searchParams.set('sort', savedSort);
       else url.searchParams.delete('sort');
+      url.searchParams.delete('focus');
 
       window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
     }
@@ -2973,4 +3018,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   // Initial render on load
   syncSavedFilterIcon();
   updateLibrary(false);
+
+  // Header search links and legacy /search/ redirects land here with focus=search.
+  const shouldFocusSearch = urlParams.get('focus') === 'search';
+  if (shouldFocusSearch && searchInput) {
+    window.requestAnimationFrame(() => {
+      searchInput.focus({ preventScroll: true });
+      searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete('focus');
+    window.history.replaceState({}, '', `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+  }
 </script>
