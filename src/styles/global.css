@@ -916,9 +916,9 @@ html.light-theme .sf-io-ratio::backdrop {
 :root[data-theme="light"] .sort-option-btn.is-selected,
 html.light-theme .filter-chip-option.is-selected,
 html.light-theme .sort-option-btn.is-selected {
-  background: rgba(234,101,8,.09) !important;
-  border-color: rgba(234,101,8,.45) !important;
-  color: #C45105 !important;
+  background: rgba(var(--accent-rgb),.09) !important;
+  border-color: rgba(var(--accent-rgb),.36) !important;
+  color: var(--accent) !important;
 }
 
 :root[data-theme="light"] .sort-option-btn.is-selected .sort-radio-circle,
