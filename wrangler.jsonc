@@ -1,14 +1,38 @@
 {
-  "$schema":"./node_modules/wrangler/config-schema.json",
-  "name":"hub",
-  "main":"./src/worker.js",
-  "compatibility_date":"2026-09-07",
-  "secrets":{
-    "required":["GITHUB_TOKEN","ADMIN_PASSWORD"]
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "hub",
+  "main": "./src/worker.js",
+  "compatibility_date": "2026-09-07",
+  "secrets": {
+    "required": [
+      "GITHUB_TOKEN",
+      "ADMIN_PASSWORD"
+    ]
   },
-  "assets":{
-    "directory":"./dist",
-    "binding":"ASSETS",
-    "run_worker_first":["/api/*","/resources/*","/admin","/admin/*"]
-  }
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/api/*",
+      "/resources/*",
+      "/admin",
+      "/admin/*"
+    ]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "RateLimitDO"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1-rate-limit-do",
+      "new_sqlite_classes": [
+        "RateLimitDO"
+      ]
+    }
+  ]
 }
