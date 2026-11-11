@@ -937,7 +937,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
 
   /* ==========================================================================
-     5. STRICT CLEAN RESOURCE CARDS (THUMBNAIL + TITLE + SHORT DESCRIPTION ONLY)
+     5. FLAT RESOURCE CARDS (THUMBNAIL, CATEGORY, DATE, TITLE & DESCRIPTION)
      ========================================================================== */
   .resource-card {
     text-decoration: none;
@@ -3023,7 +3023,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   if (shouldFocusSearch && searchInput) {
     window.requestAnimationFrame(() => {
       searchInput.focus({ preventScroll: true });
-      searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      searchInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
     const cleanUrl = new URL(window.location.href);
     cleanUrl.searchParams.delete('focus');
