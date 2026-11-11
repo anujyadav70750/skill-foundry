@@ -331,7 +331,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
           </div>
 
           <div class="resources-list" id="resources-grid">
-            {publishedResources.map((resource, index) => {
+            {publishedResources.map((resource) => {
               const slug = resourceSlug(resource);
               const thumbnail = resourceThumbnail(resource);
               const alt = resourceImageAlt(resource);
@@ -2550,7 +2550,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const resourcesGrid = document.getElementById('resources-grid') as HTMLElement | null;
   const curatedLibraryView = document.getElementById('curated-library-view') as HTMLElement | null;
   const flatLibraryView = document.getElementById('flat-library-view') as HTMLElement | null;
-  const flatViewCapsule = document.getElementById('flat-view-capsule') as HTMLElement | null;
   const flatViewSubcopy = document.getElementById('flat-view-subcopy') as HTMLElement | null;
 
   const cardElements = Array.from(document.querySelectorAll('#flat-library-view .resource-card')) as HTMLElement[];
