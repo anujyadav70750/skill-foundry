@@ -266,9 +266,7 @@ img {
   -webkit-backdrop-filter: blur(8px) !important;
 }
 :root:not([data-theme="light"]) .search-header-bar,
-:root:not([data-theme="light"]) .search-modal-footer,
-:root:not([data-theme="light"]) .filter-dialog-header,
-:root:not([data-theme="light"]) .filter-dialog-footer {
+:root:not([data-theme="light"]) .search-modal-footer {
   background: rgba(255, 255, 255, 0.02) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
@@ -449,9 +447,7 @@ html.light-theme .filter-dialog textarea {
 }
 
 :root:not([data-theme="light"]) .search-header-bar,
-:root:not([data-theme="light"]) .search-modal-footer,
-:root:not([data-theme="light"]) .filter-dialog-header,
-:root:not([data-theme="light"]) .filter-dialog-footer {
+:root:not([data-theme="light"]) .search-modal-footer {
   background: #10141B !important;
   border-color: #242A34 !important;
 }
