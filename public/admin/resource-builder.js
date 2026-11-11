@@ -50,7 +50,7 @@
   const remove = () => '<button class="remove-button" type="button" aria-label="Remove item" title="Remove item">×</button>';
   const state = () => '<div class="upload-state" data-upload-state aria-live="polite"></div>';
   const clearButton = () => '<button class="image-clear" type="button" aria-label="Remove selected image" title="Remove selected image">×</button>';
-  const media = (role, placeholder) => `<div class="media-control"><div class="upload-row"><input data-role="${role}" class="path-input" placeholder="${placeholder}" /><label class="file-button"><input type="file" accept="image/*" data-file-role="${role}" />Select</label></div>${state()}<div class="image-preview" data-preview-role="${role}">${clearButton()}</div></div>`;
+  const media = (role, placeholder) => `<div class="media-control"><div class="upload-row"><input data-role="${role}" class="path-input" placeholder="${placeholder}" /><label class="file-button"><input type="file" accept="image/png,image/jpeg,image/webp" data-file-role="${role}" />Select</label></div>${state()}<div class="image-preview" data-preview-role="${role}">${clearButton()}</div></div>`;
 
   const localPreview = (target, file) => {
     if (!target || !file) return;
