@@ -109,6 +109,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               </svg>
             </button>
           </form>
+          <div class="resource-results-divider" id="resource-results-divider" aria-hidden="true" hidden></div>
 
           <!-- COMPACT FILTER MENU: anchored below the filter control, like the Contact Subject selector -->
           <div
@@ -486,9 +487,15 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     text-align: center;
   }
 
-  .search-bar-wrapper:has(+ .resource-results-hint) {
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--sf-page-border, rgba(255, 255, 255, 0.10));
+  .resource-results-divider {
+    width: 100%;
+    height: 1px;
+    margin: 12px auto 0;
+    background: var(--sf-page-border, rgba(255, 255, 255, 0.10));
+  }
+
+  .resource-results-divider[hidden] {
+    display: none !important;
   }
 
   .resource-results-hint[hidden] {
@@ -2657,6 +2664,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const curatedLibraryView = document.getElementById('curated-library-view') as HTMLElement | null;
   const flatLibraryView = document.getElementById('flat-library-view') as HTMLElement | null;
   const resourceResultsHint = document.getElementById('resource-results-hint') as HTMLElement | null;
+  const resourceResultsDivider = document.getElementById('resource-results-divider') as HTMLElement | null;
 
   const cardElements = Array.from(document.querySelectorAll('#flat-library-view .resource-card')) as HTMLElement[];
   const searchableTargets = Array.from(document.querySelectorAll('.searchable-target')) as HTMLElement[];
@@ -2959,6 +2967,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       if (resourceResultsHint) {
         const showContextLine = isSearching || isCategoryFiltered;
         resourceResultsHint.hidden = !showContextLine;
+        if (resourceResultsDivider) resourceResultsDivider.hidden = !showContextLine;
         resourceResultsHint.textContent = isSearching
           ? (isCategoryFiltered
               ? `Showing matching resources in ${savedCategory}.`
