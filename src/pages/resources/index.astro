@@ -230,7 +230,15 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                         <div class="recent-resource-card-body">
                           <div class="recent-resource-meta-row">
                             <span class="recent-resource-meta-category">{resource.data.category}</span>
-                            <span class="recent-resource-meta-date">{dateStr}</span>
+                            <span class="recent-resource-meta-date">
+                              <svg class="recent-resource-meta-calendar" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                              </svg>
+                              <span>{dateStr}</span>
+                            </span>
                           </div>
                           <h3 class="recent-resource-card-title">{resource.data.title}</h3>
                         </div>
@@ -243,21 +251,22 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               <!-- CATEGORY SECTIONS — YouTube-style heading arrows and clean vertical resource rows -->
               {dynamicCategories.map((cat) => {
                 const catResources = publishedResources.filter((r) => r.data.category?.trim() === cat.name);
-                const categoryQuery = encodeURIComponent(cat.name);
                 return (
                   <section class="curated-section category-curated-section" data-section-category={cat.name}>
                     <div class="category-section-heading">
-                      <h2 class="recent-works-title">{cat.name}</h2>
-                      <button
-                        class="category-heading-link"
-                        type="button"
-                        data-category-open={cat.name}
-                        aria-label={`View all ${cat.name} resources`}
-                      >
-                        <svg class="category-heading-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                      </button>
+                      <h2 class="recent-works-title">
+                        <button
+                          class="category-heading-link"
+                          type="button"
+                          data-category-open={cat.name}
+                          aria-label={`View all ${cat.name} resources`}
+                        >
+                          <span>{cat.name}</span>
+                          <svg class="category-heading-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </button>
+                      </h2>
                     </div>
 
                     <div class="curated-h-cards-stack">
@@ -294,7 +303,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                                 </time>
                               </div>
                               <h3 class="h-title">{resource.data.title}</h3>
-                              <p class="h-desc">{resource.data.description}</p>
                             </div>
                           </a>
                         );
@@ -396,9 +404,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                     <h3 class="h-title">
                       <span class="searchable-target">{resource.data.title}</span>
                     </h3>
-                    <p class="h-desc">
-                      <span class="searchable-target">{resource.data.description}</span>
-                    </p>
                   </div>
                 </a>
               );
@@ -1152,10 +1157,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
 
   .flat-library-view.is-category-view .h-meta-category {
-    display: none;
-  }
-
-  .flat-library-view.is-search-view .h-desc {
     display: none;
   }
 
@@ -1946,12 +1947,24 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
 
   .recent-curated-section .recent-resource-meta-date {
-    color: #94A3B8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    color: #9298A4;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11.5px;
+    font-size: 10.5px;
     font-weight: 500;
     line-height: 1.2;
     white-space: nowrap;
+  }
+
+  .recent-curated-section .recent-resource-meta-calendar {
+    width: 14px;
+    height: 14px;
+    color: #7E8492;
+    flex-shrink: 0;
+    display: block;
   }
 
   .recent-curated-section .recent-resource-card-title {
@@ -2196,6 +2209,12 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     .recent-curated-section .recent-resource-thumb-wrap {
       border-radius: 10px;
     }
+    .recent-curated-section .recent-resource-card-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+    }
     :global([data-theme="light"]) .recent-curated-section .recent-resource-card,
     :global(html.light-theme) .recent-curated-section .recent-resource-card {
       background: transparent;
@@ -2215,7 +2234,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 6px;
     margin-bottom: 16px;
   }
   .category-curated-section .recent-works-title {
@@ -2230,28 +2248,35 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   .category-heading-link {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    flex: 0 0 16px;
-    width: 16px;
-    height: 24px;
+    justify-content: flex-start;
+    gap: 6px;
+    width: auto;
+    min-height: 24px;
     padding: 0;
     border: 0;
     background: transparent;
-    color: #FFFFFF;
-    opacity: 0.58;
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    text-align: left;
     cursor: pointer;
-    transition: opacity 0.18s ease, transform 0.18s ease;
-    align-self: center;
-    transform: translateY(1px);
   }
   .category-heading-link:hover {
-    opacity: 1;
-    transform: translateX(3px);
+    color: inherit;
   }
   .category-heading-chevron {
     display: block;
+    flex: 0 0 16px;
     width: 16px;
     height: 24px;
+    color: currentColor;
+    opacity: 0.58;
+    transform: translateY(1px);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  .category-heading-link:hover .category-heading-chevron {
+    transform: translate(4px, 1px);
+    opacity: 1;
   }
   .category-bottom-action {
     display: flex;
@@ -2362,17 +2387,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .category-curated-section .h-desc {
-    margin: 0;
-    color: #9298A4;
-    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
-    font-size: 12.5px;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
   :global([data-theme="light"]) .category-curated-section .recent-works-title,
   :global(html.light-theme) .category-curated-section .recent-works-title {
     color: #0F172A;
@@ -2386,10 +2400,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   :global([data-theme="light"]) .category-curated-section .h-title,
   :global(html.light-theme) .category-curated-section .h-title {
     color: #0F172A;
-  }
-  :global([data-theme="light"]) .category-curated-section .h-desc,
-  :global(html.light-theme) .category-curated-section .h-desc {
-    color: #64748B;
   }
   @media (max-width: 640px) {
     .category-curated-section {
@@ -2421,14 +2431,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       padding: 8px 12px;
     }
     .category-curated-section .h-title {
-      font-size: 13.5px;
+      font-size: 15px;
       line-height: 1.3;
-      margin-bottom: 4px;
-      -webkit-line-clamp: 2;
-    }
-    .category-curated-section .h-desc {
-      font-size: 11.5px;
-      line-height: 1.35;
+      margin-bottom: 0;
       -webkit-line-clamp: 2;
     }
   }
@@ -2574,13 +2579,9 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       padding: 8px 12px;
     }
     .flat-library-view.is-category-view .h-title {
-      font-size: 13.5px;
+      font-size: 15px;
       line-height: 1.3;
-      margin-bottom: 4px;
-    }
-    .flat-library-view.is-category-view .h-desc {
-      font-size: 11.5px;
-      line-height: 1.35;
+      margin-bottom: 0;
     }
   }
 
