@@ -187,6 +187,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               </button>
             </div>
           </div>
+          <p class="resource-results-hint" id="resource-results-hint" aria-live="polite" hidden></p>
         </div>
       </div>
     </section>
@@ -346,15 +347,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
              VIEW B: FULL FILTERED / CATEGORY / SEARCH VIEW (When filtering or searching)
              ================================================================== -->
         <div id="flat-library-view" class="flat-library-view" hidden>
-          <div class="section-heading-row" id="flat-heading-row">
-            <div class="flat-heading-capsule-wrap">
-              <h2 class="flat-view-title" id="flat-view-title">All Resources</h2>
-              <p class="section-subcopy" id="flat-view-subcopy">
-                Explore step-by-step blueprints, workflows, and prompts ready for production.
-              </p>
-            </div>
-          </div>
-
           <div class="resources-list" id="resources-grid">
             {publishedResources.map((resource) => {
               const slug = resourceSlug(resource);
@@ -481,6 +473,21 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     max-width: 580px;
     margin: 0 auto;
     width: 100%;
+  }
+
+  .resource-results-hint {
+    margin: 9px auto 0;
+    padding: 0 8px;
+    color: var(--sf-page-copy, #A1A9B6);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  .resource-results-hint[hidden] {
+    display: none !important;
   }
 
   .search-form {
@@ -2644,7 +2651,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   const resourcesGrid = document.getElementById('resources-grid') as HTMLElement | null;
   const curatedLibraryView = document.getElementById('curated-library-view') as HTMLElement | null;
   const flatLibraryView = document.getElementById('flat-library-view') as HTMLElement | null;
-  const flatViewSubcopy = document.getElementById('flat-view-subcopy') as HTMLElement | null;
+  const resourceResultsHint = document.getElementById('resource-results-hint') as HTMLElement | null;
 
   const cardElements = Array.from(document.querySelectorAll('#flat-library-view .resource-card')) as HTMLElement[];
   const searchableTargets = Array.from(document.querySelectorAll('.searchable-target')) as HTMLElement[];
@@ -2922,16 +2929,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       }
 
       // Search and category views share the same resource list and card structure.
-      const flatViewTitle = document.getElementById('flat-view-title');
-      if (flatViewTitle) {
-        flatViewTitle.textContent = isSearching
-          ? 'Search results'
-          : (savedCategory.toLowerCase() === 'all' ? 'All Resources' : savedCategory);
-        flatViewTitle.hidden = false;
-      }
-      const flatViewSubcopy = document.getElementById('flat-view-subcopy');
-      if (flatViewSubcopy) flatViewSubcopy.hidden = false;
-
       cardElements.forEach((card) => {
         const cardCategory = (card.dataset.category || '').toLowerCase();
         const cardSearchBlob = card.dataset.search || '';
@@ -2953,21 +2950,15 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         if (isVisible) matchCount += 1;
       });
 
-      // Display a useful result count and the active ordering.
-      if (flatViewSubcopy) {
-        const sortLabel = savedSort === 'oldest'
-          ? 'Oldest first'
-          : savedSort === 'title'
-            ? 'Alphabetical (A–Z)'
-            : 'Newest first';
-        if (isSearching) {
-          const categoryContext = isCategoryFiltered ? ` in ${savedCategory}` : '';
-          flatViewSubcopy.textContent = `${matchCount} matching resource${matchCount === 1 ? '' : 's'}${categoryContext} for "${trimmedQuery}" · ${sortLabel}.`;
-        } else if (isCategoryLanding) {
-          flatViewSubcopy.textContent = `${matchCount} resource${matchCount === 1 ? '' : 's'} in ${savedCategory}.`;
-        } else {
-          flatViewSubcopy.textContent = `${matchCount} resources · ${sortLabel}.`;
-        }
+      // Show one quiet, centred context line only when search or category results are active.
+      if (resourceResultsHint) {
+        const showContextLine = isSearching || isCategoryFiltered;
+        resourceResultsHint.hidden = !showContextLine;
+        resourceResultsHint.textContent = isSearching
+          ? (isCategoryFiltered
+              ? `Showing matching resources in ${savedCategory}.`
+              : 'Showing resources that match your search.')
+          : (isCategoryFiltered ? `Showing resources in ${savedCategory}.` : '');
       }
 
       // Sort matching cards by the selected order (without pinning the latest item).
