@@ -1284,3 +1284,68 @@ html.light-theme .sf-global-cta .cta-desc { color: #475569; }
     color: #0F172A !important;
   }
 }
+
+/* Final touch-state cleanup: keep card content on its resting colours.
+   Buttons and keyboard focus states are intentionally excluded. */
+@media (hover: none) and (pointer: coarse) {
+  .home-page .skill-discipline-card:hover .skill-discipline-icon-wrap,
+  .home-page .skill-discipline-card:active .skill-discipline-icon-wrap {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: #38BDF8 !important;
+  }
+
+  .home-page .skill-discipline-card:hover .skill-discipline-card-title,
+  .home-page .skill-discipline-card:active .skill-discipline-card-title {
+    color: #F8FAFC !important;
+  }
+
+  :root[data-theme="light"] .home-page .skill-discipline-card:hover .skill-discipline-icon-wrap,
+  :root[data-theme="light"] .home-page .skill-discipline-card:active .skill-discipline-icon-wrap,
+  html.light-theme .home-page .skill-discipline-card:hover .skill-discipline-icon-wrap,
+  html.light-theme .home-page .skill-discipline-card:active .skill-discipline-icon-wrap {
+    background: #F1F5F9 !important;
+    border-color: #E2E8F0 !important;
+    color: #0284C7 !important;
+  }
+
+  :root[data-theme="light"] .home-page .skill-discipline-card:hover .skill-discipline-card-title,
+  :root[data-theme="light"] .home-page .skill-discipline-card:active .skill-discipline-card-title,
+  html.light-theme .home-page .skill-discipline-card:hover .skill-discipline-card-title,
+  html.light-theme .home-page .skill-discipline-card:active .skill-discipline-card-title {
+    color: #0F172A !important;
+  }
+
+  .explore-page .resource-card-prominent:hover .prominent-thumb-img,
+  .explore-page .resource-card-prominent:active .prominent-thumb-img {
+    transform: none !important;
+  }
+
+  .faq-page .faq-item:hover:not(:focus-within),
+  .faq-page .faq-item:active:not(:focus-within) {
+    border-color: rgba(255, 255, 255, 0.10) !important;
+  }
+
+  :root[data-theme="light"] .faq-page .faq-item:hover:not(:focus-within),
+  :root[data-theme="light"] .faq-page .faq-item:active:not(:focus-within),
+  html.light-theme .faq-page .faq-item:hover:not(:focus-within),
+  html.light-theme .faq-page .faq-item:active:not(:focus-within) {
+    border-color: #DCE3EC !important;
+  }
+
+  :root[data-theme="light"] .explore-page .resource-card-prominent:hover,
+  :root[data-theme="light"] .explore-page .resource-card-prominent:active,
+  html.light-theme .explore-page .resource-card-prominent:hover,
+  html.light-theme .explore-page .resource-card-prominent:active {
+    border-color: #CBD5E1 !important;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.06) !important;
+    transform: none !important;
+  }
+
+  :root[data-theme="light"] .explore-page .resource-card-prominent:hover .prominent-thumb-img,
+  :root[data-theme="light"] .explore-page .resource-card-prominent:active .prominent-thumb-img,
+  html.light-theme .explore-page .resource-card-prominent:hover .prominent-thumb-img,
+  html.light-theme .explore-page .resource-card-prominent:active .prominent-thumb-img {
+    transform: none !important;
+  }
+}
