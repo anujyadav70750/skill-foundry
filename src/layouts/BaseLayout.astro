@@ -1,7 +1,5 @@
 ---
 import '../styles/global.css';
-import { getCollection } from 'astro:content';
-import { resourceSlug, resourceThumbnail, resourceImageAlt } from '../lib/resource';
 
 export interface Props {
   title?: string;
@@ -47,27 +45,7 @@ const fullTitle = title
 const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).href;
 const socialImage = image ? new URL(image, siteUrl).href : undefined;
 
-// Single Source of Truth: published resources for global search
-const allResources = await getCollection('resources');
-const publishedSearchData = allResources
-  .filter((r) => !('draft' in r.data && r.data.draft === true))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .map((r) => ({
-    title: r.data.title,
-    slug: resourceSlug(r),
-    description: r.data.description,
-    category: r.data.category || '',
-    tool: r.data.tool || '',
-    toolsUsed: Array.isArray(r.data.toolsUsed) ? r.data.toolsUsed.map((t: any) => t.name) : [],
-    tags: Array.isArray(r.data.tags) ? r.data.tags : [],
-    thumbnail: resourceThumbnail(r),
-    imageAlt: resourceImageAlt(r),
-    date: r.data.date ? new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(r.data.date)) : ''
-  }));
-
-const searchHref = currentPath && currentPath !== '/search/' && currentPath !== '/search'
-  ? `/search/?from=${encodeURIComponent(currentPath)}`
-  : '/search/';
+const searchHref = '/resources/?focus=search';
 
 const platformLinks = [
   {
@@ -383,9 +361,6 @@ const platformLinks = [
         </section>
       )}
     </main>
-
-    <!-- EMBEDDED PUBLISHED RESOURCE SEARCH DATA -->
-    <script type="application/json" id="sf-search-data" set:html={JSON.stringify(publishedSearchData)}></script>
 
     <!-- GLOBAL FOOTER (RESTRUCTURED TO NATURAL SKILL FOUNDRY HIERARCHY) -->
     {!hideFooter && (
@@ -2087,22 +2062,17 @@ const platformLinks = [
           closeMenu();
         }
 
-        // Cmd/Ctrl + K shortcut -> navigate to dedicated Search page with originating context
+        // Cmd/Ctrl + K opens search in the unified resource library.
         if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
           event.preventDefault();
-          const fromPath = window.location.pathname !== '/search/' && window.location.pathname !== '/search'
-            ? `${window.location.pathname}${window.location.search}`
-            : '';
-          const target = fromPath ? `/search/?from=${encodeURIComponent(fromPath)}` : '/search/';
-          window.location.href = target;
+          window.location.href = '/resources/?focus=search';
         }
       });
 
-      // Keep header search box href synced with current client path if query/hash changed
+      // Header search always opens the unified resource library in search mode.
       const searchBox = document.querySelector('#header-search-box') as HTMLAnchorElement | null;
-      if (searchBox && window.location.pathname !== '/search/' && window.location.pathname !== '/search') {
-        const fullClientPath = `${window.location.pathname}${window.location.search}`;
-        searchBox.href = `/search/?from=${encodeURIComponent(fullClientPath)}`;
+      if (searchBox) {
+        searchBox.href = '/resources/?focus=search';
       }
 
       // Global Back Button Navigation
