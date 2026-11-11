@@ -1218,3 +1218,43 @@ html.light-theme .sf-io-close:hover {
   border-color: #465164 !important;
   color: #FFFFFF !important;
 }
+
+
+/* Make every site-wide X control visibly distinct from dark popup surfaces. */
+:root .faq-modal-collapse-btn,
+:root .search-modal-close,
+:root .filter-dialog-close-btn,
+:root .lightbox-close-btn,
+:root [data-close-prompt],
+:root .sf-thumb-close,
+:root .sf-io-close,
+html.light-theme .faq-modal-collapse-btn,
+html.light-theme .search-modal-close,
+html.light-theme .filter-dialog-close-btn,
+html.light-theme .lightbox-close-btn,
+html.light-theme [data-close-prompt],
+html.light-theme .sf-thumb-close,
+html.light-theme .sf-io-close {
+  background: #171C25 !important;
+  border: 1px solid #465164 !important;
+  color: #F1F5F9 !important;
+}
+
+:root .faq-modal-collapse-btn:hover,
+:root .search-modal-close:hover,
+:root .filter-dialog-close-btn:hover,
+:root .lightbox-close-btn:hover,
+:root [data-close-prompt]:hover,
+:root .sf-thumb-close:hover,
+:root .sf-io-close:hover,
+html.light-theme .faq-modal-collapse-btn:hover,
+html.light-theme .search-modal-close:hover,
+html.light-theme .filter-dialog-close-btn:hover,
+html.light-theme .lightbox-close-btn:hover,
+html.light-theme [data-close-prompt]:hover,
+html.light-theme .sf-thumb-close:hover,
+html.light-theme .sf-io-close:hover {
+  background: #222A35 !important;
+  border-color: #64748B !important;
+  color: #FFFFFF !important;
+}
