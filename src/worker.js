@@ -202,15 +202,141 @@ async function sendContactMessage(request, env) { if (!isSameOriginRequest(reque
 async function publishResource(request, env) { if (!isAdminApiRequest(request, env)) return json({ error: 'Publishing is available only from the admin builder.' }, 403, request); const limited = await enforceRateLimit(request, env, 'admin-publish', [{ key: 'hour', limit: 20, windowSeconds: 3600 }]); if (limited) return limited; if (!env.GITHUB_TOKEN) return json({ error: 'GitHub publishing is not configured. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503, request); let body; try { body = await readJsonLimited(request, MAX_RESOURCE_BYTES + 8192); } catch (error) { return json({ error: error?.message || 'Invalid publish request.' }, error?.status || 400, request); } const slug = String(body?.slug || '').trim(); const content = String(body?.content || ''); if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return json({ error: 'Invalid resource slug.' }, 400, request); if (!content.startsWith('---')) return json({ error: 'Resource content is missing frontmatter.' }, 400, request); if (new TextEncoder().encode(content).byteLength > MAX_RESOURCE_BYTES) return json({ error: 'Resource content is too large.' }, 413, request); const path = `src/content/resources/${slug}.md`; const endpoint = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`; const existing = await fetch(`${endpoint}?ref=${DEFAULT_BRANCH}`, { headers: githubHeaders(env.GITHUB_TOKEN) }); if (existing.ok) return json({ error: `A resource with the slug \"${slug}\" already exists. Choose a different slug.` }, 409, request); if (existing.status !== 404) { const result = await existing.json().catch(() => ({})); return json({ error: result.message || `Could not check the resource path (${existing.status}).` }, existing.status, request); } const response = await fetch(endpoint, { method: 'PUT', headers: githubHeaders(env.GITHUB_TOKEN), body: JSON.stringify({ message: `Publish resource ${slug}`, content: toBase64(new TextEncoder().encode(content)), branch: DEFAULT_BRANCH, committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' } }) }); const result = await response.json().catch(() => ({})); if (!response.ok) return json({ error: result.message || `GitHub rejected the resource publish (${response.status}).` }, response.status, request); return json({ path, slug, url: `/resources/${slug}/` }, 201, request); }
 
 const getToolIconUrl = async (targetUrl) => {
-  let target; try { target = new URL(targetUrl); } catch { return ''; }
-  if (!['http:', 'https:'].includes(target.protocol)) return '';
-  const fallback = `${target.origin}/favicon.ico`;
-  const iconScore = (candidate) => { const href = String(candidate.href || '').toLowerCase(); const rel = String(candidate.rel || '').toLowerCase(); const type = String(candidate.type || '').toLowerCase(); const size = Number(candidate.size || 0); let score = 0; if (rel.includes('manifest-icon')) score += 90000; if (rel.includes('apple-touch-icon')) score += 80000; if (rel.includes('icon') && type.includes('svg')) score += 70000; if (rel.includes('icon')) score += 40000; if (rel.includes('mask-icon')) score += 10000; if (type.includes('svg') || href.endsWith('.svg')) score += 5000; score += Math.min(size * size, 65536); return score; };
-  const parseIconLinks = (html, baseUrl) => { const found = []; const tagRe = /<link\b[^>]*>/gi; let match; while ((match = tagRe.exec(html))) { const tag = match[0]; const rel = (tag.match(/\brel\s*=\s*[\"']([^\"']+)[\"']/i)?.[1] || '').toLowerCase(); const href = tag.match(/\bhref\s*=\s*[\"']([^\"']+)[\"']/i)?.[1]; if (!href || !/(^|\s)(icon|shortcut|apple-touch-icon|mask-icon)(\s|$)/i.test(rel)) continue; const type = tag.match(/\btype\s*=\s*[\"']([^\"']+)[\"']/i)?.[1] || ''; const sizes = tag.match(/\bsizes\s*=\s*[\"']([^\"']+)[\"']/i)?.[1] || ''; const size = Math.max(0, ...sizes.split(/\s+/).map((x) => { const m = x.match(/(\d+)x(\d+)/i); return m ? Number(m[1]) : 0; })); try { found.push({ href: new URL(href, baseUrl).href, rel, type, size }); } catch {} } return found; };
-  try { const landing = await fetch(target.href, { method: 'GET', headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }, redirect: 'follow' }); const landingUrl = landing.url || target.href; const resolvedOrigin = new URL(landingUrl).origin; const htmlType = landing.headers.get('content-type') || ''; if (htmlType.includes('text/html')) { const html = await landing.text(); const links = parseIconLinks(html, landingUrl); const manifestHref = html.match(/<link\b[^>]*\brel\s*=\s*[\"'](?:manifest|web-app-manifest)[\"'][^>]*\bhref\s*=\s*[\"']([^\"']+)[\"']/i)?.[1] || html.match(/<link\b[^>]*\bhref\s*=\s*[\"']([^\"']+)[\"'][^>]*\brel\s*=\s*[\"'](?:manifest|web-app-manifest)[\"']/i)?.[1]; if (manifestHref) { try { const manifestUrl = new URL(manifestHref, landingUrl).href; const manifestResponse = await fetch(manifestUrl, { headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }, redirect: 'follow' }); if (manifestResponse.ok) { const manifest = await manifestResponse.json(); for (const icon of Array.isArray(manifest.icons) ? manifest.icons : []) { if (!icon?.src) continue; const size = Math.max(0, ...String(icon.sizes || '').split(/\s+/).map((x) => { const m = x.match(/(\d+)x(\d+)/i); return m ? Number(m[1]) : 0; })); try { links.push({ href: new URL(icon.src, manifestUrl).href, rel: 'manifest-icon', type: icon.type || '', size }); } catch {} } } } catch {} } if (links.length) { links.sort((a,b) => iconScore(b) - iconScore(a)); return links[0].href; } } return `${resolvedOrigin}/favicon.ico`; } catch { return fallback; }
+  const target = safePublicHttpUrl(targetUrl);
+  if (!target) return '';
+  const fallback = target.origin + '/favicon.ico';
+  const iconScore = (candidate) => {
+    const href = String(candidate.href || '').toLowerCase();
+    const rel = String(candidate.rel || '').toLowerCase();
+    const type = String(candidate.type || '').toLowerCase();
+    const size = Number(candidate.size || 0);
+    let score = 0;
+    if (rel.includes('manifest-icon')) score += 90000;
+    if (rel.includes('apple-touch-icon')) score += 80000;
+    if (rel.includes('icon') && type.includes('svg')) score += 70000;
+    if (rel.includes('icon')) score += 40000;
+    if (rel.includes('mask-icon')) score += 10000;
+    if (type.includes('svg') || href.endsWith('.svg')) score += 5000;
+    score += Math.min(size * size, 65536);
+    return score;
+  };
+  const parseIconLinks = (html, baseUrl) => {
+    const found = [];
+    const tagRe = /<link\b[^>]*>/gi;
+    let match;
+    while ((match = tagRe.exec(html))) {
+      const tag = match[0];
+      const rel = (tag.match(/\brel\s*=\s*["']([^"']+)["']/i)?.[1] || '').toLowerCase();
+      const href = tag.match(/\bhref\s*=\s*["']([^"']+)["']/i)?.[1];
+      if (!href || !/(^|\s)(icon|shortcut|apple-touch-icon|mask-icon)(\s|$)/i.test(rel)) continue;
+      const type = tag.match(/\btype\s*=\s*["']([^"']+)["']/i)?.[1] || '';
+      const sizes = tag.match(/\bsizes\s*=\s*["']([^"']+)["']/i)?.[1] || '';
+      const size = Math.max(0, ...sizes.split(/\s+/).map((x) => {
+        const m = x.match(/(\d+)x(\d+)/i);
+        return m ? Number(m[1]) : 0;
+      }));
+      try {
+        const iconUrl = safePublicHttpUrl(new URL(href, baseUrl).href);
+        if (iconUrl) found.push({ href: iconUrl.href, rel, type, size });
+      } catch {}
+    }
+    return found;
+  };
+
+  try {
+    const landingResult = await fetchPublicUrl(target.href, {
+      method: 'GET',
+      headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }
+    });
+    const landing = landingResult.response;
+    const landingUrl = landingResult.url;
+    const resolvedOrigin = new URL(landingUrl).origin;
+    const htmlType = landing.headers.get('content-type') || '';
+    if (landing.ok && htmlType.toLowerCase().includes('text/html')) {
+      const htmlBytes = await readBoundedStream(landing.body, 512 * 1024, 'External website response is too large.');
+      const html = new TextDecoder().decode(htmlBytes);
+      const links = parseIconLinks(html, landingUrl);
+      const manifestHref =
+        html.match(/<link\b[^>]*\brel\s*=\s*["'](?:manifest|web-app-manifest)["'][^>]*\bhref\s*=\s*["']([^"']+)["']/i)?.[1] ||
+        html.match(/<link\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*\brel\s*=\s*["'](?:manifest|web-app-manifest)["']/i)?.[1];
+
+      if (manifestHref) {
+        try {
+          const manifestUrl = safePublicHttpUrl(new URL(manifestHref, landingUrl).href);
+          if (manifestUrl) {
+            const manifestResult = await fetchPublicUrl(manifestUrl.href, {
+              headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Fetcher' }
+            });
+            const manifestType = manifestResult.response.headers.get('content-type') || '';
+            if (manifestResult.response.ok && (manifestType.includes('json') || manifestType.includes('manifest'))) {
+              const manifestBytes = await readBoundedStream(manifestResult.response.body, 256 * 1024, 'External manifest is too large.');
+              const manifest = JSON.parse(new TextDecoder().decode(manifestBytes));
+              for (const icon of Array.isArray(manifest.icons) ? manifest.icons : []) {
+                if (!icon?.src) continue;
+                const iconUrl = safePublicHttpUrl(new URL(icon.src, manifestResult.url).href);
+                if (!iconUrl) continue;
+                const size = Math.max(0, ...String(icon.sizes || '').split(/\s+/).map((x) => {
+                  const m = x.match(/(\d+)x(\d+)/i);
+                  return m ? Number(m[1]) : 0;
+                }));
+                links.push({ href: iconUrl.href, rel: 'manifest-icon', type: icon.type || '', size });
+              }
+            }
+          }
+        } catch {}
+      }
+      if (links.length) {
+        links.sort((a, b) => iconScore(b) - iconScore(a));
+        return safePublicHttpUrl(links[0].href)?.href || fallback;
+      }
+    }
+    return safePublicHttpUrl(resolvedOrigin + '/favicon.ico')?.href || fallback;
+  } catch {
+    return fallback;
+  }
 };
-async function fetchToolLogo(request) { const url = new URL(request.url).searchParams.get('url'); if (!url) return json({ error: 'Tool website URL is required.' }, 400, request); const logoUrl = await getToolIconUrl(url); return logoUrl ? json({ logoUrl }, 200, request) : json({ error: 'Could not resolve the tool logo.' }, 404, request); }
-async function fetchToolLogoImage(request) { const url = new URL(request.url).searchParams.get('url'); if (!url) return new Response('Tool website URL is required.', { status: 400 }); const logoUrl = await getToolIconUrl(url); if (!logoUrl) return new Response('', { status: 404 }); try { const response = await fetch(logoUrl, { headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Proxy' }, redirect: 'follow' }); if (!response.ok) return new Response('', { status: 404 }); const headers = new Headers(response.headers); headers.set('Cache-Control', 'public, max-age=3600'); headers.delete('set-cookie'); return new Response(response.body, { status: 200, headers }); } catch { return new Response('', { status: 502 }); } }
+
+async function fetchToolLogo(request) {
+  const url = new URL(request.url).searchParams.get('url');
+  if (!url) return json({ error: 'Tool website URL is required.' }, 400, request);
+  if (!safePublicHttpUrl(url)) return json({ error: 'Enter a valid public website URL.' }, 400, request);
+  const logoUrl = await getToolIconUrl(url);
+  return logoUrl ? json({ logoUrl }, 200, request) : json({ error: 'Could not resolve the tool logo.' }, 404, request);
+}
+
+async function fetchToolLogoImage(request) {
+  const url = new URL(request.url).searchParams.get('url');
+  if (!url) return new Response('Tool website URL is required.', { status: 400 });
+  if (!safePublicHttpUrl(url)) return new Response('Enter a valid public website URL.', { status: 400 });
+  const logoUrl = await getToolIconUrl(url);
+  if (!logoUrl || !safePublicHttpUrl(logoUrl)) return new Response('', { status: 404 });
+  try {
+    const result = await fetchPublicUrl(logoUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 Skill Foundry Logo Proxy' }
+    });
+    const response = result.response;
+    const mimeType = (response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+    const allowedTypes = new Set([
+      'image/png', 'image/jpeg', 'image/webp', 'image/gif',
+      'image/x-icon', 'image/vnd.microsoft.icon', 'image/svg+xml'
+    ]);
+    if (!response.ok || !allowedTypes.has(mimeType)) {
+      await response.body?.cancel().catch(() => {});
+      return new Response('', { status: 404 });
+    }
+    const bytes = await readBoundedStream(response.body, 1024 * 1024, 'Logo image is too large.');
+    const headers = new Headers({
+      'Content-Type': mimeType,
+      'Cache-Control': 'public, max-age=3600',
+      'X-Content-Type-Options': 'nosniff',
+      'Cross-Origin-Resource-Policy': 'same-site'
+    });
+    return new Response(bytes, { status: 200, headers });
+  } catch {
+    return new Response('', { status: 502 });
+  }
+}
+
 const injectHeadCss = (response) => new HTMLRewriter().on('head', { element(element) { element.append('<link rel="stylesheet" href="/image-display-fixes.css?v=20260924-prod-sync">', { html: true }); element.append('<link rel="stylesheet" href="/tools-workflow-overrides.css?v=20261012-3">', { html: true }); } }).transform(response);
 export default { async fetch(request, env) { const url = new URL(request.url); if (request.method === 'OPTIONS' && url.pathname.startsWith('/api/')) return new Response(null, { status: 204, headers: { ...corsHeaders(request), 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type,X-File-Name' } }); if (request.method === 'POST' && url.pathname === '/api/upload-image') { try { return await uploadImage(request, env); } catch (error) { return json({ error: error?.message || 'Image upload failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/publish-resource') { try { return await publishResource(request, env); } catch (error) { return json({ error: error?.message || 'Resource publish failed.' }, error?.status || 500, request); } } if (request.method === 'POST' && url.pathname === '/api/contact') { try { return await sendContactMessage(request, env); } catch (error) { return json({ error: error?.message || 'Contact message failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo') { const limited = await enforceRateLimit(request, env, 'tool-logo', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogo(request); } catch (error) { return json({ error: error?.message || 'Logo lookup failed.' }, 500, request); } } if (request.method === 'GET' && url.pathname === '/api/tool-logo-image') { const limited = await enforceRateLimit(request, env, 'tool-logo-image', [{ key: 'hour', limit: 60, windowSeconds: 3600 }]); if (limited) return limited; try { return await fetchToolLogoImage(request); } catch (error) { return new Response('', { status: 500 }); } } const isAdminPage = url.pathname === '/admin' || url.pathname.startsWith('/admin/'); if (request.method === 'GET' && isAdminPage && !hasAdminBasicAuth(request, env)) { const limited = await enforceRateLimit(request, env, 'admin-login', [{ key: 'attempts', limit: 10, windowSeconds: 900 }]); if (limited) return limited; return adminUnauthorized(); } let response = await env.ASSETS.fetch(request); const contentType = response.headers.get('content-type') || ''; if (request.method === 'GET' && contentType.includes('text/html')) response = injectHeadCss(response); if (request.method === 'GET' && isAdminPage && contentType.includes('text/html')) { response = injectBodyScript(response, '/admin/input-output-ratio-fallback.js?v=20261106-popup-theme-v1'); response = injectBodyScript(response, '/admin/image-ratio-ui.js?v=20260909-2'); response = injectBodyScript(response, '/admin/thumbnail-crop-ui.js?v=20260909-5'); response = injectBodyScript(response, '/admin/resource-builder.js?v=20260914-5'); response = injectBodyScript(response, '/admin/resource-publisher.js?v=20260914-8'); response = injectBodyScript(response, '/admin/resource-builder-ratio.js?v=20260909-3'); response = injectBodyScript(response, '/admin/image-ratio-publisher.js?v=20260909-2'); response = injectBodyScript(response, '/admin/admin-shell-fix.js?v=20260913-2'); } return response; } };
 function injectBodyScript(response, script) { return new HTMLRewriter().on('body', { element(element) { element.append(`<script src="${script}" defer></script>`, { html: true }); } }).transform(response); }
