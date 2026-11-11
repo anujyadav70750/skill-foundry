@@ -1007,11 +1007,6 @@ html.light-theme .guides-page .guides-highlight {
 :root[data-theme="light"] .contact-card,
 :root[data-theme="light"] .search-resource-card,
 :root[data-theme="light"] .search-empty-box,
-:root[data-theme="light"] .explore-page .recent-resource-meta-calendar,
-html.light-theme .explore-page .recent-resource-meta-calendar {
-  color: #64748B !important;
-}
-
 :root[data-theme="light"] .explore-page .resource-card-prominent,
 :root[data-theme="light"] .explore-page .resource-card-horizontal,
 :root[data-theme="light"] .explore-page .recent-resource-card,
@@ -1029,6 +1024,11 @@ html.light-theme .explore-page .recent-resource-card {
   background: #FFFFFF !important;
   border-color: #E2E8F0 !important;
   box-shadow: none !important;
+}
+
+:root[data-theme="light"] .explore-page .recent-resource-meta-calendar,
+html.light-theme .explore-page .recent-resource-meta-calendar {
+  color: #64748B !important;
 }
 
 @media (max-width: 640px) {
