@@ -14,8 +14,182 @@ const safeFilename = (name) => String(name || 'image').normalize('NFKD').replace
 const toBase64 = (bytes) => { let binary = ''; const chunk = 0x8000; for (let i = 0; i < bytes.length; i += chunk) binary += String.fromCharCode(...bytes.subarray(i, i + chunk)); return btoa(binary); };
 const githubHeaders = (token) => ({ 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28', 'User-Agent': 'Skill Foundry Resource Builder', 'Content-Type': 'application/json' });
 
-async function readImage(request) { const contentLength = Number(request.headers.get('Content-Length') || 0); if (contentLength > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 }); const type = request.headers.get('Content-Type') || ''; let fileName = decodeURIComponent(request.headers.get('X-File-Name') || 'image'); let mimeType = type.split(';')[0].trim().toLowerCase(); let bytes; if (type.toLowerCase().startsWith('multipart/form-data')) { const form = await request.formData(); const file = form.get('file'); if (!(file instanceof File)) throw Object.assign(new Error('No image file was received.'), { status: 400 }); fileName = file.name || fileName; mimeType = file.type || mimeType; if (file.size > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 }); bytes = new Uint8Array(await file.arrayBuffer()); } else { if (!mimeType.startsWith('image/')) throw Object.assign(new Error('Only image files are allowed.'), { status: 415 }); bytes = new Uint8Array(await request.arrayBuffer()); if (bytes.byteLength > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 }); } if (!mimeType.startsWith('image/')) throw Object.assign(new Error('Only image files are allowed.'), { status: 415 }); return { bytes, fileName, mimeType }; }
-async function uploadImage(request, env) { if (!isAdminApiRequest(request, env)) return json({ error: 'Image uploads are available only from the admin builder.' }, 403, request); if (!env.GITHUB_TOKEN) return json({ error: 'GitHub upload is not configured. Add the GITHUB_TOKEN secret in Cloudflare.' }, 503, request); const { bytes, fileName, mimeType } = await readImage(request); const rawExt = fileName.includes('.') ? fileName.split('.').pop().toLowerCase() : (mimeType.split('/')[1] || 'jpg'); const ext = /^[a-z0-9]{1,8}$/.test(rawExt) ? rawExt : 'jpg'; const filename = `${safeFilename(fileName.replace(/\.[^.]+$/, ''))}-${Date.now()}.${ext}`; const path = `public/images/${filename}`; const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, { method: 'PUT', headers: githubHeaders(env.GITHUB_TOKEN), body: JSON.stringify({ message: `Add resource image ${filename}`, content: toBase64(bytes), branch: DEFAULT_BRANCH, committer: { name: 'Skill Foundry Resource Builder', email: '41898282+github-actions[bot]@users.noreply.github.com' } }) }); const result = await response.json().catch(() => ({})); if (!response.ok) return json({ error: result.message || `GitHub rejected the image upload (${response.status}).` }, response.status, request); return json({ path: `/images/${filename}`, name: filename }, 200, request); }
+
+async function readBoundedStream(stream, maxBytes, message = 'Request body is too large.') {
+  if (!stream) return new Uint8Array();
+  const reader = stream.getReader();
+  const chunks = [];
+  let total = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel().catch(() => {});
+      throw Object.assign(new Error(message), { status: 413 });
+    }
+    chunks.push(value);
+  }
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes;
+}
+
+async function readJsonLimited(request, maxBytes) {
+  const contentLength = Number(request.headers.get('Content-Length') || 0);
+  if (contentLength > maxBytes) throw Object.assign(new Error('Request body is too large.'), { status: 413 });
+  const bytes = await readBoundedStream(request.body, maxBytes);
+  try {
+    return JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    throw Object.assign(new Error('Invalid JSON request.'), { status: 400 });
+  }
+}
+
+export class RateLimitDO {
+  constructor(ctx, env) {
+    this.ctx = ctx;
+    this.env = env;
+  }
+
+  async fetch(request) {
+    if (request.method !== 'POST') return new Response('Method not allowed.', { status: 405 });
+    let policies;
+    try {
+      policies = await request.json();
+    } catch {
+      return new Response('Invalid policy.', { status: 400 });
+    }
+    if (!Array.isArray(policies) || policies.length < 1 || policies.length > 4) {
+      return new Response('Invalid policy.', { status: 400 });
+    }
+
+    const now = Date.now();
+    const result = await this.ctx.storage.transaction(async (txn) => {
+      const nextEvents = [];
+      let retryAt = 0;
+      for (const policy of policies) {
+        const key = String(policy?.key || '');
+        const limit = Number(policy?.limit);
+        const windowSeconds = Number(policy?.windowSeconds);
+        if (!/^[a-z0-9_-]{1,32}$/i.test(key) || !Number.isInteger(limit) || limit < 1 || limit > 1000 ||
+            !Number.isInteger(windowSeconds) || windowSeconds < 1 || windowSeconds > 86400) {
+          throw new Error('Invalid rate-limit policy.');
+        }
+        const storageKey = 'events:' + key;
+        const windowMs = windowSeconds * 1000;
+        const events = (await txn.get(storageKey) || []).filter((time) => Number.isFinite(time) && time > now - windowMs);
+        if (events.length >= limit) {
+          retryAt = Math.max(retryAt, events[events.length - limit] + windowMs);
+        }
+        nextEvents.push({ storageKey, events });
+      }
+      if (retryAt > now) return { allowed: false, retryAfter: Math.max(1, Math.ceil((retryAt - now) / 1000)) };
+      for (const item of nextEvents) {
+        item.events.push(now);
+        await txn.put(item.storageKey, item.events);
+      }
+      return { allowed: true };
+    });
+
+    return Response.json(result, {
+      status: result.allowed ? 200 : 429,
+      headers: { 'Cache-Control': 'no-store' }
+    });
+  }
+}
+
+async function enforceRateLimit(request, env, scope, policies) {
+  if (!env.RATE_LIMITER) return json({ error: 'Security protection is temporarily unavailable. Please try again later.' }, 503, request);
+  const ip = request.headers.get('CF-Connecting-IP');
+  if (!ip) return json({ error: 'The request could not be verified. Please try again.' }, 503, request);
+  try {
+    const id = env.RATE_LIMITER.idFromName(scope + ':' + ip);
+    const stub = env.RATE_LIMITER.get(id);
+    const response = await stub.fetch('https://rate-limit.internal/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(policies)
+    });
+    const result = await response.json();
+    if (!response.ok || result?.allowed !== true) return json({ error: 'Too many requests. Please wait before trying again.' }, 429, request);
+    return null;
+  } catch {
+    return json({ error: 'Security protection is temporarily unavailable. Please try again later.' }, 503, request);
+  }
+}
+
+function detectImageType(bytes) {
+  if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47 &&
+      bytes[4] === 0x0D && bytes[5] === 0x0A && bytes[6] === 0x1A && bytes[7] === 0x0A) return { mimeType: 'image/png', extension: 'png' };
+  if (bytes.length >= 3 && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return { mimeType: 'image/jpeg', extension: 'jpg' };
+  if (bytes.length >= 12 && String.fromCharCode(...bytes.subarray(0, 4)) === 'RIFF' &&
+      String.fromCharCode(...bytes.subarray(8, 12)) === 'WEBP') return { mimeType: 'image/webp', extension: 'webp' };
+  return null;
+}
+
+function safePublicHttpUrl(raw) {
+  let target;
+  try { target = new URL(String(raw || '')); } catch { return null; }
+  if (!['http:', 'https:'].includes(target.protocol) || target.username || target.password) return null;
+  const host = target.hostname.toLowerCase().replace(/\.$/, '');
+  if (!host || host.length > 253 || !host.includes('.') || host.includes(':') || /^\d+(?:\.\d+){0,3}$/.test(host)) return null;
+  if (/(^|\.)(localhost|local|internal|lan|home|corp|test|invalid|example|onion|localdomain)$/.test(host)) return null;
+  if (target.port && !((target.protocol === 'http:' && target.port === '80') || (target.protocol === 'https:' && target.port === '443'))) return null;
+  target.hash = '';
+  return target;
+}
+
+async function fetchPublicUrl(raw, options = {}, maxRedirects = 4) {
+  let target = safePublicHttpUrl(raw);
+  if (!target) throw new Error('Only public HTTP or HTTPS websites can be checked.');
+  for (let attempt = 0; attempt <= maxRedirects; attempt++) {
+    const response = await fetch(target.href, { ...options, redirect: 'manual' });
+    if (![301, 302, 303, 307, 308].includes(response.status)) return { response, url: target.href };
+    const location = response.headers.get('Location');
+    await response.body?.cancel().catch(() => {});
+    if (!location || attempt === maxRedirects) throw new Error('The external website redirected too many times.');
+    const next = safePublicHttpUrl(new URL(location, target).href);
+    if (!next || (target.protocol === 'https:' && next.protocol !== 'https:')) throw new Error('The external website redirected to an unsupported destination.');
+    target = next;
+  }
+  throw new Error('The external website could not be reached safely.');
+}
+
+async function readImage(request) {
+  const contentLength = Number(request.headers.get('Content-Length') || 0);
+  if (contentLength > MAX_IMAGE_BYTES + 256 * 1024) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
+  const contentType = request.headers.get('Content-Type') || '';
+  const isMultipart = contentType.toLowerCase().startsWith('multipart/form-data');
+  const bytes = await readBoundedStream(request.body, MAX_IMAGE_BYTES + (isMultipart ? 256 * 1024 : 0), 'Image upload is too large.');
+  let fileName = decodeURIComponent(request.headers.get('X-File-Name') || 'image');
+  let fileBytes = bytes;
+  let declaredMime = contentType.split(';')[0].trim().toLowerCase();
+
+  if (isMultipart) {
+    const copy = new Request(request.url, { method: 'POST', headers: request.headers, body: bytes });
+    const form = await copy.formData();
+    const file = form.get('file');
+    if (!(file instanceof File)) throw Object.assign(new Error('No image file was received.'), { status: 400 });
+    if (file.size > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
+    fileName = file.name || fileName;
+    declaredMime = (file.type || '').toLowerCase();
+    fileBytes = new Uint8Array(await file.arrayBuffer());
+  }
+
+  const detected = detectImageType(fileBytes);
+  if (!detected) throw Object.assign(new Error('Use a valid PNG, JPEG or WebP image.'), { status: 415 });
+  if (declaredMime && !['multipart/form-data', detected.mimeType].includes(declaredMime) &&
+      !(detected.mimeType === 'image/jpeg' && declaredMime === 'image/jpg')) {
+    throw Object.assign(new Error('The image file type does not match its contents.'), { status: 415 });
+  }
+  if (fileBytes.byteLength > MAX_IMAGE_BYTES) throw Object.assign(new Error('Image is too large. Maximum size is 8 MB.'), { status: 413 });
+  return { bytes: fileBytes, fileName, mimeType: detected.mimeType, extension: detected.extension };
+}
 const isSameOriginAdminRequest = (request) => { const origin = request.headers.get('Origin'); const referer = request.headers.get('Referer'); const requestOrigin = new URL(request.url).origin; if (origin !== requestOrigin || !referer) return false; try { return new URL(referer).origin === requestOrigin && new URL(referer).pathname.startsWith('/admin'); } catch { return false; } };
 const hasAdminBasicAuth = (request, env) => { if (!env.ADMIN_PASSWORD) return false; const authorization = request.headers.get('Authorization') || ''; const match = authorization.match(/^Basic\s+(.+)$/i); if (!match) return false; try { const decoded = atob(match[1]); const separator = decoded.indexOf(':'); if (separator < 0) return false; const username = decoded.slice(0, separator); const password = decoded.slice(separator + 1); return username === 'admin' && password === env.ADMIN_PASSWORD; } catch { return false; } };
 const adminUnauthorized = () => new Response('Admin authentication required.', { status: 401, headers: { 'WWW-Authenticate': 'Basic realm="Skill Foundry Admin", charset="UTF-8"', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow, noarchive' } });
