@@ -2902,6 +2902,18 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     const isCuratedDefault = !isSearching && !isCategoryFiltered && !isSortCustom;
     const isCategoryLanding = isCategoryFiltered && !isSearching;
 
+    // Keep the divider and context line in sync on every update, including when the query is cleared.
+    const showContextLine = isSearching || isCategoryFiltered;
+    if (resourceResultsHint) {
+      resourceResultsHint.hidden = !showContextLine;
+      resourceResultsHint.textContent = isSearching
+        ? (isCategoryFiltered
+            ? `Showing matching resources in ${savedCategory}.`
+            : 'Showing resources that match your search.')
+        : (isCategoryFiltered ? `Showing resources in ${savedCategory}.` : '');
+    }
+    if (resourceResultsDivider) resourceResultsDivider.hidden = !showContextLine;
+
     if (searchInput) {
       searchInput.placeholder = isCategoryFiltered
         ? `Search ${savedCategory} resources…`
@@ -2962,18 +2974,6 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
         card.hidden = !isVisible;
         if (isVisible) matchCount += 1;
       });
-
-      // Show one quiet, centred context line only when search or category results are active.
-      if (resourceResultsHint) {
-        const showContextLine = isSearching || isCategoryFiltered;
-        resourceResultsHint.hidden = !showContextLine;
-        if (resourceResultsDivider) resourceResultsDivider.hidden = !showContextLine;
-        resourceResultsHint.textContent = isSearching
-          ? (isCategoryFiltered
-              ? `Showing matching resources in ${savedCategory}.`
-              : 'Showing resources that match your search.')
-          : (isCategoryFiltered ? `Showing resources in ${savedCategory}.` : '');
-      }
 
       // Sort matching cards by the selected order (without pinning the latest item).
       sortCards(cardElements, savedSort);
