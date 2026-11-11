@@ -229,7 +229,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                             class="recent-resource-thumb-img"
                             src={resourceThumbnail(resource)}
                             alt={resourceImageAlt(resource)}
-                            loading="eager"
+                            loading={index === 0 ? "eager" : "lazy"}
                             fetchpriority={index === 0 ? "high" : "auto"}
                             decoding="async"
                           />

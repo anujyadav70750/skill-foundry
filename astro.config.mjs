@@ -33,18 +33,22 @@ function fixDynamicRouteFilenames() {
 
 function injectFooterStyles() {
   return {
-    name: 'inject-footer-styles',
+    name: 'inject-page-styles',
     hooks: {
       'astro:build:done': () => {
         const targetDir = path.join(process.cwd(), 'dist');
-        const footerStylesheet = '<link rel="stylesheet" href="/footer-overrides.css?v=20261105-footer-v7">';
-        const stepNavStylesheet = '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">';
-        const instagramStylesheet = '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">';
-        const stepCardFinalStylesheet = '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v5">';
-        const toolUsedRefinementStylesheet = '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">';
-        const aspectRatioCorrectionStylesheet = '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">';
-        const iconAccentStylesheet = '<link rel="stylesheet" href="/site-icon-accent.css?v=20261108-icon-accent-v2">';
-        const pageConsistencyStylesheet = '<link rel="stylesheet" href="/site-page-consistency.css?v=20261111-filter-menu-v3">';
+        const sharedStylesheets = [
+          '<link rel="stylesheet" href="/footer-overrides.css?v=20261105-footer-v7">',
+          '<link rel="stylesheet" href="/site-icon-accent.css?v=20261108-icon-accent-v2">',
+          '<link rel="stylesheet" href="/site-page-consistency.css?v=20261111-filter-menu-v3">'
+        ];
+        const resourceDetailStylesheets = [
+          '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">',
+          '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">',
+          '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v5">',
+          '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">',
+          '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">'
+        ];
 
         const walk = (dir) => {
           if (!fs.existsSync(dir)) return;
@@ -53,35 +57,25 @@ function injectFooterStyles() {
             if (entry.isDirectory()) {
               walk(fullPath);
             } else if (entry.isFile() && entry.name.endsWith('.html')) {
+              const relativePath = path.relative(targetDir, fullPath).split(path.sep).join('/');
+              const isResourceDetailPage = /^resources\/[^/]+\/index\.html$/.test(relativePath);
+              const stylesheets = isResourceDetailPage
+                ? [
+                    sharedStylesheets[0],
+                    ...resourceDetailStylesheets,
+                    ...sharedStylesheets.slice(1)
+                  ]
+                : sharedStylesheets;
+
               let html = fs.readFileSync(fullPath, 'utf8');
               let updated = html;
-              if (!updated.includes('/footer-overrides.css')) {
-                updated = updated.replace('</head>', `    ${footerStylesheet}\n  </head>`);
+              for (const stylesheet of stylesheets) {
+                const href = stylesheet.match(/href="([^"]+)"/)?.[1];
+                if (href && !updated.includes(href.split('?')[0])) {
+                  updated = updated.replace('</head>', `    ${stylesheet}\n  </head>`);
+                }
               }
-              if (!updated.includes('/resource-step-nav-overrides.css')) {
-                updated = updated.replace('</head>', `    ${stepNavStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/resource-instagram-overrides.css')) {
-                updated = updated.replace('</head>', `    ${instagramStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/resource-step-card-final-overrides.css')) {
-                updated = updated.replace('</head>', `    ${stepCardFinalStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/resource-tool-used-refinement.css')) {
-                updated = updated.replace('</head>', `    ${toolUsedRefinementStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/resource-aspect-ratio-correction.css')) {
-                updated = updated.replace('</head>', `    ${aspectRatioCorrectionStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/site-icon-accent.css')) {
-                updated = updated.replace('</head>', `    ${iconAccentStylesheet}\n  </head>`);
-              }
-              if (!updated.includes('/site-page-consistency.css')) {
-                updated = updated.replace('</head>', `    ${pageConsistencyStylesheet}\n  </head>`);
-              }
-              if (updated !== html) {
-                fs.writeFileSync(fullPath, updated, 'utf8');
-              }
+              if (updated !== html) fs.writeFileSync(fullPath, updated, 'utf8');
             }
           }
         };

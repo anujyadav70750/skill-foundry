@@ -120,7 +120,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
             </button>
 
             <div class="recent-work-carousel-track" id="recent-work-track" role="region" aria-label="Recent resources carousel">
-              {displayResources.map((resource) => {
+              {displayResources.map((resource, index) => {
                 const slug = resourceSlug(resource);
                 const thumbnail = resourceThumbnail(resource);
                 const alt = resourceImageAlt(resource);
@@ -129,7 +129,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 return (
                   <a class="recent-work-card" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>
                     <div class="recent-work-thumb-wrap">
-                      <img class="recent-work-thumb-img" src={thumbnail} alt={alt} loading="eager" decoding="async" />
+                      <img class="recent-work-thumb-img" src={thumbnail} alt={alt} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
                     </div>
 
                     <div class="recent-work-card-body">
