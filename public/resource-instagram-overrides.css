@@ -101,41 +101,41 @@
   margin-top: 14px !important;
 }
 
-/* Preparation: use the same visual spacing rhythm as the other resource point lists. */
-.resource-page .intro-section .editorial-lead {
-  position: relative !important;
-  color: transparent !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  min-height: 0 !important;
-  margin-top: 14px !important;
+/* Preparation points are real text nodes so visitors can select and copy them.
+   Keep the same compact bullet rhythm without generated content. */
+.resource-page .intro-section .intro-points {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  margin: 14px 0 0 !important;
+  padding: 0 0 0 1.2em !important;
+  list-style: disc outside !important;
+  color: #B0B5C0 !important;
 }
 
-.resource-page .intro-section .editorial-lead::before,
-.resource-page .intro-section .editorial-lead::after {
-  display: block !important;
-  white-space: normal !important;
+.resource-page .intro-section .intro-points li {
+  margin: 0 !important;
+  padding: 0 !important;
   color: #B0B5C0 !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.6 !important;
+  cursor: text !important;
+  -webkit-user-select: text !important;
+  user-select: text !important;
 }
 
-.resource-page .intro-section .editorial-lead::before {
-  content: "• Make sure you have a clear, well-lit photo of the person you’d like to use as your character.";
-  margin-bottom: 10px !important;
+.resource-page .intro-section .intro-points li::marker {
+  color: #8C92A0 !important;
 }
 
-.resource-page .intro-section .editorial-lead::after {
-  content: "• Make sure you have access to the required tools before starting.";
-}
-
-html[data-theme="light"] .resource-page .intro-section .editorial-lead::before,
-html[data-theme="light"] .resource-page .intro-section .editorial-lead::after,
-html.light-theme .resource-page .intro-section .editorial-lead::before,
-html.light-theme .resource-page .intro-section .editorial-lead::after {
+html[data-theme="light"] .resource-page .intro-section .intro-points,
+html[data-theme="light"] .resource-page .intro-section .intro-points li,
+html.light-theme .resource-page .intro-section .intro-points,
+html.light-theme .resource-page .intro-section .intro-points li {
   color: #334155 !important;
 }
+
 
 
 /* Workflow intro: compact translucent emerald callout, visually distinct
