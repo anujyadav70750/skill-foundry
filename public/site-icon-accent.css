@@ -15,20 +15,26 @@ html.light-theme {
 /* Homepage: remove the grey icon tiles and let the icon itself carry the accent. */
 .home-page .trust-section .trust-card-icon {
   color: var(--sf-content-icon) !important;
-  background: var(--surface-2, rgba(148, 163, 184, 0.08)) !important;
-  border: 1px solid var(--line, rgba(148, 163, 184, 0.16)) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: none !important;
   border-radius: 10px !important;
-  width: 40px !important;
-  height: 40px !important;
-  flex: 0 0 40px !important;
+  width: 36px !important;
+  height: 36px !important;
+  flex: 0 0 36px !important;
   padding: 0 !important;
+}
+
+:root[data-theme="light"] .home-page .trust-section .trust-card-icon,
+html.light-theme .home-page .trust-section .trust-card-icon {
+  background: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
 }
 
 .home-page .trust-section .trust-card-icon svg {
   display: block !important;
-  width: 21px !important;
-  height: 21px !important;
+  width: 20px !important;
+  height: 20px !important;
   color: var(--sf-content-icon) !important;
 }
 
