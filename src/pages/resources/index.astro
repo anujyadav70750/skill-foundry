@@ -3014,6 +3014,81 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Recent section closing divider: spans the full content width. */
+  .curated-library-view .recent-curated-section {
+    position: relative;
+    padding-bottom: 24px;
+    margin-bottom: 28px;
+  }
+  .curated-library-view .recent-curated-section::after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 22px;
+    background: rgba(148, 163, 184, 0.22);
+  }
+  :global([data-theme="light"]) .curated-library-view .recent-curated-section::after,
+  :global(html.light-theme) .curated-library-view .recent-curated-section::after {
+    background: rgba(100, 116, 139, 0.24);
+  }
+
+  /* Category slides keep their existing horizontal layout and dimensions.
+     Remove only the visible card frame and align metadata with the site-wide date style. */
+  .curated-library-view .category-curated-section .category-resource-row,
+  .curated-library-view .category-curated-section .category-resource-row:hover,
+  .curated-library-view .category-curated-section .category-resource-row:active {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .curated-library-view .category-curated-section .category-section-heading {
+    margin-bottom: 16px;
+  }
+  .curated-library-view .category-curated-section .recent-works-title,
+  .curated-library-view .category-curated-section .category-heading-link {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(20px, 3.2vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+  }
+
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    color: #9298A4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon {
+    display: block;
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    color: #7E8492;
+  }
+  .curated-library-view .category-curated-section .h-title {
+    margin-top: 0;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .category-row-meta .h-meta-date,
+  :global(html.light-theme) .curated-library-view .category-curated-section .category-row-meta .h-meta-date {
+    color: #64748B;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon {
+    color: #64748B;
+  }
+
 </style>
 
 <script>
