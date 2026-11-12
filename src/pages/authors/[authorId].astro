@@ -1,172 +1,24 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { SKILL_FOUNDRY_AUTHOR_ID, authorPath } from '../../lib/author';
+import { SKILL_FOUNDRY_AUTHOR_ID } from '../../lib/author';
 import { AUTHOR_PROFILES } from '../../data/authors';
-import {
-  formatResourceDate,
-  resourceImageAlt,
-  resourceDisplaySrcSet,
-  resourceSlug,
-  resourceThumbnail
-} from '../../lib/resource';
-
-const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
+import AuthorChannelPage from '../../components/authors/AuthorChannelPage.astro';
 
 export async function getStaticPaths() {
   const allResources = await getCollection('resources');
-  const publishedResources = allResources
-    .filter((resource) => !('draft' in resource.data && resource.data.draft === true));
-
+  const published = allResources.filter((resource) => !('draft' in resource.data && resource.data.draft === true));
   return Object.values(AUTHOR_PROFILES)
     .filter((profile) => profile.id !== SKILL_FOUNDRY_AUTHOR_ID)
     .map((profile) => ({
       params: { authorId: profile.id },
       props: {
         profile,
-        resources: publishedResources
+        resources: published
           .filter((resource) => resource.data.authorId === profile.id)
           .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
       }
     }));
 }
-
 const { profile, resources } = Astro.props;
-const data = profile;
-const pageUrl = new URL(authorPath(profile.id), siteUrl).href;
-const latestResources = resources.slice(0, 4);
-const authorSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'ProfilePage',
-  name: data.name + ' — ' + data.role,
-  url: pageUrl,
-  mainEntity: {
-    '@type': 'Person',
-    name: data.name,
-    jobTitle: data.role,
-    url: pageUrl,
-    image: new URL(data.image, siteUrl).href,
-    sameAs: data.instagramUrl ? [data.instagramUrl] : []
-  }
-};
 ---
-
-<BaseLayout
-  title={data.name + ' | Skill Foundry'}
-  description={data.description}
-  canonical={pageUrl}
-  image={data.image}
-  imageAlt={data.name + ' profile photograph'}
->
-  <script type="application/ld+json" set:html={JSON.stringify(authorSchema)} />
-  <main class="directory-author-page">
-    <section class="directory-author-profile">
-      <div class="directory-author-row">
-        <img src={data.image} alt={data.name + ' profile photograph'} width="160" height="160" />
-        <div class="directory-author-identity">
-          <p>{data.role}</p>
-          <h1>{data.name}</h1>
-          {data.instagramUrl && data.handle && <a href={data.instagramUrl} target="_blank" rel="noopener noreferrer">{data.handle} ↗</a>}
-        </div>
-      </div>
-      <p class="directory-author-description">{data.description}</p>
-    </section>
-
-    <section class="directory-author-section">
-      <h2>Latest Resources</h2>
-      {latestResources.length ? (
-        <div class="directory-author-latest">
-          {latestResources.map((resource) => (
-            <a href={'/resources/' + resourceSlug(resource) + '/'} class="directory-author-latest-card">
-              <img src={resourceThumbnail(resource)} alt={resourceImageAlt(resource)} loading="lazy" />
-              <span>{resource.data.category} · {formatResourceDate(resource.data.date)}</span>
-              <strong>{resource.data.title}</strong>
-            </a>
-          ))}
-        </div>
-      ) : <p class="directory-author-empty">No published resources yet. New resources will appear here after publication.</p>}
-    </section>
-
-    <section class="directory-author-section">
-      <h2>All Published Resources</h2>
-      {resources.length ? (
-        <div class="directory-author-grid">
-          {resources.map((resource) => (
-            <a href={'/resources/' + resourceSlug(resource) + '/'} class="directory-author-card">
-              <img
-                src={resourceThumbnail(resource)}
-                srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)}
-                alt={resourceImageAlt(resource)}
-                loading="lazy"
-              />
-              <span>{resource.data.category} · {formatResourceDate(resource.data.date)}</span>
-              <strong>{resource.data.title}</strong>
-            </a>
-          ))}
-        </div>
-      ) : <p class="directory-author-empty">No resources have been published under this author profile yet.</p>}
-    </section>
-
-    {data.about.length > 0 && (
-      <section class="directory-author-section">
-        <h2>About the Author</h2>
-        {data.about.map((paragraph) => <p class="directory-author-copy">{paragraph}</p>)}
-      </section>
-    )}
-
-    {data.expertise.length > 0 && (
-      <section class="directory-author-section">
-        <h2>Areas of Expertise</h2>
-        <div class="directory-author-expertise">
-          {data.expertise.map((item) => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}
-        </div>
-      </section>
-    )}
-
-    <section class="directory-author-section">
-      <h2>Connect</h2>
-      <div class="directory-author-links">
-        {data.instagramUrl && data.handle && <a href={data.instagramUrl} target="_blank" rel="noopener noreferrer">{data.handle} ↗</a>}
-        <a href="/contact/">Website Contact Form →</a>
-      </div>
-    </section>
-  </main>
-</BaseLayout>
-
-<style>
-  .directory-author-page { width: min(980px, calc(100% - 40px)); margin: 0 auto; color: var(--text, #F5F5F5); }
-  .directory-author-profile { padding: 38px 0 28px; }
-  .directory-author-row { display: flex; align-items: center; gap: 22px; }
-  .directory-author-row img { width: 148px; height: 148px; flex: 0 0 148px; border-radius: 50%; object-fit: cover; }
-  .directory-author-identity { min-width: 0; padding-left: 22px; border-left: 1px solid var(--line, rgba(255,255,255,.12)); }
-  .directory-author-identity p { margin: 0 0 6px; color: var(--muted); font: 600 13px/1.4 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-identity h1 { margin: 0; color: var(--text); font: 500 clamp(30px, 5vw, 42px)/1.08 'Newsreader', Georgia, serif; }
-  .directory-author-identity a, .directory-author-links a { display: inline-block; margin-top: 10px; color: var(--accent, #35C9C1); font: 600 14px/1.4 'Plus Jakarta Sans', sans-serif; text-decoration: none; }
-  .directory-author-description { max-width: 760px; margin: 20px 0 0; color: var(--muted); font: 400 14px/1.65 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-section { padding: 24px 0; border-top: 1px solid var(--line, rgba(255,255,255,.1)); }
-  .directory-author-section h2 { margin: 0 0 16px; font: 700 20px/1.3 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-latest { display: flex; gap: 16px; overflow-x: auto; }
-  .directory-author-latest-card, .directory-author-card { display: flex; flex-direction: column; min-width: 0; color: var(--text); text-decoration: none; }
-  .directory-author-latest-card { flex: 0 0 72%; max-width: 420px; }
-  .directory-author-latest-card img, .directory-author-card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 10px; }
-  .directory-author-latest-card span, .directory-author-card span { margin: 9px 0 5px; color: var(--muted); font: 500 10px/1.4 'JetBrains Mono', monospace; text-transform: uppercase; }
-  .directory-author-latest-card strong, .directory-author-card strong { font: 600 15px/1.4 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-  .directory-author-empty, .directory-author-copy, .directory-author-expertise p { color: var(--muted); font: 400 14px/1.65 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-expertise { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-  .directory-author-expertise article { padding: 14px 0; border-bottom: 1px solid var(--line, rgba(255,255,255,.1)); }
-  .directory-author-expertise h3 { margin: 0 0 5px; font: 700 14px/1.4 'Plus Jakarta Sans', sans-serif; }
-  .directory-author-expertise p { margin: 0; }
-  .directory-author-links { display: flex; flex-wrap: wrap; gap: 20px; }
-  @media (max-width: 640px) {
-    .directory-author-page { width: calc(100% - 32px); }
-    .directory-author-profile { padding: 28px 0 22px; }
-    .directory-author-row { gap: 14px; }
-    .directory-author-row img { width: 104px; height: 104px; flex-basis: 104px; }
-    .directory-author-identity { padding-left: 13px; }
-    .directory-author-identity h1 { font-size: 28px; }
-    .directory-author-section { padding: 20px 0; }
-    .directory-author-latest-card { flex-basis: 72%; }
-    .directory-author-grid, .directory-author-expertise { grid-template-columns: minmax(0, 1fr); gap: 14px; }
-  }
-</style>
+<AuthorChannelPage profile={profile} resources={resources} basePath={'/authors/' + profile.id + '/'} view="home" />

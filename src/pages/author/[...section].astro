@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import { AUTHOR_PROFILES } from '../../data/authors';
+import { SKILL_FOUNDRY_AUTHOR_ID, authorCategorySlug } from '../../lib/author';
+import AuthorChannelPage from '../../components/authors/AuthorChannelPage.astro';
+
+export async function getStaticPaths() {
+  const allResources = await getCollection('resources');
+  const published = allResources
+    .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
+    .filter((resource) => resource.data.authorId === SKILL_FOUNDRY_AUTHOR_ID);
+  const categories = [...new Set(published.map((resource) => resource.data.category?.trim()).filter(Boolean))];
+  return [
+    { params: { section: 'resources' }, props: { view: 'resources' } },
+    { params: { section: 'about' }, props: { view: 'about' } },
+    ...categories.map((categoryName) => ({
+      params: { section: 'category/' + authorCategorySlug(categoryName) },
+      props: { view: 'category', categoryName }
+    }))
+  ];
+}
+const profile = AUTHOR_PROFILES[SKILL_FOUNDRY_AUTHOR_ID];
+const resources = (await getCollection('resources'))
+  .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
+  .filter((resource) => resource.data.authorId === SKILL_FOUNDRY_AUTHOR_ID)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const { view, categoryName } = Astro.props;
+---
+<AuthorChannelPage profile={profile} resources={resources} basePath="/author/" view={view} categoryName={categoryName} />

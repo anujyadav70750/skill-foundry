@@ -1,0 +1,256 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatResourceDate, resourceImageAlt, resourceDisplaySrcSet, resourceSlug, resourceThumbnail } from '../../lib/resource';
+import { authorCategorySlug } from '../../lib/author';
+const { profile, resources, basePath, view = 'home', categoryName = '' } = Astro.props;
+const latestResources = resources.slice(0, 4);
+const categories = [...new Set(resources.map((resource) => resource.data.category?.trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+const activeTab = view === 'about' ? 'about' : view === 'home' ? 'home' : 'resources';
+const pagePath = view === 'home' ? basePath : view === 'category' ? basePath + 'category/' + authorCategorySlug(categoryName) + '/' : basePath + view + '/';
+const pageTitle = view === 'home' ? profile.name + ' | Skill Foundry' : view === 'about' ? 'About ' + profile.name + ' | Skill Foundry' : view === 'category' ? categoryName + ' Resources by ' + profile.name + ' | Skill Foundry' : 'Resources by ' + profile.name + ' | Skill Foundry';
+const categoryResources = view === 'category' ? resources.filter((resource) => resource.data.category?.trim() === categoryName) : [];
+const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
+---
+<BaseLayout title={pageTitle} description={profile.description} canonical={pageUrl} image={profile.image} imageAlt={profile.name + ' profile photograph'}>
+  <main class="author-channel-page">
+    <header class="author-channel-header">
+      <div class="author-channel-shell">
+        <div class="author-channel-profile">
+          <img class="author-channel-photo" src={profile.image} alt={profile.name + ' profile photograph'} width="720" height="720" loading="eager" fetchpriority="high" decoding="async" />
+          <div class="author-channel-identity">
+            <p class="author-channel-role">{profile.role}</p>
+            <h1>{profile.name}</h1>
+            {profile.instagramUrl && profile.handle && (
+              <a class="author-channel-handle" href={profile.instagramUrl} target="_blank" rel="noopener noreferrer">
+                {profile.handle}
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true"><path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </a>
+            )}
+          </div>
+        </div>
+        <p class="author-channel-description">{profile.description}</p>
+        <nav class="author-channel-tabs" aria-label={profile.name + ' sections'}>
+          <a class:list={['author-channel-tab', activeTab === 'home' && 'is-active']} href={basePath} aria-current={activeTab === 'home' ? 'page' : undefined}>Home</a>
+          <a class:list={['author-channel-tab', activeTab === 'resources' && 'is-active']} href={basePath + 'resources/'} aria-current={activeTab === 'resources' ? 'page' : undefined}>Resources</a>
+          <a class:list={['author-channel-tab', activeTab === 'about' && 'is-active']} href={basePath + 'about/'} aria-current={activeTab === 'about' ? 'page' : undefined}>About</a>
+        </nav>
+      </div>
+    </header>
+
+    {view === 'home' && (
+      <>
+        <section class="author-home-latest">
+          <div class="author-channel-content">
+            <div class="author-section-heading"><h2><a class="category-heading-link" href={basePath + 'resources/'} aria-label="View all resources by this author"><span>Latest Resources</span><svg class="category-heading-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></a></h2></div>
+            {latestResources.length > 0 ? (
+              <div class="author-latest-track" role="region" aria-label="Latest resources by this author">
+                {latestResources.map((resource, index) => {
+                  const thumbnail = resourceThumbnail(resource);
+                  const alt = resourceImageAlt(resource);
+                  const dateLabel = formatResourceDate(resource.data.date);
+                  const srcSet = resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage);
+                  return (
+                    <a class="author-latest-card" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
+                      <div class="author-latest-thumb"><img src={thumbnail} srcset={srcSet} sizes="(max-width: 600px) 84vw, 380px" alt={alt} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" /></div>
+                      <div class="author-latest-meta"><span>{resource.data.category}</span><span>{dateLabel}</span></div>
+                      <h3>{resource.data.title}</h3>
+                    </a>
+                  );
+                })}
+              </div>
+            ) : <p class="author-channel-empty">New resources will appear here when this author publishes them.</p>}
+          </div>
+        </section>
+        {categories.map((category) => {
+          const items = resources.filter((resource) => resource.data.category?.trim() === category).slice(0, 4);
+          const categoryUrl = basePath + 'category/' + authorCategorySlug(category) + '/';
+          return (
+            <section class="author-home-category">
+              <div class="author-channel-content">
+                <div class="author-section-heading"><h2><a class="category-heading-link" href={categoryUrl} aria-label={'View all ' + category + ' resources'}><span>{category}</span><svg class="category-heading-chevron" aria-hidden="true" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 5L10 12L3 19" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" /></svg></a></h2></div>
+                <div class="author-resource-list">
+                  {items.map((resource) => (
+                    <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
+                      <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
+                      <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        })}
+        {resources.length === 0 && <section class="author-home-category"><div class="author-channel-content"><p class="author-channel-empty">Published resources will appear here as this author adds to the library.</p></div></section>}
+      </>
+    )}
+
+    {view === 'resources' && (
+      <section class="author-secondary-page"><div class="author-channel-content">
+        <div class="author-page-heading"><h2>All Resources</h2><p>Browse every resource published by {profile.name}.</p></div>
+        {resources.length > 0 ? (
+          <>
+            <div class="author-resource-filters">
+              <label><span class="sr-only">Search this author's resources</span><input type="search" placeholder="Search resources…" autocomplete="off" data-author-search /></label>
+              <label><span class="sr-only">Filter resources by category</span><select data-author-category><option value="">All categories</option>{categories.map((category) => <option value={category}>{category}</option>)}</select></label>
+              <label><span class="sr-only">Sort resources</span><select data-author-sort><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label>
+            </div>
+            <div class="author-resource-list" data-author-resource-list>
+              {resources.map((resource) => (
+                <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-search={[resource.data.title, resource.data.description, resource.data.category, ...(resource.data.tags || [])].join(' ').toLowerCase()}>
+                  <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
+                  <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+                </a>
+              ))}
+            </div>
+            <p class="author-channel-empty" data-author-no-results hidden>No resources match your search. Try another word or category.</p>
+          </>
+        ) : <p class="author-channel-empty">This author has not published any resources yet.</p>}
+      </div></section>
+    )}
+
+    {view === 'category' && (
+      <section class="author-secondary-page"><div class="author-channel-content">
+        <a class="author-back-link" href={basePath + 'resources/'}>All Resources <span aria-hidden="true">←</span></a>
+        <div class="author-page-heading"><h2>{categoryName}</h2><p>{categoryResources.length} {categoryResources.length === 1 ? 'resource' : 'resources'} published in this category.</p></div>
+        {categoryResources.length > 0 ? (
+          <div class="author-resource-list">
+            {categoryResources.map((resource) => (
+              <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'}>
+                <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
+                <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+              </a>
+            ))}
+          </div>
+        ) : <p class="author-channel-empty">No resources are currently published in this category.</p>}
+      </div></section>
+    )}
+
+    {view === 'about' && (
+      <section class="author-secondary-page"><div class="author-about-content">
+        <section class="author-about-block"><h2>About the Author</h2>{profile.about.map((paragraph) => <p>{paragraph}</p>)}</section>
+        {profile.expertise.length > 0 && <section class="author-about-block"><h2>Areas of Expertise</h2><div class="author-expertise-list">{profile.expertise.map((item) => <article><h3>{item.title}</h3><p>{item.description}</p></article>)}</div></section>}
+        <section class="author-about-block"><h2>Connect</h2><p>Follow {profile.name}'s work or get in touch through the website.</p><div class="author-about-links">{profile.instagramUrl && profile.handle && <a href={profile.instagramUrl} target="_blank" rel="noopener noreferrer">{profile.handle}<span aria-hidden="true">↗</span></a>}<a href="/contact/">Website Contact Form <span aria-hidden="true">→</span></a></div></section>
+      </div></section>
+    )}
+  </main>
+</BaseLayout>
+
+{view === 'resources' && (
+  <script>
+    const list = document.querySelector<HTMLElement>('[data-author-resource-list]');
+    if (list) {
+      const cards = Array.from(list.querySelectorAll<HTMLElement>('[data-author-resource-card]'));
+      const search = document.querySelector<HTMLInputElement>('[data-author-search]');
+      const category = document.querySelector<HTMLSelectElement>('[data-author-category]');
+      const sort = document.querySelector<HTMLSelectElement>('[data-author-sort]');
+      const empty = document.querySelector<HTMLElement>('[data-author-no-results]');
+      const update = () => {
+        const query = (search?.value || '').trim().toLowerCase();
+        const selectedCategory = category?.value || '';
+        const matches = cards.filter((card) => (card.dataset.search || '').includes(query) && (!selectedCategory || card.dataset.category === selectedCategory));
+        matches.sort((a, b) => {
+          if (sort?.value === 'title') return (a.querySelector('h3')?.textContent || '').localeCompare(b.querySelector('h3')?.textContent || '');
+          const left = new Date(a.dataset.date || '').getTime();
+          const right = new Date(b.dataset.date || '').getTime();
+          return sort?.value === 'oldest' ? left - right : right - left;
+        });
+        cards.forEach((card) => { card.hidden = true; });
+        matches.forEach((card) => { card.hidden = false; list.appendChild(card); });
+        if (empty) empty.hidden = matches.length > 0;
+      };
+      search?.addEventListener('input', update);
+      category?.addEventListener('change', update);
+      sort?.addEventListener('change', update);
+      update();
+    }
+  </script>
+)}
+
+<style>
+  .author-channel-page { padding-bottom: 28px; }
+  .author-channel-header { padding: 31px 0 0; }
+  .author-channel-shell, .author-channel-content { width: min(980px, calc(100% - 48px)); margin: 0 auto; }
+  .author-channel-profile { display: flex; align-items: center; gap: 24px; }
+  .author-channel-photo { display: block; flex: 0 0 156px; width: 156px; height: 156px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); border-radius: 50%; background: var(--sf-page-surface, #0B0D12); object-fit: cover; object-position: center; }
+  .author-channel-identity { display: flex; min-width: 0; min-height: 132px; flex-direction: column; justify-content: center; padding-left: 24px; border-left: 1px solid var(--sf-page-border, rgba(255,255,255,.16)); }
+  .author-channel-role { margin: 0 0 5px; color: var(--sf-page-copy, #A1A9B6); font: 600 12px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: .04em; }
+  .author-channel-identity h1 { margin: 0; color: var(--sf-page-heading, #F5F5F5); font: 500 clamp(30px, 4vw, 42px)/1.08 'Newsreader', Georgia, serif; letter-spacing: -.025em; }
+  .author-channel-handle { display: inline-flex; align-items: center; gap: 5px; width: max-content; margin-top: 9px; color: var(--sf-page-accent, #35C9C1); font: 600 13px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; }
+  .author-channel-handle:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .author-channel-description { max-width: 760px; margin: 18px 0 0; color: var(--sf-page-copy, #A1A9B6); font: 400 14px/1.65 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-channel-tabs { display: flex; align-items: stretch; gap: 30px; min-height: 48px; margin-top: 21px; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); overflow-x: auto; scrollbar-width: none; }
+  .author-channel-tabs::-webkit-scrollbar { display: none; }
+  .author-channel-tab { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; color: var(--sf-page-copy, #9298A4); font: 600 14px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; transition: color .18s ease; }
+  .author-channel-tab:hover, .author-channel-tab.is-active { color: var(--sf-page-heading, #F5F5F5); }
+  .author-channel-tab.is-active::after { position: absolute; right: 0; bottom: -1px; left: 0; height: 2px; background: var(--sf-page-accent, #35C9C1); content: ''; }
+  .author-home-latest { padding: 25px 0 26px; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
+  .author-section-heading { display: flex; align-items: center; margin-bottom: 15px; }
+  .author-section-heading h2 { margin: 0; color: var(--sf-page-heading, #F5F5F5); font: 700 clamp(20px, 3.2vw, 25px)/1.25 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.015em; }
+  .category-heading-link { display: inline-flex; align-items: center; justify-content: flex-start; gap: 6px; width: auto; min-height: 24px; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; line-height: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+  .category-heading-link:hover { color: inherit; }
+  .category-heading-chevron { display: block; flex: 0 0 16px; width: 16px; height: 24px; color: currentColor; opacity: .58; transform: translateY(1px); transition: transform .2s ease, opacity .2s ease; }
+  .category-heading-link:hover .category-heading-chevron { transform: translate(4px, 1px); opacity: 1; }
+  .author-latest-track { display: flex; gap: 18px; padding: 3px 1px 9px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .author-latest-track::-webkit-scrollbar { display: none; }
+  .author-latest-card { display: flex; flex: 0 0 calc((100% - 40px)/3.25); flex-direction: column; min-width: 250px; max-width: 380px; color: inherit; text-decoration: none; scroll-snap-align: start; }
+  .author-latest-thumb { width: 100%; aspect-ratio: 16/9; border-radius: 10px; background: #090B10; overflow: hidden; }
+  .author-latest-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .author-latest-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 8px; margin: 10px 0 6px; color: var(--sf-page-copy, #9298A4); font: 500 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .035em; text-transform: uppercase; }
+  .author-latest-card h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 600 15px/1.38 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .author-home-category { padding: 24px 0; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
+  .author-resource-list { display: flex; flex-direction: column; gap: 11px; }
+  .author-resource-row { display: flex; align-items: center; gap: 14px; width: 100%; min-width: 0; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.075)); border-radius: 12px; background: var(--sf-page-surface, rgba(255,255,255,.015)); color: var(--sf-page-heading, #F5F5F5); text-decoration: none; transition: opacity .18s ease; }
+  .author-resource-row:hover { opacity: .92; }
+  .author-resource-thumb { flex: 0 0 42%; width: 42%; max-width: 260px; aspect-ratio: 16/9; border-radius: 8px; background: #090B10; overflow: hidden; }
+  .author-resource-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .author-resource-copy { flex: 1 1 auto; min-width: 0; padding: 4px 8px; }
+  .author-resource-meta { display: flex; flex-wrap: wrap; gap: 5px 10px; margin-bottom: 5px; color: var(--sf-page-copy, #9298A4); font: 500 10.5px/1.4 'JetBrains Mono', monospace; }
+  .author-resource-copy h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.32 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .author-secondary-page { padding: 27px 0 50px; }
+  .author-page-heading { margin-bottom: 18px; }
+  .author-page-heading h2 { margin: 0 0 6px; color: var(--sf-page-heading, #F5F5F5); font: 700 clamp(21px, 3.2vw, 26px)/1.25 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-page-heading p { margin: 0; color: var(--sf-page-copy, #9298A4); font: 400 13.5px/1.6 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-resource-filters { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .author-resource-filters input, .author-resource-filters select { width: 100%; min-width: 0; min-height: 45px; box-sizing: border-box; padding: 0 13px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.1)); border-radius: 12px; background: var(--sf-page-surface, #0B0D12); color: var(--sf-page-heading, #F5F5F5); font: 400 13px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px; color: var(--sf-page-accent, #35C9C1); font: 600 12px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; }
+  .author-channel-empty { margin: 0; color: var(--sf-page-copy, #A1A9B6); font: 400 14px/1.65 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-about-content { width: min(780px, calc(100% - 48px)); margin: 0 auto; }
+  .author-about-block { padding: 0 0 25px; margin: 0 0 25px; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
+  .author-about-block:last-child { padding-bottom: 0; margin-bottom: 0; border-bottom: 0; }
+  .author-about-block h2 { margin: 0 0 12px; color: var(--sf-page-heading, #F5F5F5); font: 700 19px/1.3 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-about-block p { margin: 0 0 12px; color: var(--sf-page-copy, #A1A9B6); font: 400 14px/1.7 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-about-block p:last-child { margin-bottom: 0; }
+  .author-expertise-list { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 0 26px; }
+  .author-expertise-list article { padding: 13px 0; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.07)); }
+  .author-expertise-list h3 { margin: 0 0 5px; color: var(--sf-page-heading, #F5F5F5); font: 700 14px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-expertise-list p { margin: 0; color: var(--sf-page-copy, #A1A9B6); font: 400 13.5px/1.6 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-about-links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .author-about-links a { display: inline-flex; align-items: center; gap: 7px; padding: 10px 13px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.1)); border-radius: 10px; color: var(--sf-page-accent, #35C9C1); font: 600 13px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; }
+  @media (max-width: 700px) {
+    .author-channel-header { padding-top: 25px; }
+    .author-channel-shell, .author-channel-content { width: calc(100% - 32px); }
+    .author-channel-profile { gap: 16px; }
+    .author-channel-photo { flex-basis: 104px; width: 104px; height: 104px; }
+    .author-channel-identity { min-height: 104px; padding-left: 14px; }
+    .author-channel-identity h1 { font-size: 28px; line-height: 1.12; }
+    .author-channel-description { margin-top: 16px; font-size: 13.5px; line-height: 1.6; }
+    .author-channel-tabs { gap: 26px; min-height: 45px; margin-top: 17px; }
+    .author-home-latest { padding: 21px 0 22px; }
+    .author-latest-track { gap: 14px; padding: 3px 1px 8px; }
+    .author-latest-card { flex: 0 0 84vw; width: 84vw; min-width: 260px; max-width: 360px; }
+    .author-latest-meta { margin: 9px 0 6px; font-size: 9.5px; }
+    .author-latest-card h3 { font-size: 14.5px; }
+    .author-home-category { padding: 21px 0; }
+    .author-resource-list { gap: 10px; }
+    .author-resource-row { gap: 10px; padding: 7px; }
+    .author-resource-thumb { flex-basis: 38%; width: 38%; }
+    .author-resource-copy { padding: 3px 4px; }
+    .author-resource-meta { gap: 4px 7px; margin-bottom: 4px; font-size: 9.5px; }
+    .author-resource-copy h3 { font-size: 13.5px; line-height: 1.35; }
+    .author-secondary-page { padding-top: 21px; }
+    .author-resource-filters { grid-template-columns: 1fr; gap: 8px; }
+    .author-about-content { width: calc(100% - 32px); }
+    .author-about-block { padding-bottom: 21px; margin-bottom: 21px; }
+    .author-expertise-list { grid-template-columns: minmax(0,1fr); }
+  }
+</style>
