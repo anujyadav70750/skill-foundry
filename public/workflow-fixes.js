@@ -4,6 +4,33 @@
   const CHATGPT_ICON = '/logos/chatgpt.png';
   const INSTA_ICON = '/logos/instagram.png';
 
+  const PROMPT_CONTENT_SELECTOR = [
+    '.resource-page .tutorial-prompt-pre[data-prompt-content]',
+    '.resource-page .prompt-shell pre',
+    '.resource-page .workflow-prompt [data-step-prompt]',
+    '[data-prompt-modal] .prompt-modal-dialog > pre'
+  ].join(',');
+
+  const isPromptContent = (target) => {
+    const element = target instanceof Element ? target : target?.parentElement;
+    return Boolean(element?.closest(PROMPT_CONTENT_SELECTOR));
+  };
+
+  // Block long-press/context menus and browser text-selection gestures only
+  // when the gesture starts inside actual prompt text. Copy buttons remain enabled.
+  document.addEventListener('contextmenu', (event) => {
+    if (isPromptContent(event.target)) event.preventDefault();
+  }, true);
+
+  document.addEventListener('selectstart', (event) => {
+    if (isPromptContent(event.target)) event.preventDefault();
+  }, true);
+
+  document.addEventListener('dragstart', (event) => {
+    if (isPromptContent(event.target)) event.preventDefault();
+  }, true);
+
+
   const downloadPdf = (text, name = 'skill-foundry-prompt') => {
     const clean = (s) => String(s)
       .replace(/[^\x20-\x7E]/g, '?')
