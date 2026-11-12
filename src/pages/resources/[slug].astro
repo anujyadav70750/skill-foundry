@@ -278,6 +278,10 @@ const igReelUrl = finalReelCleanUrl || (data as any).instagramReelUrl || (data a
 const igTutorialThumbnail = (data as any).outputPreviewSrc || heroImage || data.thumbnail || '/images/knight-poppies-thumbnail.png';
 
 const introText = String(data.intro || '').trim();
+const introPoints = introText
+  .split(/\r?\n|(?<=[.!?])\s+/u)
+  .map((point) => point.trim())
+  .filter(Boolean);
 const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
@@ -556,7 +560,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               <span class="section-accent-bar" aria-hidden="true"></span>
               <h2 class="editorial-heading-title">Preparation</h2>
             </div>
-            <p class="editorial-lead">{introText}</p>
+            <ul class="intro-points" aria-label="Preparation checklist">
+              {introPoints.map((point) => <li>{point}</li>)}
+            </ul>
           </section>
         )}
 
