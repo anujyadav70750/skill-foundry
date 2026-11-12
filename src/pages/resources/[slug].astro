@@ -1003,7 +1003,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 <div class="related-work-card-body">
                   <div class="related-work-meta-row">
                     <span class="related-work-meta-category">{item.data.category}</span>
-                    {dateStr && <span class="related-work-meta-date">{dateStr}</span>}
+                    {dateStr && (
+                      <span class="related-work-meta-date">
+                        <svg class="related-work-meta-calendar" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                          <line x1="16" y1="2" x2="16" y2="6"></line>
+                          <line x1="8" y1="2" x2="8" y2="6"></line>
+                          <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <span>{dateStr}</span>
+                      </span>
+                    )}
                   </div>
                   <h3 class="related-work-card-title">{item.data.title}</h3>
                 </div>
@@ -4430,8 +4440,20 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     letter-spacing: 0.07em;
   }
   .related-work-meta-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     color: #9298A4;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 10.5px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .related-work-meta-calendar {
+    display: block;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
   }
   .related-work-card-title {
     color: #F5F5F5;

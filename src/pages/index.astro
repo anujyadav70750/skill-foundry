@@ -126,7 +126,15 @@ const skillsDisciplines = [
                     <div class="recent-work-card-body">
                       <div class="recent-work-meta-row">
                         <span class="recent-work-meta-category">{resource.data.category}</span>
-                        <span class="recent-work-meta-date">{dateStr}</span>
+                        <span class="recent-work-meta-date">
+                          <svg class="recent-work-meta-calendar" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                          </svg>
+                          <span>{dateStr}</span>
+                        </span>
                       </div>
                       <h3 class="recent-work-card-title">{resource.data.title}</h3>
                     </div>
@@ -2974,21 +2982,58 @@ const skillsDisciplines = [
   }
 
   /* Recent Works cards keep the same carousel geometry and image placement. */
-  .home-page .recent-work-card {
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    box-shadow: none;
-    transition: none;
-  }
-
+  .home-page .recent-work-card,
   .home-page .recent-work-card:hover,
   .home-page .recent-work-card:active,
   .home-page .recent-work-card:focus {
-    background: #0B0D12;
-    border-color: rgba(255, 255, 255, 0.08);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     box-shadow: none;
+    padding: 0;
     transform: none;
+    transition: none;
+  }
+
+  .home-page .recent-work-thumb-wrap {
+    border: 0;
+    border-radius: 12px;
+  }
+
+  .home-page .recent-work-card-body {
+    padding-top: 12px;
+  }
+
+  .home-page .recent-work-meta-row {
+    margin-bottom: 7px;
+  }
+
+  .home-page .recent-work-meta-category {
+    color: #9298A4;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+  }
+
+  .home-page .recent-work-meta-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #9298A4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+  }
+
+  .home-page .recent-work-meta-calendar {
+    display: block;
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
   }
 
   .home-page .recent-work-card-title,
@@ -2996,7 +3041,8 @@ const skillsDisciplines = [
     color: #F5F5F5;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
     font-size: 15px;
-    font-weight: 700;
+    font-weight: 600;
+    line-height: 1.38;
   }
 
   .home-page .recent-works-header-link,
@@ -3007,6 +3053,18 @@ const skillsDisciplines = [
 
   .home-page .recent-works-chevron {
     transition: none;
+  }
+
+  :global([data-theme="light"]) .home-page .recent-work-meta-category,
+  :global(html.light-theme) .home-page .recent-work-meta-category,
+  :global([data-theme="light"]) .home-page .recent-work-meta-date,
+  :global(html.light-theme) .home-page .recent-work-meta-date {
+    color: #64748B;
+  }
+
+  :global([data-theme="light"]) .home-page .recent-work-card-title,
+  :global(html.light-theme) .home-page .recent-work-card-title {
+    color: #0F172A;
   }
 
   :global([data-theme="light"]) .home-page .recent-work-card,
