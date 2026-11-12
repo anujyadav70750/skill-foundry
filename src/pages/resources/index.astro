@@ -3020,9 +3020,11 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
      as the divider on resource detail pages. */
   .curated-library-view .recent-section-divider {
     display: block;
-    width: min(820px, calc(100% - 48px));
+    position: relative;
+    left: 50%;
+    width: 100vw;
     height: 1px;
-    margin: 24px auto;
+    margin: 24px 0 24px -50vw;
     box-sizing: border-box;
     background: rgba(255, 255, 255, 0.08);
   }
