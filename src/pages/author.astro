@@ -1028,4 +1028,71 @@ const authorSchema = {
 
     .author-archive-grid { gap: 13px; }
   }
+
+  /* Post-Latest Resources sections use the homepage's content-section rhythm. */
+  .author-page > .author-section:not(.author-latest-section) {
+    position: relative;
+    padding: 28px 0 !important;
+    border-top: 0;
+  }
+
+  .author-page > .author-section:not(.author-latest-section)::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: min(820px, calc(100% - 48px));
+    height: 1px;
+    transform: translateX(-50%);
+    background: var(--sf-page-border, rgba(255,255,255,.08));
+  }
+
+  .author-page > .author-section:not(.author-latest-section) .author-section-header {
+    display: block;
+    margin: 0 0 20px !important;
+  }
+
+  .author-page > .author-section:not(.author-latest-section) .author-section-header h2 {
+    margin: 0 0 8px !important;
+    color: var(--sf-page-heading, #F5F5F5);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: clamp(17px, 2.2vw, 19px) !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .author-page > .author-section:not(.author-latest-section) .author-section-header p {
+    margin: 0 !important;
+    color: #8C92A0;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    line-height: 1.55 !important;
+  }
+
+  :global([data-theme="light"]) .author-page > .author-section:not(.author-latest-section) .author-section-header h2,
+  :global(html.light-theme) .author-page > .author-section:not(.author-latest-section) .author-section-header h2 {
+    color: #0F172A;
+  }
+
+  :global([data-theme="light"]) .author-page > .author-section:not(.author-latest-section) .author-section-header p,
+  :global(html.light-theme) .author-page > .author-section:not(.author-latest-section) .author-section-header p {
+    color: #64748B;
+  }
+
+  @media (max-width: 640px) {
+    .author-page > .author-section:not(.author-latest-section) {
+      padding: 20px 0 !important;
+    }
+
+    .author-page > .author-section:not(.author-latest-section)::before {
+      width: calc(100% - 28px);
+    }
+
+    .author-page > .author-section:not(.author-latest-section) .author-section-header {
+      margin-bottom: 20px !important;
+    }
+  }
+
 </style>
