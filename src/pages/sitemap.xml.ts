@@ -2,6 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { resourceSlug } from '../lib/resource';
 import { authorPath, SKILL_FOUNDRY_AUTHOR_ID } from '../lib/author';
+import { AUTHOR_PROFILES } from '../data/authors';
 
 const staticPaths = [
   '/',
@@ -24,14 +25,10 @@ const escapeXml = (value: string) => value
 
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://hub.skillfoundry-web.workers.dev');
-  const [resourceEntries, authorProfiles] = await Promise.all([
-    getCollection('resources'),
-    getCollection('authors')
-  ]);
-  const resources = resourceEntries
+  const resources = (await getCollection('resources'))
     .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
     .filter((resource) => resourceSlug(resource) !== 'testing-1');
-  const additionalAuthorPaths = authorProfiles
+  const additionalAuthorPaths = Object.values(AUTHOR_PROFILES)
     .filter((profile) => profile.id !== SKILL_FOUNDRY_AUTHOR_ID)
     .map((profile) => authorPath(profile.id));
   const urls = [

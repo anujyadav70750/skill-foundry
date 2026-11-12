@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SKILL_FOUNDRY_AUTHOR_ID, authorPath } from '../../lib/author';
+import { AUTHOR_PROFILES } from '../../data/authors';
 import {
   formatResourceDate,
   resourceImageAlt,
@@ -13,14 +14,11 @@ import {
 const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
 
 export async function getStaticPaths() {
-  const [profiles, allResources] = await Promise.all([
-    getCollection('authors'),
-    getCollection('resources')
-  ]);
+  const allResources = await getCollection('resources');
   const publishedResources = allResources
     .filter((resource) => !('draft' in resource.data && resource.data.draft === true));
 
-  return profiles
+  return Object.values(AUTHOR_PROFILES)
     .filter((profile) => profile.id !== SKILL_FOUNDRY_AUTHOR_ID)
     .map((profile) => ({
       params: { authorId: profile.id },
@@ -34,7 +32,7 @@ export async function getStaticPaths() {
 }
 
 const { profile, resources } = Astro.props;
-const data = profile.data;
+const data = profile;
 const pageUrl = new URL(authorPath(profile.id), siteUrl).href;
 const latestResources = resources.slice(0, 4);
 const authorSchema = {

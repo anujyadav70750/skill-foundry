@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SKILL_FOUNDRY_AUTHOR_ID } from '../lib/author';
+import { AUTHOR_PROFILES } from '../data/authors';
 import {
   formatResourceDate,
   resourceImageAlt,
@@ -11,18 +12,15 @@ import {
 } from '../lib/resource';
 
 const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
-const [allResources, authorProfiles] = await Promise.all([
-  getCollection('resources'),
-  getCollection('authors')
-]);
-const authorProfile = authorProfiles.find((profile) => profile.id === SKILL_FOUNDRY_AUTHOR_ID);
+const allResources = await getCollection('resources');
+const authorProfile = AUTHOR_PROFILES[SKILL_FOUNDRY_AUTHOR_ID];
 if (!authorProfile) throw new Error('Missing author profile: skill-foundry');
 
-const authorName = authorProfile.data.name;
-const authorRole = authorProfile.data.role;
-const authorHandle = authorProfile.data.handle || '';
-const instagramUrl = authorProfile.data.instagramUrl || '';
-const authorImage = authorProfile.data.image;
+const authorName = authorProfile.name;
+const authorRole = authorProfile.role;
+const authorHandle = authorProfile.handle || '';
+const instagramUrl = authorProfile.instagramUrl || '';
+const authorImage = authorProfile.image;
 
 const publishedResources = allResources
   .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
@@ -59,7 +57,7 @@ const authorSchema = {
 
 <BaseLayout
   title={authorName + ' | Skill Foundry'}
-  description={authorProfile.data.description}
+  description={authorProfile.description}
   canonical={authorPageUrl}
   image={authorImage}
   imageAlt={authorName + ' profile photograph'}
@@ -94,7 +92,7 @@ const authorSchema = {
               )}
             </div>
           </div>
-          <p class="author-profile-intro">{authorProfile.data.description}</p>
+          <p class="author-profile-intro">{authorProfile.description}</p>
         </div>
       </div>
     </section>
@@ -249,7 +247,7 @@ const authorSchema = {
           </div>
         </div>
         <div class="author-about-copy">
-          {authorProfile.data.about.map((paragraph) => <p>{paragraph}</p>)}
+          {authorProfile.about.map((paragraph) => <p>{paragraph}</p>)}
         </div>
       </div>
     </section>
@@ -263,7 +261,7 @@ const authorSchema = {
           </div>
         </div>
         <div class="author-expertise-grid">
-          {authorProfile.data.expertise.map((item) => (
+          {authorProfile.expertise.map((item) => (
             <article class="author-expertise-item">
               <h3>{item.title}</h3>
               <p>{item.description}</p>

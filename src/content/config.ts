@@ -90,21 +90,4 @@ const resources = defineCollection({
   })
 });
 
-const authors = defineCollection({
-  type: 'content',
-  schema: z.object({
-    name: z.string(),
-    role: z.string().default('Author'),
-    handle: z.string().optional(),
-    instagramUrl: z.string().url().optional(),
-    image: z.string(),
-    description: z.string(),
-    about: z.array(z.string()).default([]),
-    expertise: z.array(z.object({
-      title: z.string(),
-      description: z.string()
-    })).default([])
-  })
-});
-
-export const collections = { resources, authors };
+export const collections = { resources };
