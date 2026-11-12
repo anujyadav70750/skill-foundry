@@ -2,19 +2,23 @@
    A fixed teal accent separates meaningful icons from headings and body copy.
    It is intentionally identical in light and dark themes.
    Functional controls (search, tabs, arrows, close, download, FAQ plus) remain neutral. */
-:root,
+/* Content icons use a quiet neutral tone; brand and action accents stay separate. */
+:root {
+  --sf-content-icon: #AAB4C2;
+}
+
 :root[data-theme="light"],
 html.light-theme {
-  --sf-content-icon: #0B9F9A;
+  --sf-content-icon: #64748B;
 }
 
 /* Homepage: remove the grey icon tiles and let the icon itself carry the accent. */
 .home-page .trust-section .trust-card-icon {
   color: var(--sf-content-icon) !important;
-  background: transparent !important;
-  border: 0 !important;
+  background: var(--surface-2, rgba(148, 163, 184, 0.08)) !important;
+  border: 1px solid var(--line, rgba(148, 163, 184, 0.16)) !important;
   box-shadow: none !important;
-  border-radius: 0 !important;
+  border-radius: 10px !important;
   width: 40px !important;
   height: 40px !important;
   flex: 0 0 40px !important;
@@ -23,8 +27,8 @@ html.light-theme {
 
 .home-page .trust-section .trust-card-icon svg {
   display: block !important;
-  width: 30px !important;
-  height: 30px !important;
+  width: 21px !important;
+  height: 21px !important;
   color: var(--sf-content-icon) !important;
 }
 
