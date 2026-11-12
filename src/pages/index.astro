@@ -281,9 +281,9 @@ const skillsDisciplines = [
     <section class="home-section trust-section" id="why-trust-the-resources">
       <div class="container narrow">
         <div class="section-head">
-          <h2>Why Learn With Skill Foundry?</h2>
+          <h2>Why Skill Foundry?</h2>
           <p class="section-subcopy">
-            Practical, easy-to-follow resources designed to help you learn, create and get things done.
+            Practical guides for learning, creating and putting useful skills to work.
           </p>
         </div>
 
@@ -294,7 +294,7 @@ const skillsDisciplines = [
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Beginner-Friendly</h3></div>
             <p class="card-description">
-              Clear and simple explanations that make complex topics easier to understand.
+              Straightforward explanations without unnecessary jargon.
             </p>
           </article>
 
@@ -304,7 +304,7 @@ const skillsDisciplines = [
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Practical &amp; Project-Based</h3></div>
             <p class="card-description">
-              Learn through real examples and useful, hands-on projects.
+              Learn by building things you can actually use.
             </p>
           </article>
 
@@ -314,7 +314,7 @@ const skillsDisciplines = [
             </div>
             <div class="home-inner-title-wrap"><h3 class="card-title">Tested &amp; Reliable</h3></div>
             <p class="card-description">
-              Follow structured workflows that are checked and refined before publication.
+              Workflows checked and refined before publication.
             </p>
           </article>
         </div>
@@ -5198,6 +5198,110 @@ const skillsDisciplines = [
     :global([data-theme="light"]) .home-page .method-section .method-card .card-description,
     :global(html.light-theme) .home-page .method-section .method-card .card-description {
       color: #64748B !important;
+    }
+  }
+
+
+  /* Trust section: one unified feature panel with a compact mobile row layout. */
+  .home-page .trust-section .section-head {
+    margin-bottom: 16px;
+  }
+
+  .home-page .trust-section .trust-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    border: 1px solid var(--line, rgba(148, 163, 184, 0.16)) !important;
+    border-radius: 16px !important;
+    background: var(--surface, #111722) !important;
+  }
+
+  .home-page .trust-section .trust-card {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 20px 18px !important;
+    gap: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .home-page .trust-section .trust-card + .trust-card {
+    border-left: 1px solid var(--line, rgba(148, 163, 184, 0.16)) !important;
+  }
+
+  .home-page .trust-section .trust-card .trust-card-icon {
+    margin: 0 0 11px !important;
+  }
+
+  .home-page .trust-section .trust-card .home-inner-title-wrap {
+    margin: 0 0 5px !important;
+  }
+
+  .home-page .trust-section .trust-card .card-title {
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+  }
+
+  .home-page .trust-section .trust-card .card-description {
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    line-height: 1.48 !important;
+  }
+
+  @media (max-width: 640px) {
+    .home-page .trust-section .trust-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 0 !important;
+    }
+
+    .home-page .trust-section .trust-card {
+      display: grid !important;
+      grid-template-columns: 40px minmax(0, 1fr) !important;
+      grid-template-rows: auto auto !important;
+      align-items: center !important;
+      column-gap: 12px !important;
+      row-gap: 3px !important;
+      width: 100% !important;
+      padding: 14px 15px !important;
+    }
+
+    .home-page .trust-section .trust-card + .trust-card {
+      border-left: 0 !important;
+      border-top: 1px solid var(--line, rgba(148, 163, 184, 0.16)) !important;
+    }
+
+    .home-page .trust-section .trust-card .trust-card-icon {
+      grid-column: 1 !important;
+      grid-row: 1 / span 2 !important;
+      margin: 0 !important;
+    }
+
+    .home-page .trust-section .trust-card .home-inner-title-wrap {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+    }
+
+    .home-page .trust-section .trust-card .card-title {
+      font-size: 14.5px !important;
+      line-height: 1.35 !important;
+    }
+
+    .home-page .trust-section .trust-card .card-description {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
+      min-width: 0 !important;
+      font-size: 12.5px !important;
+      line-height: 1.45 !important;
     }
   }
 
