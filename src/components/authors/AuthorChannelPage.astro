@@ -85,7 +85,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                       <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                       <div class="author-resource-copy">
                         <div class="author-resource-meta">
-                          <span class="author-resource-category">{resource.data.category}</span>
+                          
                           <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
                             <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -158,7 +158,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                 <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                 <div class="author-resource-copy">
                         <div class="author-resource-meta">
-                          <span class="author-resource-category">{resource.data.category}</span>
+                          
                           <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
                             <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -250,8 +250,8 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-latest-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .author-latest-meta { display: flex; align-items: center; justify-content: space-between; gap: 5px 8px; margin: 10px 0 7px; color: #9298A4; font: 500 10px/1.4 'JetBrains Mono', monospace; letter-spacing: 0; }
   .author-latest-category, .author-resource-category { color: #9298A4; font: 600 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .07em; text-transform: uppercase; }
-  .author-latest-date, .author-resource-date { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; color: #9298A4; font: 500 10.5px/1.2 'JetBrains Mono', monospace; letter-spacing: 0; white-space: nowrap; }
-  .author-calendar-icon { display: block; flex: 0 0 14px; width: 14px; height: 14px; color: #9298A4; }
+  .author-latest-date, .author-resource-date { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; color: #9298A4; font: 500 11px/1.2 'JetBrains Mono', monospace; letter-spacing: 0; white-space: nowrap; }
+  .author-calendar-icon { display: block; flex: 0 0 14px; width: 14px; height: 14px; color: #7E8492; }
   .author-latest-card h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 600 15px/1.38 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .author-home-category { padding: 24px 0; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
   .author-resource-list { display: flex; flex-direction: column; gap: 18px; }
@@ -260,8 +260,8 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-resource-thumb { flex: 0 0 42%; width: 42%; max-width: 300px; aspect-ratio: 16/9; border: 0; border-radius: 7px; background: #090B10; overflow: hidden; }
   .author-resource-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .author-resource-copy { flex: 1 1 auto; min-width: 0; padding: 0 4px; }
-  .author-resource-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; margin-bottom: 6px; }
-  .author-resource-copy h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.35 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .author-resource-meta { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 5px; margin: 0 0 5px; }
+  .author-resource-copy h3 { display: -webkit-box; margin: 0 0 5px; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.32 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   :global([data-theme="light"]) .author-latest-category,
   :global(html.light-theme) .author-latest-category,
   :global([data-theme="light"]) .author-resource-category,
@@ -308,11 +308,12 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     .author-latest-card h3 { font-size: 14.5px; line-height: 1.38; }
     .author-home-category { padding: 21px 0; }
     .author-resource-list { gap: 18px; }
-    .author-resource-row { gap: 14px; padding: 0; }
+    .author-resource-row { gap: 12px; padding: 0; }
     .author-resource-thumb { flex-basis: 42%; width: 42%; max-width: none; }
     .author-resource-copy { padding: 0 4px; }
-    .author-resource-meta { gap: 5px 8px; margin-bottom: 6px; }
-    .author-resource-copy h3 { font-size: 14.5px; line-height: 1.35; }
+    .author-resource-meta { gap: 5px; margin: 0 0 5px; }
+    .author-resource-date { font-size: 11px; }
+    .author-resource-copy h3 { margin-bottom: 0; font-size: 15px; line-height: 1.3; }
     .author-secondary-page { padding-top: 21px; }
     .author-resource-filters { grid-template-columns: 1fr; gap: 8px; }
     .author-about-content { width: calc(100% - 32px); }
