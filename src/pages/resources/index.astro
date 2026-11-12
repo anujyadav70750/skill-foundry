@@ -256,6 +256,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                   })}
                 </div>
               </section>
+              <div class="recent-section-divider" aria-hidden="true"></div>
 
               <!-- CATEGORY SECTIONS — YouTube-style heading arrows and clean vertical resource rows -->
               {dynamicCategories.map((cat) => {
@@ -3015,23 +3016,19 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
 
 
-  /* Recent section closing divider: spans the full content width. */
-  .curated-library-view .recent-curated-section {
-    position: relative;
-    padding-bottom: 24px;
-    margin-bottom: 28px;
-  }
-  .curated-library-view .recent-curated-section::after {
-    content: "";
+  /* Recent-to-category divider: use the same width, tone and balanced spacing
+     as the divider on resource detail pages. */
+  .curated-library-view .recent-section-divider {
     display: block;
-    width: 100%;
+    width: min(820px, calc(100% - 48px));
     height: 1px;
-    margin-top: 22px;
-    background: rgba(148, 163, 184, 0.22);
+    margin: 24px auto;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.08);
   }
-  :global([data-theme="light"]) .curated-library-view .recent-curated-section::after,
-  :global(html.light-theme) .curated-library-view .recent-curated-section::after {
-    background: rgba(100, 116, 139, 0.24);
+  :global([data-theme="light"]) .curated-library-view .recent-section-divider,
+  :global(html.light-theme) .curated-library-view .recent-section-divider {
+    background: rgba(15, 23, 42, 0.10);
   }
 
   /* Category slides keep their existing horizontal layout and dimensions.
