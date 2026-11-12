@@ -183,7 +183,6 @@ const skillsDisciplines = [
               <p class="card-description">
                 Create AI images and videos, improve prompts, and explore new tools.
               </p>
-              <a class="skill-track-view-btn" href="/resources/?category=AI%20%26%20Technology" aria-label="Explore AI and Technology resources">View resources</a>
             </div>
           </article>
 
@@ -196,7 +195,6 @@ const skillsDisciplines = [
               <p class="card-description">
                 Connect your tools and automate repetitive tasks and workflows.
               </p>
-              <a class="skill-track-view-btn" href="/resources/?category=Automation" aria-label="Explore Automation resources">View resources</a>
             </div>
           </article>
 
@@ -209,7 +207,6 @@ const skillsDisciplines = [
               <p class="card-description">
                 Plan, produce and edit videos and content for your platforms.
               </p>
-              <a class="skill-track-view-btn" href="/resources/?category=Content%20Creation%20%26%20Editing" aria-label="Explore Content Creation and Editing resources">View resources</a>
             </div>
           </article>
 
@@ -222,7 +219,6 @@ const skillsDisciplines = [
               <p class="card-description">
                 Create graphics, posters, thumbnails and reusable designs.
               </p>
-              <a class="skill-track-view-btn" href="/resources/?category=Design%20%26%20Templates" aria-label="Explore Design and Templates resources">View resources</a>
             </div>
           </article>
 
@@ -235,7 +231,6 @@ const skillsDisciplines = [
               <p class="card-description">
                 Organise information, manage tasks and work more efficiently.
               </p>
-              <a class="skill-track-view-btn" href="/resources/?category=Digital%20Productivity" aria-label="Explore Digital Productivity resources">View resources</a>
             </div>
           </article>
         </div>
@@ -4982,6 +4977,48 @@ const skillsDisciplines = [
 
   .home-page .faq-section-title-row {
     gap: 0 !important;
+  }
+
+  
+  /* Skill area cards: remove CTA space and size each card around its content. */
+  .home-page .skills-section .skills-tracks-grid .skill-track-card {
+    height: 258px !important;
+    min-height: 258px !important;
+  }
+
+  .home-page .skills-section .skill-track-content {
+    flex: 1 1 auto !important;
+    justify-content: flex-start !important;
+    padding: 13px 15px 15px !important;
+    gap: 0 !important;
+  }
+
+  .home-page .skills-section .skill-track-card .home-inner-title-wrap {
+    margin: 0 0 7px !important;
+  }
+
+  .home-page .skills-section .skill-track-card .card-description {
+    margin: 0 !important;
+    line-height: 1.45 !important;
+  }
+
+  .home-page .skills-section .skill-track-view-btn {
+    display: none !important;
+  }
+
+  @media (max-width: 640px) {
+    .home-page .skills-section .skills-tracks-grid .skill-track-card {
+      height: 248px !important;
+      min-height: 248px !important;
+    }
+
+    .home-page .skills-section .skill-track-content {
+      padding: 11px 13px 13px !important;
+    }
+
+    .home-page .skills-section .skill-track-card .home-inner-title-wrap {
+      margin-bottom: 6px !important;
+    }
   }
 
 </style>
