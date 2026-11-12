@@ -4848,20 +4848,18 @@ const skillsDisciplines = [
 
 
 
-  /* Remove only the divider between the FAQ support area and final CTA.
-     Preserve the section separation with the same rhythm as the FAQ content. */
+  /* Match the gap before the final CTA to the 24px gap above
+     the "Still have a question?" support block. The divider stays removed. */
   .home-page .faq-cta-divider {
     display: none !important;
   }
 
-  :global(main:has(.home-page) > .sf-global-cta) {
-    padding-top: 28px !important;
+  .home-page .faq-section {
+    padding-bottom: 0 !important;
   }
 
-  @media (max-width: 640px) {
-    :global(main:has(.home-page) > .sf-global-cta) {
-      padding-top: 20px !important;
-    }
+  :global(main:has(.home-page) > .sf-global-cta) {
+    padding-top: 24px !important;
   }
 
   /* Site-wide date standard: calendar icon precedes date in every resource card. */
