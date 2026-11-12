@@ -51,8 +51,19 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                   const srcSet = resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage);
                   return (
                     <a class="author-latest-card" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
-                      <div class="author-latest-thumb"><img src={thumbnail} srcset={srcSet} sizes="(max-width: 600px) 84vw, 380px" alt={alt} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" /></div>
-                      <div class="author-latest-meta"><span>{resource.data.category}</span><span>{dateLabel}</span></div>
+                      <div class="author-latest-thumb"><img src={thumbnail} srcset={srcSet} sizes="(max-width: 700px) 72vw, 380px" alt={alt} loading={index === 0 ? 'eager' : 'lazy'} decoding="async" /></div>
+                      <div class="author-latest-meta">
+                        <span class="author-latest-category">{resource.data.category}</span>
+                        <time class="author-latest-date" datetime={resource.data.date.toISOString()}>
+                          <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                          </svg>
+                          <span>{dateLabel}</span>
+                        </time>
+                      </div>
                       <h3>{resource.data.title}</h3>
                     </a>
                   );
@@ -72,7 +83,21 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                   {items.map((resource) => (
                     <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
                       <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
-                      <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+                      <div class="author-resource-copy">
+                        <div class="author-resource-meta">
+                          <span class="author-resource-category">{resource.data.category}</span>
+                          <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
+                            <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                              <line x1="16" y1="2" x2="16" y2="6"></line>
+                              <line x1="8" y1="2" x2="8" y2="6"></line>
+                              <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>{formatResourceDate(resource.data.date)}</span>
+                          </time>
+                        </div>
+                        <h3>{resource.data.title}</h3>
+                      </div>
                     </a>
                   ))}
                 </div>
@@ -98,7 +123,21 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
               {resources.map((resource) => (
                 <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-search={[resource.data.title, resource.data.description, resource.data.category, ...(resource.data.tags || [])].join(' ').toLowerCase()}>
                   <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
-                  <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+                  <div class="author-resource-copy">
+                        <div class="author-resource-meta">
+                          <span class="author-resource-category">{resource.data.category}</span>
+                          <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
+                            <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                              <line x1="16" y1="2" x2="16" y2="6"></line>
+                              <line x1="8" y1="2" x2="8" y2="6"></line>
+                              <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>{formatResourceDate(resource.data.date)}</span>
+                          </time>
+                        </div>
+                        <h3>{resource.data.title}</h3>
+                      </div>
                 </a>
               ))}
             </div>
@@ -117,7 +156,21 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
             {categoryResources.map((resource) => (
               <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'}>
                 <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
-                <div class="author-resource-copy"><div class="author-resource-meta"><span>{resource.data.category}</span><span>{formatResourceDate(resource.data.date)}</span></div><h3>{resource.data.title}</h3></div>
+                <div class="author-resource-copy">
+                        <div class="author-resource-meta">
+                          <span class="author-resource-category">{resource.data.category}</span>
+                          <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
+                            <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                              <line x1="16" y1="2" x2="16" y2="6"></line>
+                              <line x1="8" y1="2" x2="8" y2="6"></line>
+                              <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            <span>{formatResourceDate(resource.data.date)}</span>
+                          </time>
+                        </div>
+                        <h3>{resource.data.title}</h3>
+                      </div>
               </a>
             ))}
           </div>
@@ -190,22 +243,35 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .category-heading-link:hover { color: inherit; }
   .category-heading-chevron { display: block; flex: 0 0 16px; width: 16px; height: 24px; color: currentColor; opacity: .58; transform: translateY(1px); transition: transform .2s ease, opacity .2s ease; }
   .category-heading-link:hover .category-heading-chevron { transform: translate(4px, 1px); opacity: 1; }
-  .author-latest-track { display: flex; gap: 18px; padding: 3px 1px 9px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .author-latest-track { display: flex; gap: 18px; padding: 3px 1px 8px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
   .author-latest-track::-webkit-scrollbar { display: none; }
-  .author-latest-card { display: flex; flex: 0 0 calc((100% - 40px)/3.25); flex-direction: column; min-width: 250px; max-width: 380px; color: inherit; text-decoration: none; scroll-snap-align: start; }
-  .author-latest-thumb { width: 100%; aspect-ratio: 16/9; border-radius: 10px; background: #090B10; overflow: hidden; }
+  .author-latest-card { display: flex; flex: 0 0 calc((100% - 40px)/3.25); flex-direction: column; min-width: 250px; max-width: 380px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: inherit; text-decoration: none; scroll-snap-align: start; }
+  .author-latest-thumb { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 10px; background: #090B10; overflow: hidden; }
   .author-latest-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .author-latest-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 8px; margin: 10px 0 6px; color: var(--sf-page-copy, #9298A4); font: 500 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .035em; text-transform: uppercase; }
+  .author-latest-meta { display: flex; align-items: center; justify-content: space-between; gap: 5px 8px; margin: 10px 0 7px; color: #9298A4; font: 500 10px/1.4 'JetBrains Mono', monospace; letter-spacing: 0; }
+  .author-latest-category, .author-resource-category { color: #9298A4; font: 600 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .07em; text-transform: uppercase; }
+  .author-latest-date, .author-resource-date { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; color: #9298A4; font: 500 10.5px/1.2 'JetBrains Mono', monospace; letter-spacing: 0; white-space: nowrap; }
+  .author-calendar-icon { display: block; flex: 0 0 14px; width: 14px; height: 14px; color: #9298A4; }
   .author-latest-card h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 600 15px/1.38 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .author-home-category { padding: 24px 0; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
-  .author-resource-list { display: flex; flex-direction: column; gap: 11px; }
-  .author-resource-row { display: flex; align-items: center; gap: 14px; width: 100%; min-width: 0; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.075)); border-radius: 12px; background: var(--sf-page-surface, rgba(255,255,255,.015)); color: var(--sf-page-heading, #F5F5F5); text-decoration: none; transition: opacity .18s ease; }
+  .author-resource-list { display: flex; flex-direction: column; gap: 18px; }
+  .author-resource-row { display: flex; align-items: center; gap: 14px; width: 100%; min-width: 0; box-sizing: border-box; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--sf-page-heading, #F5F5F5); text-decoration: none; transition: opacity .18s ease; }
   .author-resource-row:hover { opacity: .92; }
-  .author-resource-thumb { flex: 0 0 42%; width: 42%; max-width: 260px; aspect-ratio: 16/9; border-radius: 8px; background: #090B10; overflow: hidden; }
+  .author-resource-thumb { flex: 0 0 42%; width: 42%; max-width: 300px; aspect-ratio: 16/9; border: 0; border-radius: 7px; background: #090B10; overflow: hidden; }
   .author-resource-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .author-resource-copy { flex: 1 1 auto; min-width: 0; padding: 4px 8px; }
-  .author-resource-meta { display: flex; flex-wrap: wrap; gap: 5px 10px; margin-bottom: 5px; color: var(--sf-page-copy, #9298A4); font: 500 10.5px/1.4 'JetBrains Mono', monospace; }
-  .author-resource-copy h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.32 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .author-resource-copy { flex: 1 1 auto; min-width: 0; padding: 0 4px; }
+  .author-resource-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; margin-bottom: 6px; }
+  .author-resource-copy h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.35 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  :global([data-theme="light"]) .author-latest-category,
+  :global(html.light-theme) .author-latest-category,
+  :global([data-theme="light"]) .author-resource-category,
+  :global(html.light-theme) .author-resource-category { color: #64748B; }
+  :global([data-theme="light"]) .author-latest-date,
+  :global(html.light-theme) .author-latest-date,
+  :global([data-theme="light"]) .author-resource-date,
+  :global(html.light-theme) .author-resource-date,
+  :global([data-theme="light"]) .author-calendar-icon,
+  :global(html.light-theme) .author-calendar-icon { color: #64748B; }
   .author-secondary-page { padding: 27px 0 50px; }
   .author-page-heading { margin-bottom: 18px; }
   .author-page-heading h2 { margin: 0 0 6px; color: var(--sf-page-heading, #F5F5F5); font: 700 clamp(21px, 3.2vw, 26px)/1.25 'Plus Jakarta Sans', system-ui, sans-serif; }
@@ -236,17 +302,17 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     .author-channel-description { margin-top: 16px; font-size: 13.5px; line-height: 1.6; }
     .author-channel-tabs { gap: 26px; min-height: 45px; margin-top: 17px; }
     .author-home-latest { padding: 21px 0 22px; }
-    .author-latest-track { gap: 14px; padding: 3px 1px 8px; }
-    .author-latest-card { flex: 0 0 84vw; width: 84vw; min-width: 260px; max-width: 360px; }
-    .author-latest-meta { margin: 9px 0 6px; font-size: 9.5px; }
-    .author-latest-card h3 { font-size: 14.5px; }
+    .author-latest-track { gap: 18px; padding: 3px 1px 8px; }
+    .author-latest-card { flex: 0 0 72%; width: 72%; min-width: 0; max-width: 380px; }
+    .author-latest-meta { margin: 10px 0 7px; }
+    .author-latest-card h3 { font-size: 14.5px; line-height: 1.38; }
     .author-home-category { padding: 21px 0; }
-    .author-resource-list { gap: 10px; }
-    .author-resource-row { gap: 10px; padding: 7px; }
-    .author-resource-thumb { flex-basis: 38%; width: 38%; }
-    .author-resource-copy { padding: 3px 4px; }
-    .author-resource-meta { gap: 4px 7px; margin-bottom: 4px; font-size: 9.5px; }
-    .author-resource-copy h3 { font-size: 13.5px; line-height: 1.35; }
+    .author-resource-list { gap: 18px; }
+    .author-resource-row { gap: 14px; padding: 0; }
+    .author-resource-thumb { flex-basis: 42%; width: 42%; max-width: none; }
+    .author-resource-copy { padding: 0 4px; }
+    .author-resource-meta { gap: 5px 8px; margin-bottom: 6px; }
+    .author-resource-copy h3 { font-size: 14.5px; line-height: 1.35; }
     .author-secondary-page { padding-top: 21px; }
     .author-resource-filters { grid-template-columns: 1fr; gap: 8px; }
     .author-about-content { width: calc(100% - 32px); }
