@@ -39,7 +39,7 @@ function injectFooterStyles() {
         const targetDir = path.join(process.cwd(), 'dist');
         const sharedStylesheets = [
           '<link rel="stylesheet" href="/footer-overrides.css?v=20261105-footer-v7">',
-          '<link rel="stylesheet" href="/site-icon-accent.css?v=20261112-neutral-icons-v3">',
+          '<link rel="stylesheet" href="/site-icon-accent.css?v=20261112-neutral-icons-v4">',
           '<link rel="stylesheet" href="/site-page-consistency.css?v=20261111-filter-menu-v3">'
         ];
         const resourceDetailStylesheets = [
