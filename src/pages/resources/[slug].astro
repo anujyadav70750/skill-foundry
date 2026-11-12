@@ -4518,5 +4518,27 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     }
   }
 
+
+
+  /* Same calendar/date order, icon size and date typography as homepage. */
+  .meta-date,
+  .related-work-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+  .meta-calendar-icon,
+  .related-work-meta-calendar {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+  }
+
 </style>
 </BaseLayout>
