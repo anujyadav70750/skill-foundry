@@ -45,7 +45,7 @@ function injectFooterStyles() {
         const resourceDetailStylesheets = [
           '<link rel="stylesheet" href="/resource-step-nav-overrides.css?v=20261102-step-nav-v1">',
           '<link rel="stylesheet" href="/resource-instagram-overrides.css?v=20261102-instagram-v1">',
-          '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261103-step-card-final-v5">',
+          '<link rel="stylesheet" href="/resource-step-card-final-overrides.css?v=20261112-prompt-selection-guard-v1">',
           '<link rel="stylesheet" href="/resource-tool-used-refinement.css?v=20261103-tool-used-v3">',
           '<link rel="stylesheet" href="/resource-aspect-ratio-correction.css?v=20261103-aspect-ratio-v1">'
         ];
