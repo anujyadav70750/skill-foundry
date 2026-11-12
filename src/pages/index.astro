@@ -4966,6 +4966,24 @@ const skillsDisciplines = [
     display: none !important;
   }
 
+  
+  /* Homepage only: remove the yellow accent bars before section headings. */
+  .home-page .why-section .section-head h2::before,
+  .home-page .skills-section .section-head h2::before,
+  .home-page .method-section .section-head h2::before,
+  .home-page .trust-section .section-head h2::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  .home-page .faq-section-title-accent {
+    display: none !important;
+  }
+
+  .home-page .faq-section-title-row {
+    gap: 0 !important;
+  }
+
 </style>
 
 <script>
