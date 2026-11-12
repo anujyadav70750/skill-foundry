@@ -88,7 +88,7 @@ const authorSchema = {
     </section>
 
     <section class="author-section author-latest-section" aria-labelledby="author-latest-heading">
-      <div class="author-page-container">
+      <div class="author-page-container recent-work-container">
         <div class="recent-works-header">
           <a class="recent-works-header-link" href="/resources/" aria-label="Browse all Skill Foundry resources">
             <h2 class="recent-works-title" id="author-latest-heading">Latest Resources</h2>
@@ -119,7 +119,7 @@ const authorSchema = {
                         class="recent-work-thumb-img"
                         src={thumbnail}
                         srcset={srcSet}
-                        sizes="(max-width: 600px) 84vw, 380px"
+                        sizes="(max-width: 600px) 78vw, 420px"
                         alt={alt}
                         loading={index === 0 ? 'eager' : 'lazy'}
                         decoding="async"
@@ -533,12 +533,13 @@ const authorSchema = {
   }
 
   .author-latest-section .recent-works-title {
-    font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
-    font-size: clamp(26px, 3.4vw, 36px);
-    font-weight: 500;
-    letter-spacing: -0.02em;
-    margin: 0;
-    line-height: 1.15;
+    margin: 0 0 8px;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: clamp(20px, 3.2vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
   }
 
   .author-latest-section .recent-works-chevron {
@@ -749,6 +750,9 @@ const authorSchema = {
       display: none !important;
     }
 
+  }
+
+  @media (max-width: 600px) {
     .author-latest-section .recent-work-container {
       width: calc(100% - 32px);
     }
@@ -982,28 +986,6 @@ const authorSchema = {
     .author-section-link {
       font-size: 12px;
       margin-top: 5px;
-    }
-
-    .author-latest-carousel .recent-work-nav-btn {
-      display: none;
-    }
-
-    .author-latest-carousel .recent-work-carousel-track {
-      gap: 14px;
-      padding-bottom: 8px;
-    }
-
-    .author-latest-carousel .recent-work-card {
-      flex: 0 0 84vw;
-      width: 84vw;
-      min-width: 260px;
-      max-width: 360px;
-      padding: 12px;
-      border-radius: 16px;
-    }
-
-    .author-latest-carousel .recent-work-card-title {
-      font-size: 14.5px;
     }
 
     .author-resource-filters,
