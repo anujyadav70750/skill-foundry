@@ -338,6 +338,7 @@
       '---',
       `title: ${quote(data.title)}`,
       `slug: ${quote(data.slug || slugify(data.title))}`,
+      `authorId: ${quote((data.authorId || 'skill-foundry').trim())}`,
       `description: ${quote(data.description)}`,
       `category: ${quote(data.category)}`,
       `tool: ${quote(firstTool.name)}`,

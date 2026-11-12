@@ -1,6 +1,7 @@
 ---
 title: "Create Consistent AI Character Videos"
 slug: "testing-1"
+authorId: "skill-foundry"
 description: "A practical workflow for creating a dressed character image, generating three consistent vertical clips, and assembling them into one final video."
 category: "AI Video"
 tool: "Google Flow"

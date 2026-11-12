@@ -55,6 +55,7 @@ const resources = defineCollection({
   schema: z.object({
     title: z.string(),
     slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+    authorId: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
     description: z.string(),
     category: z.string(),
     tool: z.string(),
@@ -89,4 +90,21 @@ const resources = defineCollection({
   })
 });
 
-export const collections = { resources };
+const authors = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    role: z.string().default('Author'),
+    handle: z.string().optional(),
+    instagramUrl: z.string().url().optional(),
+    image: z.string(),
+    description: z.string(),
+    about: z.array(z.string()).default([]),
+    expertise: z.array(z.object({
+      title: z.string(),
+      description: z.string()
+    })).default([])
+  })
+});
+
+export const collections = { resources, authors };

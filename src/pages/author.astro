@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { SKILL_FOUNDRY_AUTHOR_ID } from '../lib/author';
 import {
   formatResourceDate,
   resourceImageAlt,
@@ -10,34 +11,43 @@ import {
 } from '../lib/resource';
 
 const siteUrl = 'https://hub.skillfoundry-web.workers.dev';
-const instagramUrl = 'https://www.instagram.com/skillfoundary/';
-const authorImage = '/images/skill-foundry-author.jpg';
+const [allResources, authorProfiles] = await Promise.all([
+  getCollection('resources'),
+  getCollection('authors')
+]);
+const authorProfile = authorProfiles.find((profile) => profile.id === SKILL_FOUNDRY_AUTHOR_ID);
+if (!authorProfile) throw new Error('Missing author profile: skill-foundry');
 
-const allResources = await getCollection('resources');
+const authorName = authorProfile.data.name;
+const authorRole = authorProfile.data.role;
+const authorHandle = authorProfile.data.handle || '';
+const instagramUrl = authorProfile.data.instagramUrl || '';
+const authorImage = authorProfile.data.image;
+
 const publishedResources = allResources
   .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
+  .filter((resource) => resource.data.authorId === SKILL_FOUNDRY_AUTHOR_ID)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-// The latest four are highlighted above. Older resources appear in the archive below,
-// so the same resource is not repeated twice on this page.
+// Latest Resources highlights the newest four. The archive contains the complete author catalogue.
 const latestResources = publishedResources.slice(0, 4);
-const archiveResources = publishedResources.slice(4);
-const archiveCategories = [...new Set(archiveResources.map((resource) => resource.data.category).filter(Boolean))]
+const archiveResources = publishedResources;
+const archiveCategories = [...new Set(publishedResources.map((resource) => resource.data.category).filter(Boolean))]
   .sort((a, b) => a.localeCompare(b));
 
 const authorPageUrl = new URL('/author/', siteUrl).href;
 const authorSchema = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  name: 'Skill Foundry — Creator & Author',
+  name: authorName + ' — ' + authorRole,
   url: authorPageUrl,
   mainEntity: {
     '@type': 'Person',
-    name: 'Skill Foundry',
-    jobTitle: 'Creator & Author',
+    name: authorName,
+    jobTitle: authorRole,
     url: authorPageUrl,
     image: new URL(authorImage, siteUrl).href,
-    sameAs: [instagramUrl],
+    sameAs: instagramUrl ? [instagramUrl] : [],
     worksFor: {
       '@type': 'Organization',
       name: 'Skill Foundry',
@@ -48,11 +58,11 @@ const authorSchema = {
 ---
 
 <BaseLayout
-  title="Author | Skill Foundry"
-  description="Meet the creator behind Skill Foundry and explore practical resources, tutorials and workflows."
+  title={authorName + ' | Skill Foundry'}
+  description={authorProfile.data.description}
   canonical={authorPageUrl}
   image={authorImage}
-  imageAlt="Skill Foundry creator profile photograph"
+  imageAlt={authorName + ' profile photograph'}
 >
   <script type="application/ld+json" set:html={JSON.stringify(authorSchema)} />
 
@@ -64,7 +74,7 @@ const authorSchema = {
             <img
               class="author-profile-photo"
               src={authorImage}
-              alt="Skill Foundry creator"
+              alt={authorName + ' creator portrait'}
               width="720"
               height="720"
               loading="eager"
@@ -72,19 +82,19 @@ const authorSchema = {
               decoding="async"
             />
             <div class="author-profile-copy">
-              <p class="author-profile-role">Creator &amp; Author</p>
-              <h1>Skill Foundry</h1>
-              <a class="author-instagram-handle" href={instagramUrl} target="_blank" rel="noopener noreferrer">
-                @skillfoundary
-                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true">
-                  <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
+              <p class="author-profile-role">{authorRole}</p>
+              <h1>{authorName}</h1>
+              {instagramUrl && authorHandle && (
+                <a class="author-instagram-handle" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+                  {authorHandle}
+                  <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true">
+                    <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              )}
             </div>
           </div>
-          <p class="author-profile-intro">
-            Creating practical guides and clear workflows that help people understand useful skills and put them to work.
-          </p>
+          <p class="author-profile-intro">{authorProfile.data.description}</p>
         </div>
       </div>
     </section>
@@ -164,7 +174,7 @@ const authorSchema = {
         <div class="author-section-header author-archive-header">
           <div>
             <h2 id="author-archive-heading">All Published Resources</h2>
-            <p>Browse earlier publications from the Skill Foundry library.</p>
+            <p>Browse every resource published under this author profile.</p>
           </div>
         </div>
 
@@ -172,8 +182,8 @@ const authorSchema = {
           <>
             <div class="author-resource-filters">
               <label class="author-search-field">
-                <span class="sr-only">Search older resources</span>
-                <input type="search" placeholder="Search resources…" autocomplete="off" data-author-search />
+                <span class="sr-only">Search published resources</span>
+                <input type="search" placeholder="Search all resources…" autocomplete="off" data-author-search />
               </label>
               <label class="author-category-field">
                 <span class="sr-only">Filter resources by category</span>
@@ -224,7 +234,7 @@ const authorSchema = {
           </>
         ) : (
           <div class="author-archive-empty-state">
-            <p>All currently published resources are shown in the Latest Resources section above. Older resources will appear here automatically as the library grows.</p>
+            <p>No resources have been published under this author profile yet. New resources will appear here when they are published.</p>
           </div>
         )}
       </div>
@@ -239,8 +249,7 @@ const authorSchema = {
           </div>
         </div>
         <div class="author-about-copy">
-          <p>I created Skill Foundry to make useful skills easier to understand and apply. I build practical tutorials and workflows that explain the steps, tools and decisions behind a result—not just the finished example.</p>
-          <p>The aim is to help people learn by doing, understand how a process works, and adapt what they learn to their own projects. Skill Foundry is growing as a place for practical skills that make creating and everyday work easier, including areas beyond AI.</p>
+          {authorProfile.data.about.map((paragraph) => <p>{paragraph}</p>)}
         </div>
       </div>
     </section>
@@ -254,26 +263,12 @@ const authorSchema = {
           </div>
         </div>
         <div class="author-expertise-grid">
-          <article class="author-expertise-item">
-            <h3>AI Image &amp; Video Creation</h3>
-            <p>Prompt-led visual creation, reference workflows and practical generation techniques.</p>
-          </article>
-          <article class="author-expertise-item">
-            <h3>Automation</h3>
-            <p>Useful systems and workflows that reduce repetitive tasks.</p>
-          </article>
-          <article class="author-expertise-item">
-            <h3>Content Creation &amp; Editing</h3>
-            <p>Planning, creating and improving content from the first idea to the final result.</p>
-          </article>
-          <article class="author-expertise-item">
-            <h3>Design &amp; Templates</h3>
-            <p>Reusable layouts, templates and visual resources for practical projects.</p>
-          </article>
-          <article class="author-expertise-item">
-            <h3>Practical Digital Skills</h3>
-            <p>Tools, techniques and everyday workflows that help people work more effectively.</p>
-          </article>
+          {authorProfile.data.expertise.map((item) => (
+            <article class="author-expertise-item">
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -283,17 +278,19 @@ const authorSchema = {
         <div class="author-section-header">
           <div>
             <h2 id="author-connect-heading">Connect</h2>
-            <p>Follow the work or send a message through the website.</p>
+            <p>Follow {authorName}'s work or send a message through the website.</p>
           </div>
         </div>
         <div class="author-connect-grid">
-          <a class="author-connect-card" href={instagramUrl} target="_blank" rel="noopener noreferrer">
-            <span class="author-connect-label">Instagram</span>
-            <span class="author-connect-value">@skillfoundary</span>
-            <svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true">
-              <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </a>
+          {instagramUrl && authorHandle && (
+            <a class="author-connect-card" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+              <span class="author-connect-label">Instagram</span>
+              <span class="author-connect-value">{authorHandle}</span>
+              <svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true">
+                <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+          )}
           <a class="author-connect-card" href="/contact/">
             <span class="author-connect-label">Website Contact Form</span>
             <span class="author-connect-value">Send an enquiry</span>
