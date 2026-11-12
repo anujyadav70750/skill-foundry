@@ -60,29 +60,31 @@ const authorSchema = {
     <section class="author-profile-section">
       <div class="author-page-container">
         <div class="author-profile">
-          <img
-            class="author-profile-photo"
-            src={authorImage}
-            alt="Skill Foundry creator"
-            width="720"
-            height="720"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
-          <div class="author-profile-copy">
-            <p class="author-profile-role">Creator &amp; Author</p>
-            <h1>Skill Foundry</h1>
-            <a class="author-instagram-handle" href={instagramUrl} target="_blank" rel="noopener noreferrer">
-              @skillfoundary
-              <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true">
-                <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </a>
-            <p class="author-profile-intro">
-              Creating practical guides and clear workflows that help people understand useful skills and put them to work.
-            </p>
+          <div class="author-profile-main">
+            <img
+              class="author-profile-photo"
+              src={authorImage}
+              alt="Skill Foundry creator"
+              width="720"
+              height="720"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+            <div class="author-profile-copy">
+              <p class="author-profile-role">Creator &amp; Author</p>
+              <h1>Skill Foundry</h1>
+              <a class="author-instagram-handle" href={instagramUrl} target="_blank" rel="noopener noreferrer">
+                @skillfoundary
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" aria-hidden="true">
+                  <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </div>
           </div>
+          <p class="author-profile-intro">
+            Creating practical guides and clear workflows that help people understand useful skills and put them to work.
+          </p>
         </div>
       </div>
     </section>
@@ -383,11 +385,14 @@ const authorSchema = {
   }
 
   .author-profile {
+    max-width: 900px;
+    margin-inline: auto;
+  }
+
+  .author-profile-main {
     display: flex;
     align-items: center;
     gap: 24px;
-    max-width: 900px;
-    margin-inline: auto;
   }
 
   .author-profile-photo {
@@ -444,8 +449,8 @@ const authorSchema = {
   }
 
   .author-profile-intro {
-    max-width: 640px;
-    margin: 12px 0 0;
+    max-width: 760px;
+    margin: 20px 0 0;
     color: var(--sf-page-copy, #A1A9B6);
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 14px;
@@ -976,7 +981,7 @@ const authorSchema = {
       padding: 30px 0 24px;
     }
 
-    .author-profile {
+    .author-profile-main {
       align-items: flex-start;
       gap: 16px;
     }
@@ -992,8 +997,10 @@ const authorSchema = {
     }
 
     .author-profile-intro {
-      margin-top: 9px;
-      font-size: 13px;
+      max-width: none;
+      margin-top: 18px;
+      font-size: 13.5px;
+      line-height: 1.6;
     }
 
     .author-section {
