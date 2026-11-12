@@ -1114,4 +1114,99 @@ const authorSchema = {
     }
   }
 
+
+  /* Final mobile-first polish for the sections below Latest Resources. */
+  .author-archive-section .author-section-header {
+    margin-bottom: 14px;
+  }
+
+  .author-archive-empty-state {
+    margin: 0;
+    padding: 0;
+  }
+
+  .author-archive-empty-state p {
+    margin: 0;
+    max-width: 760px;
+    color: var(--sf-page-copy, #A1A9B6);
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .author-about-copy {
+    max-width: 780px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .author-about-copy p {
+    margin-bottom: 12px;
+  }
+
+  .author-page .author-expertise-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0;
+  }
+
+  .author-page .author-expertise-item {
+    padding: 13px 0;
+  }
+
+  .author-page .author-expertise-item:last-child {
+    border-bottom: 0;
+  }
+
+  .author-page .author-expertise-item h3 {
+    margin-bottom: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .author-page .author-expertise-item p {
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .author-page .author-connect-grid {
+    gap: 10px;
+  }
+
+  .author-page .author-connect-card {
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .author-archive-section .author-section-header {
+      margin-bottom: 12px;
+    }
+
+    .author-archive-empty-state p {
+      font-size: 13.5px;
+      line-height: 1.6;
+    }
+
+    .author-about-copy {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .author-about-copy p {
+      margin-bottom: 12px;
+    }
+
+    .author-page .author-expertise-item {
+      padding: 12px 0;
+    }
+
+    .author-page .author-connect-grid {
+      gap: 10px;
+    }
+
+    .author-page .author-connect-card {
+      padding: 14px 15px;
+    }
+  }
+
 </style>
