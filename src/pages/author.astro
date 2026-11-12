@@ -765,7 +765,8 @@ const authorSchema = {
     }
 
     .author-latest-section .recent-work-card-title {
-      font-size: 14.5px;
+      font-size: 15px;
+      -webkit-line-clamp: 2;
     }
 
     .author-latest-section .recent-work-nav-btn {
@@ -775,7 +776,7 @@ const authorSchema = {
 
   @media (max-width: 600px) {
     .author-latest-section .recent-work-container {
-      width: calc(100% - 32px);
+      width: calc(100% - 36px);
     }
   }
 
@@ -967,6 +968,10 @@ const authorSchema = {
       width: calc(100% - 32px);
     }
 
+    .author-latest-section .recent-work-container {
+      width: calc(100% - 36px);
+    }
+
     .author-profile-section {
       padding: 30px 0 24px;
     }
@@ -993,6 +998,11 @@ const authorSchema = {
 
     .author-section {
       padding: 24px 0;
+    }
+
+    .author-latest-section {
+      padding-top: 20px;
+      padding-bottom: 22px;
     }
 
     .author-section-header {
