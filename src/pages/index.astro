@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceSlug, resourceThumbnail, resourceImageAlt, resourceDisplaySrcSet } from '../lib/resource';
+import { resourceSlug, resourceThumbnail, resourceImageAlt, resourceDisplaySrcSet, formatResourceDate } from '../lib/resource';
 import { FAQ_DATA } from '../data/faqs';
 
 // The homepage always shows the first six questions from the full FAQ list.
@@ -56,15 +56,6 @@ const skillsDisciplines = [
   }
 ];
 
-const formatUploadDate = (d: Date | string | undefined) => {
-  if (!d) return '';
-  const date = new Date(d);
-  const day = date.getDate();
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-  return `${day} ${month} ${year}`;
-};
 ---
 
 <BaseLayout 
@@ -124,7 +115,7 @@ const formatUploadDate = (d: Date | string | undefined) => {
                 const slug = resourceSlug(resource);
                 const thumbnail = resourceThumbnail(resource);
                 const alt = resourceImageAlt(resource);
-                const dateStr = formatUploadDate(resource.data.date);
+                const dateStr = formatResourceDate(resource.data.date);
 
                 return (
                   <a class="recent-work-card" href={`/resources/${slug}/`} aria-label={`Open ${resource.data.title}`}>

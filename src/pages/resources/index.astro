@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceSlug, resourceThumbnail, resourceImageAlt, resourceDisplaySrcSet } from '../../lib/resource';
+import { resourceSlug, resourceThumbnail, resourceImageAlt, resourceDisplaySrcSet, formatResourceDate } from '../../lib/resource';
 
 // 1. SINGLE SOURCE OF TRUTH: Published resources sorted by date descending (Newest first)
 const allResources = await getCollection('resources');
@@ -217,7 +217,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                 <div class="recent-scroll-wrapper">
                   {publishedResources.slice(0, 4).map((resource, index) => {
                     const slug = resourceSlug(resource);
-                    const dateStr = resource.data.date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const dateStr = formatResourceDate(resource.data.date);
                     return (
                       <a
                         class="recent-resource-card"
@@ -281,7 +281,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
                     <div class="curated-h-cards-stack">
                       {catResources.map((resource, index) => {
                         const slug = resourceSlug(resource);
-                        const dateLabel = resource.data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+                        const dateLabel = formatResourceDate(resource.data.date);
                         return (
                           <a
                             class="resource-card resource-card-horizontal category-resource-row"
@@ -357,7 +357,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
               const slug = resourceSlug(resource);
               const thumbnail = resourceThumbnail(resource);
               const alt = resourceImageAlt(resource);
-              const dateLabel = resource.data.date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+              const dateLabel = formatResourceDate(resource.data.date);
               const toolsList = Array.isArray(resource.data.toolsUsed)
                 ? resource.data.toolsUsed.map((t) => t.name).join(' ')
                 : '';
@@ -2385,11 +2385,12 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     align-items: center;
     gap: 14px;
     width: 100%;
-    padding: 0;
+    box-sizing: border-box;
+    padding: 8px 10px;
     margin: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.015);
     box-shadow: none;
     overflow: visible;
     text-decoration: none;
@@ -2397,10 +2398,10 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   }
   .category-curated-section .category-resource-row:hover {
     transform: none;
-    border: 0;
-    background: transparent;
+    border-color: rgba(255, 255, 255, 0.075);
+    background: rgba(255, 255, 255, 0.015);
     box-shadow: none;
-    opacity: 0.88;
+    opacity: 0.92;
   }
   .category-curated-section .h-thumb-wrap {
     flex: 0 0 42%;
@@ -2415,7 +2416,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   .category-curated-section .h-content {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 8px 14px;
+    padding: 4px 8px;
     box-sizing: border-box;
   }
   .category-curated-section .category-row-meta {
@@ -2460,6 +2461,12 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   :global(html.light-theme) .category-curated-section .h-title {
     color: #0F172A;
   }
+  :global(html[data-theme="light"]) .category-curated-section .category-resource-row,
+  :global(html.light-theme) .category-curated-section .category-resource-row {
+    border-color: #E2E8F0;
+    background: #FFFFFF;
+  }
+
   @media (max-width: 640px) {
     .category-curated-section {
       margin-top: 30px;
@@ -2473,10 +2480,10 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
     .category-curated-section .category-resource-row {
       gap: 12px;
-      padding: 0;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.075);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.015);
       box-shadow: none;
     }
     .category-curated-section .h-thumb-wrap {
@@ -2487,7 +2494,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
       border-radius: 7px;
     }
     .category-curated-section .h-content {
-      padding: 8px 12px;
+      padding: 4px 6px;
     }
     .category-curated-section .h-title {
       font-size: 15px;

@@ -6,6 +6,18 @@ export function resourceSlug(resource: CollectionEntry<'resources'>) {
   return resource.data.slug?.trim() || resource.id.replace(/\.md$/, '');
 }
 
+export function formatResourceDate(value: Date | string | null | undefined) {
+  if (!value) return '';
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).format(date);
+}
+
 function usableImages(images: Array<string | null | undefined>) {
   return [...new Set(
     images
