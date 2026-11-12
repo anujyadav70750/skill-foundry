@@ -2916,6 +2916,69 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+
+  /* FINAL OVERRIDE: remove inherited card frames from every Recent carousel slide. */
+  .curated-library-view .recent-curated-section .recent-resource-card,
+  .curated-library-view .recent-curated-section .recent-resource-card:hover,
+  .curated-library-view .recent-curated-section .recent-resource-card:active,
+  .curated-library-view .recent-curated-section .recent-resource-card:focus,
+  .curated-library-view .recent-curated-section .recent-resource-card:focus-visible {
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+  .curated-library-view .recent-curated-section .recent-resource-thumb-wrap {
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+  }
+  .curated-library-view .recent-curated-section .recent-scroll-wrapper {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* One date treatment throughout Explore: calendar first, date second. */
+  .curated-library-view .recent-resource-meta-date,
+  .curated-library-view .h-meta-date,
+  .curated-library-view .category-row-meta .h-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    color: #9298A4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .recent-resource-meta-calendar,
+  .curated-library-view .h-meta-calendar-icon {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+    color: #9298A4 !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .recent-resource-meta-date,
+  :global(html.light-theme) .curated-library-view .recent-resource-meta-date,
+  :global([data-theme="light"]) .curated-library-view .h-meta-date,
+  :global(html.light-theme) .curated-library-view .h-meta-date {
+    color: #64748B !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .recent-resource-meta-calendar,
+  :global(html.light-theme) .curated-library-view .recent-resource-meta-calendar,
+  :global([data-theme="light"]) .curated-library-view .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .h-meta-calendar-icon {
+    color: #64748B !important;
+  }
+
 </style>
 
 <script>
