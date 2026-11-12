@@ -397,9 +397,9 @@ const authorSchema = {
 
   .author-profile-photo {
     display: block;
-    flex: 0 0 136px;
-    width: 136px;
-    height: 136px;
+    flex: 0 0 156px;
+    width: 156px;
+    height: 156px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
@@ -408,7 +408,13 @@ const authorSchema = {
   }
 
   .author-profile-copy {
+    display: flex;
     min-width: 0;
+    min-height: 132px;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 24px;
+    border-left: 1px solid var(--sf-page-border, rgba(255,255,255,.16));
   }
 
   .author-profile-role {
@@ -982,7 +988,7 @@ const authorSchema = {
     }
 
     .author-profile-main {
-      align-items: flex-start;
+      align-items: center;
       gap: 16px;
     }
 
@@ -992,14 +998,20 @@ const authorSchema = {
       height: 104px;
     }
 
+    .author-profile-copy {
+      min-height: 104px;
+      padding-left: 14px;
+    }
+
     .author-profile-copy h1 {
-      font-size: 30px;
+      font-size: 28px;
+      line-height: 1.12;
     }
 
     .author-profile-intro {
       max-width: none;
       margin-top: 18px;
-      font-size: 13.5px;
+      font-size: 14px;
       line-height: 1.6;
     }
 
