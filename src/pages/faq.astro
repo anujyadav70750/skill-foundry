@@ -28,7 +28,7 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       <section class="faq-list-section" aria-label="Frequently asked questions">
         <div class="faq-list" id="faq-list">
           {FAQ_DATA.map((item, index) => (
-            <article class="faq-item" data-faq-id={item.id}>
+            <article class="faq-card faq-item" data-faq-id={item.id}>
               <h2 class="faq-item-heading faq-question-text">{item.question}</h2>
               <div class="faq-answer-divider" aria-hidden="true"></div>
               <div class="faq-answer-inner"><p class="faq-answer-text">{item.answer}</p></div>
@@ -43,14 +43,11 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
         </div>
       </section>
 
-      <div class="faq-support-divider" aria-hidden="true"></div>
-
       <section class="faq-support-cta" aria-label="Contact Skill Foundry">
         <h3 class="faq-support-title">Still have a <span>question?</span></h3>
         <p class="faq-support-desc">Didn't find your answer? Send us a message.</p>
         <a href="/contact/?subject=Question%20not%20covered%20in%20FAQs" class="faq-support-button">Contact us</a>
       </section>
-      <div class="faq-cta-divider" aria-hidden="true"></div>
     </div>
   </main>
 </BaseLayout>
@@ -224,13 +221,6 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     text-decoration: underline;
   }
 
-   .faq-page .faq-support-divider {
-    width: 100%;
-    height: 1px;
-    margin: 14px auto 32px;
-    background: rgba(255, 255, 255, 0.08);
-  }
-
   .faq-page .faq-support-cta {
     display: flex;
     flex-direction: column;
@@ -246,14 +236,6 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     border: 0;
     border-radius: 0;
     box-sizing: border-box;
-  }
-
-  .faq-page .faq-cta-divider {
-    width: 100%;
-    max-width: 780px;
-    height: 1px;
-    margin: 24px auto 0;
-    background: rgba(255, 255, 255, 0.08);
   }
 
   .faq-page .faq-support-mark {
@@ -352,16 +334,6 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     outline-offset: 3px;
   }
 
-  :global([data-theme="light"]) .faq-page .faq-support-divider,
-  :global(html.light-theme) .faq-page .faq-support-divider {
-    background: rgba(15, 23, 42, 0.10);
-  }
-
-  :global([data-theme="light"]) .faq-page .faq-cta-divider,
-  :global(html.light-theme) .faq-page .faq-cta-divider {
-    background: rgba(15, 23, 42, 0.10);
-  }
-
   :global([data-theme="light"]) .faq-page .faq-support-title,
   :global(html.light-theme) .faq-page .faq-support-title {
     color: #172033;
@@ -383,19 +355,10 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       margin-top: 20px;
     }
 
-     .faq-page .faq-support-divider {
-      margin: 12px auto 32px;
-    }
-
     .faq-page .faq-support-cta {
       gap: 6px;
       margin: 0 auto;
       padding: 0 8px 6px;
-    }
-
-    .faq-page .faq-cta-divider {
-      width: calc(100% - 28px);
-      margin-top: 20px;
     }
 
     .faq-page .faq-support-title {
@@ -497,6 +460,52 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
       padding-inline: 4px;
     }
   }
+
+  /* Match the homepage's FAQ card surface and interaction treatment. */
+  .faq-page .faq-card.faq-item {
+    background: #0B0D12 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+  }
+
+  .faq-page .faq-card.faq-item:hover,
+  .faq-page .faq-card.faq-item:focus-within,
+  .faq-page .faq-card.faq-item:active {
+    background: #0B0D12 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: none !important;
+    transform: none !important;
+  }
+
+  :global([data-theme="light"]) .faq-page .faq-card.faq-item,
+  :global(html.light-theme) .faq-page .faq-card.faq-item,
+  :global([data-theme="light"]) .faq-page .faq-card.faq-item:hover,
+  :global(html.light-theme) .faq-page .faq-card.faq-item:hover,
+  :global([data-theme="light"]) .faq-page .faq-card.faq-item:focus-within,
+  :global(html.light-theme) .faq-page .faq-card.faq-item:focus-within,
+  :global([data-theme="light"]) .faq-page .faq-card.faq-item:active,
+  :global(html.light-theme) .faq-page .faq-card.faq-item:active {
+    background: #FFFFFF !important;
+    border-color: #E2E8F0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Mirror the homepage's clean 24px spacing around the support and bottom CTA. */
+  .faq-page {
+    padding-bottom: 0 !important;
+  }
+
+  .faq-page .faq-support-cta {
+    margin: 24px auto 0 !important;
+    padding: 0 8px !important;
+    gap: 6px !important;
+  }
+
+  :global(main:has(.faq-page) > .sf-global-cta) {
+    padding-top: 24px !important;
+  }
+
 </style>
 
 <script>
