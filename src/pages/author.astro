@@ -725,21 +725,43 @@ const authorSchema = {
   }
 
   @media (max-width: 640px) {
+    /* Match the homepage Recent row exactly on mobile. */
+    .author-latest-section .recent-works-header {
+      margin-bottom: 13px;
+    }
+
+    .author-latest-section .recent-works-title {
+      margin: 0;
+    }
+
     .author-latest-section .recent-work-carousel-track {
-      gap: 14px;
-      padding-bottom: 8px;
+      gap: 18px;
+      padding: 3px 1px 8px;
     }
 
     .author-latest-section .recent-work-card,
     .author-latest-section .recent-work-card:hover,
     .author-latest-section .recent-work-card:active,
     .author-latest-section .recent-work-card:focus {
-      flex: 0 0 84vw;
-      width: 84vw;
-      min-width: 260px;
-      max-width: 360px;
+      flex: 0 0 72%;
+      width: 72%;
+      min-width: 0;
+      max-width: 380px;
       padding: 0;
+      border: 0;
       border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      transform: none;
+      transition: none;
+    }
+
+    .author-latest-section .recent-work-thumb-wrap {
+      border-radius: 10px;
+    }
+
+    .author-latest-section .recent-work-card-body {
+      padding-top: 10px;
     }
 
     .author-latest-section .recent-work-card-title {
@@ -749,7 +771,6 @@ const authorSchema = {
     .author-latest-section .recent-work-nav-btn {
       display: none !important;
     }
-
   }
 
   @media (max-width: 600px) {
