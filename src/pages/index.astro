@@ -4849,6 +4849,35 @@ const skillsDisciplines = [
     }
   }
 
+
+
+  /* Site-wide date standard: calendar icon precedes date in every resource card. */
+  .home-page .recent-work-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    color: #9298A4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+  }
+  .home-page .recent-work-meta-calendar {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+    color: #9298A4 !important;
+  }
+  :global([data-theme="light"]) .home-page .recent-work-meta-date,
+  :global(html.light-theme) .home-page .recent-work-meta-date,
+  :global([data-theme="light"]) .home-page .recent-work-meta-calendar,
+  :global(html.light-theme) .home-page .recent-work-meta-calendar {
+    color: #64748B !important;
+  }
+
 </style>
 
 <script>
