@@ -8,6 +8,7 @@ const staticPaths = [
   '/guides/',
   '/faq/',
   '/about/',
+  '/author/',
   '/contact/',
   '/privacy/',
   '/terms/'

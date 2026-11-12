@@ -284,7 +284,7 @@ const introPoints = introText
   .filter(Boolean);
 const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
-const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/favicon.svg';
+const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/images/skill-foundry-author.jpg';
 const formatResourceTag = (tag: string) => tag
   .split(/[-_\\s]+/)
   .filter(Boolean)
@@ -296,7 +296,7 @@ const formatResourceTag = (tag: string) => tag
   .join(' ');
 
 const schema = { '@context': 'https://schema.org', '@graph': [
-  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Organization', name: 'Skill Foundry' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
+  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Person', name: authorName, url: new URL('/author/', site).href, image: new URL('/images/skill-foundry-author.jpg', site).href, sameAs: 'https://www.instagram.com/skillfoundry.ai/' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
     { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
@@ -476,8 +476,10 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           {/* 3. Horizontal Metadata Row (Author & Published Date) */}
           <div class="resource-metadata-row" aria-label="Resource metadata">
             <div class="metadata-item meta-author">
-              <img class="meta-author-avatar" src={authorAvatar} alt="" width="22" height="22" loading="eager" decoding="async" />
-              <span class="meta-author-name">{authorName}</span>
+              <a class="meta-author-profile-link" href="/author/" aria-label={`About ${authorName}, resource author`}>
+                <img class="meta-author-avatar" src={authorAvatar} alt="" width="22" height="22" loading="eager" decoding="async" />
+                <span class="meta-author-name">{authorName}</span>
+              </a>
               <span class="meta-verification-badge" aria-label="Verified publisher">
                 <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true">
                   <circle cx="10" cy="10" r="10" fill="#00D4E5"/>
@@ -1794,6 +1796,19 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       font-size: 13.5px;
       font-weight: 600;
       line-height: 1.2;
+    }
+
+    .meta-author-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: inherit;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .meta-author-profile-link:hover .meta-author-name {
+      color: var(--sf-page-accent, #35C9C1);
     }
 
     .meta-verification-badge svg {
