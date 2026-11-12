@@ -24,6 +24,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Report dependency security advisories
+        run: node scripts/report-dependency-audit.mjs
+
       - name: Build Astro site
         run: npm run build
 
