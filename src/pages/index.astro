@@ -5103,6 +5103,104 @@ const skillsDisciplines = [
     }
   }
 
+  
+  /* Correct the learning steps using the homepage's established card palette. */
+  @media (max-width: 640px) {
+    .home-page .method-section .steps-grid {
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 10px !important;
+      overflow: visible !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+    }
+
+    .home-page .home-section.method-section .home-card.method-card {
+      display: grid !important;
+      grid-template-columns: 30px minmax(0, 1fr) !important;
+      grid-template-rows: auto auto !important;
+      align-items: start !important;
+      column-gap: 11px !important;
+      row-gap: 3px !important;
+      width: 100% !important;
+      min-height: 0 !important;
+      padding: 13px 14px !important;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 14px !important;
+      background: #0B0D12 !important;
+      box-shadow: none !important;
+    }
+
+    .home-page .home-section.method-section .home-card.method-card + .method-card {
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .home-page .method-section .method-step-badge {
+      grid-column: 1 !important;
+      grid-row: 1 / span 2 !important;
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      margin: 1px 0 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      color: rgba(255, 255, 255, 0.22) !important;
+      font-family: 'JetBrains Mono', monospace !important;
+      font-size: 16px !important;
+      font-weight: 800 !important;
+      line-height: 1.35 !important;
+    }
+
+    .home-page .method-section .method-card .home-inner-title-wrap {
+      grid-column: 2 !important;
+      grid-row: 1 !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+    }
+
+    .home-page .method-section .method-card .card-title {
+      margin: 0 !important;
+      color: #FFFFFF !important;
+      font-size: 14.5px !important;
+      line-height: 1.35 !important;
+      font-weight: 700 !important;
+    }
+
+    .home-page .method-section .method-card .card-description {
+      grid-column: 2 !important;
+      grid-row: 2 !important;
+      min-width: 0 !important;
+      margin: 0 !important;
+      color: #8C92A0 !important;
+      font-size: 12.5px !important;
+      line-height: 1.45 !important;
+    }
+
+    :global([data-theme="light"]) .home-page .home-section.method-section .home-card.method-card,
+    :global(html.light-theme) .home-page .home-section.method-section .home-card.method-card {
+      background: #FFFFFF !important;
+      border-color: #E2E8F0 !important;
+    }
+
+    :global([data-theme="light"]) .home-page .method-section .method-step-badge,
+    :global(html.light-theme) .home-page .method-section .method-step-badge {
+      color: rgba(15, 23, 42, 0.25) !important;
+    }
+
+    :global([data-theme="light"]) .home-page .method-section .method-card .card-title,
+    :global(html.light-theme) .home-page .method-section .method-card .card-title {
+      color: #0F172A !important;
+    }
+
+    :global([data-theme="light"]) .home-page .method-section .method-card .card-description,
+    :global(html.light-theme) .home-page .method-section .method-card .card-description {
+      color: #64748B !important;
+    }
+  }
+
 </style>
 
 <script>
