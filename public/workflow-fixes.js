@@ -22,9 +22,9 @@
     if (isPromptContent(event.target)) event.preventDefault();
   }, true);
 
-  document.addEventListener('selectstart', (event) => {
-    if (isPromptContent(event.target)) event.preventDefault();
-  }, true);
+  // Do not intercept the browser's document-level selection lifecycle.
+  // Prompt-only CSS user-select:none and touch-callout:none already prevent
+  // manual selection inside prompt text without affecting nearby page content.
 
   document.addEventListener('dragstart', (event) => {
     if (isPromptContent(event.target)) event.preventDefault();
