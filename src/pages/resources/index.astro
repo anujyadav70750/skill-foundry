@@ -2979,6 +2979,41 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #64748B !important;
   }
 
+  /* Match the homepage Recent slide size on mobile.
+     The older 84vw rule made Explore cards noticeably wider. */
+  @media (max-width: 640px) {
+    .curated-library-view .recent-curated-section .recent-scroll-wrapper {
+      gap: 18px !important;
+      padding: 3px 1px 8px !important;
+      scroll-padding-left: 1px !important;
+    }
+
+    .curated-library-view .recent-curated-section .recent-resource-card,
+    .curated-library-view .recent-curated-section .recent-resource-card:hover,
+    .curated-library-view .recent-curated-section .recent-resource-card:active,
+    .curated-library-view .recent-curated-section .recent-resource-card:focus {
+      flex: 0 0 72% !important;
+      width: 72% !important;
+      min-width: 0 !important;
+      max-width: 380px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      box-shadow: none !important;
+    }
+
+    .curated-library-view .recent-curated-section .recent-resource-card-body {
+      padding: 10px 0 2px !important;
+    }
+
+    .curated-library-view .recent-curated-section .recent-resource-card-title {
+      font-size: 15px !important;
+      line-height: 1.38 !important;
+      -webkit-line-clamp: 2 !important;
+    }
+  }
+
 </style>
 
 <script>
