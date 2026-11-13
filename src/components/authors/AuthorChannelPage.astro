@@ -307,9 +307,12 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
 </BaseLayout>
 
 {view === 'resources' && (
-  <script data-astro-rerun>
-    const list = document.querySelector('[data-author-resource-list]');
-    if (list) {
+  <script>
+    const initializeAuthorResourceFilters = () => {
+      const list = document.querySelector('[data-author-resource-list]');
+      if (!list || list.dataset.filtersInitialized === 'true') return;
+      list.dataset.filtersInitialized = 'true';
+
       const cards = Array.from(list.querySelectorAll('[data-author-resource-card]'));
       const sortTabs = Array.from(document.querySelectorAll('[data-author-sort]'));
       const categoryTabs = Array.from(document.querySelectorAll('[data-author-category]'));
@@ -329,6 +332,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
           const payload = await response.json();
           viewCounts = payload && payload.views && typeof payload.views === 'object' ? payload.views : {};
           popularityLoaded = true;
+          popularityFailed = false;
         } catch {
           popularityFailed = true;
         }
@@ -352,9 +356,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
           empty.textContent = activeSort === 'popular' && popularityFailed
             ? 'Popularity data is temporarily unavailable. Please try again.'
             : 'No resources are available in this category.';
-          if (activeSort === 'popular' && popularityFailed) {
-            matches.forEach((card) => { card.hidden = true; });
-          }
+          if (activeSort === 'popular' && popularityFailed) matches.forEach((card) => { card.hidden = true; });
           empty.hidden = activeSort === 'popular' && popularityFailed ? false : matches.length > 0;
         }
       };
@@ -381,7 +383,10 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
       }));
 
       update();
-    }
+    };
+
+    document.addEventListener('astro:page-load', initializeAuthorResourceFilters);
+    initializeAuthorResourceFilters();
   </script>
 )}
 
