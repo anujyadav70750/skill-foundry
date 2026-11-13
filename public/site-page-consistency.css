@@ -1152,6 +1152,10 @@ html.light-theme .explore-page .recent-resource-meta-calendar {
   outline: 2px solid #35C9C1;
   outline-offset: 3px;
 }
+:root[data-theme="light"] .sf-global-cta,
+html.light-theme .sf-global-cta {
+  background: #F8FAFC !important;
+}
 :root[data-theme="light"] .sf-global-cta .home-cta-card,
 html.light-theme .sf-global-cta .home-cta-card {
   background: #FFFFFF;
