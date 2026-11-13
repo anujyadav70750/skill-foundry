@@ -304,6 +304,7 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
 
                             <div class="h-content">
                               <div class="category-row-meta">
+                                <span class="h-meta-category">{resource.data.category}</span>
                                 <time class="h-meta-date" datetime={resource.data.date.toISOString()}>
                                   <svg class="h-meta-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -3143,6 +3144,183 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
   :global(html.light-theme) .curated-library-view .h-meta-calendar-icon {
     color: #64748B !important;
   }
+
+  /* Author Home parity: category rows use the same open, unboxed resource layout.
+     Scoped to Explore Resources only; AuthorChannelPage and the Recent carousel are untouched. */
+  .curated-library-view .category-curated-section {
+    margin: 0 !important;
+    padding: 24px 0 !important;
+    border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)) !important;
+  }
+  .curated-library-view .category-curated-section .category-section-heading {
+    margin: 0 0 15px !important;
+  }
+  .curated-library-view .category-curated-section .recent-works-title,
+  .curated-library-view .category-curated-section .category-heading-link {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: clamp(18px, 2.5vw, 21px) !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+    letter-spacing: -.015em !important;
+  }
+  .curated-library-view .category-curated-section .curated-h-cards-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+    margin: 0 !important;
+  }
+  .curated-library-view .category-curated-section .category-resource-row,
+  .curated-library-view .category-curated-section .category-resource-row:hover,
+  .curated-library-view .category-curated-section .category-resource-row:active {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    text-decoration: none !important;
+    opacity: 1;
+  }
+  .curated-library-view .category-curated-section .category-resource-row:hover {
+    opacity: .92 !important;
+  }
+  .curated-library-view .category-curated-section .h-thumb-wrap {
+    flex: 0 0 42% !important;
+    width: 42% !important;
+    max-width: 300px !important;
+    aspect-ratio: 16 / 9 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    overflow: hidden !important;
+  }
+  .curated-library-view .category-curated-section .h-thumb-img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .curated-library-view .category-curated-section .h-content {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;
+    box-sizing: border-box !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 6px !important;
+  }
+  .curated-library-view .category-curated-section .h-meta-category {
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    color: #AEB7C4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .05em !important;
+    text-overflow: ellipsis !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .category-curated-section .h-meta-date {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    color: #AEB7C4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    letter-spacing: .015em !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .category-curated-section .h-meta-calendar-icon {
+    display: block !important;
+    flex: 0 0 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    color: #AEB7C4 !important;
+  }
+  .curated-library-view .category-curated-section .h-title {
+    display: -webkit-box !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    color: var(--sf-page-heading, #F5F5F5) !important;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.35 !important;
+    letter-spacing: -.01em !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+  .curated-library-view .category-curated-section .category-bottom-action {
+    margin-top: 18px !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-meta-category,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-meta-category,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-meta-date,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-meta-date,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-meta-calendar-icon {
+    color: #64748B !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-title,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-title {
+    color: #0F172A !important;
+  }
+  @media (max-width: 640px) {
+    .curated-library-view .category-curated-section {
+      padding: 20px 0 !important;
+    }
+    .curated-library-view .category-curated-section .category-section-heading {
+      margin-bottom: 15px !important;
+    }
+    .curated-library-view .category-curated-section .curated-h-cards-stack {
+      gap: 18px !important;
+    }
+    .curated-library-view .category-curated-section .category-resource-row,
+    .curated-library-view .category-curated-section .category-resource-row:hover,
+    .curated-library-view .category-curated-section .category-resource-row:active {
+      gap: 12px !important;
+    }
+    .curated-library-view .category-curated-section .h-thumb-wrap {
+      flex-basis: 42% !important;
+      width: 42% !important;
+      max-width: none !important;
+      border-radius: 7px !important;
+    }
+    .curated-library-view .category-curated-section .h-content {
+      padding: 0 4px !important;
+    }
+    .curated-library-view .category-curated-section .category-row-meta {
+      gap: 5px !important;
+      margin-bottom: 5px !important;
+    }
+    .curated-library-view .category-curated-section .h-title {
+      font-size: 13.5px !important;
+      font-weight: 600 !important;
+      line-height: 1.35 !important;
+    }
+  }
+
 </style>
 
 <script>
