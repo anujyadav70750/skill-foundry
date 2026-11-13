@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import { resourceSlug } from '../lib/resource';
+import { resourceDisplayDate, resourceSlug } from '../lib/resource';
 import { authorPath, SKILL_FOUNDRY_AUTHOR_ID } from '../lib/author';
 import { AUTHOR_PROFILES } from '../data/authors';
 import { authorCategorySlug } from '../lib/author';
@@ -44,7 +44,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...authorPaths.map((path) => ({ loc: new URL(path, base).href })),
     ...resources.map((resource) => ({
       loc: new URL(`/resources/${resourceSlug(resource)}/`, base).href,
-      lastmod: resource.data.date.toISOString().split('T')[0]
+      lastmod: resourceDisplayDate(resource).toISOString().split('T')[0]
     }))
   ];
 

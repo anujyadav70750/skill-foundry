@@ -6,6 +6,10 @@ export function resourceSlug(resource: CollectionEntry<'resources'>) {
   return resource.data.slug?.trim() || resource.id.replace(/\.md$/, '');
 }
 
+export function resourceDisplayDate(resource: CollectionEntry<'resources'>) {
+  return resource.data.modifiedDate ?? resource.data.date;
+}
+
 export function formatResourceDate(value: Date | string | null | undefined) {
   if (!value) return '';
   const date = value instanceof Date ? value : new Date(value);

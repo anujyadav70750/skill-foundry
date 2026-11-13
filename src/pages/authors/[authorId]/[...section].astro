@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { SKILL_FOUNDRY_AUTHOR_ID, authorCategorySlug } from '../../../lib/author';
 import { AUTHOR_PROFILES } from '../../../data/authors';
 import AuthorChannelPage from '../../../components/authors/AuthorChannelPage.astro';
+import { resourceDisplayDate } from '../../../lib/resource';
 
 export async function getStaticPaths() {
   const allResources = await getCollection('resources');
@@ -23,6 +24,6 @@ export async function getStaticPaths() {
   return paths;
 }
 const { profile, view, categoryName, resources } = Astro.props;
-const sortedResources = [...resources].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const sortedResources = [...resources].sort((a, b) => resourceDisplayDate(b).valueOf() - resourceDisplayDate(a).valueOf());
 ---
 <AuthorChannelPage profile={profile} resources={sortedResources} basePath={'/authors/' + profile.id + '/'} view={view} categoryName={categoryName} />

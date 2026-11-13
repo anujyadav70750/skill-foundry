@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceDisplayImage, resourceDisplaySrcSet, resourceThumbnail, formatResourceDate } from '../../lib/resource';
+import { resourceHeroImage, resourceImageAlt, resourceResultImages, resourceSlug, resourceDisplayImage, resourceDisplaySrcSet, resourceThumbnail, resourceDisplayDate, formatResourceDate } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const resources = (await getCollection('resources'))
@@ -12,6 +12,7 @@ export async function getStaticPaths() {
 const { resource } = Astro.props;
 const slug = resourceSlug(resource);
 const data = resource.data;
+const displayDate = resourceDisplayDate(resource);
 
 const resultImages = resourceResultImages(resource);
 
@@ -296,7 +297,7 @@ const formatResourceTag = (tag: string) => tag
   .join(' ');
 
 const schema = { '@context': 'https://schema.org', '@graph': [
-  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: data.date.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Person', name: authorName, url: new URL('/author/', site).href, image: new URL('/images/skill-foundry-author.jpg', site).href, sameAs: 'https://www.instagram.com/skillfoundry.ai/' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
+  { '@type': 'Article', headline: data.title, description: data.description, datePublished: data.date.toISOString(), dateModified: displayDate.toISOString(), articleSection: data.category, url: canonicalUrl, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: [absoluteImage], author: { '@type': 'Person', name: authorName, url: new URL('/author/', site).href, image: new URL('/images/skill-foundry-author.jpg', site).href, sameAs: 'https://www.instagram.com/skillfoundry.ai/' }, publisher: { '@type': 'Organization', name: 'Skill Foundry' }, keywords: data.tags.join(', ') },
   { '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', site).href },
     { '@type': 'ListItem', position: 2, name: 'Resources', item: new URL('/resources/', site).href },
@@ -516,7 +517,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
               </svg>
-              <span class="meta-date-text">{formatResourceDate(data.date)}</span>
+              <span class="meta-date-text">{formatResourceDate(displayDate)}</span>
             </div>
           </div>
 
@@ -1022,7 +1023,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             const relatedSlug = resourceSlug(item);
             const thumb = getRelatedThumbnail(item);
             const alt = resourceImageAlt(item);
-            const dateStr = formatResourceDate(item.data.date);
+            const dateStr = formatResourceDate(resourceDisplayDate(item));
 
             return (
               <a class="related-work-card" href={`/resources/${relatedSlug}/`} aria-label={`Open ${item.data.title}`}>

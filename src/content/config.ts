@@ -62,6 +62,7 @@ const resources = defineCollection({
     toolUrl: z.string().url().optional(),
     toolAffiliate: z.boolean().default(false),
     date: z.coerce.date(),
+    modifiedDate: z.coerce.date().optional(),
     thumbnail: z.string().nullish(),
     thumbnailRatio: z.string().default('16:9'),
     thumbnailPositionX: z.number().min(0).max(100).default(50),

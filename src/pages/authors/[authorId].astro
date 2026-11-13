@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { SKILL_FOUNDRY_AUTHOR_ID } from '../../lib/author';
 import { AUTHOR_PROFILES } from '../../data/authors';
 import AuthorChannelPage from '../../components/authors/AuthorChannelPage.astro';
+import { resourceDisplayDate } from '../../lib/resource';
 
 export async function getStaticPaths() {
   const allResources = await getCollection('resources');
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
         profile,
         resources: published
           .filter((resource) => resource.data.authorId === profile.id)
-          .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+          .sort((a, b) => resourceDisplayDate(b).valueOf() - resourceDisplayDate(a).valueOf())
       }
     }));
 }
