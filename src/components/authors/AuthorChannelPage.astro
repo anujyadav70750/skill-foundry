@@ -114,14 +114,22 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
         <div class="author-page-heading"><h2>All Resources</h2><p>Browse every resource published by {profile.name}.</p></div>
         {resources.length > 0 ? (
           <>
-            <div class="author-resource-filters">
-              <label><span class="sr-only">Search this author's resources</span><input type="search" placeholder="Search resources…" autocomplete="off" data-author-search /></label>
-              <label><span class="sr-only">Filter resources by category</span><select data-author-category><option value="">All categories</option>{categories.map((category) => <option value={category}>{category}</option>)}</select></label>
-              <label><span class="sr-only">Sort resources</span><select data-author-sort><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label>
+            <div class="author-resource-toolbar" aria-label="Filter author resources">
+              <div class="author-resource-sort-tabs" role="group" aria-label="Resource order">
+                <button class="author-resource-filter-tab is-active" type="button" data-author-sort="newest" aria-pressed="true">Latest</button>
+                <button class="author-resource-filter-tab" type="button" data-author-sort="featured" aria-pressed="false">Featured</button>
+                <button class="author-resource-filter-tab" type="button" data-author-sort="oldest" aria-pressed="false">Oldest</button>
+              </div>
+              {categories.length > 1 && (
+                <div class="author-resource-category-tabs" role="group" aria-label="Filter by category">
+                  <button class="author-resource-category-tab is-active" type="button" data-author-category="" aria-pressed="true">All</button>
+                  {categories.map((category) => <button class="author-resource-category-tab" type="button" data-author-category={category} aria-pressed="false">{category}</button>)}
+                </div>
+              )}
             </div>
             <div class="author-resource-list" data-author-resource-list>
               {resources.map((resource) => (
-                <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-search={[resource.data.title, resource.data.description, resource.data.category, ...(resource.data.tags || [])].join(' ').toLowerCase()}>
+                <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-featured={resource.data.featured ? 'true' : 'false'}>
                   <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                   <div class="author-resource-copy">
                         <div class="author-resource-meta">
@@ -193,27 +201,52 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     const list = document.querySelector<HTMLElement>('[data-author-resource-list]');
     if (list) {
       const cards = Array.from(list.querySelectorAll<HTMLElement>('[data-author-resource-card]'));
-      const search = document.querySelector<HTMLInputElement>('[data-author-search]');
-      const category = document.querySelector<HTMLSelectElement>('[data-author-category]');
-      const sort = document.querySelector<HTMLSelectElement>('[data-author-sort]');
+      const sortTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-author-sort]'));
+      const categoryTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-author-category]'));
       const empty = document.querySelector<HTMLElement>('[data-author-no-results]');
+      let activeSort = 'newest';
+      let activeCategory = '';
+
       const update = () => {
-        const query = (search?.value || '').trim().toLowerCase();
-        const selectedCategory = category?.value || '';
-        const matches = cards.filter((card) => (card.dataset.search || '').includes(query) && (!selectedCategory || card.dataset.category === selectedCategory));
+        const matches = cards.filter((card) =>
+          (!activeCategory || card.dataset.category === activeCategory) &&
+          (activeSort !== 'featured' || card.dataset.featured === 'true')
+        );
         matches.sort((a, b) => {
-          if (sort?.value === 'title') return (a.querySelector('h3')?.textContent || '').localeCompare(b.querySelector('h3')?.textContent || '');
           const left = new Date(a.dataset.date || '').getTime();
           const right = new Date(b.dataset.date || '').getTime();
-          return sort?.value === 'oldest' ? left - right : right - left;
+          return activeSort === 'oldest' ? left - right : right - left;
         });
         cards.forEach((card) => { card.hidden = true; });
         matches.forEach((card) => { card.hidden = false; list.appendChild(card); });
-        if (empty) empty.hidden = matches.length > 0;
+        if (empty) {
+          empty.textContent = activeSort === 'featured'
+            ? 'No featured resources have been selected yet.'
+            : 'No resources are available in this category.';
+          empty.hidden = matches.length > 0;
+        }
       };
-      search?.addEventListener('input', update);
-      category?.addEventListener('change', update);
-      sort?.addEventListener('change', update);
+
+      sortTabs.forEach((tab) => tab.addEventListener('click', () => {
+        activeSort = tab.dataset.authorSort || 'newest';
+        sortTabs.forEach((item) => {
+          const selected = item === tab;
+          item.classList.toggle('is-active', selected);
+          item.setAttribute('aria-pressed', String(selected));
+        });
+        update();
+      }));
+
+      categoryTabs.forEach((tab) => tab.addEventListener('click', () => {
+        activeCategory = tab.dataset.authorCategory || '';
+        categoryTabs.forEach((item) => {
+          const selected = item === tab;
+          item.classList.toggle('is-active', selected);
+          item.setAttribute('aria-pressed', String(selected));
+        });
+        update();
+      }));
+
       update();
     }
   </script>
@@ -276,8 +309,12 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-page-heading { margin-bottom: 18px; }
   .author-page-heading h2 { margin: 0 0 6px; color: var(--sf-page-heading, #F5F5F5); font: 700 clamp(21px, 3.2vw, 26px)/1.25 'Plus Jakarta Sans', system-ui, sans-serif; }
   .author-page-heading p { margin: 0; color: var(--sf-page-copy, #9298A4); font: 400 13.5px/1.6 'Plus Jakarta Sans', system-ui, sans-serif; }
-  .author-resource-filters { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .author-resource-filters input, .author-resource-filters select { width: 100%; min-width: 0; min-height: 45px; box-sizing: border-box; padding: 0 13px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.1)); border-radius: 12px; background: var(--sf-page-surface, #0B0D12); color: var(--sf-page-heading, #F5F5F5); font: 400 13px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; }
+  .author-resource-toolbar { display: flex; flex-direction: column; gap: 10px; margin: 0 0 17px; }
+  .author-resource-sort-tabs, .author-resource-category-tabs { display: flex; align-items: center; gap: 8px; width: 100%; overflow-x: auto; padding: 1px 0 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .author-resource-sort-tabs::-webkit-scrollbar, .author-resource-category-tabs::-webkit-scrollbar { display: none; }
+  .author-resource-filter-tab, .author-resource-category-tab { flex: 0 0 auto; min-height: 35px; padding: 0 14px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.14)); border-radius: 10px; background: transparent; color: var(--sf-page-copy, #A1A9B6); font: 600 12px/1 'Plus Jakarta Sans', system-ui, sans-serif; white-space: nowrap; cursor: pointer; }
+  .author-resource-filter-tab.is-active, .author-resource-category-tab.is-active { border-color: var(--sf-page-surface, #252832); background: var(--sf-page-surface, #252832); color: var(--sf-page-heading, #F5F5F5); }
+  .author-resource-filter-tab:focus-visible, .author-resource-category-tab:focus-visible { outline: 2px solid var(--sf-page-accent, #35C9C1); outline-offset: 2px; }
   .author-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px; color: var(--sf-page-accent, #35C9C1); font: 600 12px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; }
   .author-channel-empty { margin: 0; color: var(--sf-page-copy, #A1A9B6); font: 400 14px/1.65 'Plus Jakarta Sans', system-ui, sans-serif; }
   .author-about-content { width: min(780px, calc(100% - 48px)); margin: 0 auto; }
@@ -315,7 +352,9 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     .author-resource-date { font-size: 11px; }
     .author-resource-copy h3 { margin-bottom: 0; font-size: 15px; line-height: 1.3; }
     .author-secondary-page { padding-top: 21px; }
-    .author-resource-filters { grid-template-columns: 1fr; gap: 8px; }
+    .author-resource-toolbar { gap: 8px; margin-bottom: 14px; }
+    .author-resource-sort-tabs, .author-resource-category-tabs { gap: 7px; }
+    .author-resource-filter-tab, .author-resource-category-tab { min-height: 34px; padding: 0 13px; font-size: 11.5px; }
     .author-about-content { width: calc(100% - 32px); }
     .author-about-block { padding-bottom: 21px; margin-bottom: 21px; }
     .author-expertise-list { grid-template-columns: minmax(0,1fr); }
