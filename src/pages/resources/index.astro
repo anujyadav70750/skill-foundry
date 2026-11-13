@@ -3384,6 +3384,21 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Force the resource date to begin at the left edge, like Author Home. */
+  .curated-library-view .category-curated-section .category-row-meta {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-self: stretch !important;
+    text-align: left !important;
+    width: 100% !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-date {
+    margin: 0 auto 0 0 !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+
 </style>
 
 <script>
