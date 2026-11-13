@@ -84,9 +84,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                     <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
                       <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                       <div class="author-resource-copy">
-                        <h3>{resource.data.title}</h3>
-                        <div class="author-resource-meta">
-                          <span class="author-resource-category">{resource.data.category}</span>
+                        <div class="author-resource-meta author-resource-meta-category-page">
                           <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
                             <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -97,6 +95,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                             <span>{formatResourceDate(resource.data.date)}</span>
                           </time>
                         </div>
+                        <h3>{resource.data.title}</h3>
                       </div>
                     </a>
                   ))}
@@ -195,7 +194,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   </main>
 
 <style is:global>
-  /* Author resource rows: title leads, source details sit beneath it. */
+  /* Author resource rows: date and calendar lead, title follows. */
   .author-channel-page .author-resource-row {
     display: flex;
     align-items: flex-start;
@@ -230,7 +229,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     padding: 2px 0 0;
   }
   .author-channel-page .author-resource-copy h3 {
-    order: 0;
+    order: 1;
     margin: 0;
     color: #F5F7FA;
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -240,7 +239,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     letter-spacing: -0.015em;
   }
   .author-channel-page .author-resource-meta {
-    order: 1;
+    order: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -260,6 +259,9 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     letter-spacing: 0.045em;
     text-transform: uppercase;
     opacity: 1;
+  }
+  .author-channel-page .author-resource-meta-category-page .author-resource-date {
+    margin-left: auto;
   }
   .author-channel-page .author-resource-date {
     display: inline-flex;
