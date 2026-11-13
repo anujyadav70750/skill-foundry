@@ -434,6 +434,27 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     body:has(.testing-1-theme) .site-footer .footer-nav a:hover {
       color: #FACC15 !important;
     }
+
+    /* Let the shared footer follow the light theme on resource-detail pages too.
+       The selectors are intentionally stronger than the page's dark-only footer rules above. */
+    html[data-theme="light"]:has(.testing-1-theme) .site-footer,
+    html.light-theme:has(.testing-1-theme) .site-footer {
+      background: #F8FAFC !important;
+      border-top-color: #E2E8F0 !important;
+      color: #334155 !important;
+    }
+    html[data-theme="light"]:has(.testing-1-theme) .site-footer .footer-brand span.brand-name,
+    html.light-theme:has(.testing-1-theme) .site-footer .footer-brand span.brand-name {
+      color: #0F172A !important;
+    }
+    html[data-theme="light"]:has(.testing-1-theme) .site-footer .footer-nav a,
+    html.light-theme:has(.testing-1-theme) .site-footer .footer-nav a {
+      color: #0F172A !important;
+    }
+    html[data-theme="light"]:has(.testing-1-theme) .site-footer .footer-nav a:hover,
+    html.light-theme:has(.testing-1-theme) .site-footer .footer-nav a:hover {
+      color: #0284C7 !important;
+    }
   </style>
 
   <!-- Native browser scroll restoration is preserved; no delayed resource-page scroll reset. -->
