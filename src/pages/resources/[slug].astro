@@ -4561,5 +4561,32 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     flex: 0 0 14px !important;
   }
 
+
+  /* Match the brighter calendar/date colour used across the other Skill Foundry pages.
+     Keep the existing position and spacing below the hero image unchanged. */
+  .resource-header-section .meta-date,
+  .resource-header-section .meta-calendar-icon,
+  .resource-header-section .meta-date-text {
+    color: #AEB7C4 !important;
+  }
+  .resource-header-section .meta-date-text {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0 !important;
+  }
+  .resource-header-section .meta-calendar-icon {
+    opacity: 1 !important;
+  }
+  html[data-theme="light"] .resource-header-section .meta-date,
+  html.light-theme .resource-header-section .meta-date,
+  html[data-theme="light"] .resource-header-section .meta-calendar-icon,
+  html.light-theme .resource-header-section .meta-calendar-icon,
+  html[data-theme="light"] .resource-header-section .meta-date-text,
+  html.light-theme .resource-header-section .meta-date-text {
+    color: #64748B !important;
+  }
+
 </style>
 </BaseLayout>
