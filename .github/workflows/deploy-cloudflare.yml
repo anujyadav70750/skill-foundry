@@ -42,3 +42,6 @@ jobs:
 
       - name: Verify deployed responsive image delivery
         run: node scripts/verify-image-delivery.mjs
+
+      - name: Notify IndexNow about published URLs
+        run: node scripts/submit-indexnow.mjs
