@@ -437,6 +437,25 @@ const selectedSubject = subjectOptions.includes(requestedSubject) ? requestedSub
     box-shadow: 0 0 0 1000px var(--sf-page-bg, #050505) inset;
   }
 
+  /* Use native light controls and matching autofill colours in day theme. */
+  :global([data-theme="light"]) .contact-form input,
+  :global([data-theme="light"]) .contact-form textarea,
+  :global(html.light-theme) .contact-form input,
+  :global(html.light-theme) .contact-form textarea {
+    color-scheme: light;
+  }
+  :global([data-theme="light"]) .contact-form input:-webkit-autofill,
+  :global([data-theme="light"]) .contact-form input:-webkit-autofill:hover,
+  :global([data-theme="light"]) .contact-form input:-webkit-autofill:focus,
+  :global(html.light-theme) .contact-form input:-webkit-autofill,
+  :global(html.light-theme) .contact-form input:-webkit-autofill:hover,
+  :global(html.light-theme) .contact-form input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0F172A;
+    caret-color: #0F172A;
+    -webkit-box-shadow: 0 0 0 1000px #F8FAFC inset;
+    box-shadow: 0 0 0 1000px #F8FAFC inset;
+  }
+
   .contact-form [hidden] { display: none !important; }
 
   .contact-honey {
