@@ -478,4 +478,27 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     .author-about-block { padding-bottom: 21px; margin-bottom: 21px; }
     .author-expertise-list { grid-template-columns: minmax(0,1fr); }
   }
+
+  /* Brighter metadata: category and date match the calendar icon. */
+  .author-channel-page .author-latest-category,
+  .author-channel-page .author-resource-category,
+  .author-channel-page .author-latest-date,
+  .author-channel-page .author-resource-date {
+    color: #AEB7C4 !important;
+  }
+  .author-channel-page .author-calendar-icon {
+    color: #AEB7C4 !important;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-latest-category,
+  :global(html.light-theme) .author-channel-page .author-latest-category,
+  :global([data-theme="light"]) .author-channel-page .author-resource-category,
+  :global(html.light-theme) .author-channel-page .author-resource-category,
+  :global([data-theme="light"]) .author-channel-page .author-latest-date,
+  :global(html.light-theme) .author-channel-page .author-latest-date,
+  :global([data-theme="light"]) .author-channel-page .author-resource-date,
+  :global(html.light-theme) .author-channel-page .author-resource-date,
+  :global([data-theme="light"]) .author-channel-page .author-calendar-icon,
+  :global(html.light-theme) .author-channel-page .author-calendar-icon {
+    color: #64748B !important;
+  }
 </style>
