@@ -491,6 +491,31 @@ const pageDescription = 'Clear answers about Skill Foundry, its resources, recom
     box-shadow: none !important;
   }
 
+  /* Light theme contrast for the dedicated FAQ content and search controls. */
+  :global([data-theme="light"]) .faq-page .faq-item-heading,
+  :global(html.light-theme) .faq-page .faq-item-heading {
+    color: #0F172A !important;
+  }
+  :global([data-theme="light"]) .faq-page .faq-answer-divider,
+  :global(html.light-theme) .faq-page .faq-answer-divider {
+    background: #E2E8F0 !important;
+  }
+  :global([data-theme="light"]) .faq-page .faq-search-icon,
+  :global(html.light-theme) .faq-page .faq-search-icon {
+    border-color: #E2E8F0;
+    background: #F1F5F9;
+    color: #64748B;
+  }
+  :global([data-theme="light"]) .faq-page .faq-search-input::placeholder,
+  :global(html.light-theme) .faq-page .faq-search-input::placeholder {
+    color: #64748B;
+    opacity: 1;
+  }
+  :global([data-theme="light"]) .faq-page .faq-support-title,
+  :global(html.light-theme) .faq-page .faq-support-title {
+    color: #0F172A;
+  }
+
   /* Mirror the homepage's clean 24px spacing around the support and bottom CTA. */
   .faq-page {
     padding-bottom: 0 !important;
