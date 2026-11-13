@@ -111,7 +111,6 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
 
     {view === 'resources' && (
       <section class="author-secondary-page"><div class="author-channel-content">
-        <div class="author-page-heading"><h2>All Resources</h2><p>Browse every resource published by {profile.name}.</p></div>
         {resources.length > 0 ? (
           <>
             <div class="author-resource-toolbar" aria-label="Filter author resources">
@@ -282,8 +281,9 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-latest-thumb { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 10px; background: #090B10; overflow: hidden; }
   .author-latest-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .author-latest-meta { display: flex; align-items: center; justify-content: space-between; gap: 5px 8px; margin: 10px 0 7px; color: #9298A4; font: 500 10px/1.4 'JetBrains Mono', monospace; letter-spacing: 0; }
-  .author-latest-category, .author-resource-category { color: #9298A4; font: 600 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .07em; text-transform: uppercase; }
-  .author-latest-date, .author-resource-date { display: inline-flex; align-items: center; justify-content: flex-start; gap: 5px; color: #9298A4; font: 500 11px/1.2 'JetBrains Mono', monospace; letter-spacing: 0; white-space: nowrap; }
+  .author-latest-category, .author-resource-category { color: #9298A4; font: 600 10px/1.4 'JetBrains Mono', monospace; letter-spacing: .07em; text-transform: uppercase; white-space: nowrap; }
+  .author-resource-category { flex: 0 1 auto; min-width: 0; }
+  .author-latest-date, .author-resource-date { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 5px; color: #9298A4; font: 500 10.5px/1.2 'JetBrains Mono', monospace; letter-spacing: 0; white-space: nowrap; }
   .author-calendar-icon { display: block; flex: 0 0 14px; width: 14px; height: 14px; color: #7E8492; }
   .author-latest-card h3 { display: -webkit-box; margin: 0; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 600 15px/1.38 'Plus Jakarta Sans', system-ui, sans-serif; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   .author-home-category { padding: 24px 0; border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)); }
@@ -293,7 +293,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-resource-thumb { flex: 0 0 42%; width: 42%; max-width: 300px; aspect-ratio: 16/9; border: 0; border-radius: 7px; background: #090B10; overflow: hidden; }
   .author-resource-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .author-resource-copy { flex: 1 1 auto; min-width: 0; padding: 0 4px; }
-  .author-resource-meta { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 5px; margin: 0 0 5px; }
+  .author-resource-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; gap: 8px; width: 100%; margin: 0 0 6px; }
   .author-resource-copy h3 { display: -webkit-box; margin: 0 0 5px; overflow: hidden; color: var(--sf-page-heading, #F5F5F5); font: 650 15px/1.32 'Plus Jakarta Sans', system-ui, sans-serif; letter-spacing: -.01em; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
   :global([data-theme="light"]) .author-latest-category,
   :global(html.light-theme) .author-latest-category,
@@ -312,9 +312,12 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-resource-toolbar { display: flex; flex-direction: column; gap: 10px; margin: 0 0 17px; }
   .author-resource-sort-tabs, .author-resource-category-tabs { display: flex; align-items: center; gap: 8px; width: 100%; overflow-x: auto; padding: 1px 0 4px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .author-resource-sort-tabs::-webkit-scrollbar, .author-resource-category-tabs::-webkit-scrollbar { display: none; }
-  .author-resource-filter-tab, .author-resource-category-tab { flex: 0 0 auto; min-height: 35px; padding: 0 14px; border: 1px solid var(--sf-page-border, rgba(255,255,255,.14)); border-radius: 10px; background: transparent; color: var(--sf-page-copy, #A1A9B6); font: 600 12px/1 'Plus Jakarta Sans', system-ui, sans-serif; white-space: nowrap; cursor: pointer; }
-  .author-resource-filter-tab.is-active, .author-resource-category-tab.is-active { border-color: var(--sf-page-surface, #252832); background: var(--sf-page-surface, #252832); color: var(--sf-page-heading, #F5F5F5); }
+  .author-resource-filter-tab, .author-resource-category-tab { flex: 0 0 auto; min-height: 38px; padding: 0 16px; border: 1.5px solid #454952; border-radius: 11px; background: transparent; color: #E2E5EA; font: 600 13px/1 'Plus Jakarta Sans', system-ui, sans-serif; white-space: nowrap; cursor: pointer; transition: background-color .16s ease, border-color .16s ease, color .16s ease; }
+  .author-resource-filter-tab.is-active, .author-resource-category-tab.is-active { border-color: #3A3D46; background: #3A3D46; color: #FFFFFF; box-shadow: inset 0 1px 0 rgba(255,255,255,.06); }
+  .author-resource-filter-tab:not(.is-active):hover, .author-resource-category-tab:not(.is-active):hover { border-color: #69707C; background: rgba(255,255,255,.045); color: #FFFFFF; }
   .author-resource-filter-tab:focus-visible, .author-resource-category-tab:focus-visible { outline: 2px solid var(--sf-page-accent, #35C9C1); outline-offset: 2px; }
+  .author-resource-sort-tabs { gap: 9px; }
+  .author-channel-tab.is-active::after { height: 2px; background: #35C9C1; }
   .author-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 18px; color: var(--sf-page-accent, #35C9C1); font: 600 12px/1.4 'Plus Jakarta Sans', system-ui, sans-serif; text-decoration: none; }
   .author-channel-empty { margin: 0; color: var(--sf-page-copy, #A1A9B6); font: 400 14px/1.65 'Plus Jakarta Sans', system-ui, sans-serif; }
   .author-about-content { width: min(780px, calc(100% - 48px)); margin: 0 auto; }
@@ -354,7 +357,10 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     .author-secondary-page { padding-top: 21px; }
     .author-resource-toolbar { gap: 8px; margin-bottom: 14px; }
     .author-resource-sort-tabs, .author-resource-category-tabs { gap: 7px; }
-    .author-resource-filter-tab, .author-resource-category-tab { min-height: 34px; padding: 0 13px; font-size: 11.5px; }
+    .author-resource-filter-tab, .author-resource-category-tab { min-height: 37px; padding: 0 15px; font-size: 12px; }
+    .author-resource-sort-tabs { gap: 9px; }
+    .author-resource-meta { gap: 6px; margin-bottom: 6px; }
+    .author-resource-date { font-size: 10.5px; }
     .author-about-content { width: calc(100% - 32px); }
     .author-about-block { padding-bottom: 21px; margin-bottom: 21px; }
     .author-expertise-list { grid-template-columns: minmax(0,1fr); }
