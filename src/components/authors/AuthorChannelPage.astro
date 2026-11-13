@@ -488,6 +488,45 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
   .author-channel-page .author-calendar-icon {
     color: #AEB7C4 !important;
   }
+  /* Light theme: author navigation and filter controls use the shared page palette.
+     Keep the existing dimensions, spacing and selected-state structure unchanged. */
+  :global([data-theme="light"]) .author-channel-page .author-channel-tab.is-active::after,
+  :global(html.light-theme) .author-channel-page .author-channel-tab.is-active::after {
+    background: var(--sf-page-accent, #087F83) !important;
+    background-color: var(--sf-page-accent, #087F83) !important;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-resource-filter-tab,
+  :global([data-theme="light"]) .author-channel-page .author-resource-category-tab,
+  :global(html.light-theme) .author-channel-page .author-resource-filter-tab,
+  :global(html.light-theme) .author-channel-page .author-resource-category-tab {
+    border-color: #CBD5E1;
+    background: #FFFFFF;
+    color: #475569;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-resource-filter-tab.is-active,
+  :global([data-theme="light"]) .author-channel-page .author-resource-category-tab.is-active,
+  :global(html.light-theme) .author-channel-page .author-resource-filter-tab.is-active,
+  :global(html.light-theme) .author-channel-page .author-resource-category-tab.is-active {
+    border-color: #DCEFEB;
+    background: #E7F4F2;
+    color: #087F83;
+    box-shadow: none;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-resource-filter-tab:not(.is-active):hover,
+  :global([data-theme="light"]) .author-channel-page .author-resource-category-tab:not(.is-active):hover,
+  :global(html.light-theme) .author-channel-page .author-resource-filter-tab:not(.is-active):hover,
+  :global(html.light-theme) .author-channel-page .author-resource-category-tab:not(.is-active):hover {
+    border-color: #A7D4D0;
+    background: #F8FCFB;
+    color: #087F83;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-latest-thumb,
+  :global([data-theme="light"]) .author-channel-page .author-resource-thumb,
+  :global(html.light-theme) .author-channel-page .author-latest-thumb,
+  :global(html.light-theme) .author-channel-page .author-resource-thumb {
+    background: #F1F5F9;
+  }
+
   :global([data-theme="light"]) .author-channel-page .author-latest-category,
   :global(html.light-theme) .author-channel-page .author-latest-category,
   :global([data-theme="light"]) .author-channel-page .author-resource-category,
