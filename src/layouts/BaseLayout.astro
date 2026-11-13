@@ -2159,5 +2159,77 @@ const platformLinks = [
       .footer-legal-link:focus-visible { color: inherit !important; }
     
 </style>
+
+    <div id="sf-first-visit-notice" class="sf-welcome-overlay" hidden>
+      <section class="sf-welcome-card" role="dialog" aria-modal="true" aria-labelledby="sf-welcome-title" aria-describedby="sf-welcome-message">
+        <div class="sf-welcome-copy">
+          <h2 id="sf-welcome-title">Welcome to Skill Foundry</h2>
+          <p class="sf-welcome-intro">We're glad you're here.</p>
+          <div class="sf-welcome-divider" aria-hidden="true"></div>
+          <h3>A little about this website</h3>
+          <p id="sf-welcome-message">We're continuously improving Skill Foundry to make learning and using practical skills easier.</p>
+          <p>Some features may not work perfectly yet. If you notice a problem or have an idea to improve the website, please share it with us through the <a href="/contact/">Contact page</a>.</p>
+          <p class="sf-welcome-emphasis">Your feedback helps us make Skill Foundry better.</p>
+        </div>
+        <button type="button" class="sf-welcome-button" id="sf-welcome-okay">Okay</button>
+      </section>
+    </div>
+    <style is:global>
+      .sf-welcome-overlay {
+        position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center;
+        padding: 20px; background: rgba(4, 8, 14, .72); backdrop-filter: blur(7px);
+        -webkit-backdrop-filter: blur(7px);
+      }
+      .sf-welcome-overlay[hidden] { display: none !important; }
+      .sf-welcome-card {
+        width: min(100%, 360px); aspect-ratio: 4 / 5; max-height: min(80vh, 620px);
+        overflow-y: auto; display: flex; flex-direction: column; justify-content: space-between;
+        gap: 22px; padding: clamp(22px, 6vw, 30px); border: 1px solid var(--line);
+        border-radius: 22px; background: var(--surface); color: var(--text);
+        box-shadow: 0 28px 90px rgba(0,0,0,.28);
+      }
+      .sf-welcome-copy h2 { margin: 0; color: var(--text); font-size: clamp(25px, 7vw, 30px); line-height: 1.16; letter-spacing: -.035em; }
+      .sf-welcome-intro { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+      .sf-welcome-divider { height: 1px; margin: 20px 0; background: var(--line); }
+      .sf-welcome-copy h3 { margin: 0 0 12px; color: var(--text); font-size: 17px; line-height: 1.35; }
+      .sf-welcome-copy p:not(.sf-welcome-intro) { margin: 0 0 13px; color: var(--text-muted); font-size: 13.5px; line-height: 1.65; }
+      .sf-welcome-copy a { color: var(--accent); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+      .sf-welcome-copy .sf-welcome-emphasis { margin-bottom: 0; color: var(--text); font-weight: 650; }
+      .sf-welcome-button {
+        flex: 0 0 auto; width: 100%; min-height: 48px; border: 0; border-radius: 11px;
+        background: var(--accent); color: #FFFFFF; font: inherit; font-size: 15px;
+        font-weight: 750; cursor: pointer; transition: background .18s ease;
+      }
+      .sf-welcome-button:hover { background: var(--accent-hover); }
+      .sf-welcome-button:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+      @media (max-height: 620px) {
+        .sf-welcome-card { aspect-ratio: auto; max-height: 88vh; }
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .sf-welcome-card { animation: sf-welcome-enter .22s ease-out both; }
+        @keyframes sf-welcome-enter { from { opacity: 0; transform: translateY(8px) scale(.985); } to { opacity: 1; transform: none; } }
+      }
+    </style>
+    <script is:inline>
+      (function () {
+        var notice = document.getElementById('sf-first-visit-notice');
+        var okay = document.getElementById('sf-welcome-okay');
+        if (!notice || !okay) return;
+        var storageKey = 'sf_welcome_notice_acknowledged_v1';
+        try {
+          if (localStorage.getItem(storageKey) === 'true') return;
+        } catch (e) {
+          try { if (sessionStorage.getItem(storageKey) === 'true') return; } catch (ignored) {}
+        }
+        notice.hidden = false;
+        document.documentElement.style.overflow = 'hidden';
+        okay.addEventListener('click', function () {
+          try { localStorage.setItem(storageKey, 'true'); }
+          catch (e) { try { sessionStorage.setItem(storageKey, 'true'); } catch (ignored) {} }
+          notice.hidden = true;
+          document.documentElement.style.overflow = '';
+        }, { once: true });
+      })();
+    </script>
   </body>
 </html>
