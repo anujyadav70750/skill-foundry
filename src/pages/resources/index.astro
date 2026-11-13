@@ -443,14 +443,16 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
      ========================================================================== */
 
   :global(body.no-header) {
-    background: #050505 !important;
+    background: var(--sf-page-bg, #050505) !important;
+    color: var(--sf-page-heading, #F5F5F5);
     padding-top: 0 !important;
     min-height: 100vh;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   .explore-page {
     background: transparent;
-    color: #F8FAFC;
+    color: var(--sf-page-heading, #F5F5F5);
     min-height: 100vh;
     padding-top: clamp(20px, 4vw, 32px);
     margin-top: 0;
