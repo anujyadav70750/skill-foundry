@@ -4101,23 +4101,24 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
     html[data-theme="light"] .tutorial-step-disclosure-button,
     html.light-theme .tutorial-step-disclosure-button {
-      background: transparent;
-      border-color: transparent;
-      color: #64748B;
+      background: transparent !important;
+      border-color: transparent !important;
+      color: #64748B !important;
+      box-shadow: none !important;
     }
 
     html[data-theme="light"] .tutorial-step-disclosure-button:hover,
     html.light-theme .tutorial-step-disclosure-button:hover {
-      background: #E2E8F0;
-      color: #334155;
+      background: #E2E8F0 !important;
+      color: #334155 !important;
     }
 
     html[data-theme="light"] .tutorial-step-disclosure-button[aria-selected="true"],
     html.light-theme .tutorial-step-disclosure-button[aria-selected="true"] {
-      background: #FFFFFF;
-      border-color: #CBD5E1;
-      color: #0F172A;
-      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.10);
+      background: #FFFFFF !important;
+      border-color: #CBD5E1 !important;
+      color: #0F172A !important;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.10) !important;
     }
 
     html[data-theme="light"] .tutorial-step-disclosure-panel,
