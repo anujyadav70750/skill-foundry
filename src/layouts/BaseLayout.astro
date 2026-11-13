@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 
 export interface Props {
   title?: string;
@@ -22,6 +23,7 @@ const defaultTitle = 'Skill Foundry | Practical Skills Platform & Resource Libra
 const defaultDescription = 'Skill Foundry is a practical learning platform for building useful skills through clear resources, tutorials, and real-world workflows.';
 
 const currentPath = Astro.url.pathname;
+const isAuthorPage = currentPath.startsWith('/author');
 const isHomePage = currentPath === '/' || currentPath === '';
 const isResourceDetailPage = /^\/resources\/[^/]+\/?$/.test(currentPath);
 
@@ -80,6 +82,7 @@ const platformLinks = [
 <!doctype html>
 <html lang="en">
   <head>
+    {isAuthorPage && <ClientRouter />}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.25, maximum-scale=5.0, user-scalable=yes" />
     <meta name="description" content={description} />
@@ -154,7 +157,7 @@ const platformLinks = [
   <body class={hideHeader ? 'no-header' : ''}>
     <!-- GLOBAL UNIFIED NAVIGATION HEADER (ROUNDED RECTANGLE WITH BRAND LEFT, SEARCH & MENU RIGHT) -->
     {!hideHeader && (
-      <header class="site-header" id="global-site-header">
+      <header class="site-header" id="global-site-header" transition:persist="skill-foundry-global-header">
         <nav class="nav-bar-container" aria-label="Main navigation">
           <!-- LEFT SIDE: Brand Logo + Brand Name -->
           <a class="nav-brand" href="/" aria-label="Skill Foundry home">

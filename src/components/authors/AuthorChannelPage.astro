@@ -196,7 +196,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
 </BaseLayout>
 
 {view === 'resources' && (
-  <script>
+  <script data-astro-rerun>
     const list = document.querySelector<HTMLElement>('[data-author-resource-list]');
     if (list) {
       const cards = Array.from(list.querySelectorAll<HTMLElement>('[data-author-resource-card]'));
