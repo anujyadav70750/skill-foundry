@@ -1,5 +1,5 @@
 ---
-title: "Create a Cinematic Medieval Knight Video Like This"
+title: "Create a Trending Cinematic Medieval Knight Video"
 slug: "cinematic-medieval-knight-video-google-flow"
 authorId: "skill-foundry"
 description: "Create your own cinematic medieval character video in this trending AI-generated style. Use your own character, build the world around them, and turn the idea into a cinematic video you can make your own."
