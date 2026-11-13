@@ -10,7 +10,7 @@ if (!fs.existsSync(sitemapPath)) {
 }
 
 const sitemap = fs.readFileSync(sitemapPath, 'utf8');
-const urls = [...sitemap.matchAll(/<loc>(.*?)<\\/loc>/gi)]
+const urls = [...sitemap.matchAll(new RegExp('<loc>(.*?)</loc>', 'gi'))]
   .map((match) => match[1].trim().replaceAll('&amp;', '&'))
   .filter((value) => {
     const url = new URL(value);
