@@ -3399,6 +3399,41 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     text-align: left !important;
   }
 
+
+  /* Match Author Home's top-aligned resource copy, not vertically centered cards. */
+  .curated-library-view .category-curated-section .category-resource-row {
+    align-items: flex-start !important;
+  }
+  .curated-library-view .category-curated-section .h-content {
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    align-self: flex-start !important;
+    padding-top: 2px !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    margin: 0 0 5px !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 !important;
+    text-align: left !important;
+  }
+  .curated-library-view .category-curated-section .h-title {
+    align-self: stretch !important;
+    text-align: left !important;
+    margin: 0 !important;
+  }
+  @media (max-width: 640px) {
+    .curated-library-view .category-curated-section .h-content {
+      padding-top: 2px !important;
+    }
+  }
+
 </style>
 
 <script>
