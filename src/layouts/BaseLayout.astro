@@ -114,6 +114,16 @@ const platformLinks = [
           }
         } catch (e) {}
 
+        // Keep the visitor's saved theme after Astro swaps author-page sections.
+        document.addEventListener('astro:after-swap', function() {
+          try {
+            var savedTheme = localStorage.getItem('sf_theme');
+            var activeTheme = savedTheme === 'light' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', activeTheme);
+            document.documentElement.classList.toggle('light-theme', activeTheme === 'light');
+          } catch (e) {}
+        });
+
         var isFaqReturn = false;
         try {
           if (sessionStorage.getItem('sf_back_to_faq') === 'true') {
