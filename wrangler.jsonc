@@ -3,6 +3,13 @@
   "name": "hub",
   "main": "./src/worker.js",
   "compatibility_date": "2026-09-07",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "skill-foundry-analytics",
+      "database_id": "484225c7-1cab-407d-a472-6455569b489f"
+    }
+  ],
   "secrets": {
     "required": [
       "GITHUB_TOKEN",
