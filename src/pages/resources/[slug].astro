@@ -4757,4 +4757,22 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   }
 
 </style>
+<script define:vars={{ slug }}>
+  (() => {
+    try {
+      const storageKey = 'sf:resource-view:' + slug;
+      const lastViewed = Number(localStorage.getItem(storageKey) || 0);
+      if (lastViewed && Date.now() - lastViewed < 86400000) return;
+      fetch('/api/resource-view', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug })
+      }).then((response) => {
+        if (response.ok) localStorage.setItem(storageKey, String(Date.now()));
+      }).catch(() => {});
+    } catch {
+      // Keep the resource page usable if browser storage is unavailable.
+    }
+  })();
+</script>
 </BaseLayout>
