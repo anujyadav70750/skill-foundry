@@ -3434,6 +3434,37 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Exact Author Home date and calendar treatment for Explore category rows. */
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    color: #AEB7C4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.015em !important;
+    white-space: nowrap !important;
+    text-transform: none !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon {
+    display: block !important;
+    flex: 0 0 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    color: #AEB7C4 !important;
+    opacity: 1 !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .category-row-meta .h-meta-date,
+  :global(html.light-theme) .curated-library-view .category-curated-section .category-row-meta .h-meta-date,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .category-curated-section .category-row-meta .h-meta-calendar-icon {
+    color: #64748B !important;
+  }
+
 </style>
 
 <script>
