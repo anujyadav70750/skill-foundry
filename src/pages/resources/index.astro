@@ -3195,6 +3195,168 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     .curated-library-view .category-curated-section .h-title { margin-bottom: 0 !important; font-size: 13.5px !important; line-height: 1.35 !important; }
   }
 
+  /* FINAL Author Home parity for Explore Resources category sections.
+     Keep this scoped to Explore Resources; do not alter AuthorChannelPage. */
+  .curated-library-view .category-curated-section {
+    margin: 0 !important;
+    padding: 24px 0 !important;
+    border: 0 !important;
+    border-bottom: 1px solid var(--sf-page-border, rgba(255,255,255,.08)) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .curated-library-view .category-curated-section .category-section-heading {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    margin: 0 0 15px !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .curated-library-view .category-curated-section .recent-works-title,
+  .curated-library-view .category-curated-section .category-heading-link {
+    margin: 0 !important;
+    color: var(--sf-page-heading, #F5F5F5) !important;
+    font: 700 clamp(18px, 2.5vw, 21px)/1.25 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    letter-spacing: -.015em !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  .curated-library-view .category-curated-section .curated-h-cards-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .curated-library-view .category-curated-section .category-resource-row,
+  .curated-library-view .category-curated-section .category-resource-row:hover,
+  .curated-library-view .category-curated-section .category-resource-row:active,
+  .curated-library-view .category-curated-section .category-resource-row:focus {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    color: var(--sf-page-heading, #F5F5F5) !important;
+    text-decoration: none !important;
+  }
+  .curated-library-view .category-curated-section .category-resource-row:hover { opacity: .92 !important; }
+  .curated-library-view .category-curated-section .h-thumb-wrap {
+    flex: 0 0 42% !important;
+    width: 42% !important;
+    max-width: 300px !important;
+    aspect-ratio: 16 / 9 !important;
+    border: 0 !important;
+    border-radius: 7px !important;
+    background: #090B10 !important;
+    overflow: hidden !important;
+  }
+  .curated-library-view .category-curated-section .h-thumb-img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+  .curated-library-view .category-curated-section .h-content {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    padding: 0 4px !important;
+    background: transparent !important;
+    box-sizing: border-box !important;
+  }
+  .curated-library-view .category-curated-section .category-row-meta {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .curated-library-view .category-curated-section .h-meta-date {
+    display: inline-flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    color: #9298A4 !important;
+    font: 500 10.5px/1.2 'JetBrains Mono', monospace !important;
+    letter-spacing: 0 !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .category-curated-section .h-meta-calendar-icon {
+    display: block !important;
+    flex: 0 0 14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    color: #7E8492 !important;
+  }
+  .curated-library-view .category-curated-section .h-title {
+    display: -webkit-box !important;
+    margin: 0 0 5px !important;
+    overflow: hidden !important;
+    color: var(--sf-page-heading, #F5F5F5) !important;
+    font: 600 13.5px/1.35 'Plus Jakarta Sans', system-ui, sans-serif !important;
+    letter-spacing: -.01em !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section,
+  :global(html.light-theme) .curated-library-view .category-curated-section {
+    background: transparent !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .recent-works-title,
+  :global(html.light-theme) .curated-library-view .category-curated-section .recent-works-title,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .category-heading-link,
+  :global(html.light-theme) .curated-library-view .category-curated-section .category-heading-link,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-title,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-title {
+    color: #0F172A !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-meta-date,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-meta-date,
+  :global([data-theme="light"]) .curated-library-view .category-curated-section .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .category-curated-section .h-meta-calendar-icon {
+    color: #64748B !important;
+  }
+  @media (max-width: 640px) {
+    .curated-library-view .category-curated-section { padding: 20px 0 !important; }
+    .curated-library-view .category-curated-section .category-section-heading { margin-bottom: 15px !important; }
+    .curated-library-view .category-curated-section .curated-h-cards-stack { gap: 18px !important; }
+    .curated-library-view .category-curated-section .category-resource-row,
+    .curated-library-view .category-curated-section .category-resource-row:hover,
+    .curated-library-view .category-curated-section .category-resource-row:active,
+    .curated-library-view .category-curated-section .category-resource-row:focus { gap: 12px !important; }
+    .curated-library-view .category-curated-section .h-thumb-wrap {
+      flex-basis: 42% !important;
+      width: 42% !important;
+      max-width: none !important;
+      border-radius: 7px !important;
+    }
+    .curated-library-view .category-curated-section .h-content { padding: 0 4px !important; }
+    .curated-library-view .category-curated-section .category-row-meta { margin-bottom: 5px !important; }
+    .curated-library-view .category-curated-section .h-title { margin-bottom: 0 !important; }
+  }
+
   /* Match the Author Home section rhythm around the Recent/category boundary.
      Keep the Recent carousel content unchanged; remove stacked outer margins. */
   .curated-library-view .recent-curated-section {
