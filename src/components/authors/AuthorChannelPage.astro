@@ -84,8 +84,9 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                     <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} aria-label={'Open ' + resource.data.title}>
                       <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                       <div class="author-resource-copy">
+                        <h3>{resource.data.title}</h3>
                         <div class="author-resource-meta">
-                          
+                          <span class="author-resource-category">{resource.data.category}</span>
                           <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
                             <svg class="author-calendar-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -96,7 +97,6 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                             <span>{formatResourceDate(resource.data.date)}</span>
                           </time>
                         </div>
-                        <h3>{resource.data.title}</h3>
                       </div>
                     </a>
                   ))}
@@ -131,6 +131,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                 <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-featured={resource.data.featured ? 'true' : 'false'}>
                   <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                   <div class="author-resource-copy">
+                        <h3>{resource.data.title}</h3>
                         <div class="author-resource-meta">
                           <span class="author-resource-category">{resource.data.category}</span>
                           <time class="author-resource-date" datetime={resource.data.date.toISOString()}>
@@ -143,7 +144,6 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
                             <span>{formatResourceDate(resource.data.date)}</span>
                           </time>
                         </div>
-                        <h3>{resource.data.title}</h3>
                       </div>
                 </a>
               ))}
@@ -193,6 +193,107 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
       </div></section>
     )}
   </main>
+
+<style is:global>
+  /* Author resource rows: title leads, source details sit beneath it. */
+  .author-channel-page .author-resource-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .author-channel-page .author-resource-thumb {
+    flex: 0 0 42%;
+    width: 42%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .author-channel-page .author-resource-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .author-channel-page .author-resource-copy {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 2px 0 0;
+  }
+  .author-channel-page .author-resource-copy h3 {
+    order: 0;
+    margin: 0;
+    color: #F5F7FA;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.4;
+    letter-spacing: -0.015em;
+  }
+  .author-channel-page .author-resource-meta {
+    order: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    color: #AEB7C4;
+  }
+  .author-channel-page .author-resource-category,
+  .author-channel-page .author-resource-date {
+    color: #AEB7C4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+    opacity: 1;
+  }
+  .author-channel-page .author-resource-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    white-space: nowrap;
+    text-transform: none;
+    letter-spacing: 0.015em;
+  }
+  .author-channel-page .author-calendar-icon {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    color: #AEB7C4;
+    opacity: 1;
+  }
+  :global([data-theme="light"]) .author-channel-page .author-resource-copy h3,
+  :global(html.light-theme) .author-channel-page .author-resource-copy h3 { color: #0F172A; }
+  :global([data-theme="light"]) .author-channel-page .author-resource-category,
+  :global(html.light-theme) .author-channel-page .author-resource-category,
+  :global([data-theme="light"]) .author-channel-page .author-resource-date,
+  :global(html.light-theme) .author-channel-page .author-resource-date,
+  :global([data-theme="light"]) .author-channel-page .author-calendar-icon,
+  :global(html.light-theme) .author-channel-page .author-calendar-icon { color: #64748B; }
+  @media (max-width: 600px) {
+    .author-channel-page .author-resource-row { gap: 14px; }
+    .author-channel-page .author-resource-copy { gap: 9px; padding-top: 1px; }
+    .author-channel-page .author-resource-copy h3 { font-size: 14px; line-height: 1.38; }
+    .author-channel-page .author-resource-category,
+    .author-channel-page .author-resource-date { font-size: 9.5px; }
+    .author-channel-page .author-resource-meta { gap: 5px; }
+  }
+</style>
 </BaseLayout>
 
 {view === 'resources' && (
