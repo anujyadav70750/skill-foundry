@@ -115,7 +115,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
             <div class="author-resource-toolbar" aria-label="Filter author resources">
               <div class="author-resource-sort-tabs" role="group" aria-label="Resource order">
                 <button class="author-resource-filter-tab is-active" type="button" data-author-sort="newest" aria-pressed="true">Latest</button>
-                <button class="author-resource-filter-tab" type="button" data-author-sort="featured" aria-pressed="false">Featured</button>
+                <button class="author-resource-filter-tab" type="button" data-author-sort="popular" aria-pressed="false">Popular</button>
                 <button class="author-resource-filter-tab" type="button" data-author-sort="oldest" aria-pressed="false">Oldest</button>
               </div>
               {categories.length > 1 && (
@@ -127,7 +127,7 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
             </div>
             <div class="author-resource-list" data-author-resource-list>
               {resources.map((resource) => (
-                <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-featured={resource.data.featured ? 'true' : 'false'}>
+                <a class="author-resource-row" href={'/resources/' + resourceSlug(resource) + '/'} data-author-resource-card data-category={resource.data.category} data-date={resource.data.date.toISOString()} data-slug={resourceSlug(resource)}>
                   <div class="author-resource-thumb"><img src={resourceThumbnail(resource)} srcset={resourceDisplaySrcSet(resource.data.heroImage || resource.data.thumbnail || resource.data.inputImage)} sizes="(max-width: 600px) 42vw, 260px" alt={resourceImageAlt(resource)} loading="lazy" decoding="async" /></div>
                   <div class="author-resource-copy">
                         <div class="author-resource-meta">
@@ -316,13 +316,32 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
       const empty = document.querySelector<HTMLElement>('[data-author-no-results]');
       let activeSort = 'newest';
       let activeCategory = '';
+      let viewCounts: Record<string, number> = {};
+      let popularityLoaded = false;
+      let popularityFailed = false;
+
+      const loadPopularity = async () => {
+        if (popularityLoaded) return;
+        const slugs = cards.map((card) => card.dataset.slug || '').filter(Boolean);
+        try {
+          const response = await fetch('/api/resource-views?slugs=' + encodeURIComponent(slugs.join(',')), { headers: { Accept: 'application/json' } });
+          if (!response.ok) throw new Error('Popularity request failed.');
+          const payload = await response.json();
+          viewCounts = payload && payload.views && typeof payload.views === 'object' ? payload.views : {};
+          popularityLoaded = true;
+        } catch {
+          popularityFailed = true;
+        }
+      };
 
       const update = () => {
-        const matches = cards.filter((card) =>
-          (!activeCategory || card.dataset.category === activeCategory) &&
-          (activeSort !== 'featured' || card.dataset.featured === 'true')
-        );
+        const matches = cards.filter((card) => !activeCategory || card.dataset.category === activeCategory);
         matches.sort((a, b) => {
+          if (activeSort === 'popular') {
+            const leftViews = Number(viewCounts[a.dataset.slug || ''] || 0);
+            const rightViews = Number(viewCounts[b.dataset.slug || ''] || 0);
+            if (rightViews !== leftViews) return rightViews - leftViews;
+          }
           const left = new Date(a.dataset.date || '').getTime();
           const right = new Date(b.dataset.date || '').getTime();
           return activeSort === 'oldest' ? left - right : right - left;
@@ -330,20 +349,24 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
         cards.forEach((card) => { card.hidden = true; });
         matches.forEach((card) => { card.hidden = false; list.appendChild(card); });
         if (empty) {
-          empty.textContent = activeSort === 'featured'
-            ? 'No featured resources have been selected yet.'
+          empty.textContent = activeSort === 'popular' && popularityFailed
+            ? 'Popularity data is temporarily unavailable. Please try again.'
             : 'No resources are available in this category.';
-          empty.hidden = matches.length > 0;
+          if (activeSort === 'popular' && popularityFailed) {
+            matches.forEach((card) => { card.hidden = true; });
+          }
+          empty.hidden = activeSort === 'popular' && popularityFailed ? false : matches.length > 0;
         }
       };
 
-      sortTabs.forEach((tab) => tab.addEventListener('click', () => {
+      sortTabs.forEach((tab) => tab.addEventListener('click', async () => {
         activeSort = tab.dataset.authorSort || 'newest';
         sortTabs.forEach((item) => {
           const selected = item === tab;
           item.classList.toggle('is-active', selected);
           item.setAttribute('aria-pressed', String(selected));
         });
+        if (activeSort === 'popular') await loadPopularity();
         update();
       }));
 
