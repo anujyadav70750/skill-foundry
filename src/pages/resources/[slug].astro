@@ -4668,5 +4668,93 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     color: #64748B !important;
   }
 
+
+  /* Light-theme contrast for resource-page controls that previously kept
+     their dark-mode colours. Layout and sizing are unchanged. */
+  html[data-theme="light"] .tutorial-detail-icon,
+  html.light-theme .tutorial-detail-icon,
+  html[data-theme="light"] .download-card-type,
+  html.light-theme .download-card-type {
+    color: #64748B !important;
+  }
+
+  html[data-theme="light"] .tutorial-copy-btn,
+  html.light-theme .tutorial-copy-btn {
+    background: #FFFFFF !important;
+    border-color: #CBD5E1 !important;
+    color: #0F172A !important;
+  }
+  html[data-theme="light"] .tutorial-copy-btn:hover,
+  html.light-theme .tutorial-copy-btn:hover {
+    background: #F1F5F9 !important;
+    border-color: #94A3B8 !important;
+    color: #0F172A !important;
+  }
+  html[data-theme="light"] .tutorial-copy-btn.is-copied,
+  html.light-theme .tutorial-copy-btn.is-copied {
+    background: rgba(22, 163, 74, 0.10) !important;
+    border-color: rgba(22, 163, 74, 0.35) !important;
+    color: #15803D !important;
+  }
+
+  html[data-theme="light"] .text-link,
+  html.light-theme .text-link,
+  html[data-theme="light"] .related-works-header-link,
+  html.light-theme .related-works-header-link {
+    color: var(--brand-accent, #0284C7) !important;
+  }
+  html[data-theme="light"] .related-works-header-link .related-works-title,
+  html.light-theme .related-works-header-link .related-works-title {
+    color: #0F172A !important;
+  }
+  html[data-theme="light"] .related-works-header-link:hover,
+  html.light-theme .related-works-header-link:hover {
+    color: #0369A1 !important;
+  }
+
+  html[data-theme="light"] .tutorial-pdf-preview,
+  html.light-theme .tutorial-pdf-preview {
+    background: #F1F5F9;
+    color: #334155;
+  }
+  html[data-theme="light"] .tutorial-pdf-preview-icon,
+  html.light-theme .tutorial-pdf-preview-icon {
+    background: #FFFFFF;
+    border-color: #CBD5E1;
+    color: #64748B;
+  }
+  html[data-theme="light"] .tutorial-pdf-preview-copy strong,
+  html.light-theme .tutorial-pdf-preview-copy strong {
+    color: #0F172A;
+  }
+  html[data-theme="light"] .tutorial-pdf-preview-copy span,
+  html.light-theme .tutorial-pdf-preview-copy span {
+    color: #475569;
+  }
+
+  html[data-theme="light"] .media-lightbox-container,
+  html.light-theme .media-lightbox-container {
+    background: #FFFFFF;
+    border-color: #E2E8F0;
+    box-shadow: 0 24px 50px -12px rgba(15, 23, 42, 0.18);
+  }
+  html[data-theme="light"] #media-lightbox .media-lightbox-toolbar .lightbox-download-btn,
+  html.light-theme #media-lightbox .media-lightbox-toolbar .lightbox-download-btn,
+  html[data-theme="light"] #media-lightbox .media-lightbox-toolbar .lightbox-close-btn,
+  html.light-theme #media-lightbox .media-lightbox-toolbar .lightbox-close-btn {
+    background: #F1F5F9 !important;
+    border-color: #CBD5E1 !important;
+    color: #0F172A !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05) !important;
+  }
+  html[data-theme="light"] #media-lightbox .media-lightbox-toolbar .lightbox-download-btn:hover,
+  html.light-theme #media-lightbox .media-lightbox-toolbar .lightbox-download-btn:hover,
+  html[data-theme="light"] #media-lightbox .media-lightbox-toolbar .lightbox-close-btn:hover,
+  html.light-theme #media-lightbox .media-lightbox-toolbar .lightbox-close-btn:hover {
+    background: #E2E8F0 !important;
+    border-color: #0284C7 !important;
+    color: #0284C7 !important;
+  }
+
 </style>
 </BaseLayout>
