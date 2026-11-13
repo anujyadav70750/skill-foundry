@@ -242,12 +242,22 @@ const pageUrl = 'https://hub.skillfoundry-web.workers.dev' + pagePath;
     order: 0;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start !important;
     gap: 8px;
     width: 100%;
     min-width: 0;
     margin: 0;
     color: #AEB7C4;
+  }
+  .author-channel-page .author-resource-meta-category-page {
+    justify-content: flex-start !important;
+    text-align: left;
+  }
+  .author-channel-page .author-resource-meta-category-page .author-resource-date {
+    justify-content: flex-start !important;
+    align-self: flex-start;
+    width: max-content;
+    margin: 0 !important;
   }
   .author-channel-page .author-resource-category,
   .author-channel-page .author-resource-date {
