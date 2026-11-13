@@ -5344,6 +5344,50 @@ const skillsDisciplines = [
     transform: translateY(1px) !important;
   }
 
+
+
+  /* Shared resource metadata standard — matched to Author resource rows. */
+  .home-page .recent-work-meta-category {
+    color: #9298A4 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+  }
+  .home-page .recent-work-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+    color: #9298A4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.015em !important;
+    white-space: nowrap !important;
+  }
+  .home-page .recent-work-meta-calendar {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+    color: #AEB7C4 !important;
+  }
+  :global([data-theme="light"]) .home-page .recent-work-meta-category,
+  :global(html.light-theme) .home-page .recent-work-meta-category,
+  :global([data-theme="light"]) .home-page .recent-work-meta-date,
+  :global(html.light-theme) .home-page .recent-work-meta-date,
+  :global([data-theme="light"]) .home-page .recent-work-meta-calendar,
+  :global(html.light-theme) .home-page .recent-work-meta-calendar {
+    color: #64748B !important;
+  }
 </style>
 
 <script>

@@ -3088,6 +3088,61 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     color: #64748B;
   }
 
+
+
+  /* Shared resource metadata standard — matched to Author resource rows. */
+  .curated-library-view .recent-resource-meta-category,
+  .curated-library-view .h-meta-category {
+    color: #9298A4 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 9.5px !important;
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .recent-resource-meta-date,
+  .curated-library-view .h-meta-date,
+  .curated-library-view .category-row-meta .h-meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    color: #9298A4 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    letter-spacing: 0.015em !important;
+    white-space: nowrap !important;
+  }
+  .curated-library-view .recent-resource-meta-calendar,
+  .curated-library-view .h-meta-calendar-icon {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+    color: #AEB7C4 !important;
+  }
+  :global([data-theme="light"]) .curated-library-view .recent-resource-meta-category,
+  :global(html.light-theme) .curated-library-view .recent-resource-meta-category,
+  :global([data-theme="light"]) .curated-library-view .h-meta-category,
+  :global(html.light-theme) .curated-library-view .h-meta-category,
+  :global([data-theme="light"]) .curated-library-view .recent-resource-meta-date,
+  :global(html.light-theme) .curated-library-view .recent-resource-meta-date,
+  :global([data-theme="light"]) .curated-library-view .h-meta-date,
+  :global(html.light-theme) .curated-library-view .h-meta-date,
+  :global([data-theme="light"]) .curated-library-view .recent-resource-meta-calendar,
+  :global(html.light-theme) .curated-library-view .recent-resource-meta-calendar,
+  :global([data-theme="light"]) .curated-library-view .h-meta-calendar-icon,
+  :global(html.light-theme) .curated-library-view .h-meta-calendar-icon {
+    color: #64748B !important;
+  }
 </style>
 
 <script>
