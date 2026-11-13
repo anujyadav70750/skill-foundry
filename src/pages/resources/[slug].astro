@@ -1581,13 +1581,15 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
        EDITORIAL VISUAL HIERARCHY — PURE BLACK (#050505), SUBTLE BORDERS, COMPACT
        ========================================================================== */
 
-    /* Core container */
+    /* Core container: use the shared theme canvas so this page follows day/night mode. */
     .resource-editorial-layout {
       width: 100%;
-      background-color: #050505;
+      background-color: var(--sf-page-bg, #050505);
+      color: var(--sf-page-heading, #F5F5F5);
       box-sizing: border-box;
       overflow-x: hidden;
       padding-bottom: 0;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     .container {
