@@ -3321,6 +3321,34 @@ const latestSlug = latestResource ? resourceSlug(latestResource) : null;
     }
   }
 
+
+  /* Match the Author Home section rhythm around the Recent/category boundary.
+     Keep the Recent carousel content unchanged; remove stacked outer margins. */
+  .curated-library-view .recent-curated-section {
+    margin: 0 !important;
+    padding: 0 0 26px !important;
+  }
+  .curated-library-view .recent-curated-section .recent-scroll-wrapper {
+    padding-bottom: 8px !important;
+  }
+  .curated-library-view .recent-section-divider {
+    margin: 0 !important;
+  }
+  .curated-library-view .category-curated-section:first-of-type {
+    padding-top: 24px !important;
+  }
+  @media (max-width: 640px) {
+    .curated-library-view .recent-curated-section {
+      padding-bottom: 21px !important;
+    }
+    .curated-library-view .recent-curated-section .recent-scroll-wrapper {
+      padding-bottom: 8px !important;
+    }
+    .curated-library-view .category-curated-section:first-of-type {
+      padding-top: 20px !important;
+    }
+  }
+
 </style>
 
 <script>
