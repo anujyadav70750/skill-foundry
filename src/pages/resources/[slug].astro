@@ -1751,6 +1751,17 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       text-wrap: wrap;
     }
 
+    /* Theme-aware resource title colour. The theme is set on the global html element,
+       so keep that selector global and explicit to avoid Astro style scoping. */
+    :global(html[data-theme="light"]) .resource-header-section .resource-main-title,
+    :global(html.light-theme) .resource-header-section .resource-main-title {
+      color: #0F172A !important;
+    }
+
+    :global(html[data-theme="dark"]) .resource-header-section .resource-main-title {
+      color: #FFFFFF !important;
+    }
+
     /* Hero Image: Clean, integrated, NO outer card or heavy border */
     /* The resource cover has one visible source only. Never paint a second image or loading backdrop. */
     .resource-header-section .hero-image-wrap {
