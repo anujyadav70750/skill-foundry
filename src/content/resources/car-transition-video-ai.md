@@ -47,7 +47,7 @@ steps:
     outputType: "video"
     outputLabel: "Supplied Reference Video"
     outputSrc: "/lv_0_20261025125126.mp4"
-    downloadUrl: "/lv_0_20261025125126.mp4"
+    downloadUrl: "https://hub.skillfoundry-web.workers.dev/lv_0_20261025125126.mp4"
     downloadLabel: "Download Reference Video"
     purpose: "Generate the video using your car image and the supplied reference video."
     description: "Generate the video using your car image and the supplied reference video."
