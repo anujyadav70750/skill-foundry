@@ -46,10 +46,10 @@ steps:
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Supplied Reference Video"
-    outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytTgS/preview"
+    outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS/preview"
     purpose: "Generate the video using your car image and the supplied reference video."
     description: "Generate the video using your car image and the supplied reference video."
-    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytTgS"
+    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS"
     downloadLabel: "Download Reference Video"
     guidePoints:
       - "Tap Download Reference Video below the preview to save the clip to your phone."
