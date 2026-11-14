@@ -49,10 +49,8 @@ steps:
     outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS/preview"
     purpose: "Generate the video using your car image and the supplied reference video."
     description: "Generate the video using your car image and the supplied reference video."
-    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS"
-    downloadLabel: "Download Reference Video"
     guidePoints:
-      - "Tap Download Reference Video below the preview to save the clip to your phone."
+      - "Open the supplied reference video in Google Drive and download it to your phone."
       - "Open the Google Flow project from Step 01 and upload the downloaded reference video alongside your car image."
       - "Copy the complete master prompt below and paste it into Google Flow."
       - "Apply the settings listed in the Details tab."
