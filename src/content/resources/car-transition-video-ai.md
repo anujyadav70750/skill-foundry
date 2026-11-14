@@ -110,7 +110,7 @@ steps:
     actionType: "instructions"
     outputType: "video"
     outputLabel: "Finished Car Video"
-    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
+    outputSrc: "https://www.instagram.com/reel/Dfu1akyKc8E/embed"
     purpose: "Preview your finished car video."
     description: "Preview your finished car video."
     process: |
