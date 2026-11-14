@@ -44,6 +44,8 @@ Useful optional fields include:
 - `seoDescription`
 - `featured`
 
+Workflow steps may also include `downloadUrl` and `downloadLabel` to show a reusable download link inside that step's Guide panel.
+
 Media is optional. A resource can publish without a tutorial video or input image, and image fallbacks are handled by the shared resource helpers.
 
 ## Content and automation boundary
