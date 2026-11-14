@@ -228,9 +228,7 @@ const getRelatedThumbnail = (item: any) => {
   if (hero && hero !== '/images/placeholder.svg' && !hero.includes('placeholder')) {
     return hero;
   }
-  return resourceSlug(item) === 'testing-1'
-    ? '/images/1000069055-thumbnail-16x9-1788985430602.jpg'
-    : '/images/knight-poppies-thumbnail.png';
+  return '/images/knight-poppies-thumbnail.png';
 };
 
 const getConciseToolPurpose = (tool: any) => {

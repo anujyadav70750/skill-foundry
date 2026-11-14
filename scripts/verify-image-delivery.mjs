@@ -2,7 +2,6 @@ const baseUrl = process.env.SITE_URL || 'https://hub.skillfoundry-web.workers.de
 const candidates = [
   'knight-poppies-thumbnail.png',
   'resting-medieval-knight-hero.jpg',
-  'testing-resource-hero-16x9-20261104.jpg'
 ];
 
 function dimensions(buffer) {

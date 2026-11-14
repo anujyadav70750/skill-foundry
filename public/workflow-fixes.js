@@ -1482,11 +1482,8 @@ startxref
     const isKnightSlug =
       document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
         'cinematic-medieval-knight-video-google-flow' ||
-      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
-        'testing-1' ||
       document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
-      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow') ||
-      window.location.pathname.includes('testing-1');
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
     if (isKnightSlug || steps.length === 5) {
       result.style.gridRow = '5';
     } else {
@@ -1541,11 +1538,8 @@ startxref
     const isKnightSlug =
       document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
         'cinematic-medieval-knight-video-google-flow' ||
-      document.querySelector('#blueprint-inner-workflow-tray')?.getAttribute('data-resource-slug') ===
-        'testing-1' ||
       document.querySelector('#blueprint-inner-workflow-tray')?.classList.contains('workflow-resource-knight') ||
-      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow') ||
-      window.location.pathname.includes('testing-1');
+      window.location.pathname.includes('cinematic-medieval-knight-video-google-flow');
 
     const isMobile = !isFullscreen && window.matchMedia('(max-width: 700px)').matches;
 

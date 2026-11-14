@@ -26,8 +26,7 @@ const escapeXml = (value: string) => value
 export const GET: APIRoute = async ({ site }) => {
   const base = site ?? new URL('https://hub.skillfoundry-web.workers.dev');
   const resources = (await getCollection('resources'))
-    .filter((resource) => !('draft' in resource.data && resource.data.draft === true))
-    .filter((resource) => resourceSlug(resource) !== 'testing-1');
+    .filter((resource) => !('draft' in resource.data && resource.data.draft === true));
   const authorPaths = Object.values(AUTHOR_PROFILES).flatMap((profile) => {
     const profileBase = authorPath(profile.id);
     const owned = resources.filter((resource) => resource.data.authorId === profile.id);
