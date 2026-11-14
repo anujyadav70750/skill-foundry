@@ -31,7 +31,7 @@ steps:
     outputType: "image"
     outputLabel: "Car Reference Example"
     outputSrc: "/images/car-transition-hero.svg"
-    purpose: "Set up the car image that will define the vehicle in your final video."
+    purpose: "Create a visual reference of your car for the video."
     description: "Create a visual reference of your car for the video."
     process: |
       1. Open the official Google Flow website.
@@ -47,7 +47,7 @@ steps:
     outputType: "video"
     outputLabel: "Supplied Reference Video"
     outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytTgS/preview"
-    purpose: "Use the supplied driving footage together with your car image to generate the car-replacement video."
+    purpose: "Generate the video using your car image and the supplied reference video."
     description: "Generate the video using your car image and the supplied reference video."
     downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytTgS"
     downloadLabel: "Download Reference Video"
@@ -111,7 +111,7 @@ steps:
     outputType: "video"
     outputLabel: "Finished Car Video"
     outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
-    purpose: "See an example of the finished car video created with this workflow."
+    purpose: "Preview your finished car video."
     description: "Preview your finished car video."
     process: |
       1. Play the video below to see an example of the finished car-replacement result.
