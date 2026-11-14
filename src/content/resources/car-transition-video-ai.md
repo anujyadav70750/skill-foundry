@@ -22,46 +22,37 @@ toolsUsed:
     url: "https://labs.google/fx/tools/flow"
     affiliate: false
 prompt: |
-  Use the complete master prompt in Step 04 to replace the vehicle in the supplied reference video with the vehicle shown in the uploaded car image. Keep the prompt together as one complete instruction.
+  Use the complete master prompt in Step 03 to replace the vehicle in the supplied reference video with the vehicle shown in the uploaded car image. Keep the prompt together as one complete instruction.
 steps:
-  - title: "Open Google Flow"
-    tool: "Google Flow"
-    toolPurpose: "VIDEO GENERATION"
-    actionType: "instructions"
-    outputType: "text"
-    purpose: "Open Google Flow to begin the video-generation workflow."
-    description: "Start with the official Google Flow website."
-    process: |
-      1. Open the official Google Flow website.
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
   - title: "Upload Your Car Image"
     tool: "Google Flow"
     toolPurpose: "REFERENCE IMAGE"
     actionType: "instructions"
     outputType: "image"
     outputLabel: "Your Car Reference"
-    purpose: "Provide the car image that will define the replacement vehicle."
-    description: "Choose a clear image of the car you want to feature."
+    purpose: "Set up the car image that will define the vehicle in your final video."
+    description: "Open Google Flow and upload a clear image of the car you want to feature."
     process: |
-      1. Choose a clear image of the car you want to use.
-      2. Upload the image to Google Flow.
+      1. Open the official Google Flow website.
+      2. Start your video project.
+      3. Choose a clear image of your car and upload it as the image reference.
     details:
       - label: "TOOL USED"
         value: "Google Flow"
-  - title: "Upload the Reference Video"
+  - title: "Add the Reference Video"
     tool: "Google Flow"
     toolPurpose: "VIDEO REFERENCE"
     actionType: "instructions"
     outputType: "video"
-    outputLabel: "Reference Video"
-    purpose: "Provide the original footage whose scene and driving action will guide the result."
-    description: "Download the supplied clip and upload it with your car image."
+    outputLabel: "Supplied Reference Video"
+    outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS/preview"
+    purpose: "Use the supplied driving footage as the scene and movement reference for your car video."
+    description: "Preview the reference clip, then download it and add it to the same Google Flow project as your car image."
     process: |
-      1. Download the reference video using the link below.
-      2. Upload the downloaded video to Google Flow with your car image.
-    downloadUrl: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS/view?usp=drivesdk"
+      1. Preview the reference video above.
+      2. Download the video using the link below.
+      3. Upload it to your Google Flow project alongside your car image.
+    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS"
     downloadLabel: "Download Reference Video"
     details:
       - label: "TOOL USED"
@@ -72,8 +63,8 @@ steps:
     actionType: "prompt"
     outputType: "video"
     outputLabel: "Car Replacement Video"
-    purpose: "Give Google Flow the instructions for replacing the original car while preserving the rest of the footage."
-    description: "Use the complete master prompt as one prompt, exactly as supplied."
+    purpose: "Tell Google Flow how to replace the original car while keeping the rest of the footage consistent."
+    description: "Copy the complete master prompt below and paste it into Google Flow as one instruction."
     guidePoints:
       - "Copy the complete master prompt shown above."
       - "Paste it into Google Flow as one prompt. Do not split it into separate prompts."
@@ -112,17 +103,18 @@ steps:
         value: "Google Flow"
       - label: "PROMPT TYPE"
         value: "One complete master prompt"
-  - title: "Apply the Settings"
+  - title: "Generate Your Video"
     tool: "Google Flow"
-    toolPurpose: "GENERATION SETTINGS"
+    toolPurpose: "VIDEO GENERATION"
     actionType: "instructions"
-    outputType: "text"
-    purpose: "Apply the exact generation settings used for the example workflow."
-    description: "Use the values listed in the Details tab."
+    outputType: "video"
+    outputLabel: "Generated Car Transition Video"
+    purpose: "Generate your car-replacement video using the prepared references and master prompt."
+    description: "Apply the demonstrated settings, then generate your video."
     process: |
-      1. Open the generation settings.
-      2. Apply the values listed in the Details tab.
-      3. Check the selected settings before generating.
+      1. Open the generation settings and apply the values listed in Details.
+      2. Start video generation.
+      3. If the result needs improvement, generate again using the same references, prompt, and settings.
     details:
       - label: "TOOL USED"
         value: "Google Flow"
@@ -137,20 +129,6 @@ steps:
         value: "10 seconds"
       - label: "GENERATION"
         value: "×1"
-  - title: "Generate Your Video"
-    tool: "Google Flow"
-    toolPurpose: "VIDEO GENERATION"
-    actionType: "instructions"
-    outputType: "video"
-    outputLabel: "Generated Car Transition Video"
-    purpose: "Generate the video using the supplied car image, reference footage, master prompt, and settings."
-    description: "Start the generation using the prepared setup."
-    process: |
-      1. Start video generation.
-      2. If the first result does not give you the desired result, generate again using the same setup.
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
 tips:
   - "Choose a sharp car image where the vehicle's body, wheels, lights, and paint details are easy to see."
   - "Use the supplied reference video rather than a different clip if you want to follow the example workflow."
