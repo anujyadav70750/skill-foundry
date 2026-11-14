@@ -1,0 +1,226 @@
+/*
+ * Skill Foundry resource page — desktop layout refinement.
+ * Deliberately desktop-only: screens below 820px retain the current mobile layout.
+ * Colours are inherited from the existing day/night theme styles.
+ */
+
+@media (min-width: 820px) {
+  :root {
+    --resource-major-section-gap: 30px;
+  }
+
+  /* Keep the title, cover, metadata, description and content cards on one grid. */
+  html .resource-editorial-layout .resource-page .resource-header-section > .container.narrow,
+  html .resource-editorial-layout .resource-page .article-layout.resource-content {
+    width: min(1080px, calc(100% - 64px)) !important;
+    max-width: 1080px !important;
+    margin-inline: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-header-section {
+    margin-bottom: 28px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-main-title {
+    width: 100% !important;
+    max-width: none !important;
+    margin-bottom: 18px !important;
+    font-size: clamp(30px, 3.2vw, 38px) !important;
+    line-height: 1.2 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .hero-image-wrap {
+    margin-bottom: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .hero-image {
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-metadata-row {
+    margin: 18px 0 22px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .meta-author-avatar {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .meta-author-name {
+    font-size: 15px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .meta-calendar-icon {
+    width: 16px !important;
+    height: 16px !important;
+    flex-basis: 16px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .meta-date,
+  html .resource-editorial-layout .resource-page .meta-date-text {
+    font-size: 13px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-header-description {
+    margin-bottom: 24px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-description-lead {
+    max-width: 1000px !important;
+    font-size: 17px !important;
+    line-height: 1.72 !important;
+  }
+
+  /* More breathing room in the information cards without changing their theme. */
+  html .resource-editorial-layout .resource-page .article-layout .resource-editorial-section {
+    width: 100% !important;
+    padding: 28px 32px !important;
+    margin-bottom: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .resource-content > * + * {
+    margin-top: 30px !important;
+    margin-bottom: 0 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .editorial-heading-title {
+    font-size: 23px !important;
+    line-height: 1.3 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .editorial-lead,
+  html .resource-editorial-layout .resource-page .editorial-subcopy,
+  html .resource-editorial-layout .resource-page .section-subcopy {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .what-you-get-list {
+    margin-top: 18px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .what-you-get-item {
+    margin-bottom: 14px !important;
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .what-you-get-item:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Tool cards retain the existing two-column mobile layout and use the
+     existing three-column desktop grid, with enough height for each logo. */
+  html .resource-editorial-layout .resource-page .tools-compact-grid {
+    gap: 18px !important;
+    margin-top: 20px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tool-grid-card {
+    min-height: 164px !important;
+    padding: 22px 18px !important;
+    gap: 14px !important;
+    border-radius: 16px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tool-logo-box {
+    width: 62px !important;
+    height: 62px !important;
+    min-width: 62px !important;
+    min-height: 62px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tool-grid-name {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Preparation points use the same comfortable reading size as the other cards. */
+  html .resource-editorial-layout .resource-page .intro-section .intro-points {
+    gap: 14px !important;
+    margin-top: 18px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .intro-section .intro-points li {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  /* Give the workflow heading and its tabs the same width and visual weight. */
+  html .resource-editorial-layout .resource-page .blueprint-callout-box.workflow-intro-open {
+    width: 100% !important;
+    max-width: 920px !important;
+    margin: 8px auto 24px !important;
+    padding: 18px 14px 10px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .blueprint-callout-title {
+    font-size: 25px !important;
+    line-height: 1.3 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .blueprint-callout-desc {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .workflow-step-nav {
+    width: 100% !important;
+    gap: 12px !important;
+    margin-bottom: 18px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .workflow-step-nav-button {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    min-height: 48px !important;
+    padding: 12px 14px !important;
+    font-size: 13px !important;
+    line-height: 1.2 !important;
+  }
+
+  /* Give each workflow card and its instructions room to breathe. */
+  html .resource-editorial-layout .resource-page .tutorial-step-card {
+    padding: 30px 32px !important;
+    border-radius: 18px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tutorial-step-header {
+    gap: 9px !important;
+    margin-bottom: 20px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tutorial-step-title {
+    font-size: 22px !important;
+    line-height: 1.3 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tutorial-step-desc,
+  html .resource-editorial-layout .resource-page .tutorial-what-to-do-copy {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tutorial-step-section {
+    margin-bottom: 26px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .step-subheading-label {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  html .resource-editorial-layout .resource-page .tutorial-step-disclosure-button {
+    min-height: 48px !important;
+    font-size: 14px !important;
+  }
+}
