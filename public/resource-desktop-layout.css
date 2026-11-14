@@ -434,9 +434,10 @@
 }
 
 
-/* Desktop-only spacing: keep the resource title comfortably below the fixed nav. */
+/* Desktop-only spacing: place the resource title below the fixed 72px navigation bar.
+   Header top offset (18px) + bar height (72px) + clear gap (28px) = 118px. */
 @media (min-width: 820px) {
   html .resource-editorial-layout .resource-page .resource-header-section {
-    padding-top: 48px !important;
+    padding-top: 118px !important;
   }
 }
