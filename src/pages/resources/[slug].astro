@@ -4650,21 +4650,33 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   }
 
 
-  /* Match the brighter calendar/date colour used across the other Skill Foundry pages.
-     Keep the existing position and spacing below the hero image unchanged. */
-  .resource-header-section .meta-date,
-  .resource-header-section .meta-calendar-icon,
-  .resource-header-section .meta-date-text {
-    color: #AEB7C4 !important;
+  /* Match the homepage Recent date treatment below the resource hero.
+     Date source, formatting, metadata position, and author layout remain unchanged. */
+  .resource-header-section .meta-date {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 11.5px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    color: #94A3B8 !important;
+    white-space: nowrap !important;
   }
   .resource-header-section .meta-date-text {
     font-family: 'JetBrains Mono', monospace !important;
-    font-size: 10.5px !important;
+    font-size: 11.5px !important;
     font-weight: 500 !important;
     line-height: 1.2 !important;
     letter-spacing: 0 !important;
+    color: #94A3B8 !important;
   }
   .resource-header-section .meta-calendar-icon {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    flex: 0 0 14px !important;
+    color: #94A3B8 !important;
     opacity: 1 !important;
   }
   html[data-theme="light"] .resource-header-section .meta-date,
