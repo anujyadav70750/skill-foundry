@@ -29,7 +29,8 @@ steps:
     toolPurpose: "REFERENCE IMAGE"
     actionType: "instructions"
     outputType: "image"
-    outputLabel: "Your Car Reference"
+    outputLabel: "Car Reference Example"
+    outputSrc: "/images/car-transition-hero.svg"
     purpose: "Set up the car image that will define the vehicle in your final video."
     description: "Open Google Flow and upload a clear image of the car you want to feature."
     process: |
@@ -62,7 +63,8 @@ steps:
     toolPurpose: "VIDEO GENERATION"
     actionType: "prompt"
     outputType: "video"
-    outputLabel: "Generated Car Transition Video"
+    outputLabel: "Finished Car Video"
+    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
     purpose: "Use your car image and the supplied reference footage to generate the car-replacement video."
     description: "Copy the complete master prompt, add it to Google Flow, apply the demonstrated settings, and generate your video."
     guidePoints:
@@ -117,20 +119,6 @@ steps:
 
       The final result should look as though the original video was filmed with my reference car instead of the original vehicle.
 
-  - title: "See the Final Result"
-    tool: "Instagram"
-    toolPurpose: "FINAL RESULT"
-    actionType: "instructions"
-    outputType: "video"
-    outputLabel: "Finished Car Video"
-    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
-    purpose: "See an example of the finished car video this workflow can help you create."
-    description: "Preview the finished car video below. The separate Watch the Tutorial Reel explains how to follow this resource."
-    process: |
-      Preview the Instagram post below to see an example of the finished result.
-    details:
-      - label: "RESULT PLATFORM"
-        value: "Instagram"
 tips:
   - "Choose a sharp car image where the vehicle's body, wheels, lights, and paint details are easy to see."
   - "Use the supplied reference video rather than a different clip if you want to follow the example workflow."
