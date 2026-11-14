@@ -2,7 +2,7 @@
 title: "Create a Viral Car Transition Video with Your Own Car Using AI"
 slug: "car-transition-video-ai"
 authorId: "skill-foundry"
-description: "Recreate a reference car video using your own vehicle. Bring your car into an existing scene with a guided workflow, a ready-to-use master prompt, and the generation settings used in the example."
+description: "Create your own version of this trending car video. Use a photo of your vehicle as the reference, bring it into the original driving scene, and create a video that puts your car in the spotlight."
 category: "AI Video"
 tool: "Google Flow"
 toolUrl: "https://labs.google/fx/tools/flow"
