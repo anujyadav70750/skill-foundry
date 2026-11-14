@@ -40,38 +40,23 @@ steps:
     details:
       - label: "TOOL USED"
         value: "Google Flow"
-  - title: "Add the Reference Video"
-    tool: "Google Flow"
-    toolPurpose: "VIDEO REFERENCE"
-    actionType: "instructions"
-    outputType: "video"
-    outputLabel: "Supplied Reference Video"
-    outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS/preview"
-    purpose: "Use the supplied driving footage as the scene and movement reference for your car video."
-    description: "Preview the reference clip, then download it and add it to the same Google Flow project as your car image."
-    process: |
-      1. Preview the reference video above.
-      2. Download the video using the link below.
-      3. Upload it to your Google Flow project alongside your car image.
-    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytFDJq7VuuTgS"
-    downloadLabel: "Download Reference Video"
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
-  - title: "Generate Your Video"
+  - title: "Add the Reference Video & Generate Your Video"
     tool: "Google Flow"
     toolPurpose: "VIDEO GENERATION"
     actionType: "prompt"
     outputType: "video"
-    outputLabel: "Finished Car Video"
-    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
-    purpose: "Use your car image and the supplied reference footage to generate the car-replacement video."
-    description: "Copy the complete master prompt, add it to Google Flow, apply the demonstrated settings, and generate your video."
+    outputLabel: "Supplied Reference Video"
+    outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytTgS/preview"
+    purpose: "Use the supplied driving footage together with your car image to generate the car-replacement video."
+    description: "Add the supplied reference footage to your Google Flow project, use the master prompt, and generate your video."
+    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz1st9Z2CsAnytTgS"
+    downloadLabel: "Download Reference Video"
     guidePoints:
-      - "Copy the complete master prompt below and paste it into Google Flow as one instruction."
-      - "Make sure both your car image and the supplied reference video are attached to the project."
-      - "Apply the settings listed in Details."
-      - "Start video generation. If needed, generate again with the same references, prompt, and settings."
+      - "Tap Download Reference Video below the preview to save the clip to your phone."
+      - "Open the Google Flow project from Step 01 and upload the downloaded reference video alongside your car image."
+      - "Copy the complete master prompt below and paste it into Google Flow."
+      - "Apply the settings listed in the Details tab."
+      - "Generate your video and download the result to your phone."
     details:
       - label: "TOOL USED"
         value: "Google Flow"
@@ -119,6 +104,20 @@ steps:
 
       The final result should look as though the original video was filmed with my reference car instead of the original vehicle.
 
+  - title: "See the Final Result"
+    tool: "Instagram"
+    toolPurpose: "FINAL RESULT"
+    actionType: "instructions"
+    outputType: "video"
+    outputLabel: "Finished Car Video"
+    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
+    purpose: "See an example of the finished car video created with this workflow."
+    description: "Preview the finished video to see the kind of result this workflow can create."
+    process: |
+      1. Play the video below to see an example of the finished car-replacement result.
+    details:
+      - label: "RESULT PLATFORM"
+        value: "Instagram"
 tips:
   - "Choose a sharp car image where the vehicle's body, wheels, lights, and paint details are easy to see."
   - "Use the supplied reference video rather than a different clip if you want to follow the example workflow."
