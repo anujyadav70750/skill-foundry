@@ -3083,6 +3083,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       display: block !important;
     }
 
+    /* Keep Instagram embeds the same distance below the step divider as standard media cards. */
+    .tutorial-result-section:has(.has-instagram-embed) .step-instagram-wrapper,
+    .tutorial-result-section:has(.has-instagram-embed) .instagram-media,
+    .tutorial-result-section:has(.has-instagram-embed) .instagram-media iframe {
+      margin-top: 0 !important;
+    }
+
     /* Match the standalone Watch Tutorial Instagram frame inside workflow steps. */
     .step-instagram-wrapper .instagram-media,
     .is-instagram-frame .instagram-media {
