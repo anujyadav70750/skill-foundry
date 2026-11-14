@@ -1316,6 +1316,38 @@ const platformLinks = [
         }
       }
 
+
+      /* Keep the global navigation aligned with the 18px page-content edges. */
+      @media (max-width: 819px) {
+        .site-header {
+          padding-inline: 18px !important;
+        }
+        .nav-bar-container {
+          width: 100% !important;
+          max-width: 780px !important;
+          box-sizing: border-box !important;
+        }
+      }
+
+      /* Resource pages need one consistent clear gap below the fixed mobile header. */
+      @media (max-width: 768px) {
+        :global(body:has(.resource-editorial-layout)) {
+          padding-top: 80px !important;
+        }
+      }
+
+      @media (max-width: 480px) {
+        :global(body:has(.resource-editorial-layout)) .resource-editorial-layout .resource-header-section {
+          padding-top: 4px !important;
+        }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        :global(body:has(.resource-editorial-layout)) .resource-editorial-layout .resource-header-section {
+          padding-top: 12px !important;
+        }
+      }
+
       @media (max-width: 360px) {
         .brand-mark {
           width: 28px;
