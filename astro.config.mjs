@@ -63,7 +63,8 @@ function injectFooterStyles() {
                 ? [
                     sharedStylesheets[0],
                     ...resourceDetailStylesheets,
-                    ...sharedStylesheets.slice(1)
+                    ...sharedStylesheets.slice(1),
+                    '<link rel="stylesheet" href="/resource-desktop-layout.css?v=20261115-desktop-balance-v1">'
                   ]
                 : sharedStylesheets;
 
