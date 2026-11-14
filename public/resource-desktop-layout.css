@@ -432,3 +432,11 @@
     line-height: 1.45 !important;
   }
 }
+
+
+/* Desktop-only spacing: keep the resource title comfortably below the fixed nav. */
+@media (min-width: 820px) {
+  html .resource-editorial-layout .resource-page .resource-header-section {
+    padding-top: 48px !important;
+  }
+}
