@@ -40,7 +40,9 @@ const workflowStep = z.object({
   outputDescription: z.string().optional(),
   outputSrc: z.string().optional(),
   outputPreviewSrc: z.string().optional(),
-  handoff: z.string().optional()
+  handoff: z.string().optional(),
+  downloadUrl: z.string().url().optional(),
+  downloadLabel: z.string().optional()
 });
 
 const resourceTool = z.object({
