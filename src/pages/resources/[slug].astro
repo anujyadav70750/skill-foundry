@@ -823,6 +823,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               {(step.guidePoints && step.guidePoints.length > 0 ? step.guidePoints : [step.whatToDo || "Copy the prompt, open the selected app, and generate the result."]).map((point: string) => <li>{point}</li>)}
                             </ul>
                           )}
+                          {step.downloadUrl && (
+                            <div class="tutorial-guide-download">
+                              <a class="text-link" href={step.downloadUrl} target="_blank" rel="noopener noreferrer">
+                                {step.downloadLabel || "Download reference file"}
+                              </a>
+                            </div>
+                          )}
                         </div>
                         <div class="tutorial-step-disclosure-panel tutorial-details-panel" role="tabpanel" data-step-panel="details" id={`step-${index + 1}-details`} aria-hidden="true" tabindex="-1" inert>
                           <div class="tutorial-details-grid">
