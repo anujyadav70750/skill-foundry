@@ -57,17 +57,35 @@ steps:
     details:
       - label: "TOOL USED"
         value: "Google Flow"
-  - title: "Paste the Master Prompt"
+  - title: "Generate Your Video"
     tool: "Google Flow"
-    toolPurpose: "VIDEO PROMPT"
+    toolPurpose: "VIDEO GENERATION"
     actionType: "prompt"
     outputType: "video"
-    outputLabel: "Car Replacement Video"
-    purpose: "Tell Google Flow how to replace the original car while keeping the rest of the footage consistent."
-    description: "Copy the complete master prompt below and paste it into Google Flow as one instruction."
+    outputLabel: "Generated Car Transition Video"
+    purpose: "Use your car image and the supplied reference footage to generate the car-replacement video."
+    description: "Copy the complete master prompt, add it to Google Flow, apply the demonstrated settings, and generate your video."
     guidePoints:
-      - "Copy the complete master prompt shown above."
-      - "Paste it into Google Flow as one prompt. Do not split it into separate prompts."
+      - "Copy the complete master prompt below and paste it into Google Flow as one instruction."
+      - "Make sure both your car image and the supplied reference video are attached to the project."
+      - "Apply the settings listed in Details."
+      - "Start video generation. If needed, generate again with the same references, prompt, and settings."
+    details:
+      - label: "TOOL USED"
+        value: "Google Flow"
+      - label: "PROMPT TYPE"
+        value: "One complete master prompt"
+    settings:
+      - label: "MODEL"
+        value: "Omni 1.1 Flash"
+      - label: "ASPECT RATIO"
+        value: "16:9"
+      - label: "QUALITY"
+        value: "720p"
+      - label: "DURATION"
+        value: "10 seconds"
+      - label: "GENERATION"
+        value: "×1"
     process: |
       Use the uploaded reference video as the base footage.
 
@@ -98,12 +116,7 @@ steps:
       Do NOT invent vehicle details that are not visible in the uploaded car reference. When a detail is unclear, keep it consistent with the visible reference rather than creating a different design.
 
       The final result should look as though the original video was filmed with my reference car instead of the original vehicle.
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
-      - label: "PROMPT TYPE"
-        value: "One complete master prompt"
-  - title: "Generate Your Video"
+
     tool: "Google Flow"
     toolPurpose: "VIDEO GENERATION"
     actionType: "instructions"
@@ -129,6 +142,20 @@ steps:
         value: "10 seconds"
       - label: "GENERATION"
         value: "×1"
+  - title: "See the Final Result"
+    tool: "Instagram"
+    toolPurpose: "FINAL RESULT"
+    actionType: "instructions"
+    outputType: "video"
+    outputLabel: "Finished Car Video"
+    outputSrc: "https://www.instagram.com/reel/De3QYecvWui/embed"
+    purpose: "See an example of the finished car video this workflow can help you create."
+    description: "Preview the finished car video below. The separate Watch the Tutorial Reel explains how to follow this resource."
+    process: |
+      Preview the Instagram post below to see an example of the finished result.
+    details:
+      - label: "RESULT PLATFORM"
+        value: "Instagram"
 tips:
   - "Choose a sharp car image where the vehicle's body, wheels, lights, and paint details are easy to see."
   - "Use the supplied reference video rather than a different clip if you want to follow the example workflow."
