@@ -117,31 +117,6 @@ steps:
 
       The final result should look as though the original video was filmed with my reference car instead of the original vehicle.
 
-    tool: "Google Flow"
-    toolPurpose: "VIDEO GENERATION"
-    actionType: "instructions"
-    outputType: "video"
-    outputLabel: "Generated Car Transition Video"
-    purpose: "Generate your car-replacement video using the prepared references and master prompt."
-    description: "Apply the demonstrated settings, then generate your video."
-    process: |
-      1. Open the generation settings and apply the values listed in Details.
-      2. Start video generation.
-      3. If the result needs improvement, generate again using the same references, prompt, and settings.
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
-    settings:
-      - label: "MODEL"
-        value: "Omni 1.1 Flash"
-      - label: "ASPECT RATIO"
-        value: "16:9"
-      - label: "QUALITY"
-        value: "720p"
-      - label: "DURATION"
-        value: "10 seconds"
-      - label: "GENERATION"
-        value: "×1"
   - title: "See the Final Result"
     tool: "Instagram"
     toolPurpose: "FINAL RESULT"
