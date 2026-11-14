@@ -49,7 +49,7 @@ steps:
     outputSrc: "https://drive.google.com/file/d/1b-Ng1sz8tKam9Z2CsAnytTgS/preview"
     purpose: "Use the supplied driving footage together with your car image to generate the car-replacement video."
     description: "Add the supplied reference footage to your Google Flow project, use the master prompt, and generate your video."
-    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz1st9Z2CsAnytTgS"
+    downloadUrl: "https://drive.google.com/uc?export=download&id=1b-Ng1sz8tKam9Z2CsAnytTgS"
     downloadLabel: "Download Reference Video"
     guidePoints:
       - "Tap Download Reference Video below the preview to save the clip to your phone."
