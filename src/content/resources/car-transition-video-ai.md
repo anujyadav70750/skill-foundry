@@ -175,14 +175,13 @@ tips:
   - "AI video results can vary. Review the vehicle's shape, wheels, reflections, shadows, and movement before choosing the final version."
 relatedResources: []
 tags:
-  - "ai-video"
   - "car-transition"
   - "car-replacement"
-  - "video-generation"
-  - "prompt-engineering"
   - "google-flow"
+  - "ai-video"
+  - "video-generation"
   - "reference-video"
-  - "workflow"
+  - "prompt-engineering"
 featured: false
 seoTitle: "Create a Car Transition Video with Your Own Car Using AI | Skill Foundry"
 seoDescription: "Learn how to replace the car in a reference video with your own vehicle using a guided AI video workflow, a complete master prompt, and the demonstrated generation settings."
