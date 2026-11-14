@@ -12,7 +12,7 @@ thumbnail: "/images/car-transition-hero.svg"
 thumbnailRatio: "16:9"
 heroImage: "/images/car-transition-hero.svg"
 imageAlt: "A bright green sports car driving along a cinematic mountain road"
-intro: "Make sure you have a clear image of the car you want to feature. Download the reference video provided with this resource, and make sure you have access to the required tools before starting."
+intro: "Make sure you have a clear image of the car you’d like to use. Make sure you have access to the required tools before starting."
 whatItDoes: "Replaces the vehicle in supplied reference footage with the vehicle shown in the user's car image while aiming to preserve the original scene, camera movement, timing, and driving action."
 toolsUsed:
   - name: "Google Flow"
