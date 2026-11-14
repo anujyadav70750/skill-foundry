@@ -333,7 +333,7 @@ const hasDownloadableResources = Boolean(
     const output = outputVisual(step, index);
     const mediaUrl = output?.src || '';
     const hasOutput = mediaUrl && !mediaUrl.startsWith('http');
-    return hasInputs || hasOutput;
+    return hasInputs || hasOutput || Boolean(step.downloadUrl);
   })
 );
 
