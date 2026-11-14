@@ -10,7 +10,7 @@ toolAffiliate: false
 date: "2026-11-14"
 thumbnail: "/images/car-transition-hero.svg"
 thumbnailRatio: "16:9"
-heroImage: "/images/car-transition-hero.svg"
+heroImage: "/Toy%20Car%20to%20Real%20Mustang%20Transformation.png"
 instagramReelUrl: "https://www.instagram.com/reel/De9IEfQh9RD/?mdxt=MWE2bnU0MGZmeGVnZg=="
 videoEmbedUrl: "https://www.instagram.com/reel/De9IEfQh9RD/embed"
 imageAlt: "A bright green sports car driving along a cinematic mountain road"
