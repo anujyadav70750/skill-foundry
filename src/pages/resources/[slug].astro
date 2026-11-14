@@ -633,6 +633,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const hasMedia = Boolean(mediaUrl);
                 const isInstagramStep = Boolean(mediaUrl && /instagram\.com/i.test(mediaUrl));
                 const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|drive\.google\.com|\/embed/i.test(mediaUrl));
+                const isDrivePreview = Boolean(mediaUrl && /drive\.google\.com\/file\/d\/.+\/preview/i.test(mediaUrl) && step.downloadUrl);
                 const isPdf = hasMedia && /\.pdf(?:[?#]|$)/i.test(mediaUrl);
 
                 const stepPurpose = step.purpose || step.description || "";
@@ -713,6 +714,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                   </div>
                                 </blockquote>
                               </div>
+                            ) : isDrivePreview ? (
+                              <video
+                                class="tutorial-result-video"
+                                src={step.downloadUrl}
+                                controls
+                                playsinline
+                                preload="metadata"
+                              />
                             ) : isEmbedUrl ? (
                               <div class="video-frame">
                                 <iframe
@@ -3007,7 +3016,44 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
     /* Direct videos (<video>) preserve their native aspect ratio */
     .tutorial-result-media-frame.is-video-frame {
       aspect-ratio: 16 / 9;
+      box-sizing: border-box;
+      padding: 0;
+      align-items: stretch;
+      justify-content: stretch;
       background: #0B0E14;
+      border-bottom: 0;
+    }
+
+    /* Keep embedded players flush with the 16:9 media frame; no inherited top offset. */
+    .tutorial-result-media-frame.is-video-frame > .video-frame {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      margin: 0 !important;
+      aspect-ratio: auto;
+      border: 0;
+      border-radius: 0;
+      box-sizing: border-box;
+      flex: 1 1 auto;
+    }
+
+    .tutorial-result-media-frame.is-video-frame > .video-frame iframe {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Native videos fill the same frame without cropping 16:9 content. */
+    .tutorial-result-media-frame.is-video-frame > .tutorial-result-video {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain !important;
+      display: block;
+      border-radius: 0;
+      box-shadow: none;
     }
 
     .tutorial-result-video {
