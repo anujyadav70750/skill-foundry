@@ -287,7 +287,7 @@ const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/images/skill-foundry-author.jpg';
 const formatResourceTag = (tag: string) => tag
-  .split(/[-_\\s]+/)
+  .split(/[-_\s]+/)
   .filter(Boolean)
   .map((part) => {
     const upper = part.toUpperCase();
