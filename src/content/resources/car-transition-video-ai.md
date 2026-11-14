@@ -24,7 +24,7 @@ toolsUsed:
 prompt: |
   Use the complete master prompt in Step 03 to replace the vehicle in the supplied reference video with the vehicle shown in the uploaded car image. Keep the prompt together as one complete instruction.
 steps:
-  - title: "Upload Your Car Image"
+  - title: "Upload Car Image"
     tool: "Google Flow"
     toolPurpose: "REFERENCE IMAGE"
     actionType: "instructions"
@@ -40,7 +40,7 @@ steps:
     details:
       - label: "TOOL USED"
         value: "Google Flow"
-  - title: "Add the Reference Video & Generate Your Video"
+  - title: "Generate Car Video"
     tool: "Google Flow"
     toolPurpose: "VIDEO GENERATION"
     actionType: "prompt"
@@ -104,7 +104,7 @@ steps:
 
       The final result should look as though the original video was filmed with my reference car instead of the original vehicle.
 
-  - title: "See the Final Result"
+  - title: "View Final Video"
     tool: "Instagram"
     toolPurpose: "FINAL RESULT"
     actionType: "instructions"
