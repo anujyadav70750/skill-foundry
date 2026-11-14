@@ -121,7 +121,7 @@ const outputVisual = (step, index) => {
   );
 
   if (step.outputSrc) {
-    const isEmbedUrl = /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(step.outputSrc);
+    const isEmbedUrl = /instagram\.com|youtube\.com|vimeo\.com|tiktok\.com|drive\.google\.com|\/embed/i.test(step.outputSrc);
     return {
       type: isEmbedUrl ? 'video' : type,
       src: step.outputSrc,
@@ -632,7 +632,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                 const mediaUrl = output.src || output.previewSrc;
                 const hasMedia = Boolean(mediaUrl);
                 const isInstagramStep = Boolean(mediaUrl && /instagram\.com/i.test(mediaUrl));
-                const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|\/embed/i.test(mediaUrl));
+                const isEmbedUrl = Boolean(mediaUrl && !isInstagramStep && /youtube\.com|vimeo\.com|tiktok\.com|drive\.google\.com|\/embed/i.test(mediaUrl));
                 const isPdf = hasMedia && /\.pdf(?:[?#]|$)/i.test(mediaUrl);
 
                 const stepPurpose = step.purpose || step.description || "";
@@ -744,6 +744,13 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                             )}
                           </div>
                           </div>
+                        {step.downloadUrl && hasMedia && (
+                          <div class="tutorial-guide-download">
+                            <a class="text-link" href={step.downloadUrl} target="_blank" rel="noopener noreferrer">
+                              {step.downloadLabel || "Download reference file"}
+                            </a>
+                          </div>
+                        )}
                       </div>
                     )}
                   
@@ -823,7 +830,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               {(step.guidePoints && step.guidePoints.length > 0 ? step.guidePoints : [step.whatToDo || "Copy the prompt, open the selected app, and generate the result."]).map((point: string) => <li>{point}</li>)}
                             </ul>
                           )}
-                          {step.downloadUrl && (
+                          {step.downloadUrl && !hasMedia && (
                             <div class="tutorial-guide-download">
                               <a class="text-link" href={step.downloadUrl} target="_blank" rel="noopener noreferrer">
                                 {step.downloadLabel || "Download reference file"}
