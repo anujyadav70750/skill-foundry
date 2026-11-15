@@ -46,7 +46,7 @@ steps:
     actionType: "prompt"
     outputType: "image"
     outputLabel: "Car Image Reference"
-    outputSrc: "/images/car-transition-hero.svg"
+    outputSrc: "/images/neon-green-corvette-step-2.jpg"
     purpose: "Generate the video using your car photo and the reference video."
     description: "Generate the video using your car photo and the reference video."
     whatToDo: "Upload your car photo and the downloaded reference video to Google Flow."
