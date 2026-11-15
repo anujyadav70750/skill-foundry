@@ -91,6 +91,15 @@ const platformLinks = [
     <meta name="google-site-verification" content="GXf2_3wVUXh_mn_etbUJ4XFGqHSLrV3-BP6y-ZhbWRY" />
     <meta name="msvalidate.01" content="026F898938268FE75DA66ED96740DCFA" />
     <link rel="canonical" href={canonicalUrl} />
+    {isHomePage && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: siteName,
+        alternateName: 'SkillFoundry',
+        url: siteUrl + '/'
+      })} />
+    )}
     <link rel="sitemap" href="/sitemap.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {image && image !== '/og-image.svg' && (
