@@ -834,7 +834,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                           <div class="tutorial-details-grid">
                             {[...(step.details || []), ...(step.settings || [])].map((detail: any) => {
                               const label = String(detail.label || "").toUpperCase();
-                              const kind = label.includes("TOOL") ? "tool" : label.includes("MODEL") ? "model" : label.includes("ASPECT") || label.includes("FORMAT") ? "ratio" : label.includes("DURATION") ? "duration" : label.includes("RESOLUTION") ? "resolution" : label.includes("SPEED") ? "speed" : "info";
+                              const kind = label.includes("TOOL") ? "tool" : label.includes("MODEL") ? "model" : label.includes("ASPECT") || label.includes("FORMAT") ? "ratio" : label.includes("DURATION") ? "duration" : label.includes("RESOLUTION") ? "resolution" : label.includes("QUALITY") ? "quality" : label.includes("GENERATION") ? "generation" : label.includes("SPEED") ? "speed" : "info";
                               return (
                                 <div class="tutorial-detail-item">
                                   <div class="tutorial-detail-heading">
@@ -846,6 +846,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                         {kind === "ratio" && <><rect x="1.5" y="3.5" width="17" height="13" rx="1.2"/><path d="M3.5 5.4H7M3.5 5.4V8.9M16.5 14.6H13M16.5 14.6V11.1"/></>}
                                         {kind === "duration" && <><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.8 1.8"/></>}
                                         {kind === "resolution" && <><rect x="2.5" y="3.5" width="15" height="10.5" rx="1.5"/><path d="M7 17h6M10 14v3"/></>}
+                                        {kind === "quality" && <><path d="m10 2.5 1.9 5.6 5.6 1.9-5.6 1.9L10 17.5l-1.9-5.6L2.5 10l5.6-1.9z"/><path d="m16.2 13.4.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></>}
+                                        {kind === "generation" && <><path d="m10 2.5 7.5 4-7.5 4-7.5-4z"/><path d="m2.5 10 7.5 4 7.5-4M2.5 13.5l7.5 4 7.5-4"/></>}
                                         {kind === "speed" && <><path d="M3.5 14a7 7 0 1 1 13 0"/><path d="m10 10 3.5-3M5 14h10"/></>}
                                         {kind === "info" && <><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.5h.01"/></>}
                                       </svg>
