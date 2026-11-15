@@ -870,7 +870,16 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               );
                             })}
                           </div>
-                          {step.detailsNote && (
+                          {[...(step.details || []), ...(step.settings || [])].length === 0 && (
+                            <div class="tutorial-details-empty-state" role="status">
+                              <svg class="tutorial-details-empty-icon" viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="10" cy="10" r="7.2" />
+                                <path d="M10 9v4M10 6.5h.01" />
+                              </svg>
+                              <p>{step.detailsNote || "No additional settings are required for this step."}</p>
+                            </div>
+                          )}
+                          {step.detailsNote && [...(step.details || []), ...(step.settings || [])].length > 0 && (
                             <div class="tutorial-details-note">
                               <p class="tutorial-details-note-copy">{step.detailsNote}</p>
                             </div>
