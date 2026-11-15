@@ -233,14 +233,14 @@
    -------------------------------------------------------------------------- */
 
 @media (min-width: 820px) {
-  /* Global navigation: match the 1080px content grid instead of stopping at 820px. */
+  /* Desktop navigation: keep the bar slightly inset from the main section edges. */
   .site-header {
-    padding-inline: 32px !important;
+    padding-inline: 40px !important;
   }
 
   .site-header .nav-bar-container {
     width: 100% !important;
-    max-width: 1080px !important;
+    max-width: 1040px !important;
     height: 72px !important;
     min-height: 72px !important;
     padding: 0 18px 0 20px !important;
