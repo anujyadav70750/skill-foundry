@@ -870,6 +870,11 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                               );
                             })}
                           </div>
+                          {step.detailsNote && (
+                            <div class="tutorial-details-note">
+                              <p class="tutorial-details-note-copy">{step.detailsNote}</p>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
