@@ -37,12 +37,10 @@ steps:
     description: "Download the reference video for your car project."
     whatToDo: "Save the reference video to your phone."
     process: |
-      1. Play the reference video below.
-      2. Open the Guide tab and tap Download Reference Video.
-      3. Save the video to your phone.
-    details:
-      - label: "FILE TYPE"
-        value: "MP4 video"
+      1. Tap the three-dot menu on the video.
+      2. Select Download.
+      3. The reference video will be saved to your phone's gallery.
+    detailsNote: "No settings are required for this step."
 
   - title: "Generate Video"
     tool: "Google Flow"
@@ -61,11 +59,6 @@ steps:
       - "Copy the prompt from the Prompt tab and paste it into Google Flow."
       - "Apply the settings shown in the Details tab and generate the video."
       - "Download the generated video to your phone."
-    details:
-      - label: "TOOL USED"
-        value: "Google Flow"
-      - label: "PROMPT TYPE"
-        value: "One complete master prompt"
     settings:
       - label: "MODEL"
         value: "Omni 1.1 Flash"
@@ -123,9 +116,7 @@ steps:
       2. Upload the generated video you downloaded.
       3. Add music or filters and make any final edits.
       4. Save the video or share it as a Reel.
-    details:
-      - label: "TOOL USED"
-        value: "Instagram"
+    detailsNote: "No settings are required for this step."
 
 tips:
   - "Choose a sharp car image where the vehicle's body, wheels, lights, and paint details are easy to see."
