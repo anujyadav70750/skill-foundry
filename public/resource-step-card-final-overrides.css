@@ -365,3 +365,44 @@ html.light-theme .resource-page .tutorial-prompt-btn.tutorial-copy-btn {
   -webkit-touch-callout: none !important;
   -webkit-user-drag: none !important;
 }
+
+
+/* Empty Details state: show a clear notice when the step has no settings.
+   In that case only, let the selected tab determine the panel height so an
+   inactive Guide panel cannot leave a large blank area beneath the notice. */
+.resource-page .tutorial-details-empty-state {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  width: 100% !important;
+  min-height: 76px !important;
+  margin: 0 !important;
+  padding: 18px 20px !important;
+  box-sizing: border-box !important;
+  border: 1px solid var(--sf-page-border, rgba(148, 163, 184, 0.18)) !important;
+  border-radius: 12px !important;
+  background: var(--sf-page-surface, rgba(148, 163, 184, 0.06)) !important;
+  color: var(--sf-page-copy, #AAB2BF) !important;
+  text-align: center !important;
+}
+
+.resource-page .tutorial-details-empty-state p {
+  margin: 0 !important;
+  color: inherit !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.55 !important;
+}
+
+.resource-page .tutorial-details-empty-icon {
+  display: block !important;
+  flex: 0 0 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: var(--sf-page-accent, #35C9C1) !important;
+}
+
+.resource-page .tutorial-step-disclosure-panels:has(.tutorial-details-empty-state) > .tutorial-step-disclosure-panel[aria-hidden="true"] {
+  display: none !important;
+}
