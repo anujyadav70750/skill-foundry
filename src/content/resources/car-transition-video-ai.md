@@ -31,15 +31,13 @@ steps:
     outputType: "video"
     outputLabel: "Reference Video"
     outputSrc: "/lv_0_20261025125126.mp4"
-    downloadUrl: "https://hub.skillfoundry-web.workers.dev/lv_0_20261025125126.mp4"
-    downloadLabel: "Download Reference Video"
     purpose: "Download the reference video for your car project."
     description: "Download the reference video for your car project."
     whatToDo: "Save the reference video to your phone."
     process: |
-      1. Tap the three-dot menu on the video.
-      2. Select Download.
-      3. The reference video will be saved to your phone's gallery.
+      1. Tap the three-dot menu (⋮) in the video's bottom-right corner.
+      2. In the menu that opens, tap Download.
+      3. Wait for the download to finish. The reference video will be saved to your phone's gallery.
     detailsNote: "No settings are required for this step."
 
   - title: "Generate Video"
