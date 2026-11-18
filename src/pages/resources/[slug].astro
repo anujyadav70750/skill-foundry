@@ -251,6 +251,8 @@ const canonicalUrl = new URL(`/resources/${slug}/`, site).href;
 const seoTitle = data.seoTitle ?? `${data.title} | Skill Foundry`;
 const seoDescription = data.seoDescription ?? data.description;
 const heroImage = resourceDisplayImage(resourceHeroImage(resource), 1280);
+const heroImageSrcSet = resourceDisplaySrcSet(resourceHeroImage(resource), [960, 1280]);
+const heroImageSizes = '(max-width: 600px) 100vw, 1200px';
 const imageAlt = resourceImageAlt(resource);
 const absoluteImage = new URL(heroImage, site).href;
 
@@ -284,6 +286,17 @@ const introPoints = introText
 const whatItDoesText = String(data.whatItDoes || '').trim();
 const authorName = (data as any).author || 'Skill Foundry';
 const authorAvatar = (data as any).authorAvatar || (data as any).authorImage || (data as any).authorDp || '/images/skill-foundry-author.jpg';
+const firstStepOutput = workflowSteps.length ? outputVisual(workflowSteps[0], 0) : null;
+const firstStepMediaUrl = firstStepOutput?.src || firstStepOutput?.previewSrc || '';
+const firstStepPreloadImage = firstStepOutput?.type === 'image' && firstStepMediaUrl
+  ? resourceDisplayImage(firstStepMediaUrl, 1280)
+  : '';
+const resourcePreloadImages = [
+  { src: authorAvatar, priority: 'high' as const },
+  ...(firstStepPreloadImage && firstStepPreloadImage !== authorAvatar
+    ? [{ src: firstStepPreloadImage, priority: 'low' as const }]
+    : [])
+];
 const formatResourceTag = (tag: string) => tag
   .split(/[-_\s]+/)
   .filter(Boolean)
@@ -377,7 +390,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
   return p;
 };
 ---
-<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} type="article" hideBackButton={true}>
+<BaseLayout title={seoTitle} description={seoDescription} canonical={canonicalUrl} image={heroImage} imageAlt={imageAlt} imageSrcSet={heroImageSrcSet} imageSizes={heroImageSizes} preloadImages={resourcePreloadImages} type="article" hideBackButton={true}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
 
   <style is:global>
@@ -468,7 +481,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
           {/* 2. Hero Image / Thumbnail (No outer frame/card/border, clean rounded image) */}
           <div class="hero-image-wrap">
-            <img class="hero-image" src={heroImage} srcset={resourceDisplaySrcSet(resourceHeroImage(resource), [960, 1280])} sizes="(max-width: 600px) 100vw, 1200px" alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
+            <img class="hero-image" src={heroImage} srcset={heroImageSrcSet} sizes={heroImageSizes} alt={imageAlt} loading="eager" fetchpriority="high" decoding="async" />
           </div>
           <script is:inline>
             (() => {
@@ -497,7 +510,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
           <div class="resource-metadata-row" aria-label="Resource metadata">
             <div class="metadata-item meta-author">
               <a class="meta-author-profile-link" href="/author/" aria-label={`About ${authorName}, resource author`}>
-                <img class="meta-author-avatar" src={authorAvatar} alt="" width="22" height="22" loading="eager" decoding="async" />
+                <img class="meta-author-avatar" src={authorAvatar} alt="" width="22" height="22" loading="eager" fetchpriority="high" decoding="async" />
                 <span class="meta-author-name">{authorName}</span>
               </a>
               <span class="meta-verification-badge" aria-label="Verified publisher">
@@ -716,7 +729,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                 <iframe
                                   src={mediaUrl}
                                   title={`${step.title} output`}
-                                  loading="lazy"
+                                  loading={index === 0 ? "eager" : "lazy"}
                                   scrolling="no"
                                   allowfullscreen
                                 ></iframe>
@@ -735,7 +748,9 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
                                   class="tutorial-result-img"
                                   src={resourceDisplayImage(mediaUrl, 1280)}
                                   alt={`${step.title} result`}
-                                  loading="lazy"
+                                  loading={index === 0 ? "eager" : "lazy"}
+                                  fetchpriority={index === 0 ? "high" : "low"}
+                                  data-step-preload-image
                                   decoding="async"
                                 />
                               </div>
@@ -972,10 +987,60 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
               } catch (err) {}
             };
 
-            if (document.readyState === "complete") {
+            const instagramScript = document.querySelector('script[src="https://www.instagram.com/embed.js"]');
+            if (window.instgrm && window.instgrm.Embeds) {
               processEmbedsOnce();
+            } else if (instagramScript) {
+              instagramScript.addEventListener("load", processEmbedsOnce, { once: true });
+            }
+
+            // Load later-step images in low-priority staggered batches after critical content settles.
+            const scheduleStepImagePreloads = () => {
+              const stepImages = Array.from(document.querySelectorAll("[data-step-preload-image]"))
+                .filter((img) => img.closest("[data-workflow-step-card]")?.getAttribute("data-step") !== "1");
+              stepImages.forEach((img, index) => {
+                window.setTimeout(() => {
+                  img.setAttribute("fetchpriority", "low");
+                  img.loading = "eager";
+                }, 700 + index * 220);
+              });
+            };
+
+            const beginStepImagePreloads = () => {
+              if ("requestIdleCallback" in window) {
+                window.requestIdleCallback(scheduleStepImagePreloads, { timeout: 1200 });
+              } else {
+                window.setTimeout(scheduleStepImagePreloads, 900);
+              }
+            };
+            if (document.readyState === "complete") {
+              beginStepImagePreloads();
             } else {
-              window.addEventListener("load", processEmbedsOnce, { once: true });
+              window.addEventListener("load", beginStepImagePreloads, { once: true });
+            }
+
+            // Prepare the related thumbnails likely to be seen first on each screen size.
+            const relatedSection = document.querySelector(".related-section");
+            const relatedImages = Array.from(document.querySelectorAll(".related-work-thumb-img"));
+            const prepareFirstRelatedImages = () => {
+              const visibleCardCount = window.matchMedia("(max-width: 768px)").matches ? 2 : 4;
+              relatedImages.slice(0, visibleCardCount).forEach((img) => {
+                img.setAttribute("fetchpriority", "low");
+                img.loading = "eager";
+              });
+            };
+            if (relatedSection && relatedImages.length) {
+              if ("IntersectionObserver" in window) {
+                const relatedObserver = new IntersectionObserver((entries) => {
+                  if (entries.some((entry) => entry.isIntersecting)) {
+                    prepareFirstRelatedImages();
+                    relatedObserver.disconnect();
+                  }
+                }, { rootMargin: "1200px 0px" });
+                relatedObserver.observe(relatedSection);
+              } else {
+                window.addEventListener("load", () => window.setTimeout(prepareFirstRelatedImages, 700), { once: true });
+              }
             }
 
             // Instagram sends separate height messages for each embed. Resize only
@@ -1050,7 +1115,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             return (
               <a class="related-work-card" href={`/resources/${relatedSlug}/`} aria-label={`Open ${item.data.title}`}>
                 <div class="related-work-thumb-wrap">
-                  <img class="related-work-thumb-img" src={thumb} alt={alt} loading="lazy" decoding="async" />
+                  <img class="related-work-thumb-img" src={thumb} alt={alt} loading="lazy" fetchpriority="low" data-related-image decoding="async" />
                 </div>
                 <div class="related-work-card-body">
                   <div class="related-work-meta-row">
@@ -1554,6 +1619,14 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
             card.setAttribute("aria-hidden", active ? "false" : "true");
             card.classList.toggle("is-active", active);
           });
+          const activeCard = stepCards[index];
+          activeCard?.querySelectorAll("img[data-step-preload-image]").forEach((img) => {
+            img.loading = "eager";
+            img.setAttribute("fetchpriority", "high");
+          });
+          activeCard?.querySelectorAll("iframe[loading='lazy']").forEach((iframe) => {
+            iframe.loading = "eager";
+          });
           requestAnimationFrame(() => syncWorkflowStepNav(index, moveFocus ? "smooth" : "auto"));
           if (moveFocus) stepButtons[index].focus();
         };
@@ -1814,8 +1887,8 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
       background: transparent !important;
       background-image: none !important;
       filter: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
+      opacity: 1 !important;
+      visibility: visible !important;
       animation: none !important;
       transition: none !important;
       transform: none !important;

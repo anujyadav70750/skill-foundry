@@ -8,6 +8,9 @@ export interface Props {
   canonical?: string;
   image?: string;
   imageAlt?: string;
+  imageSrcSet?: string;
+  imageSizes?: string;
+  preloadImages?: Array<{ src: string; priority?: 'high' | 'low' | 'auto' }>;
   type?: 'website' | 'article';
   robots?: string;
   hideHeaderSearch?: boolean;
@@ -33,6 +36,9 @@ const {
   canonical,
   image = '/og-image.svg',
   imageAlt = 'Skill Foundry — Practical learning resources, tutorials, and workflows',
+  imageSrcSet,
+  imageSizes,
+  preloadImages = [],
   type = 'website',
   robots = 'index, follow',
   hideHeaderSearch = false,
@@ -104,8 +110,11 @@ const platformLinks = [
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {image && image !== '/og-image.svg' && (
-      <link rel="preload" as="image" href={image} fetchpriority="high" />
+      <link rel="preload" as="image" href={image} imagesrcset={imageSrcSet} imagesizes={imageSizes} fetchpriority="high" />
     )}
+    {preloadImages.filter((item) => item?.src && item.src !== image).map((item) => (
+      <link rel="preload" as="image" href={item.src} fetchpriority={item.priority || 'low'} />
+    ))}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
