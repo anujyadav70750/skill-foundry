@@ -35,7 +35,7 @@ steps:
     description: "Download the reference video for your car project."
     whatToDo: "Save the reference video to your phone."
     process: |
-      1. Tap the three-dot menu (⋮) in the video's bottom-right corner.
+      1. Tap the three-dot menu (⋮) in the bottom-right corner of the video.
       2. In the menu that opens, tap Download.
       3. Wait for the download to finish. The reference video will be saved to your phone's gallery.
     detailsNote: "No settings are required for this step."
