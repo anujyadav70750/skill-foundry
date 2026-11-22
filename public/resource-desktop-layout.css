@@ -440,3 +440,19 @@
     padding-top: 48px !important;
   }
 }
+
+
+/* Workflow step navigation alignment:
+   Centre the existing capsule group when every step fits in the four-slot row.
+   Keep the current left-aligned horizontal scrolling window when there are
+   more than four steps. Button dimensions, gaps and visual styling stay intact. */
+html .resource-editorial-layout .resource-page .workflow-step-nav[data-step-count="1"],
+html .resource-editorial-layout .resource-page .workflow-step-nav[data-step-count="2"],
+html .resource-editorial-layout .resource-page .workflow-step-nav[data-step-count="3"],
+html .resource-editorial-layout .resource-page .workflow-step-nav[data-step-count="4"] {
+  justify-content: center !important;
+}
+
+html .resource-editorial-layout .resource-page .workflow-step-nav:not([data-step-count="1"]):not([data-step-count="2"]):not([data-step-count="3"]):not([data-step-count="4"]) {
+  justify-content: flex-start !important;
+}
