@@ -614,7 +614,7 @@ const getCleanToolPurpose = (purpose: string, category: string, name: string) =>
 
         {/* STEP-BY-STEP WORKFLOW (Each step is an independent card directly on the page) */}
         {workflowSteps.length > 0 && (
-          <nav class="workflow-step-nav" aria-label="Choose a workflow step" role="tablist" data-workflow-step-nav>
+          <nav class="workflow-step-nav" aria-label="Choose a workflow step" role="tablist" data-workflow-step-nav data-step-count={workflowSteps.length}>
             {workflowSteps.map((step, index) => (
               <button
                 type="button"
