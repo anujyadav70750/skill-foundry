@@ -403,8 +403,17 @@ html.light-theme .resource-page .tutorial-prompt-btn.tutorial-copy-btn {
   color: var(--sf-page-accent, #35C9C1) !important;
 }
 
+/* Keep the inactive Guide panel in the shared grid even when Details has
+   no settings. It stays invisible and non-interactive, but its height remains
+   reserved so the Tips section never jumps when the tabs are switched. */
 .resource-page .tutorial-step-disclosure-panels:has(.tutorial-details-empty-state) > .tutorial-step-disclosure-panel[aria-hidden="true"] {
-  display: none !important;
+  display: block !important;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  position: static !important;
+  height: auto !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 
@@ -457,4 +466,79 @@ html.light-theme .resource-page .tutorial-details-empty-state p {
 html[data-theme="light"] .resource-page .tutorial-details-empty-icon,
 html.light-theme .resource-page .tutorial-details-empty-icon {
   color: #0F8F89 !important;
+}
+
+
+/* Guide copy: match the typography and muted text treatment of Tips for Better Results. */
+.resource-page .tutorial-guide-panel-heading {
+  font-family: inherit !important;
+  color: #8C92A0 !important;
+}
+
+.resource-page .tutorial-instruction-list,
+.resource-page .tutorial-guide-list {
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  color: #B0B5C0 !important;
+}
+
+.resource-page .tutorial-instruction-item,
+.resource-page .instruction-num,
+.resource-page .instruction-text,
+.resource-page .tutorial-guide-list li {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+.resource-page .instruction-num {
+  font-weight: 500 !important;
+  color: #8C92A0 !important;
+}
+
+.resource-page .instruction-text,
+.resource-page .tutorial-guide-list li {
+  font-weight: 400 !important;
+  color: #B0B5C0 !important;
+}
+
+.resource-page .tutorial-details-empty-state p {
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  line-height: 1.6 !important;
+  color: #B0B5C0 !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-guide-panel-heading,
+html.light-theme .resource-page .tutorial-guide-panel-heading {
+  color: #64748B !important;
+}
+
+html[data-theme="light"] .resource-page .tutorial-instruction-list,
+html.light-theme .resource-page .tutorial-instruction-list,
+html[data-theme="light"] .resource-page .tutorial-guide-list,
+html.light-theme .resource-page .tutorial-guide-list,
+html[data-theme="light"] .resource-page .instruction-text,
+html.light-theme .resource-page .instruction-text,
+html[data-theme="light"] .resource-page .tutorial-guide-list li,
+html.light-theme .resource-page .tutorial-guide-list li,
+html[data-theme="light"] .resource-page .tutorial-details-empty-state p,
+html.light-theme .resource-page .tutorial-details-empty-state p {
+  color: #334155 !important;
+}
+
+html[data-theme="light"] .resource-page .instruction-num,
+html.light-theme .resource-page .instruction-num {
+  color: #64748B !important;
+}
+
+@media (max-width: 640px) {
+  .resource-page .tutorial-instruction-list,
+  .resource-page .tutorial-guide-list,
+  .resource-page .tutorial-details-empty-state p {
+    font-size: 14px !important;
+  }
 }
